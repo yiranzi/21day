@@ -51,14 +51,28 @@ class User {
             return;
         }
 
+        console.log('111111111111');
+
+
+        //初始化微信通用接口
+        User.signWxApi();
+
+        //蓝号进行授权后的
+        if(Util.getUrlPara('istopay')){
+            //设置支付APPID
+            Util.setPayAppId();
+            //从服务器上获取用于支付的openId
+            User.getPayOpenIdFromSever();
+
+            return;
+        }
+
+
         //获取微信用户信息
         if(User.getWxUserInfoFromServer()) {
             //重定向走之后结束动作
             return;
         }
-
-        //初始化微信通用接口
-        User.signWxApi();
     }
 
     /**
@@ -71,7 +85,7 @@ class User {
 
         if( !code ) {
             //地址栏里没有code 信息则重定向去微信静默授权
-            User.redirectToBaseInfo();
+            User.redirectToBaseInfo(false);
             return true;
         }
 
@@ -97,7 +111,9 @@ class User {
             success: (data)=>{
                 User.onGetWxInfoSuccess(data)
             },
-            error : User.onGetWxInfoError
+            error: ()=>{
+                User.onGetWxInfoError(false)
+            }
         });
 
     }
@@ -109,7 +125,7 @@ class User {
     static onGetWxInfoSuccess(data) {
         if( !data || !data.userId ) {
             //如果后台没有数据，代表没有授权过，去往snsapi_userinfo授权
-            User.redirectToUserinfo();
+            User.redirectToUserinfo(false);
             return;
         }
 
@@ -126,19 +142,95 @@ class User {
         userInfo.headImage = data.headImage;
 
         userInfo.subscribe = data.subscribe;//是否关注公众号
-        //userInfo.subscribe && GHGuider.hideGuider();//已关注时隐藏公号引导
 
-        //获取用户等级和下线数量，并且在页面上显示对应的数据
-        //User.getUserLevel();
-        //User.getFollowerCounter();
+        userInfo.unionId = data.unionId;
 
         //配置分享内容
         User.shareConfig();
 
-        //触发登录成功事件
-        OnFire.fire('OAUTH_SUCCESS',data);
+        console.log('unionId'+userInfo.unionId);
 
-        Loading.hideLoading();
+
+        //查询是否有支付的openId，没有就去做支付账号的登录，
+        if(data.payOpenId){
+
+            userInfo.payOpenId = data.payOpenId;
+
+            //设置用户信息缓存 此处缓存是为了第二次蓝号授权后，可以使用用户的其他信息
+            localStorage.setItem('user-info',JSON.stringify(userInfo));
+
+
+            //触发登录成功事件
+            OnFire.fire('OAUTH_SUCCESS',data);
+
+            Loading.hideLoading();
+        }
+        else{
+            //设置用户信息缓存 此处缓存是为了第二次蓝号授权后，可以使用用户的其他信息
+            localStorage.setItem('user-info',JSON.stringify(userInfo));
+
+            //设置支付APPID
+            Util.setPayAppId();
+
+            //静默授权（使用可支付公号的APPID）
+            console.log('静默授权（使用可支付公号的APPID）');
+            User.redirectToBaseInfo(true);
+        }
+
+
+    }
+
+    /**
+     * 从服务器上获取用于支付的openId
+     */
+    static getPayOpenIdFromSever() {
+        //携带在地址栏的code信息
+        let code = Util.getUrlPara('code'),
+            APIUrl = Util.getAPIUrl('get_pay_openid');
+
+        if( !code ) {
+            //地址栏里没有code 信息则重定向去微信静默授权
+            console.log(' 从服务器上获取用于支付的openId地址栏里没有code 信息则重定向去微信静默授权');
+            User.redirectToBaseInfo(true);
+            return true;
+        }
+
+        userInfo = JSON.parse(localStorage.getItem('user-info'));
+        console.log('userInfo'+userInfo);
+
+        let jsonData = JSON.stringify({
+            'code': code,
+            'unionId': userInfo.unionId
+        });
+
+        $.ajax({
+            url: APIUrl,//静默授权登录
+            data: jsonData,
+            type: 'post',
+            cache: false,
+            contentType: 'application/json;charset=utf-8',
+            dataType:'json',
+            headers: {
+                Accept:"application/json"
+            },
+            beforeSend: (request) => {
+                request.setRequestHeader("X-iChangTou-Json-Api-Token", "DE:_:w2qlJFV@ccOeiq41ENp><ETXh3o@aX8M<[_QOsZ<d8[Yz:NIMcKwpjtBk0e");
+            },
+            success: (data)=>{
+                console.log('从服务器上获取用于支付的openId',data);
+
+                userInfo.payOpenId = data.openId;
+
+                OnFire.fire('OAUTH_SUCCESS',userInfo);
+
+                Loading.hideLoading();
+                console.log('userInfo',userInfo);
+            },
+            error: ()=>{
+                User.onGetWxInfoError(true)
+            }
+        });
+
     }
 
 
@@ -239,14 +331,16 @@ class User {
     /**
      * 获取微信数据失败
      */
-    static onGetWxInfoError(data) {
-        User.redirectToUserinfo();
+    static onGetWxInfoError(topay) {
+        console.log('获取微信数据失败');
+        User.redirectToUserinfo(topay);
     }
 
     /**
      * 初始化为微信的普通API
      */
     static signWxApi() {
+        console.log('初始化为微信的普通API');
         let url = JSON.stringify({'url': location.href}),
             me = User;
 
@@ -489,7 +583,7 @@ class User {
     /**
      * 重定向到微信的静默授权页面
      */
-    static redirectToBaseInfo() {
+    static redirectToBaseInfo(istopay) {
         if( Util.getDebugFlag() ) {
             return;
         }
@@ -500,8 +594,9 @@ class User {
         }
 
         //不带code的话，强制去静默授权
-        let redirectUri = Util.getRedirectUri(),
+        let redirectUri = Util.getRedirectUri(false,istopay),
             scope = 'snsapi_base';//snsapi_userinfo;
+
 
         let url = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=' + Util.getAppId() +
             '&redirect_uri=' + redirectUri +
@@ -509,21 +604,24 @@ class User {
             '&scope=' + scope +
             '&state=minic&connect_redirect=1#wechat_redirect';
 
+        console.log('url'+url);
+
         window.location.href = url;
     }
 
     /**
      * 重定向到微信的userInfo授权（会弹出绿色的授权界面）
      */
-    static redirectToUserinfo() {
+    static redirectToUserinfo(topay) {
         if( !Util.isWeixin() ){
             //QQ中打开不跳转
             return;
         }
 
         //不带code的话，强制去静默授权
-        let redirectUri = Util.getRedirectUri(true),
+        let redirectUri = Util.getRedirectUri(true,topay),
             scope = 'snsapi_userinfo';//snsapi_userinfo;
+
 
         //记录请求次数，超过3次，则不再请求
         let errCounter = 0;
@@ -543,6 +641,8 @@ class User {
             '&response_type=code' +
             '&scope=' + scope +
             '&state=minic#wechat_redirect';
+
+        console.log('url'+url);
 
         location.href = url;
     }

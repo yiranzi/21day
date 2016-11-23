@@ -49,7 +49,8 @@ var PayPage = React.createClass({
                 this.postRegisterRecord(Util.getCurrentBatch(),User.getUserInfo(),payWay)
             }else{
                 this.setState({
-                    hasPaid: true
+                    hasPaid: true,
+                    buttonPrice: 0
                 })
             }
 
@@ -129,7 +130,7 @@ var PayPage = React.createClass({
      * @param payWay
      */
     postRegisterRecord (termId,userInfo,payWay) {
-        Loading.showLoading('获取信息中');
+        Loading.showLoading('获取信息...');
 
         Material.getRegisterRecord(termId,userInfo.userId).done((record)=>{
 
@@ -173,6 +174,7 @@ var PayPage = React.createClass({
      */
     setBackUpQQState() {
         this.setState({
+            buttonPrice: 0,
             hasRecord: true,
             hasPaid: true, //已报名
             QQNum: '123343135', //QQ群号
@@ -239,7 +241,9 @@ var PayPage = React.createClass({
             PayController.wechatPay();
         }else{
             this.setState({
-                showBackup: true
+                showBackup: true,
+                buttonPrice: 0,
+                QQLink:'http://jq.qq.com/?_wv=1027&k=41976jN' //非付费的QQ群号
             });
 
             this.scrollToTop();
@@ -291,13 +295,25 @@ var PayPage = React.createClass({
 
                 {this.state.showBackup && <a className="backup-text" href="http://jq.qq.com/?_wv=1027&k=41976jN">QQ群号：<span className="red-text">239360505</span><p className="red-text">暗号：理财</p></a>}
 
-                <img src="./assets21Intro/image/intro.jpg" className="intro-img"/>
+                {!this.state.hasPaid && <img src="./assets21Intro/image/intro.jpg" className="intro-img"/>}
+
+                {this.state.hasPaid && <div>
+                    <div className="paid-bg" style={{height:window.innerHeight}}>
+                        <div className="paid-text-box">
+                            <p className="paid-text">恭喜你报名成功！</p>
+                            <p className="paid-text">请加QQ群号：<span className="red-text">{this.state.QQNum}</span></p>
+                            <p className="paid-text">群暗号：<span className="red-text">{this.state.QQCode}</span></p>
+                            <p className="paid-text">请于2小时内尽快加群</p>
+                        </div>
+                    </div>
+
+                </div>}
 
                 <div id="payCon"></div>
 
                 {this.state.buttonPrice == 6 && <div className="bottom-button" onClick={this.clickHandler}>立即参加（<span className="full-price">￥9</span>  ￥6）</div>}
                 {this.state.buttonPrice == 9 && <div className="bottom-button" onClick={this.clickHandler}>立即参加（￥9）</div>}
-                {this.state.buttonPrice == 0 && <div className="bottom-button" onClick={this.clickHandler}>进入训练营（QQ号：{this.state.QQNum})【暗号：{this.state.QQCode}】</div>}
+                {this.state.buttonPrice == 0 && <div className="bottom-button attend-camp-button" onClick={this.clickHandler}>进入训练营</div>}
 
                 {this.state.showShareHint && <div className="share-hint"></div>}
                 {this.state.showShareHint && <div className="share-text"></div>}

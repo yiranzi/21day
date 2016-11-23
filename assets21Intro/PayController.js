@@ -178,7 +178,7 @@ class PayController {
                         }
                     ]
                 },
-                "openId": userInfo.openId && userInfo.openId.toString(),
+                "openId": userInfo.payOpenId && userInfo.payOpenId.toString(),
                 "sum": sum
             }
         );
@@ -267,7 +267,7 @@ class PayController {
      */
     static onBridgeReady(data) {
         var param = {
-            "appId": Util.getAppId(),
+            "appId": Util.getPayOpenId(),
             "timeStamp": data.timeStamp.toString(),
             "nonceStr" : data.nonceStr,
             "package" : ("prepay_id=" + data.prepayId.toString()),

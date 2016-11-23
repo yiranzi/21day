@@ -36,14 +36,14 @@ $(document).ready(() => {
     //Loading初始化
     new Loading().init();
 
-    //Loading.showLoading('获取信息...');
-    //
-    //if(!Util.isWeixin()){
-    //    Loading.hideLoading();
-    //    window.dialogAlertComp.show('提示','请复制地址并在微信中打开','知道啦',()=>{
-    //        Loading.showLoading('获取信息...');
-    //    },()=>{},false);
-    //}
+    Loading.showLoading('获取信息...');
+
+    if(!Util.isWeixin()){
+        Loading.hideLoading();
+        window.dialogAlertComp.show('提示','请复制地址并在微信中打开','知道啦',()=>{
+            Loading.showLoading('获取信息...');
+        },()=>{},false);
+    }
 
     ////初始化用户信息
     User.initAccessInfo();

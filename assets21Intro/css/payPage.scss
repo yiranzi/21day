@@ -49,18 +49,7 @@
   }
 }
 
-.red-text{
-  color: red;
-  font-size: px2rem(48);
-  text-decoration: underline;
-}
 
-//气球图片
-.balloon{
-  height: 50%;
-  width: 50%;
-  margin: 0 25%;
-}
 
 
 .pay_button{
@@ -149,6 +138,32 @@
   font-size: px2rem(30);
   background-color: #de4f31;
   color: #fff;
+}
+
+
+.paid-bg{
+  height: 100%;
+  width: 100%;
+  background-image: url("../image/paid-bg.png");
+  background-size: 100% 100%;
+}
+
+.paid-text-box{
+  padding-top: 3rem;
+}
+
+.paid-text{
+  padding-bottom: .5rem;
+  font-size: .95rem;
+  text-align: center;
+}
+
+.red-text{
+  color: red;
+}
+
+.attend-camp-button{
+  background-color: cadetblue;
 }
 
 

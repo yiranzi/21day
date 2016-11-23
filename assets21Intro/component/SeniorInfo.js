@@ -14,7 +14,8 @@ var SeniorInfo = React.createClass({
     getInitialState() {
         return {
             seniorImg: './assets21Intro/image/logo.png',
-            seniorName: '你的小伙伴'
+            seniorName: '你的小伙伴',
+            test: false
         }
     },
 
@@ -22,6 +23,7 @@ var SeniorInfo = React.createClass({
 
         let seniorId = Util.getUrlPara('ictchannel');
 
+        //查询上线信息
         seniorId && Material.getSeniorInfoFromServer(seniorId)
         .done((data)=> {
             console.log('data',data);
@@ -44,12 +46,17 @@ var SeniorInfo = React.createClass({
 
             <p className="senior-name">{this.state.seniorName}</p>
 
-            <div className="coupon-box">
+            {this.state.test && <div className="test-box">
+                <p className="test-text">你的好友{this.state.seniorName}邀请你来</p>
+                <p className="test-text">21天理财小白训练营一起学习</p>
+            </div>}
+
+            {!this.state.test && <div className="coupon-box">
                 <div className="coupon-info">
                     <p className="coupon-text">你的好友{this.state.seniorName}邀请你来</p>
                     <p className="coupon-text">21天理财小白训练营一起学习</p>
                 </div>
-            </div>
+            </div>}
 
             <p className="slogan">理财，就是理生活</p>
         </div>)

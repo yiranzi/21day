@@ -13,13 +13,18 @@ var Config = require('./Config');
 var Modal = require('./component/Modal');
 var GHGuider = require('./component/GHGuider');
 
-const TEST_APPID = 'wxd6c823882698f217';  //测试环境APPID
-const FORMA_APPID = 'wx8cc2299282e864f8'; //正式环境APPI
+const TEST_APPID = 'wx8cc2299282e864f8';//'wxd6c823882698f217';  //测试环境APPID
+const FORMA_APPID = 'wxd6c823882698f217';//'wx8cc2299282e864f8'; //正式环境APPID
+
+//todo
+const PAID_APPID = 'wx7cf8dd5d80048e42'; //用于支付的号的APPID
+
+
 const FORMAL_API_DOMAIN = 'http://m.ichangtou.net/';//生产环境 API域名
 const TEST_API_DOMAIN = 'http://app.ichangtou.com.cn/';//测试环境 API域名
 
 const API_URL_DOMAIN = Config.environment ? FORMAL_API_DOMAIN : TEST_API_DOMAIN; //开发环境or生产环境
-const APPID = Config.environment ? FORMA_APPID : TEST_APPID;
+var APPID = Config.environment ? FORMA_APPID : TEST_APPID;
 
 const MINIC_ID = '21';  //迷你课买房与资产配置课程ID
 const MINIC_NAME = '21天训练营报名'; //迷你课课程名称  英国脱欧
@@ -64,7 +69,9 @@ const API_URL_GROUP = {
     //用户是否已报名
     'has_registered': '21enter/is-entered',
     //获取上线信息
-    'get_senior_info': '21eval/user/parent-profile'
+    'get_senior_info': '21eval/user/parent-profile',
+    //获取支付的openID
+    'get_pay_openid': 'wx/h5/base/pay/openId'
 };
 
 class Util {
@@ -256,7 +263,7 @@ class Util {
 
         redirectUri = encodeURIComponent(redirectUri);
 
-        link = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=' + Util.getAppId() +
+        link = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=' + Util.getNormalAppId() +
             '&redirect_uri=' + redirectUri +
             '&response_type=code' +
             '&scope=' + 'snsapi_base' +
@@ -283,7 +290,42 @@ class Util {
      * @returns {string}
      */
     static getAppId() {
+        console.log('APPID',APPID);
         return APPID;
+    }
+
+
+    /**
+     * 设置
+     * @returns {string}
+     */
+    static getNormalAppId() {
+        return  Config.environment ? FORMA_APPID : TEST_APPID
+    }
+
+    static getPayOpenId() {
+        return PAID_APPID;
+    }
+
+    /**
+     * 设置APPID
+     */
+    static setPayAppId(){
+        APPID = PAID_APPID;
+    }
+
+    /**
+     * 是否有可供支付的openId
+     * @param result
+     * @returns {*}
+     */
+    static hasPayOpenidForPay(result) {
+        if(result){
+            return false
+        }
+
+        return true;
+
     }
 
     /**
@@ -400,9 +442,18 @@ class Util {
      * 获取重定向的uri
      * @returns {string}
      */
-    static getRedirectUri(isUserInfo) {
+    static getRedirectUri(isUserInfo,isToPay) {
         let redirectUri = Util.getHtmlUrl(),
             prefix = '?';
+
+
+        if( isToPay ) {
+            console.log('获取重定向的uri-istopay=1');
+            redirectUri = redirectUri  + prefix + 'istopay=1';
+            prefix = '&';
+        }
+
+
 
         //把订阅号的标记拼接到地址栏中
         //订阅号信息优先
