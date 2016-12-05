@@ -72,7 +72,7 @@ var PayPage = React.createClass({
             teacherId && Util.postCnzzData('班主任'+teacherId);
 
             //购买成功后的dialog
-            window.dialogAlertComp.show('报名成功','点击“立即加群”即可进入训练营QQ群。如果无法自动跳转，【请复制页面上的QQ群号】，手动搜索进群。','知道啦',()=>{},()=>{},false);
+            window.dialogAlertComp.show('报名成功','点击“立即加群”进入QQ群。也可以复制页面上的QQ群号，手动进群。请注意页面上的加群【暗号】哟~','知道啦',()=>{},()=>{},false);
         });
 
         let seniorId = Util.getUrlPara('ictchannel'),
@@ -293,7 +293,9 @@ var PayPage = React.createClass({
             <div className="pay_page">
                 {this.state.hasSenior && <SeniorInfo/>}
 
-                {this.state.showBackup && <a className="backup-text" href="http://jq.qq.com/?_wv=1027&k=41976jN">QQ群号：<span className="red-text">239360505</span><p className="red-text">暗号：理财</p></a>}
+                {this.state.showBackup && <a className="backup-text" href="http://jq.qq.com/?_wv=1027&k=41976jN">QQ群号：
+                    <span className="red-text">239360505</span>
+                    <p className="red-text  tada animated infinite">暗号：理财</p></a>}
 
                 {!this.state.hasPaid && <img src="./assets21Intro/image/intro.jpg" className="intro-img"/>}
 
@@ -302,7 +304,7 @@ var PayPage = React.createClass({
                         <div className="paid-text-box">
                             <p className="paid-text">恭喜你报名成功！</p>
                             <p className="paid-text">请加QQ群号：<span className="red-text">{this.state.QQNum}</span></p>
-                            <p className="paid-text">群暗号：<span className="red-text">{this.state.QQCode}</span></p>
+                            <p className="paid-text  tada infinite animated">群暗号：<span className="red-text">{this.state.QQCode}</span></p>
                             <p className="paid-text">请于2小时内尽快加群</p>
                         </div>
                     </div>

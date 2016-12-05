@@ -13,24 +13,31 @@ var Config = require('./Config');
 var Modal = require('./component/Modal');
 var GHGuider = require('./component/GHGuider');
 
-const TEST_APPID = 'wx8cc2299282e864f8';//'wxd6c823882698f217';  //测试环境APPID
-const FORMA_APPID = 'wxd6c823882698f217';//'wx8cc2299282e864f8'; //正式环境APPID
+
+const TEST_APPID = 'wxdd25f06df84b18ea';// //测试环境登录APPID
+const FORMA_APPID = 'wx8cc2299282e864f8';//正式环境登录APPID
 
 //todo
-const PAID_APPID = 'wx7cf8dd5d80048e42'; //用于支付的号的APPID
+const TEST_PAID_APPID = 'wx7cf8dd5d80048e42'; //测试环境支付APPID
+const FORMAL_PAID_APPID = 'wxd6c823882698f217'; //正式环境支付APPID
 
+
+//登录APPID
+var APPID = Config.environment ? FORMA_APPID : TEST_APPID;
+//测试APPID
+var PAID_APPID =  Config.environment ?FORMAL_PAID_APPID : TEST_PAID_APPID;
 
 const FORMAL_API_DOMAIN = 'http://m.ichangtou.net/';//生产环境 API域名
 const TEST_API_DOMAIN = 'http://app.ichangtou.com.cn/';//测试环境 API域名
 
 const API_URL_DOMAIN = Config.environment ? FORMAL_API_DOMAIN : TEST_API_DOMAIN; //开发环境or生产环境
-var APPID = Config.environment ? FORMA_APPID : TEST_APPID;
+
 
 const MINIC_ID = '21';  //迷你课买房与资产配置课程ID
 const MINIC_NAME = '21天训练营报名'; //迷你课课程名称  英国脱欧
 const CHARGE_INDEX = 0; //收费部分下标（0~N）
 
-const CURRENT_BATCH = 20; //当前期数
+const CURRENT_BATCH = 21; //当前期数
 
 const SHARE_TITLE = '邀请你一起参加21天小白理财训练营';
 
@@ -258,6 +265,11 @@ class Util {
         //订阅号
         if(Util.getUrlPara('dingyuehao')){
             redirectUri = redirectUri + '&dingyuehao=' + JSON.parse(Util.getUrlPara('dingyuehao'));
+        }
+
+        //班主任id
+        if(Util.getUrlPara('teacherid')){
+            redirectUri = redirectUri + '&teacherid=' + JSON.parse(Util.getUrlPara('teacherid'));
         }
 
 
