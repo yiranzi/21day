@@ -16,6 +16,8 @@ var Loading = require('../Loading');
 var DialogAlert = require('./DialogAlert');
 var DoneToast = require('./DoneToast');
 var SeniorInfo = require('./SeniorInfo');
+const SharePanel = require('./SharePanel');
+const Modal = require('./Modal');
 
 var REMAIN_NUM = 852;
 
@@ -36,7 +38,11 @@ var PayPage = React.createClass({
 
             //21days2.0
             hasSenior: false, //是否有上线
-            buttonPrice: 9 //
+            buttonPrice: 9, //
+
+            //share
+            showSharePanel: false, //显示分享panel
+            showShareModal: false  //显示分享modal
         };
     },
 
@@ -56,16 +62,9 @@ var PayPage = React.createClass({
 
             this.scrollToTop();
 
-            //设置剩余报名人数
-            //this.setRemainNum(this.state.remain-1);
-
-            //推送消息 放后台做处理
-            //User.sentUserIdAddBonus();
-
-
             //绑定上线信息(userId)
-            let seniorId = Util.getUrlPara('ictchannel');
-            seniorId && this.bindSenior(seniorId);
+            //let seniorId = Util.getUrlPara('ictchannel');
+            //seniorId && this.bindSenior(seniorId);
 
             //统计班主任信息
             let teacherId = Util.getUrlPara('teacherid');
@@ -98,10 +97,20 @@ var PayPage = React.createClass({
                 //设置订阅
                 this.setSubscribeInfo(userInfo.subscribe);
 
-
                 //设置上线
                 this.setSenior(seniorId,userInfo.userId);
             });
+        }
+
+        this.forSeniors();
+    },
+
+    forSeniors() {
+        if(!Util.getUrlPara('ictchannel')){
+            //上线用户，显示分享panel
+            this.setState({
+                showSharePanel: true
+            })
         }
     },
 
@@ -151,6 +160,10 @@ var PayPage = React.createClass({
                 this.setBackUpQQState();
             }
 
+            //已付费的用户，显示分享panel
+            this.setState({
+                showSharePanel: true
+            })
         })
         .fail(()=>{
             Loading.hideLoading();
@@ -187,7 +200,7 @@ var PayPage = React.createClass({
      * 绑定上下线关系
      * @param seniorId
      */
-    bindSenior(seniorId) {
+   /* bindSenior(seniorId) {
 
         let userInfo = User.getUserInfo();
 
@@ -196,7 +209,7 @@ var PayPage = React.createClass({
         }
 
         User.bindPyramidRelation(userInfo.openId,seniorId);
-    },
+    },*/
 
     /**
      * 设置用户关注信息
@@ -286,7 +299,25 @@ var PayPage = React.createClass({
         });
     },
 
+    /**
+     * 隐藏分享panel
+     * 显示分享modal
+     */
+    closeSharePanelHandler() {
+        this.setState({
+            showSharePanel: false,
+            showShareModal: true
+        })
+    },
 
+    /**
+     * 隐藏分享modal
+     */
+    hideShareModalHandler() {
+        this.setState({
+            showShareModal: false
+        })
+    },
 
     render(){
         return (
@@ -319,6 +350,9 @@ var PayPage = React.createClass({
 
                 {this.state.showShareHint && <div className="share-hint"></div>}
                 {this.state.showShareHint && <div className="share-text"></div>}
+
+                {this.state.showSharePanel && <Modal hideOnTap={false}><SharePanel onClose={this.closeSharePanelHandler}/></Modal>}
+                {this.state.showShareModal && <img src="./assets21Intro/image/shareModal.png" onClick={this.hideShareModalHandler} className="share-modal"/>}
             </div>
         )
     }

@@ -66,7 +66,7 @@ class Material {
             },
             beforeSend: function(request) {
                 request.setRequestHeader("X-iChangTou-Json-Api-User", userId);
-                request.setRequestHeader("X-iChangTou-Json-Api-Token", "DE:_:w2qlJFV@ccOeiq41ENp><ETXh3o@aX8M<[_QOsZ<d8[Yz:NIMcKwpjtBk0e");
+                request.setRequestHeader("X-iChangTou-Json-Api-Token", Util.getApiToken());
             },
             success: (prizeInfo)=>{
                 PRIZE_INFO = prizeInfo;
@@ -101,7 +101,7 @@ class Material {
             },
             beforeSend: function(request) {
                 request.setRequestHeader("X-iChangTou-Json-Api-User", userId);
-                request.setRequestHeader("X-iChangTou-Json-Api-Token", "DE:_:w2qlJFV@ccOeiq41ENp><ETXh3o@aX8M<[_QOsZ<d8[Yz:NIMcKwpjtBk0e");
+                request.setRequestHeader("X-iChangTou-Json-Api-Token", Util.getApiToken());
             },
             success: (prizeRecord)=>{
                 //奖品兑换记录
@@ -131,7 +131,7 @@ class Material {
             },
             beforeSend: function(request) {
                 request.setRequestHeader("X-iChangTou-Json-Api-User", userInfo.userId);
-                request.setRequestHeader("X-iChangTou-Json-Api-Token", "DE:_:w2qlJFV@ccOeiq41ENp><ETXh3o@aX8M<[_QOsZ<d8[Yz:NIMcKwpjtBk0e");
+                request.setRequestHeader("X-iChangTou-Json-Api-Token", Util.getApiToken());
             }
 
         });
@@ -169,7 +169,7 @@ class Material {
             },
             beforeSend: function(request) {
                 request.setRequestHeader("X-iChangTou-Json-Api-User", userId);
-                request.setRequestHeader("X-iChangTou-Json-Api-Token", "DE:_:w2qlJFV@ccOeiq41ENp><ETXh3o@aX8M<[_QOsZ<d8[Yz:NIMcKwpjtBk0e");
+                request.setRequestHeader("X-iChangTou-Json-Api-Token", Util.getApiToken());
             }
         });
     }
@@ -194,7 +194,7 @@ class Material {
             },
             beforeSend: function(request) {
                 request.setRequestHeader("X-iChangTou-Json-Api-User", seniorId);
-                request.setRequestHeader("X-iChangTou-Json-Api-Token", "DE:_:w2qlJFV@ccOeiq41ENp><ETXh3o@aX8M<[_QOsZ<d8[Yz:NIMcKwpjtBk0e");
+                request.setRequestHeader("X-iChangTou-Json-Api-Token", Util.getApiToken());
             }
 
         });

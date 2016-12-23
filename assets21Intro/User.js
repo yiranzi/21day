@@ -106,7 +106,7 @@ class User {
                 Accept:"application/json"
             },
             beforeSend: (request) => {
-                request.setRequestHeader("X-iChangTou-Json-Api-Token", "DE:_:w2qlJFV@ccOeiq41ENp><ETXh3o@aX8M<[_QOsZ<d8[Yz:NIMcKwpjtBk0e");
+                request.setRequestHeader("X-iChangTou-Json-Api-Token", Util.getApiToken());
             },
             success: (data)=>{
                 User.onGetWxInfoSuccess(data)
@@ -214,7 +214,7 @@ class User {
                 Accept:"application/json"
             },
             beforeSend: (request) => {
-                request.setRequestHeader("X-iChangTou-Json-Api-Token", "DE:_:w2qlJFV@ccOeiq41ENp><ETXh3o@aX8M<[_QOsZ<d8[Yz:NIMcKwpjtBk0e");
+                request.setRequestHeader("X-iChangTou-Json-Api-Token", Util.getApiToken());
             },
             success: (data)=>{
                 console.log('从服务器上获取用于支付的openId',data);
@@ -256,7 +256,7 @@ class User {
             },
             beforeSend: (request)=>{
                 request.setRequestHeader("X-iChangTou-Json-Api-User", userId);
-                request.setRequestHeader("X-iChangTou-Json-Api-Token", "DE:_:w2qlJFV@ccOeiq41ENp><ETXh3o@aX8M<[_QOsZ<d8[Yz:NIMcKwpjtBk0e");
+                request.setRequestHeader("X-iChangTou-Json-Api-Token", Util.getApiToken());
             },
             success: (data) => {
                // alert('success data',data);
@@ -292,7 +292,7 @@ class User {
             },
             beforeSend: function(request) {
                 request.setRequestHeader("X-iChangTou-Json-Api-Token",
-                    "DE:_:w2qlJFV@ccOeiq41ENp><ETXh3o@aX8M<[_QOsZ<d8[Yz:NIMcKwpjtBk0e");
+                    Util.getApiToken());
 
                 request.setRequestHeader("X-iChangTou-Json-Api-User", userInfo.userId);
 
@@ -317,7 +317,7 @@ class User {
             },
             beforeSend: (request)=>{
                 request.setRequestHeader("X-iChangTou-Json-Api-User", userId);
-                request.setRequestHeader("X-iChangTou-Json-Api-Token", "DE:_:w2qlJFV@ccOeiq41ENp><ETXh3o@aX8M<[_QOsZ<d8[Yz:NIMcKwpjtBk0e");
+                request.setRequestHeader("X-iChangTou-Json-Api-Token", Util.getApiToken());
             },
             success: (data) => {
                 successCallBack && successCallBack(data);
@@ -355,7 +355,7 @@ class User {
                 Accept:"application/json"
             },
             beforeSend: (request)=>{
-                request.setRequestHeader("X-iChangTou-Json-Api-Token", "DE:_:w2qlJFV@ccOeiq41ENp><ETXh3o@aX8M<[_QOsZ<d8[Yz:NIMcKwpjtBk0e");
+                request.setRequestHeader("X-iChangTou-Json-Api-Token", Util.getApiToken());
             },
             success: (data) => {
                 User.wxdata = data;
@@ -498,7 +498,7 @@ class User {
             beforeSend: function(request) {
                 request.setRequestHeader("X-iChangTou-Json-Api-User", userInfo.userId);
                 request.setRequestHeader("X-iChangTou-Json-Api-Session", userInfo.sessionId);
-                request.setRequestHeader("X-iChangTou-Json-Api-Token", "DE:_:w2qlJFV@ccOeiq41ENp><ETXh3o@aX8M<[_QOsZ<d8[Yz:NIMcKwpjtBk0e");
+                request.setRequestHeader("X-iChangTou-Json-Api-Token", Util.getApiToken());
             }
         })
             .done((data)=>{
@@ -575,7 +575,7 @@ class User {
             },
             beforeSend: function(request) {
                 request.setRequestHeader("X-iChangTou-Json-Api-User", userInfo && userInfo.userId);
-                request.setRequestHeader("X-iChangTou-Json-Api-Token", "DE:_:w2qlJFV@ccOeiq41ENp><ETXh3o@aX8M<[_QOsZ<d8[Yz:NIMcKwpjtBk0e");
+                request.setRequestHeader("X-iChangTou-Json-Api-Token", Util.getApiToken());
             }
         });
     }
@@ -742,7 +742,7 @@ class User {
             },
             beforeSend: function(request) {
                 //request.setRequestHeader("X-iChangTou-Json-Api-User", userId);
-                request.setRequestHeader("X-iChangTou-Json-Api-Token", "DE:_:w2qlJFV@ccOeiq41ENp><ETXh3o@aX8M<[_QOsZ<d8[Yz:NIMcKwpjtBk0e");
+                request.setRequestHeader("X-iChangTou-Json-Api-Token", Util.getApiToken());
             }
         });
     }

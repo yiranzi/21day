@@ -99,7 +99,7 @@ var Inputer = React.createClass({
 
             beforeSend: function(request) {
                 request.setRequestHeader("X-iChangTou-Json-Api-Token",
-                    "DE:_:w2qlJFV@ccOeiq41ENp><ETXh3o@aX8M<[_QOsZ<d8[Yz:NIMcKwpjtBk0e");
+                    Util.getApiToken());
 
                 request.setRequestHeader("X-iChangTou-Json-Api-User", userInfo.userId);
 

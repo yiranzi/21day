@@ -194,7 +194,7 @@ class RankingList {
             },
             beforeSend: function(request) {
                 //request.setRequestHeader("X-iChangTou-Json-Api-User", userInfo.userId);
-                request.setRequestHeader("X-iChangTou-Json-Api-Token", "DE:_:w2qlJFV@ccOeiq41ENp><ETXh3o@aX8M<[_QOsZ<d8[Yz:NIMcKwpjtBk0e");
+                request.setRequestHeader("X-iChangTou-Json-Api-Token", Util.getApiToken());
             },
             /**
              *
