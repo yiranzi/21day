@@ -66,7 +66,7 @@ class Material {
             },
             beforeSend: function(request) {
                 request.setRequestHeader("X-iChangTou-Json-Api-User", userId);
-                request.setRequestHeader("X-iChangTou-Json-Api-Token", "DE:_:w2qlJFV@ccOeiq41ENp><ETXh3o@aX8M<[_QOsZ<d8[Yz:NIMcKwpjtBk0e");
+                request.setRequestHeader("X-iChangTou-Json-Api-Token", Util.getApiToken());
             },
             success: (prizeInfo)=>{
                 PRIZE_INFO = prizeInfo;
@@ -101,7 +101,7 @@ class Material {
             },
             beforeSend: function(request) {
                 request.setRequestHeader("X-iChangTou-Json-Api-User", userId);
-                request.setRequestHeader("X-iChangTou-Json-Api-Token", "DE:_:w2qlJFV@ccOeiq41ENp><ETXh3o@aX8M<[_QOsZ<d8[Yz:NIMcKwpjtBk0e");
+                request.setRequestHeader("X-iChangTou-Json-Api-Token", Util.getApiToken());
             },
             success: (prizeRecord)=>{
                 //奖品兑换记录
@@ -131,7 +131,7 @@ class Material {
             },
             beforeSend: function(request) {
                 request.setRequestHeader("X-iChangTou-Json-Api-User", userInfo.userId);
-                request.setRequestHeader("X-iChangTou-Json-Api-Token", "DE:_:w2qlJFV@ccOeiq41ENp><ETXh3o@aX8M<[_QOsZ<d8[Yz:NIMcKwpjtBk0e");
+                request.setRequestHeader("X-iChangTou-Json-Api-Token", Util.getApiToken());
             }
 
         });
@@ -169,7 +169,7 @@ class Material {
             },
             beforeSend: function(request) {
                 request.setRequestHeader("X-iChangTou-Json-Api-User", userId);
-                request.setRequestHeader("X-iChangTou-Json-Api-Token", "DE:_:w2qlJFV@ccOeiq41ENp><ETXh3o@aX8M<[_QOsZ<d8[Yz:NIMcKwpjtBk0e");
+                request.setRequestHeader("X-iChangTou-Json-Api-Token", Util.getApiToken());
             }
         });
     }
@@ -194,11 +194,38 @@ class Material {
             },
             beforeSend: function(request) {
                 request.setRequestHeader("X-iChangTou-Json-Api-User", seniorId);
-                request.setRequestHeader("X-iChangTou-Json-Api-Token", "DE:_:w2qlJFV@ccOeiq41ENp><ETXh3o@aX8M<[_QOsZ<d8[Yz:NIMcKwpjtBk0e");
+                request.setRequestHeader("X-iChangTou-Json-Api-Token", Util.getApiToken());
             }
 
         });
     }
+
+    /**
+     * 第一次分享成功
+     * @param userId
+     * @returns {*}
+     */
+    static getFirstShare(userId) {
+        //21eval/user/parent-profile
+        let apiUrl = Util.getAPIUrl('get_first_share');
+
+        return $.ajax({
+            url: apiUrl,
+            type: 'get',
+            cache: false,
+            contentType: 'application/json;charset=utf-8',
+            dataType:'json',
+            headers: {
+                Accept:"application/json"
+            },
+            beforeSend: function(request) {
+                request.setRequestHeader("X-iChangTou-Json-Api-User", userId);
+                request.setRequestHeader("X-iChangTou-Json-Api-Token", Util.getApiToken());
+            }
+
+        });
+    }
+
 }
 
 

@@ -17,6 +17,27 @@
   }
 }
 
+
+//邀请好友button
+.share-button{
+  display: inline-block;
+  width: 30%;
+  text-align: center;
+}
+
+.join-button{
+  display: inline-block;
+  width: 70%;
+  text-align: center;
+  background-color: #D73B3C;
+}
+
+.whole-join-button{
+  display: inline-block;
+  width: 100%;
+  text-align: center;
+}
+
 //文案
 .pay-text{
   margin: 0 auto 0;
@@ -134,7 +155,6 @@
   height: 2rem;
   line-height: 2rem;
   color: #fff;
-  text-align: center;
   font-size: px2rem(30);
   background-color: #de4f31;
   color: #fff;
@@ -146,6 +166,7 @@
   width: 100%;
   background-image: url("../image/paid-bg.png");
   background-size: 100% 100%;
+  //background-color: #F9F1EA;
 }
 
 .paid-text-box{
@@ -283,3 +304,21 @@
 }
 
 
+.share-modal{
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  background: #000;
+  opacity: .65;
+
+}
+
+//大树二维码
+.dashu-img{
+  height: 70%;
+  width: 70%;
+  margin: 0 auto;
+  display: block;
+}

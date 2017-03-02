@@ -16,6 +16,8 @@ var Loading = require('../Loading');
 var DialogAlert = require('./DialogAlert');
 var DoneToast = require('./DoneToast');
 var SeniorInfo = require('./SeniorInfo');
+const SharePanel = require('./SharePanel');
+const Modal = require('./Modal');
 
 var REMAIN_NUM = 852;
 
@@ -36,12 +38,23 @@ var PayPage = React.createClass({
 
             //21days2.0
             hasSenior: false, //是否有上线
-            buttonPrice: 9 //
+            buttonPrice: 9, //
+
+            //share
+            showSharePanel: false, //显示分享panel
+            showShareModal: false , //显示分享modal
+
+            //wechat
+            showWechatGroup: false //显示微信联系方式
         };
     },
 
 
     componentWillMount(){
+        //分享成功后，通知后台，给用户加红包
+        OnFire.on('SHARE_SUCCESS',this.onShareSuccess);
+
+
         //已付费
         OnFire.on('PAID_SUCCESS',(payWay)=>{
             if(!this.state.QQNum){
@@ -56,22 +69,18 @@ var PayPage = React.createClass({
 
             this.scrollToTop();
 
-            //设置剩余报名人数
-            //this.setRemainNum(this.state.remain-1);
-
-            //推送消息 放后台做处理
-            //User.sentUserIdAddBonus();
-
-
             //绑定上线信息(userId)
-            let seniorId = Util.getUrlPara('ictchannel');
-            seniorId && this.bindSenior(seniorId);
+            //let seniorId = Util.getUrlPara('ictchannel');
+            //seniorId && this.bindSenior(seniorId);
 
             //统计班主任信息
             let teacherId = Util.getUrlPara('teacherid');
             teacherId && Util.postCnzzData('班主任'+teacherId);
 
             //购买成功后的dialog
+            DoneToast.show('报名成功');
+
+            //todo
             window.dialogAlertComp.show('报名成功','点击“立即加群”进入QQ群。也可以复制页面上的QQ群号，手动进群。请注意页面上的加群【暗号】哟~','知道啦',()=>{},()=>{},false);
         });
 
@@ -98,9 +107,34 @@ var PayPage = React.createClass({
                 //设置订阅
                 this.setSubscribeInfo(userInfo.subscribe);
 
-
                 //设置上线
                 this.setSenior(seniorId,userInfo.userId);
+            });
+        }
+
+        this.forSeniors();
+    },
+
+
+    /**
+     * 分享成功时的操作
+     */
+    onShareSuccess() {
+        let userInfo = User.getUserInfo();
+
+        if(userInfo.userId){
+            Material.getFirstShare(userInfo.userId);
+        }else{
+            console.log('用户没有登录');
+        }
+    },
+
+    forSeniors() {
+
+        if(!Util.getUrlPara('ictchannel')){
+            //上线用户，显示分享panel
+            this.setState({
+                showSharePanel: true
             });
         }
     },
@@ -115,8 +149,6 @@ var PayPage = React.createClass({
                 hasSenior: true,
                 buttonPrice: 6
             });
-
-            console.log('hasSenior:',this.state.hasSenior);
         }
     },
 
@@ -137,14 +169,30 @@ var PayPage = React.createClass({
             Loading.hideLoading();
 
             if(record && record.qqGroup){
-                this.setState({
-                    hasRecord: true,
-                    hasPaid: true, //已报名
-                    QQNum: record.qqGroup, //QQ群号
-                    QQLink: record.qqGroupUrl, //QQ群链接
-                    QQCode: record.secret, //QQ暗号
-                    buttonPrice: 0
-                })
+
+                ////todo 123343135
+                //
+                //if(record.qqGroup ==123343135){
+                //    //大群人到微信号
+                //    this.setState({
+                //        buttonPrice: 0,
+                //        hasRecord: true,
+                //        hasPaid: true, //已报名
+                //        showWechatGroup: true
+                //    });
+                //}
+                //else{
+                    this.setState({
+                        hasRecord: true,
+                        hasPaid: true, //已报名
+                        QQNum: record.qqGroup, //QQ群号
+                        QQLink: record.qqGroupUrl, //QQ群链接
+                        QQCode: record.secret, //QQ暗号
+                        buttonPrice: 0
+                    });
+                //}
+
+
             }else if(payWay=='normalPay'){
                 console.log('normalPay');
                 //设置备选QQ群
@@ -173,6 +221,16 @@ var PayPage = React.createClass({
      * 设置备用QQ群号
      */
     setBackUpQQState() {
+
+        ////todo备用群人到微信号
+        //this.setState({
+        //    buttonPrice: 0,
+        //    hasRecord: true,
+        //    hasPaid: true, //已报名
+        //    showWechatGroup: true
+        //});
+
+
         this.setState({
             buttonPrice: 0,
             hasRecord: true,
@@ -187,7 +245,7 @@ var PayPage = React.createClass({
      * 绑定上下线关系
      * @param seniorId
      */
-    bindSenior(seniorId) {
+   /* bindSenior(seniorId) {
 
         let userInfo = User.getUserInfo();
 
@@ -196,7 +254,7 @@ var PayPage = React.createClass({
         }
 
         User.bindPyramidRelation(userInfo.openId,seniorId);
-    },
+    },*/
 
     /**
      * 设置用户关注信息
@@ -217,7 +275,14 @@ var PayPage = React.createClass({
             case 9:
             case 6: this.payHandler();
                 break;
-            case 0: this.entryQQClickHandler();
+            case 0: {
+                //if(this.state.showWechatGroup){
+                //    dialogAlertComp.show('提示','赶紧扫描加入吧','知道啦',()=>{},'',false);
+                //}else{
+                    this.entryQQClickHandler();
+                //}
+            }
+
                 break;
             default:
                 console.log('出错');
@@ -286,7 +351,32 @@ var PayPage = React.createClass({
         });
     },
 
+    /**
+     * 隐藏分享panel
+     */
+    closeSharePanelHandler() {
+        this.setState({
+            showSharePanel: false
+        });
+    },
 
+    /**
+     * 显示shareModal操作
+     */
+    shareModalHandler() {
+        this.setState({
+            showShareModal: true
+        })
+    },
+
+    /**
+     * 隐藏分享modal
+     */
+    hideShareModalHandler() {
+        this.setState({
+            showShareModal: false
+        })
+    },
 
     render(){
         return (
@@ -303,9 +393,17 @@ var PayPage = React.createClass({
                     <div className="paid-bg" style={{height:window.innerHeight}}>
                         <div className="paid-text-box">
                             <p className="paid-text">恭喜你报名成功！</p>
-                            <p className="paid-text">请加QQ群号：<span className="red-text">{this.state.QQNum}</span></p>
-                            <p className="paid-text  tada infinite animated">群暗号：<span className="red-text">{this.state.QQCode}</span></p>
-                            <p className="paid-text">请于2小时内尽快加群</p>
+                            {/*this.state.showWechatGroup && <div>
+                                <p className="paid-text">扫码加小助手，拉你进群：</p>
+                                <p className="paid-text">微信号：dahuilangshu</p>
+                                <img src="build21Intro/dashu.jpg" className="dashu-img"/>
+                            </div>*/}
+                            {!this.state.showWechatGroup && <div>
+                                <p className="paid-text">请加QQ群号：<span className="red-text">{this.state.QQNum}</span></p>
+                                <p className="paid-text  tada infinite animated">群暗号：<span className="red-text">{this.state.QQCode}</span></p>
+                                <p className="paid-text">请于2小时内尽快加群</p>
+                            </div>}
+
                         </div>
                     </div>
 
@@ -313,12 +411,39 @@ var PayPage = React.createClass({
 
                 <div id="payCon"></div>
 
-                {this.state.buttonPrice == 6 && <div className="bottom-button" onClick={this.clickHandler}>立即参加（<span className="full-price">￥9</span>  ￥6）</div>}
-                {this.state.buttonPrice == 9 && <div className="bottom-button" onClick={this.clickHandler}>立即参加（￥9）</div>}
-                {this.state.buttonPrice == 0 && <div className="bottom-button attend-camp-button" onClick={this.clickHandler}>进入训练营</div>}
+                <div>
+
+                </div>
+
+                {this.state.buttonPrice == 6 &&
+                    <div className="bottom-button" >
+                        <span onClick={this.clickHandler} className={this.state.hasSenior==false ?"join-button":"whole-join-button"}>立即参加（<span className="full-price">￥9</span>  ￥6）</span>
+                        {!this.state.hasSenior && <span className="share-button" onClick={this.shareModalHandler}>邀请好友</span>}
+                    </div>
+                }
+
+                {this.state.buttonPrice == 9 &&
+                    <div className="bottom-button" >
+                        <span onClick={this.clickHandler}  className={this.state.hasSenior==false ?"join-button":"whole-join-button"}>立即参加（￥9）</span>
+                        {!this.state.hasSenior && <span className="share-button" onClick={this.shareModalHandler}>邀请好友</span>}
+                    </div>
+                }
+
+                {this.state.buttonPrice == 0 &&
+                    <div className="bottom-button attend-camp-button">
+                        {!this.state.showWechatGroup && <span onClick={this.clickHandler} className={this.state.hasSenior==false ?"join-button":"whole-join-button"}>进入训练营</span>}
+
+                        {/*this.state.showWechatGroup && <span onClick={this.clickHandler} className={this.state.hasSenior==false ?"join-button":"whole-join-button"}>因人数较多，请耐心等待通过加群</span>*/}
+
+                        {!this.state.hasSenior && <span className="share-button" onClick={this.shareModalHandler}>邀请好友</span>}
+                    </div>
+                }
 
                 {this.state.showShareHint && <div className="share-hint"></div>}
                 {this.state.showShareHint && <div className="share-text"></div>}
+
+                {this.state.showSharePanel && <Modal hideOnTap={false}><SharePanel onClose={this.closeSharePanelHandler}/></Modal>}
+                {this.state.showShareModal && <img src="./assets21Intro/image/shareModal.png" onClick={this.hideShareModalHandler} className="share-modal"/>}
             </div>
         )
     }

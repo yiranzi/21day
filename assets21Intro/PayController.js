@@ -156,10 +156,19 @@ class PayController {
         sum = COURSE_SUM;
 
         let seniorId = Util.getUrlPara('ictchannel'),
+            teacherId = Util.getUrlPara('teacherid'),
             userId = userInfo.userId;
 
         if(seniorId && seniorId!=userId){
             sum = CHEAP_PRICE;
+        }
+
+        if(!seniorId){
+            seniorId = '';
+        }
+
+        if(!teacherId){
+            teacherId = '';
         }
 
         console.log('sum'+sum);
@@ -173,7 +182,7 @@ class PayController {
                             dealType: 1, //交易类型
                             itemId: Util.getCurrentBatch(),
                             mchantType: 5, //商品类型 21days
-                            misc: JSON.parse(Util.getUrlPara('dingyuehao'))||0 +'',
+                            misc: Util.getUrlPara('dingyuehao')||'0'+'@'+seniorId+'@'+teacherId,
                             price: sum
                         }
                     ]
@@ -204,7 +213,7 @@ class PayController {
 
             beforeSend: function(request) {
                 request.setRequestHeader("X-iChangTou-Json-Api-Token",
-                    "DE:_:w2qlJFV@ccOeiq41ENp><ETXh3o@aX8M<[_QOsZ<d8[Yz:NIMcKwpjtBk0e");
+                    Util.getApiToken());
 
                 request.setRequestHeader("X-iChangTou-Json-Api-User", userInfo.userId);
 
@@ -335,7 +344,7 @@ class PayController {
                 Accept:"application/json"
             },
             beforeSend: function(request) {
-                request.setRequestHeader("X-iChangTou-Json-Api-Token", "DE:_:w2qlJFV@ccOeiq41ENp><ETXh3o@aX8M<[_QOsZ<d8[Yz:NIMcKwpjtBk0e");
+                request.setRequestHeader("X-iChangTou-Json-Api-Token", Util.getApiToken());
             }
         });
     }
@@ -368,7 +377,7 @@ class PayController {
             },
             beforeSend: function(request) {
                 request.setRequestHeader("X-iChangTou-Json-Api-User", userInfo.userId);
-                request.setRequestHeader("X-iChangTou-Json-Api-Token", "DE:_:w2qlJFV@ccOeiq41ENp><ETXh3o@aX8M<[_QOsZ<d8[Yz:NIMcKwpjtBk0e");
+                request.setRequestHeader("X-iChangTou-Json-Api-Token", Util.getApiToken());
             },
             success: (data)=> {
                 console.log('绑定上下线关系成功', data);
