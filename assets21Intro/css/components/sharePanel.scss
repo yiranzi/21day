@@ -1,8 +1,9 @@
 .share-panel-view{
-  position: fixed;
-  top: 3rem;
+  position: relative;
+  top: -2rem;
   width: 80%;
-  margin: 0 10%;
+  margin: 0 10% 0 10%;
+  padding: .5rem 0;
   text-align: center;
   background-color: #fff;
   border-radius: 10px;

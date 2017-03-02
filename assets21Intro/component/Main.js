@@ -18,6 +18,10 @@ var Main = React.createClass({
         };
     },
 
+    componentWillMount() {
+
+    },
+
     render() {
         return (
             <div className="main-container">

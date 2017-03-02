@@ -27,8 +27,8 @@ var APPID = Config.environment ? FORMA_APPID : TEST_APPID;
 //测试APPID
 var PAID_APPID =  Config.environment ?FORMAL_PAID_APPID : TEST_PAID_APPID;
 
-const FORMAL_API_DOMAIN = 'http://m.ichangtou.net/';//生产环境 API域名
-const TEST_API_DOMAIN = 'http://app.ichangtou.com.cn/';//测试环境 API域名
+const FORMAL_API_DOMAIN = 'https://m.ichangtou.com/';//生产环境 API域名
+const TEST_API_DOMAIN = 'http://devh5.ichangtou.com.cn/';//测试环境 API域名
 
 const API_URL_DOMAIN = Config.environment ? FORMAL_API_DOMAIN : TEST_API_DOMAIN; //开发环境or生产环境
 
@@ -44,7 +44,7 @@ const MINIC_ID = '21';  //迷你课买房与资产配置课程ID
 const MINIC_NAME = '21天训练营报名'; //迷你课课程名称  英国脱欧
 const CHARGE_INDEX = 0; //收费部分下标（0~N）
 
-const CURRENT_BATCH = 22; //当前期数
+const CURRENT_BATCH = 23; //当前期数 TODO
 
 const SHARE_TITLE = '邀请你一起参加21天小白理财训练营';
 

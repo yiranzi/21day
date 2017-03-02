@@ -58,7 +58,7 @@ var SeniorInfo = React.createClass({
                 </div>
             </div>}
 
-            <p className="slogan">理财，就是理生活</p>
+            <p className="slogan">“我参加了这个训练营，非常棒，你也来试试”</p>
         </div>)
     }
 });
