@@ -199,6 +199,33 @@ class Material {
 
         });
     }
+
+    /**
+     * 第一次分享成功
+     * @param userId
+     * @returns {*}
+     */
+    static getFirstShare(userId) {
+        //21eval/user/parent-profile
+        let apiUrl = Util.getAPIUrl('get_first_share');
+
+        return $.ajax({
+            url: apiUrl,
+            type: 'get',
+            cache: false,
+            contentType: 'application/json;charset=utf-8',
+            dataType:'json',
+            headers: {
+                Accept:"application/json"
+            },
+            beforeSend: function(request) {
+                request.setRequestHeader("X-iChangTou-Json-Api-User", userId);
+                request.setRequestHeader("X-iChangTou-Json-Api-Token", Util.getApiToken());
+            }
+
+        });
+    }
+
 }
 
 

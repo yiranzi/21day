@@ -51,6 +51,10 @@ var PayPage = React.createClass({
 
 
     componentWillMount(){
+        //分享成功后，通知后台，给用户加红包
+        OnFire.on('SHARE_SUCCESS',this.onShareSuccess);
+
+
         //已付费
         OnFire.on('PAID_SUCCESS',(payWay)=>{
             if(!this.state.QQNum){
@@ -109,6 +113,20 @@ var PayPage = React.createClass({
         }
 
         this.forSeniors();
+    },
+
+
+    /**
+     * 分享成功时的操作
+     */
+    onShareSuccess() {
+        let userInfo = User.getUserInfo();
+
+        if(userInfo.userId){
+            Material.getFirstShare(userInfo.userId);
+        }else{
+            console.log('用户没有登录');
+        }
     },
 
     forSeniors() {

@@ -12,6 +12,7 @@ var ReactDom = require('react-dom');
 var Config = require('./Config');
 var Modal = require('./component/Modal');
 var GHGuider = require('./component/GHGuider');
+const OnFire = require('onfire.js');
 
 
 const TEST_APPID = 'wxdd25f06df84b18ea';// //测试环境登录APPID
@@ -85,7 +86,8 @@ const API_URL_GROUP = {
     //获取上线信息
     'get_senior_info': '21eval/user/parent-profile',
     //获取支付的openID
-    'get_pay_openid': 'wx/h5/base/pay/openId'
+    'get_pay_openid': 'wx/h5/base/pay/openId',
+    'get_first_share': '21enter/first-share'
 };
 
 class Util {
@@ -196,6 +198,8 @@ class Util {
 
         channel = channel || '';
         Util.postCnzzData('分享成功');
+
+        OnFire.fire('SHARE_SUCCESS');
     }
 
     /**
