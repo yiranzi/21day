@@ -42,7 +42,7 @@ const API_Token = Config.environment ? FORMAL_API_Token : TEST_API_Token; //开�
 
 
 const MINIC_ID = '21';  //迷你课买房与资产配置课程ID
-const MINIC_NAME = '21天训练营报名'; //迷你课课程名称  英国脱欧
+const MINIC_NAME = '21天训练营报名'+location.pathname.split('Intro')[2]; //迷你课课程名称  英国脱欧
 const CHARGE_INDEX = 0; //收费部分下标（0~N）
 
 const CURRENT_BATCH = 23; //当前期数 TODO
