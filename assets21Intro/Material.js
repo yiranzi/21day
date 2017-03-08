@@ -4,6 +4,8 @@
 var $ = require('jquery');
 var User = require('./User');
 var Toast = require('./component/DoneToast');
+var React = require('react');
+const DialogAlert = require('./component/DialogAlert');
 
 
 //奖品信息
@@ -224,6 +226,28 @@ class Material {
             }
 
         });
+    }
+
+    /**
+     * 第一次分享成功后，提示红包
+     * 判断是否关注公号
+     */
+    static alertRedPacketLocation(){
+
+        let userInfo =  require('./User').getUserInfo();
+
+        if( Util.isWeixin() && !userInfo.subscribe ){
+            //如果在微信端，没有关注公号的话，则弹框提醒关注公号
+            window.dialogAlertComp.show('提示',<div><p>小主，多谢您分享，长按二维码关注公号，红包这就送到！</p>
+                <img src="./assets21Intro/image/tousha-qrcode.jpg"  className="tousha-qrcode"/></div>,'知道啦',
+                ()=>{window.dialogAlertComp.hide();
+            },'',false);
+        }else{
+            window.dialogAlertComp.show('提示','红包已经在路上，如果好友成功报名，还可获得更多红包哟!','知道啦',()=>{
+                window.dialogAlertComp.hide();
+            },()=>{},false);
+
+        }
     }
 
 }

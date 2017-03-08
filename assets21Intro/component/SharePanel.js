@@ -34,6 +34,8 @@ const SharePanel = React.createClass({
         return (<div className="share-panel-view">
             <p className="share-title">邀请好友参加训练营</p>
             <img src="./assets21Intro/image/sharePacket.png" className="share-img"/>
+            <p className="share-desc">首次分享报名链接给好友/到朋友圈，</p>
+            <p className="share-desc">立即获得一个现金红包!</p>
             <p className="share-desc">好友可获得3元报名优惠</p>
             <p className="share-desc">你也能得到一个</p>
             <p className="share-desc">随机现金红包（2-25元）</p>

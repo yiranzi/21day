@@ -54,7 +54,6 @@ var PayPage = React.createClass({
         //分享成功后，通知后台，给用户加红包
         OnFire.on('SHARE_SUCCESS',this.onShareSuccess);
 
-
         //已付费
         OnFire.on('PAID_SUCCESS',(payWay)=>{
             if(!this.state.QQNum){
@@ -123,7 +122,10 @@ var PayPage = React.createClass({
         let userInfo = User.getUserInfo();
 
         if(userInfo.userId){
+            //得红包
             Material.getFirstShare(userInfo.userId);
+            //提示红包在哪里
+            Material.alertRedPacketLocation();
         }else{
             console.log('用户没有登录');
         }
@@ -387,7 +389,7 @@ var PayPage = React.createClass({
                     <span className="red-text">239360505</span>
                     <p className="red-text  tada animated infinite">暗号：理财</p></a>}
 
-                {!this.state.hasPaid && <img src="./assets21Intro/image/intro.jpg" className="intro-img"/>}
+                {!this.state.hasPaid && <img src="./assets21Intro/image/21Intro.jpg" className="intro-img"/>}
 
                 {this.state.hasPaid && <div>
                     <div className="paid-bg" style={{height:window.innerHeight}}>
