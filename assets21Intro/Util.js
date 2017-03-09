@@ -222,9 +222,18 @@ class Util {
         try {
             if( _czc && _czc.push ){
                 if(eventParam){
-                    _czc.push(["_trackEvent",Util.getMinicName(), eventName, Group.getABGroup()]);
+                    if(Util.getUrlPara('dingyuehao')){
+                        _czc.push(["_trackEvent",Util.getMinicName(), eventName, Util.getUrlPara('dingyuehao')]);
+                    }else{
+                        _czc.push(["_trackEvent",Util.getMinicName(), eventName]);
+                    }
+
                 }else{
-                    _czc.push(["_trackEvent",Util.getMinicName(), eventName, eventParam, Group.getABGroup()]);
+                    if(Util.getUrlPara('dingyuehao')){
+                        _czc.push(["_trackEvent",Util.getMinicName(), eventName,eventParam, Util.getUrlPara('dingyuehao')]);
+                    }else{
+                        _czc.push(["_trackEvent",Util.getMinicName(), eventName ,eventParam]);
+                    }
                 }
 
             }
