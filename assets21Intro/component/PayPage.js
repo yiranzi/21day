@@ -123,9 +123,14 @@ var PayPage = React.createClass({
 
         if(userInfo.userId){
             //得红包
-            Material.getFirstShare(userInfo.userId);
-            //提示红包在哪里
-            Material.alertRedPacketLocation();
+            Material.getFirstShare(userInfo.userId).always((result)=>{
+                console.log('result',result);
+                if(result == true){
+                    //提示红包在哪里
+                    Material.alertRedPacketLocation();
+                }
+            });
+
         }else{
             console.log('用户没有登录');
         }

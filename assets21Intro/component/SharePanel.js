@@ -30,6 +30,10 @@ const SharePanel = React.createClass({
     },
 
 
+    /**
+     *
+     * @returns {XML}
+     */
     render(){
         return (<div className="share-panel-view">
             <p className="share-title">邀请好友参加训练营</p>
@@ -38,7 +42,7 @@ const SharePanel = React.createClass({
             <p className="share-desc">立即获得一个现金红包!</p>
             <p className="share-desc">好友可获得3元报名优惠</p>
             <p className="share-desc">你也能得到一个</p>
-            <p className="share-desc">随机现金红包（2-25元）</p>
+            <p className="share-desc">随机现金红包</p>
             <p className="share-desc">100%中奖噢</p>
             <p className="share-title">爱TA就带TA理财</p>
 
