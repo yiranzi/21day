@@ -119,7 +119,6 @@ class Util {
      */
     static getUrlPara( key ) {
         var res = window.location.href.split( key + '=' );
-
         if( res[1] ) {
             res = decodeURIComponent(res[1].split('&')[0]);
         }else {
@@ -500,6 +499,13 @@ class Util {
         let dingyuehao;
         if( dingyuehao = JSON.parse(Util.getUrlPara('dingyuehao'))||0 ){
             redirectUri = redirectUri + prefix + 'dingyuehao=' + dingyuehao;
+            prefix = '&';
+        }
+
+        console.log('promoteFlag = ' + Util.getUrlPara('promoteFlag'));
+        let promoteFlag;
+        if( promoteFlag = Util.getUrlPara('promoteFlag')){
+            redirectUri = redirectUri + prefix + 'promoteFlag=' + promoteFlag;
             prefix = '&';
         }
 
