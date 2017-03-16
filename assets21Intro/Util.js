@@ -222,16 +222,16 @@ class Util {
             if( _czc && _czc.push ){
                 if(eventParam){
                     if(Util.getUrlPara('dingyuehao')){
-                        _czc.push(["_trackEvent",Util.getMinicName(), eventName, Util.getUrlPara('dingyuehao')]);
+                        _czc.push(["_trackEvent",Util.getMinicName(), eventName,eventParam, Util.getUrlPara('dingyuehao')]);
                     }else{
-                        _czc.push(["_trackEvent",Util.getMinicName(), eventName]);
+                        _czc.push(["_trackEvent",Util.getMinicName(), eventName,eventParam]);
                     }
 
                 }else{
                     if(Util.getUrlPara('dingyuehao')){
-                        _czc.push(["_trackEvent",Util.getMinicName(), eventName,eventParam, Util.getUrlPara('dingyuehao')]);
+                        _czc.push(["_trackEvent",Util.getMinicName(), eventName, Util.getUrlPara('dingyuehao')]);
                     }else{
-                        _czc.push(["_trackEvent",Util.getMinicName(), eventName ,eventParam]);
+                        _czc.push(["_trackEvent",Util.getMinicName(), eventName ]);
                     }
                 }
 
