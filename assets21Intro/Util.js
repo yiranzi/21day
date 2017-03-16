@@ -299,6 +299,11 @@ class Util {
             redirectUri = redirectUri + '&teacherid=' + JSON.parse(Util.getUrlPara('teacherid'));
         }
 
+        //promoteFlag
+        if(Util.getUrlPara('promoteFlag')){
+            redirectUri = redirectUri + '&promoteFlag=' + Util.getUrlPara('promoteFlag');
+        }
+
 
         redirectUri = encodeURIComponent(redirectUri);
 

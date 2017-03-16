@@ -30,7 +30,7 @@ $(document).ready(() => {
     console.log('=======');
     // 运营推广标志位，根据url参数promoteFlag的值做区分
     if (Util.getUrlPara('promoteFlag')) {
-        Util.postCnzzData('promoteFlag', Util.getUrlPara('promoteFlag'));
+        Util.postCnzzData('进入页面', Util.getUrlPara('promoteFlag'));
     }
     console.log('=======22222');
 
