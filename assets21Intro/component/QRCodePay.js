@@ -82,9 +82,9 @@ class QRCodePay {
      * @returns {boolean|*}
      */
     static isNeedQRCodePay() {
-        //微信端，IOS 以及订阅号时才有扫码支付
-        console.log('isNeedQRCodePay',Util.isWeixin() , Util.isIphone() , Util.getUrlPara('dingyuehao'))
-        return Util.isWeixin() && Util.isIphone() && Util.getUrlPara('dingyuehao');
+        //微信端以及订阅号时才有扫码支付
+        console.log('isNeedQRCodePay',Util.isWeixin() , Util.getUrlPara('dingyuehao'))
+        return Util.isWeixin() && Util.getUrlPara('dingyuehao');
     }
 }
 window.QRCodePay = QRCodePay;
