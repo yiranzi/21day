@@ -4,6 +4,7 @@
 var $ = require('jquery');
 var User = require('./User');
 var Toast = require('./component/DoneToast');
+var PayPage = require('./component/PayPage');
 var React = require('react');
 const DialogAlert = require('./component/DialogAlert');
 
@@ -202,6 +203,34 @@ class Material {
         });
     }
 
+    /***
+     * 记录下线打开上线的分享链接
+     * @param parentId
+     * @returns {*}
+     */
+    static postRecordSenior(parentId) {
+        const Util = require('./Util');
+        const User = require('./User');
+
+        let userInfo = User.getUserInfo();
+        let apiUrl = Util.getAPIUrl('post_record_info').replace("{parentId}",parentId);
+        console.log('lllllllllapiUrl',apiUrl);
+
+        return $.ajax({
+            url: apiUrl,
+            type: 'post',
+            cache: false,
+            contentType: 'application/json;charset=utf-8',
+            headers: {
+                Accept:"application/json"
+            },
+            beforeSend: function(request) {
+                request.setRequestHeader("X-iChangTou-Json-Api-User", userInfo.userId);
+                request.setRequestHeader("X-iChangTou-Json-Api-Token", Util.getApiToken());
+            }
+        });
+    }
+
     /**
      * 第一次分享成功
      * @param userId
@@ -232,7 +261,7 @@ class Material {
      * 第一次分享成功后，提示红包
      * 判断是否关注公号
      */
-    static alertRedPacketLocation(){
+    static alertRedPacketLocation(callback){
 
         let userInfo =  require('./User').getUserInfo();
 
@@ -243,9 +272,11 @@ class Material {
                 ()=>{window.dialogAlertComp.hide();
             },'',false);
         }else{
-            window.dialogAlertComp.show('提示','红包已经在路上，如果好友成功报名，还可获得更多红包哟!','知道啦',()=>{
-                window.dialogAlertComp.hide();
-            },()=>{},false);
+            // window.dialogAlertComp.show('提示','红包已经在路上，如果好友成功报名，还可获得更多红包哟!','知道啦',()=>{
+            //     window.dialogAlertComp.hide();
+            // },()=>{},false);
+
+            callback();
 
         }
     }
