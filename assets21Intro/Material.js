@@ -205,16 +205,14 @@ class Material {
 
     /***
      * 记录下线打开上线的分享链接
-     * @param parentId
+     * @param seniorId
+     * @param userId
      * @returns {*}
      */
-    static postRecordSenior(parentId) {
+    static postRecordSenior(seniorId,userId) {
         const Util = require('./Util');
-        const User = require('./User');
 
-        let userInfo = User.getUserInfo();
-        let apiUrl = Util.getAPIUrl('post_record_info').replace("{parentId}",parentId);
-        console.log('lllllllllapiUrl',apiUrl);
+        let apiUrl = Util.getAPIUrl('post_record_info').replace("{parentId}",seniorId);
 
         return $.ajax({
             url: apiUrl,
@@ -225,7 +223,7 @@ class Material {
                 Accept:"application/json"
             },
             beforeSend: function(request) {
-                request.setRequestHeader("X-iChangTou-Json-Api-User", userInfo.userId);
+                request.setRequestHeader("X-iChangTou-Json-Api-User", userId);
                 request.setRequestHeader("X-iChangTou-Json-Api-Token", Util.getApiToken());
             }
         });

@@ -53,6 +53,7 @@ var PayPage = React.createClass({
 
 
     componentWillMount(){
+
         //分享成功后，通知后台，给用户加红包
         OnFire.on('SHARE_SUCCESS',this.onShareSuccess);
 
@@ -87,6 +88,9 @@ var PayPage = React.createClass({
 
         let seniorId = Util.getUrlPara('ictchannel'),
             openId = User.getUserInfo().openId;
+
+
+        // this.sendSeniorInfo();
 
         if(openId){
             //获取用户是否有报名记录
@@ -146,7 +150,16 @@ var PayPage = React.createClass({
 
 
 
-
+    sendSeniorInfo() {
+        const User = require('../User');
+        let seniorId = Util.getUrlPara('ictchannel');
+        let userInfo = User.getUserInfo(),
+            userId = userInfo.userId;
+        console.log('userInfo',userInfo);
+        console.log('sid',seniorId);
+        console.log("userid",userId);
+        Material.postRecordSenior(seniorId,userId);
+    },
 
 
 
@@ -167,8 +180,9 @@ var PayPage = React.createClass({
     setSenior(seniorId,userId) {
         //seniorId则表示该用户拥有上线
         if(seniorId && seniorId!=userId){
+            console.log('userid',userId);
+            this.sendSeniorInfo();
 
-            Material.postRecordSenior();
             this.setState({
                 hasSenior: true,
                 buttonPrice: 6

@@ -45,7 +45,6 @@ const SharePanel = React.createClass({
             <p className="share-desc">随机现金红包</p>
             <p className="share-desc">100%中奖噢</p>
             <p className="share-title">爱TA就带TA理财</p>
-
             <div className="share-confirm-button" onClick={this.clickHandler}>知道了</div>
         </div>)
     }
