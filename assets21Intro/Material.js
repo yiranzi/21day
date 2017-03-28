@@ -268,6 +268,7 @@ class Material {
             window.dialogAlertComp.show('提示',<div><p>小主，多谢您分享，长按二维码关注公号，红包这就送到！</p>
                 <img src="./assets21Intro/image/tousha-qrcode.jpg"  className="tousha-qrcode"/></div>,'知道啦',
                 ()=>{window.dialogAlertComp.hide();
+                    callback();
             },'',false);
         }else{
             // window.dialogAlertComp.show('提示','红包已经在路上，如果好友成功报名，还可获得更多红包哟!','知道啦',()=>{
