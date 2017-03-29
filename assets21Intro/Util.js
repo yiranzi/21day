@@ -41,6 +41,7 @@ const API_Token = Config.environment ? FORMAL_API_Token : TEST_API_Token; //开�
 
 const MINIC_ID = '21';  //迷你课买房与资产配置课程ID
 const MINIC_NAME = '21天训练营报名'; //迷你课课程名称  英国脱欧
+const VERSION = '1.0.2'; // 项目版本
 const CHARGE_INDEX = 0; //收费部分下标（0~N）
 
 const CURRENT_BATCH = 23; //当前期数 TODO
@@ -222,16 +223,20 @@ class Util {
             if( _czc && _czc.push ){
                 if(eventParam){
                     if(Util.getUrlPara('dingyuehao')){
-                        _czc.push(["_trackEvent",Util.getMinicName(), eventName,eventParam, Util.getUrlPara('dingyuehao')]);
-                    }else{
-                        _czc.push(["_trackEvent",Util.getMinicName(), eventName,eventParam]);
+                        _czc.push(["_trackEvent",Util.getProjectFlag(), eventName,eventParam, Util.getUrlPara('dingyuehao')]);
+                    } else if (Util.getUrlPara('promoteFlag')) {
+                        _czc.push(["_trackEvent",Util.getProjectFlag(), eventName,eventParam, Util.getUrlPara('promoteFlag')]);
+                    } else{
+                        _czc.push(["_trackEvent",Util.getProjectFlag(), eventName,eventParam]);
                     }
 
                 }else{
                     if(Util.getUrlPara('dingyuehao')){
-                        _czc.push(["_trackEvent",Util.getMinicName(), eventName, Util.getUrlPara('dingyuehao')]);
-                    }else{
-                        _czc.push(["_trackEvent",Util.getMinicName(), eventName ]);
+                        _czc.push(["_trackEvent",Util.getProjectFlag(), eventName, Util.getUrlPara('dingyuehao')]);
+                    } else if (Util.getUrlPara('promoteFlag')) {
+                        _czc.push(["_trackEvent",Util.getProjectFlag(), eventName, Util.getUrlPara('promoteFlag')]);
+                    } else{
+                        _czc.push(["_trackEvent",Util.getProjectFlag(), eventName ]);
                     }
                 }
 
@@ -387,6 +392,15 @@ class Util {
     static getMinicName() {
         return MINIC_NAME;
     }
+
+    /**
+     * 获取迷你课名字
+     * @returns {string}
+     */
+    static getProjectFlag() {
+        return MINIC_NAME + '_' + VERSION;
+    }
+
 
     /**
      * 获取分享标题
