@@ -1,5 +1,3 @@
-
-
 /**
  * 工具类
  * Created by Robot on 2016/7/26
@@ -85,6 +83,8 @@ const API_URL_GROUP = {
     'has_registered': '21enter/is-entered',
     //获取上线信息
     'get_senior_info': '21eval/user/parent-profile',
+    //记录下线打开上线的分享链接
+    'post_record_info': '21enter/parent-share/{parentId}',
     //获取支付的openID
     'get_pay_openid': 'wx/h5/base/pay/openId',
     'get_first_share': '21enter/first-share'

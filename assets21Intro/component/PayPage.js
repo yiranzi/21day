@@ -18,6 +18,7 @@ var DoneToast = require('./DoneToast');
 var SeniorInfo = require('./SeniorInfo');
 const SharePanel = require('./SharePanel');
 const Modal = require('./Modal');
+const FirstSharePanel = require('./FirstSharePanel');
 
 var REMAIN_NUM = 852;
 
@@ -45,12 +46,14 @@ var PayPage = React.createClass({
             showShareModal: false , //显示分享modal
 
             //wechat
-            showWechatGroup: false //显示微信联系方式
+            showWechatGroup: false, //显示微信联系方式
+            firstSharePanel:false //首次分享提示
         };
     },
 
 
     componentWillMount(){
+
         //分享成功后，通知后台，给用户加红包
         OnFire.on('SHARE_SUCCESS',this.onShareSuccess);
 
@@ -85,6 +88,9 @@ var PayPage = React.createClass({
 
         let seniorId = Util.getUrlPara('ictchannel'),
             openId = User.getUserInfo().openId;
+
+
+        // this.sendSeniorInfo();
 
         if(openId){
             //获取用户是否有报名记录
@@ -127,7 +133,7 @@ var PayPage = React.createClass({
                 console.log('result',result);
                 if(result == true){
                     //提示红包在哪里
-                    Material.alertRedPacketLocation();
+                    Material.alertRedPacketLocation(this.firstSharePanels);
                 }
             });
 
@@ -135,6 +141,28 @@ var PayPage = React.createClass({
             console.log('用户没有登录');
         }
     },
+
+    firstSharePanels(){
+        this.setState({
+            firstSharePanel :true
+        })
+    },
+
+
+
+    sendSeniorInfo() {
+        const User = require('../User');
+        let seniorId = Util.getUrlPara('ictchannel');
+        let userInfo = User.getUserInfo(),
+            userId = userInfo.userId;
+        console.log('userInfo',userInfo);
+        console.log('sid',seniorId);
+        console.log("userid",userId);
+        Material.postRecordSenior(seniorId,userId);
+    },
+
+
+
 
     forSeniors() {
 
@@ -152,15 +180,15 @@ var PayPage = React.createClass({
     setSenior(seniorId,userId) {
         //seniorId则表示该用户拥有上线
         if(seniorId && seniorId!=userId){
+            console.log('userid',userId);
+            this.sendSeniorInfo();
+
             this.setState({
                 hasSenior: true,
                 buttonPrice: 6
             });
         }
     },
-
-
-
 
     /**
      * 发送是否报名请求
@@ -371,6 +399,8 @@ var PayPage = React.createClass({
      * 显示shareModal操作
      */
     shareModalHandler() {
+        var speed=10;//滑动的速度
+        $('body,html').animate({ scrollTop: 0 }, speed);
         this.setState({
             showShareModal: true
         })
@@ -388,14 +418,15 @@ var PayPage = React.createClass({
     render(){
         return (
             <div className="pay_page">
+                {/*。。。。。从上线发的链接打开时展示*/}
                 {this.state.hasSenior && <SeniorInfo/>}
-
+                {/*点击报名但没有查到用户信息时提示加群*/}
                 {this.state.showBackup && <a className="backup-text" href="http://jq.qq.com/?_wv=1027&k=41976jN">QQ群号：
                     <span className="red-text">239360505</span>
                     <p className="red-text  tada animated infinite">暗号：理财</p></a>}
-
+                {/*首次进入时展示的长图*/}
                 {!this.state.hasPaid && <img src="./assets21Intro/image/21Intro.jpg" className="intro-img"/>}
-
+                {/*如果已经报名，打开别人的分享链接时展示*/}
                 {this.state.hasPaid && <div>
                     <div className="paid-bg" style={{height:window.innerHeight}}>
                         <div className="paid-text-box">
@@ -421,7 +452,7 @@ var PayPage = React.createClass({
                 <div>
 
                 </div>
-
+                {/**分享链接进入**/}
                 {this.state.buttonPrice == 6 &&
                     <div className="bottom-button" >
                         <span onClick={this.clickHandler} className={this.state.hasSenior==false ?"join-button":"whole-join-button"}>立即参加（<span className="full-price">￥9</span>  ￥6）</span>
@@ -449,7 +480,11 @@ var PayPage = React.createClass({
                 {this.state.showShareHint && <div className="share-hint"></div>}
                 {this.state.showShareHint && <div className="share-text"></div>}
 
+                {/*进入页面时弹出的分享提示panel*/}
                 {this.state.showSharePanel && <Modal hideOnTap={false}><SharePanel onClose={this.closeSharePanelHandler}/></Modal>}
+                {/*{this.state.firstSharePanel && <Modal hideOnTap={false}><SharePanel onClose={this.firstSharePanels}/></Modal>}*/}
+                {this.state.firstSharePanel && <Modal><FirstSharePanel /></Modal>}
+                {/*点击分享时的提示模态引导框*/}
                 {this.state.showShareModal && <img src="./assets21Intro/image/shareModal.png" onClick={this.hideShareModalHandler} className="share-modal"/>}
             </div>
         )
