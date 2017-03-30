@@ -28,6 +28,7 @@ const FirstSharePanel = React.createClass({
 
     clickSkip() {
         // window.location.href = "http://h5test.ichangtou.com.cn/redPacket/index.html";
+        Util.postCnzzData('跳转到拆红包页面');
     },
 
 
@@ -45,7 +46,7 @@ const FirstSharePanel = React.createClass({
                     <div className="share-center">
                         <p>感谢你的分享</p>
                         <p>赠送你一个鼓励红包</p>
-                        <a href="http://h5test.ichangtou.com.cn/redPacket/index.html"><div className="share-next">
+                        <a href="https://h5.ichangtou.com/redPacket/index.html"><div className="share-next" onClick={this.clickSkip()}>
                             马上去拆
                         </div></a>
 
