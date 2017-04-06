@@ -194,6 +194,14 @@ class Util {
      * @param channel
      */
     static onShareSuccess(channel) {
+        let User = require('./User');
+        let userInfo = User.getUserInfo();
+        // TODO 检测用户nickName是否为空并上报
+        console.log('userInfo.nickName = '+ userInfo.nickName);
+        if(!userInfo.nickName) {
+            Util.postCnzzData('分享时用户名为空', 'nickName=' + userInfo.nickName + ';' + 'userId=' + userInfo.userId);
+        }
+
         Util.shareCommonHandler();
 
         channel = channel || '';
@@ -408,6 +416,7 @@ class Util {
      */
     static getShareTitle() {
         let nickName = User.getUserInfo().nickName;
+        console.log('获取分享标题时nickName:' + nickName);
         if( Config.gift ) {
             return nickName + '送了一个迷你课给你';
         }else{

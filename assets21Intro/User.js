@@ -145,6 +145,12 @@ class User {
 
         userInfo.unionId = data.unionId;
 
+        // TODO 检测用户nickName是否为空并上报
+        console.log('userInfo.nickName = '+ userInfo.nickName);
+        if(!userInfo.nickName) {
+            Util.postCnzzData('获取用户名为空', 'nickName=' + userInfo.nickName + ';' + 'userId=' + userInfo.userId);
+        }
+
         //配置分享内容
         User.shareConfig();
 
