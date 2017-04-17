@@ -80,15 +80,20 @@ const API_URL_GROUP = {
 
     //绑定上下线关系
     'bind_pyramid_relation': '21eval/user/add-child',
-    //用户是否已报名
-    'has_registered': '21enter/is-entered',
+
     //获取上线信息
     'get_senior_info': '21eval/user/parent-profile',
     //记录下线打开上线的分享链接
     'post_record_info': '21enter/parent-share/{parentId}',
     //获取支付的openID
     'get_pay_openid': 'wx/h5/base/pay/openId',
-    'get_first_share': '21enter/first-share'
+    'get_first_share': '21enter/first-share',
+
+    //7day
+    'get_registered': '7eval/signUpNumber/{albumId}',//获取报名人数
+    //用户是否已报名
+    'has_registered': '7eval/judgeusersignup/{albumId}',
+
 };
 
 class Util {
@@ -576,6 +581,28 @@ class Util {
     static unlockScroll() {
         $('html').removeClass('disable-scroll');
     }
+
+
+    /**
+     * 倒计时
+     * @returns {string}
+     */
+    static FormatTime(year,month,day,hour,minute,second){
+        let leftTime = (new Date(year,month-1,day,hour,minute,second)) - (new Date()); //计算剩余的毫秒数
+
+        let days = parseInt(leftTime / 1000 / 60 / 60 / 24 , 10); //计算剩余的天数
+        let hours = parseInt(leftTime / 1000 / 60 / 60 % 24 , 10); //计算剩余的小时
+        let minutes = parseInt(leftTime / 1000 / 60 % 60, 10);//计算剩余的分钟
+        let seconds = parseInt(leftTime / 1000 % 60, 10);//计算剩余的秒数
+
+        // days = this.checkTime(days);
+        // hours = this.checkTime(hours);
+        // minutes = this.checkTime(minutes);
+        // seconds = this.checkTime(seconds);
+
+        return  [days,hours,minutes,seconds]
+    }
+
 
 }
 window.Util = Util;

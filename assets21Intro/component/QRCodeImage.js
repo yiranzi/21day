@@ -70,7 +70,7 @@ var QRCodeImage = React.createClass({
                 //2s后显示确认对话框
                 setTimeout(()=>{
                     Dialog.showDialog(
-                        '21天报名',
+                        '7天报名',
                         '支付是否已完成？',
                         '是',
                         '否',
@@ -86,7 +86,7 @@ var QRCodeImage = React.createClass({
                 setTimeout(()=>{
                     if(CHECK_NUM == -1){
                         Dialog.showDialog(
-                            '21天报名',
+                            '7天报名',
                             '支付是否已完成？',
                             '是',
                             '否',

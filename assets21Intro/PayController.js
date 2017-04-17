@@ -21,9 +21,9 @@ var DoneToast = require('./component/DoneToast');
 var OnFire =require('onfire.js');
 
 const GET_ORDER_API = Util.getAPIUrl('get_order');//获取统一下单API
-const COURSE_PRICE = 9;//课程价格，和长投数据库对应的数据，价格(元)
-const COURSE_SUM = 9;//传给微信后台的价格，价格(元)，由后台统一转换单位
-const CHEAP_PRICE = 6;//有上线的用户，享有的优惠价格
+const COURSE_PRICE = 10;//课程价格，和长投数据库对应的数据，价格(元)
+const COURSE_SUM = 10;//传给微信后台的价格，价格(元)，由后台统一转换单位
+const CHEAP_PRICE = 10;//有上线的用户，享有的优惠价格
 /**
  * 模块变量
  */
@@ -96,10 +96,12 @@ class PayController {
         //获取通用订单
         if( QRCodePay.isNeedQRCodePay() ) {
             //订阅号微信的IOS用户要使用扫码支付
+            console.log('获取通用订单');
             PayController.getOrder(null, 0, true);
 
             //PayController.removePayButtonHanlder();
         }else {
+            console.log('lalalalal');
             PayController.getOrder();
         }
 
@@ -154,7 +156,7 @@ class PayController {
 
         userInfo = userInfo || window.User.getUserInfo();
         sum = COURSE_SUM;
-
+        console.log('sumhhhhhh',sum);
         let seniorId = Util.getUrlPara('ictchannel'),
             teacherId = Util.getUrlPara('teacherid'),
             userId = userInfo.userId;
@@ -171,18 +173,23 @@ class PayController {
             teacherId = '';
         }
 
-        console.log('sum'+sum);
+        console.log('sum113231'+sum);
 
         let jsonData = JSON.stringify(
             {
-                "body":'21天训练营报名' ,
+                "body":'7天训练营报名' ,
                 "deal": {
                     "items": [
                         {
-                            dealType: 1, //交易类型
-                            itemId: Util.getCurrentBatch(),
-                            mchantType: 5, //商品类型 21days
-                            misc: Util.getUrlPara('dingyuehao')||'0'+'@'+seniorId+'@'+teacherId,
+                            // dealType: 1, //交易类型
+                            // itemId: Util.getCurrentBatch(),
+                            // mchantType: 5, //商品类型 21days
+                            // misc: Util.getUrlPara('dingyuehao')||'0'+'@'+seniorId+'@'+teacherId,
+                            // price: sum,
+                            dealType: 100, //交易类型
+                            itemId: 2017,
+                            mchantType: 11, //商品类型 21days
+                            misc: '',
                             price: sum
                         }
                     ]
@@ -330,7 +337,7 @@ class PayController {
             "modelType": "keyword_model",
             "redirect_url": murl,
             "first":"恭喜你报名成功",
-            "keyword1":"21天小白理财训练营",
+            "keyword1":"7天小白理财训练营",
             "keyword2":currentDate,
             "remark":"点击立即进入。"
         });

@@ -17,6 +17,7 @@ var DialogAlert = require('./DialogAlert');
 var DoneToast = require('./DoneToast');
 var SeniorInfo = require('./SeniorInfo');
 const SharePanel = require('./SharePanel');
+const Timeout = require('./Timeout');
 const Modal = require('./Modal');
 const FirstSharePanel = require('./FirstSharePanel');
 
@@ -39,7 +40,7 @@ var PayPage = React.createClass({
 
             //21days2.0
             hasSenior: false, //是否有上线
-            buttonPrice: 9, //
+            buttonPrice: 3.8, //
 
             //share
             showSharePanel: false, //显示分享panel
@@ -53,15 +54,16 @@ var PayPage = React.createClass({
 
 
     componentWillMount(){
-
+        this.signUpNumber();
+        // this.timeout();
         //分享成功后，通知后台，给用户加红包
-        OnFire.on('SHARE_SUCCESS',this.onShareSuccess);
+        // OnFire.on('SHARE_SUCCESS',this.onShareSuccess);
 
         //已付费
         OnFire.on('PAID_SUCCESS',(payWay)=>{
             if(!this.state.QQNum){
                 //查询报名
-                this.postRegisterRecord(Util.getCurrentBatch(),User.getUserInfo(),payWay)
+                this.postRegisterRecord(User.getUserInfo(),payWay)
             }else{
                 this.setState({
                     hasPaid: true,
@@ -76,8 +78,8 @@ var PayPage = React.createClass({
             //seniorId && this.bindSenior(seniorId);
 
             //统计班主任信息
-            let teacherId = Util.getUrlPara('teacherid');
-            teacherId && Util.postCnzzData('班主任'+teacherId);
+            // let teacherId = Util.getUrlPara('teacherid');
+            // teacherId && Util.postCnzzData('班主任'+teacherId);
 
             //购买成功后的dialog
             DoneToast.show('报名成功');
@@ -101,19 +103,19 @@ var PayPage = React.createClass({
             this.setSubscribeInfo(User.getUserInfo().subscribe);
 
             //设置上线
-            this.setSenior(seniorId,User.getUserInfo().userId);
+            // this.setSenior(seniorId,User.getUserInfo().userId);
 
         }
         else{
             OnFire.on('OAUTH_SUCCESS',(userInfo)=>{
                 //获取用户是否有报名记录
-                this.postRegisterRecord(Util.getCurrentBatch(),userInfo);
+                this.postRegisterRecord(userInfo);
 
                 //设置订阅
                 this.setSubscribeInfo(userInfo.subscribe);
 
                 //设置上线
-                this.setSenior(seniorId,userInfo.userId);
+                // this.setSenior(seniorId,userInfo.userId);
             });
         }
 
@@ -121,45 +123,57 @@ var PayPage = React.createClass({
     },
 
 
+    signUpNumber(){
+
+        let fmall = 2017;
+        Material.getRegistered(fmall).always((int) => {
+
+            console.log('albumId', int);
+            this.setState({
+                int: (300 - int),
+            });
+            console.log('int', this.state.int);
+        })
+    },
     /**
      * 分享成功时的操作
      */
     onShareSuccess() {
-        let userInfo = User.getUserInfo();
+        // let userInfo = User.getUserInfo();
 
-        if(userInfo.userId){
-            //得红包
-            Material.getFirstShare(userInfo.userId).always((result)=>{
-                console.log('result',result);
-                if(result == true){
-                    //提示红包在哪里
-                    Material.alertRedPacketLocation(this.firstSharePanels);
-                }
-            });
-
-        }else{
-            console.log('用户没有登录');
-        }
+        // if(userInfo.userId){
+        //     //得红包
+        //     Material.getFirstShare(userInfo.userId).always((result)=>{
+        //         console.log('result',result);
+        //         if(result == true){
+        //             //提示红包在哪里
+        //             Material.alertRedPacketLocation(this.firstSharePanels);
+        //         }
+        //     });
+        //
+        // }else{
+            console.log('分享成功');
+        // }
     },
+    //
+    // firstSharePanels(){
+    //     this.setState({
+    //         firstSharePanel :true
+    //     })
+    // },
 
-    firstSharePanels(){
-        this.setState({
-            firstSharePanel :true
-        })
-    },
 
 
-
-    sendSeniorInfo() {
-        const User = require('../User');
-        let seniorId = Util.getUrlPara('ictchannel');
-        let userInfo = User.getUserInfo(),
-            userId = userInfo.userId;
-        console.log('userInfo',userInfo);
-        console.log('sid',seniorId);
-        console.log("userid",userId);
-        Material.postRecordSenior(seniorId,userId);
-    },
+    // sendSeniorInfo() {
+    //     const User = require('../User');
+    //     let seniorId = Util.getUrlPara('ictchannel');
+    //     let userInfo = User.getUserInfo(),
+    //         userId = userInfo.userId;
+    //     console.log('userInfo',userInfo);
+    //     console.log('sid',seniorId);
+    //     console.log("userid",userId);
+    //     Material.postRecordSenior(seniorId,userId);
+    // },
 
 
 
@@ -185,7 +199,7 @@ var PayPage = React.createClass({
 
             this.setState({
                 hasSenior: true,
-                buttonPrice: 6
+                // buttonPrice: 6
             });
         }
     },
@@ -196,14 +210,19 @@ var PayPage = React.createClass({
      * @param userInfo
      * @param payWay
      */
-    postRegisterRecord (termId,userInfo,payWay) {
+    postRegisterRecord (userInfo,payWay) {
         Loading.showLoading('获取信息...');
 
-        Material.getRegisterRecord(termId,userInfo.userId).done((record)=>{
+        console.log('userInfo',userInfo);
+
+        let fmall = 2017;
+
+        Material.getRegisterRecord(userInfo.userId,fmall).done((record)=>{
 
             Loading.hideLoading();
+            console.log('record',record);
 
-            if(record && record.qqGroup){
+            if(record){
 
                 ////todo 123343135
                 //
@@ -228,10 +247,12 @@ var PayPage = React.createClass({
                 //}
 
 
-            }else if(payWay=='normalPay'){
-                console.log('normalPay');
-                //设置备选QQ群
-                this.setBackUpQQState();
+            }else{
+                this.setState({
+                    hasRecord: false,
+                    hasPaid: false, //未报名
+                    buttonPrice:3.8,
+                });
             }
 
         })
@@ -307,8 +328,8 @@ var PayPage = React.createClass({
      */
     clickHandler() {
         switch(this.state.buttonPrice){
-            case 9:
-            case 6: this.payHandler();
+            // case 3.8:
+            case 3.8: this.payHandler();
                 break;
             case 0: {
                 //if(this.state.showWechatGroup){
@@ -343,7 +364,7 @@ var PayPage = React.createClass({
             this.setState({
                 showBackup: true,
                 buttonPrice: 0,
-                QQLink:'http://jq.qq.com/?_wv=1027&k=41976jN' //非付费的QQ群号
+                FMLink:'http://jq.qq.com/?_wv=1027&k=41976jN' //非付费的QQ群号
             });
 
             this.scrollToTop();
@@ -364,13 +385,13 @@ var PayPage = React.createClass({
     /**
      * 点击进入QQ群
      */
-    entryQQClickHandler(){
-        Util.postCnzzData('点击进入QQ群');
-
-        //QQ
-        location.href = this.state.QQLink;
-
-    },
+    // entryQQClickHandler(){
+    //     Util.postCnzzData('点击进入QQ群');
+    //
+    //     //QQ
+    //     location.href = this.state.FMLink;
+    //
+    // },
 
     /**
      * 邀请好友
@@ -389,43 +410,117 @@ var PayPage = React.createClass({
     /**
      * 隐藏分享panel
      */
-    closeSharePanelHandler() {
-        this.setState({
-            showSharePanel: false
-        });
-    },
+    // closeSharePanelHandler() {
+    //     this.setState({
+    //         showSharePanel: false
+    //     });
+    // },
 
     /**
      * 显示shareModal操作
      */
-    shareModalHandler() {
-        var speed=10;//滑动的速度
-        $('body,html').animate({ scrollTop: 0 }, speed);
-        this.setState({
-            showShareModal: true
-        })
-    },
+    // shareModalHandler() {
+    //     var speed=10;//滑动的速度
+    //     $('body,html').animate({ scrollTop: 0 }, speed);
+    //     this.setState({
+    //         showShareModal: true
+    //     })
+    // },
 
     /**
      * 隐藏分享modal
      */
-    hideShareModalHandler() {
-        this.setState({
-            showShareModal: false
-        })
-    },
+    // hideShareModalHandler() {
+    //     this.setState({
+    //         showShareModal: false
+    //     })
+    // },
+    //     timeout(){
+    //
+    //     let date = new Date();
+    //     console.log('date',date);
+    //     let years = 2017;
+    //     let month = 4;
+    //     let strDate = 16;
+    //     let hours = 11;
+    //     let minutes = 25;
+    //     let seconds = 0;
+    //     this.setState({
+    //         month,
+    //         strDate,
+    //         years,
+    //         hours,
+    //         minutes,
+    //         seconds,
+    //     });
+    //     let seperator1 = "-";
+    //     let seperator2 = ":";
+    //     let months = date.getMonth() + 1;
+    //     console.log('month',month);
+    //     let strDates = strDate;
+    //     let minutess = minutes+5;
+    //     if (currentdate == newcurrent){
+    //
+    //         let years = date.getFullYear();
+    //         let month = date.getMonth() + 1;
+    //         let strDate = date.getDate();
+    //         let hours = date.getHours();
+    //         let minutes = date.getMinutes();
+    //         let seconds = date.getSeconds();
+    //         this.setState({
+    //             month,
+    //             strDate,
+    //             years,
+    //             hours,
+    //             minutes,
+    //             seconds,
+    //         });
+    //         let strDates = strDate;
+    //         let minutess = minutes+5;
+    //         let currentdate = years + seperator1 + month + seperator1 + strDates
+    //             + " " + hours + seperator2 + minutess
+    //             + seperator2 + seconds;
+    //
+    //         console.log('currentdate',currentdate);
+    //     }
+    //
+    //
+    //     if (month >= 1 && month <= 9) {
+    //         month = "0" + month;
+    //     }
+    //     if (strDate >= 0 && strDate <= 9) {
+    //         strDate = "0" + strDate;
+    //     }
+    //     let newcurrent = date.getFullYear() + seperator1 + months + seperator1 + date.getDate()
+    //         + " " + date.getHours() + seperator2 + date.getMinutes()
+    //         + seperator2 + date.getSeconds();
+    //     console.log('newcurrent',newcurrent);
+    //     let currentdate = years + seperator1 + month + seperator1 + strDates
+    //         + " " + hours + seperator2 + minutess
+    //         + seperator2 + seconds;
+    //
+    //
+    //     console.log('currentdate',currentdate);
+    //
+    //     return currentdate;
+    //
+    // },
 
     render(){
         return (
             <div className="pay_page">
                 {/*。。。。。从上线发的链接打开时展示*/}
                 {this.state.hasSenior && <SeniorInfo/>}
+
                 {/*点击报名但没有查到用户信息时提示加群*/}
-                {this.state.showBackup && <a className="backup-text" href="http://jq.qq.com/?_wv=1027&k=41976jN">QQ群号：
-                    <span className="red-text">239360505</span>
-                    <p className="red-text  tada animated infinite">暗号：理财</p></a>}
+                {/*{this.state.showBackup && <a className="backup-text" href="http://jq.qq.com/?_wv=1027&k=41976jN">QQ群号：*/}
+                    {/*<span className="red-text">239360505</span>*/}
+                    {/*<p className="red-text  tada animated infinite">暗号：理财</p></a>}*/}
                 {/*首次进入时展示的长图*/}
-                {!this.state.hasPaid && <img src="./assets21Intro/image/21Intro.jpg" className="intro-img"/>}
+                {!this.state.hasPaid && <div><div className="top-time-bottom">
+                    <Timeout finalDate={[2017,4,16,24,0,0]}/>
+                    <div>剩余名额：<span>{this.state.int}</span></div>
+                </div> <img src="./assets21Intro/image/21Intro.jpg" className="intro-img"/></div> }
                 {/*如果已经报名，打开别人的分享链接时展示*/}
                 {this.state.hasPaid && <div>
                     <div className="paid-bg" style={{height:window.innerHeight}}>
@@ -437,9 +532,9 @@ var PayPage = React.createClass({
                                 <img src="build21Intro/dashu.jpg" className="dashu-img"/>
                             </div>*/}
                             {!this.state.showWechatGroup && <div>
-                                <p className="paid-text">请加QQ群号：<span className="red-text">{this.state.QQNum}</span></p>
-                                <p className="paid-text  tada infinite animated">群暗号：<span className="red-text">{this.state.QQCode}</span></p>
-                                <p className="paid-text">请于2小时内尽快加群</p>
+                                <p className="paid-text">不要着急呦，还没开课呢！</p>
+                                <p className="paid-text  tada infinite animated">耐心等待</p>
+                                <p className="paid-text">下一个百万富翁就是你</p>
                             </div>}
 
                         </div>
@@ -453,39 +548,39 @@ var PayPage = React.createClass({
 
                 </div>
                 {/**分享链接进入**/}
-                {this.state.buttonPrice == 6 &&
-                    <div className="bottom-button" >
-                        <span onClick={this.clickHandler} className={this.state.hasSenior==false ?"join-button":"whole-join-button"}>立即参加（<span className="full-price">￥9</span>  ￥6）</span>
-                        {!this.state.hasSenior && <span className="share-button" onClick={this.shareModalHandler}>邀请好友</span>}
-                    </div>
-                }
+                {/*{this.state.buttonPrice == 6 &&*/}
+                    {/*<div className="bottom-button" >*/}
+                        {/*<span onClick={this.clickHandler} className={this.state.hasSenior==false ?"join-button":"whole-join-button"}>立即参加（<span className="full-price">￥9</span>  ￥6）</span>*/}
+                        {/*{!this.state.hasSenior && <span className="share-button" onClick={this.shareModalHandler}>邀请好友</span>}*/}
+                    {/*</div>*/}
+                {/*}*/}
 
-                {this.state.buttonPrice == 9 &&
+                {this.state.buttonPrice == 3.8 &&
                     <div className="bottom-button" >
-                        <span onClick={this.clickHandler}  className={this.state.hasSenior==false ?"join-button":"whole-join-button"}>立即参加（￥9）</span>
+                        <span onClick={this.clickHandler}  className={this.state.hasSenior==false ?"join-button":"whole-join-button"}>立即参加（￥3.8）</span>
                         {!this.state.hasSenior && <span className="share-button" onClick={this.shareModalHandler}>邀请好友</span>}
                     </div>
                 }
 
                 {this.state.buttonPrice == 0 &&
                     <div className="bottom-button attend-camp-button">
-                        {!this.state.showWechatGroup && <span onClick={this.clickHandler} className={this.state.hasSenior==false ?"join-button":"whole-join-button"}>进入训练营</span>}
+                        {/*{!this.state.showWechatGroup && <span onClick={this.clickHandler} className={this.state.hasSenior==false ?"join-button":"whole-join-button"}>请等待开课</span>}*/}
 
                         {/*this.state.showWechatGroup && <span onClick={this.clickHandler} className={this.state.hasSenior==false ?"join-button":"whole-join-button"}>因人数较多，请耐心等待通过加群</span>*/}
 
-                        {!this.state.hasSenior && <span className="share-button" onClick={this.shareModalHandler}>邀请好友</span>}
+                        {/*{!this.state.hasSenior && <span className="share-button" onClick={this.shareModalHandler}>邀请好友</span>}*/}
                     </div>
                 }
 
-                {this.state.showShareHint && <div className="share-hint"></div>}
-                {this.state.showShareHint && <div className="share-text"></div>}
+                {/*{this.state.showShareHint && <div className="share-hint"></div>}*/}
+                {/*{this.state.showShareHint && <div className="share-text"></div>}*/}
 
                 {/*进入页面时弹出的分享提示panel*/}
-                {this.state.showSharePanel && <Modal hideOnTap={false}><SharePanel onClose={this.closeSharePanelHandler}/></Modal>}
+                {/*{this.state.showSharePanel && <Modal hideOnTap={false}><SharePanel onClose={this.closeSharePanelHandler}/></Modal>}*/}
                 {/*{this.state.firstSharePanel && <Modal hideOnTap={false}><SharePanel onClose={this.firstSharePanels}/></Modal>}*/}
-                {this.state.firstSharePanel && <Modal><FirstSharePanel /></Modal>}
+                {/*{this.state.firstSharePanel && <Modal><FirstSharePanel /></Modal>}*/}
                 {/*点击分享时的提示模态引导框*/}
-                {this.state.showShareModal && <img src="./assets21Intro/image/shareModal.png" onClick={this.hideShareModalHandler} className="share-modal"/>}
+                {/*{this.state.showShareModal && <img src="./assets21Intro/image/shareModal.png" onClick={this.hideShareModalHandler} className="share-modal"/>}*/}
             </div>
         )
     }

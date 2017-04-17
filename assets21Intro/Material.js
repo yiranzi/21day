@@ -143,27 +143,29 @@ class Material {
 
     /**
      * 获取注册记录
-     * @param termId
+     * @param albumId
      * @param userId
      * @returns {*}
      */
-    static getRegisterRecord(termId,userId) {
-
+    static getRegisterRecord(userId,albumId) {
+        // const Util = require('./Util');
+        // const User = require('./User');
+        console.log('userIdssssssssss',userId);
+        console.log('albumId',albumId);
         if(!userId){
             Toast.show('用户未登录，请退出重试');
             return;
         }
-
-        let apiUrl = Util.getAPIUrl('has_registered');
-
-        let data = JSON.stringify({
-            termId: termId+''
-        });
-
+        // let userInfo = User.getUserInfo();
+        let apiUrl = Util.getAPIUrl('has_registered').replace('{albumId}',albumId);
+        //
+        // let data = JSON.stringify({
+        //     termId: termId+''
+        // });
         return $.ajax({
             url: apiUrl,
-            type: 'post',
-            data: data,
+            type: 'put',
+            // data: data,
             cache: false,
             contentType: 'application/json;charset=utf-8',
             dataType:'json',
@@ -279,6 +281,34 @@ class Material {
 
         }
     }
+
+    /***
+     * 获取报名人数
+     * @param albumId
+     * @returns {*}
+     */
+    static getRegistered(albumId) {
+        const Util = require('./Util');
+        const User = require('./User');
+
+        // let userInfo = User.getUserInfo();
+        let apiUrl = Util.getAPIUrl('get_registered').replace("{albumId}",albumId);
+
+        return $.ajax({
+            url: apiUrl,
+            type: 'get',
+            cache: false,
+            contentType: 'application/json;charset=utf-8',
+            headers: {
+                Accept:"application/json"
+            },
+            beforeSend: function(request) {
+                request.setRequestHeader("X-iChangTou-Json-Api-User", User.getUserInfo().userId);
+                request.setRequestHeader("X-iChangTou-Json-Api-Token", Util.getApiToken());
+            }
+        });
+    }
+
 
 }
 
