@@ -510,17 +510,29 @@ var PayPage = React.createClass({
         return (
             <div className="pay_page">
                 {/*。。。。。从上线发的链接打开时展示*/}
-                {this.state.hasSenior && <SeniorInfo/>}
+                {/*{this.state.hasSenior && <SeniorInfo/>}*/}
 
                 {/*点击报名但没有查到用户信息时提示加群*/}
                 {/*{this.state.showBackup && <a className="backup-text" href="http://jq.qq.com/?_wv=1027&k=41976jN">QQ群号：*/}
                     {/*<span className="red-text">239360505</span>*/}
                     {/*<p className="red-text  tada animated infinite">暗号：理财</p></a>}*/}
                 {/*首次进入时展示的长图*/}
-                {!this.state.hasPaid && <div><div className="top-time-bottom">
-                    <Timeout finalDate={[2017,4,16,24,0,0]}/>
-                    <div>剩余名额：<span>{this.state.int}</span></div>
-                </div> <img src="./assets21Intro/image/21Intro.jpg" className="intro-img"/></div> }
+                {!this.state.hasPaid &&
+                <div>
+                    <div className="top-time-bottom">
+                        <div className="top-time">
+                            <Timeout finalDate={[2017,4,25,24,0,0]}/>
+                        </div>
+
+                    <div className="entered">
+                        <div className="show-entered">
+                            <img src="./assets21Intro/image/number.png" />
+                            <div className="show-number"> 剩余名额</div>
+                        </div>
+
+                        <span>{this.state.int}</span></div>
+                    </div>
+                    <img src="./assets21Intro/image/21Intro.jpg" className="intro-img"/></div> }
                 {/*如果已经报名，打开别人的分享链接时展示*/}
                 {this.state.hasPaid && <div>
                     <div className="paid-bg" style={{height:window.innerHeight}}>
@@ -535,6 +547,11 @@ var PayPage = React.createClass({
                                 <p className="paid-text">不要着急呦，还没开课呢！</p>
                                 <p className="paid-text  tada infinite animated">耐心等待</p>
                                 <p className="paid-text">下一个百万富翁就是你</p>
+                                <p className="paid-text">长按扫描下方二维码进入课程公号</p>
+                                <div className="page-div">
+                                    <img className="page-image" src="./assets21Intro/image/tousha-qrcode.jpg"/>
+                                </div>
+
                             </div>}
 
                         </div>
@@ -558,7 +575,7 @@ var PayPage = React.createClass({
                 {this.state.buttonPrice == 3.8 &&
                     <div className="bottom-button" >
                         <span onClick={this.clickHandler}  className={this.state.hasSenior==false ?"join-button":"whole-join-button"}>立即参加（￥3.8）</span>
-                        {!this.state.hasSenior && <span className="share-button" onClick={this.shareModalHandler}>邀请好友</span>}
+                        {/*{!this.state.hasSenior && <span className="share-button" onClick={this.shareModalHandler}>邀请好友</span>}*/}
                     </div>
                 }
 

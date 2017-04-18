@@ -68,15 +68,17 @@ var Timeout = React.createClass({
         return (
             <div className="Timeout">
                 <div className="container">
-                    {/*<img src="./assets48/image/votePage/clock.png" />*/}
+                    <img src="./assets21Intro/image/time.png" />
                     {(this.state.days <= 0 && this.state.hours <= 0 && this.state.minutes <= 0 && this.state.seconds <= 0) ?
-                        (<p>报名时间已过</p>) : (<p>距离报名截止日期还剩
-                            {this.state.days > 0 ? (<span>{this.state.days}天</span>) : (null)}
-                            {this.state.hours > 0 ? (<span>{this.state.hours}小时</span>) : (null)}
-                            {(this.state.hours <= 0 && this.state.minutes <= 0)? (null) : (<span>{this.state.minutes}分</span>)}
-                            <span>{this.state.seconds}秒</span>
-                        </p>)}
+                        (<p>报名时间已过</p>) : (<div><p>距离截止日期</p>
+                            <div className="show-time">
+                                {this.state.days > 0 ? (<span>{this.state.days}天</span>) : (null)}
+                                {this.state.hours > 0 ? (<span>{this.state.hours}小时</span>) : (null)}
+                                {(this.state.hours <= 0 && this.state.minutes <= 0)? (null) : (<span>{this.state.minutes}分</span>)}
+                                <span>{this.state.seconds}秒</span>
+                            </div>
 
+                        </div>)}
                 </div>
             </div>);
     }

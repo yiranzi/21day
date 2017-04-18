@@ -39,14 +39,14 @@ const API_Token = Config.environment ? FORMAL_API_Token : TEST_API_Token; //开�
 
 
 
-const MINIC_ID = '21';  //迷你课买房与资产配置课程ID
-const MINIC_NAME = '21天训练营报名'; //迷你课课程名称  英国脱欧
-const VERSION = '1.0.2'; // 项目版本
+const MINIC_ID = '7';  //迷你课买房与资产配置课程ID
+const MINIC_NAME = '7天训练营报名'; //迷你课课程名称  英国脱欧
+const VERSION = '1.0.0'; // 项目版本
 const CHARGE_INDEX = 0; //收费部分下标（0~N）
 
-const CURRENT_BATCH = 23; //当前期数 TODO
+const CURRENT_BATCH = 1; //当前期数 TODO
 
-const SHARE_TITLE = '邀请你一起参加21天小白理财训练营';
+const SHARE_TITLE = '邀请你一起参加7天小白理财训练营';
 
 const SHARE_DESC = '你和富人之间，只差一个训练营';
 

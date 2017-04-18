@@ -7,8 +7,42 @@
 
   .top-time-bottom{
     width: 100%;
-    height: 5rem;
-    background-color: #747474;
+    height: 3.5rem;
+    display: flex;
+    flex-flow: row nowrap;
+    background-color: #fd8989;
+    //background-color: #747474;
+
+    .top-time{
+      width: 50%;
+      height: 100%;
+      display: flex;
+      //background-color: #fd8989;
+    }
+    .entered{
+      background-color: #fd8989;
+      color: #414041;
+      padding: .5rem;
+      width: 50%;
+      text-align: center;
+
+      .show-entered{
+        display: flex;
+        flex-flow:row nowrap;
+        width: 5rem;
+        margin: 0 auto;
+      }
+      img{
+        width: .8rem;
+        height: .8rem;
+        margin: .2rem .3rem;
+      }
+
+      span{
+        font-size: px2rem(38);
+      }
+
+    }
   }
   //二维码
   .qrcode-image{
@@ -43,9 +77,9 @@
 
 .join-button{
   display: inline-block;
-  width: 70%;
+  width: 100%;
   text-align: center;
-  background-color: #D73B3C;
+  background-color: #fd8989;
 }
 
 .whole-join-button{
@@ -172,8 +206,7 @@
   line-height: 2rem;
   color: #fff;
   font-size: px2rem(30);
-  background-color: #de4f31;
-  color: #fff;
+  background-color: #fd8989;
 }
 
 
@@ -194,7 +227,16 @@
   font-size: .95rem;
   text-align: center;
 }
+.page-div{
+  margin: 0 auto;
+  width: 5rem;
+}
+.page-image{
+  width: 5rem;
+  height: 5rem;
+  margin: 0 auto;
 
+}
 .red-text{
   color: red;
 }
