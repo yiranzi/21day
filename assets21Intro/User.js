@@ -221,6 +221,7 @@ class User {
             },
             beforeSend: (request) => {
                 request.setRequestHeader("X-iChangTou-Json-Api-Token", Util.getApiToken());
+                request.setRequestHeader("X-iChangTou-Json-Api-User",userInfo.userId);
             },
             success: (data)=>{
                 console.log('从服务器上获取用于支付的openId',data);
