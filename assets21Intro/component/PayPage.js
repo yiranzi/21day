@@ -85,7 +85,7 @@ var PayPage = React.createClass({
             DoneToast.show('报名成功');
 
             //todo
-            window.dialogAlertComp.show('报名成功','点击“立即加群”进入QQ群。也可以复制页面上的QQ群号，手动进群。请注意页面上的加群【暗号】哟~','知道啦',()=>{},()=>{},false);
+            // window.dialogAlertComp.show('报名成功','点击“立即加群”进入QQ群。也可以复制页面上的QQ群号，手动进群。请注意页面上的加群【暗号】哟~','知道啦',()=>{},()=>{},false);
         });
 
         let seniorId = Util.getUrlPara('ictchannel'),
@@ -513,9 +513,9 @@ var PayPage = React.createClass({
                 {/*{this.state.hasSenior && <SeniorInfo/>}*/}
 
                 {/*点击报名但没有查到用户信息时提示加群*/}
-                {/*{this.state.showBackup && <a className="backup-text" href="http://jq.qq.com/?_wv=1027&k=41976jN">QQ群号：*/}
-                    {/*<span className="red-text">239360505</span>*/}
-                    {/*<p className="red-text  tada animated infinite">暗号：理财</p></a>}*/}
+                {this.state.showBackup && <a className="backup-text" href="http://jq.qq.com/?_wv=1027&k=41976jN">QQ群号：
+                    <span className="red-text">239360505</span>
+                    <p className="red-text  tada animated infinite">暗号：理财</p></a>}
                 {/*首次进入时展示的长图*/}
                 {!this.state.hasPaid &&
                 <div>

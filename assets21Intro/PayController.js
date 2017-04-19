@@ -198,7 +198,7 @@ class PayController {
                 "sum": sum
             }
         );
-
+        console.log('jsonData',jsonData);
         //扫码支付 和 公众号支付调用不同的接口
         let apiUrl = isNative ? Util.getAPIUrl('get_native_order') : GET_ORDER_API;
 
