@@ -545,7 +545,7 @@ var PayPage = React.createClass({
                             </div>*/}
                             {!this.state.showWechatGroup && <div>
                                 <p className="paid-text">不要着急呦，还没开课呢！</p>
-                                <p className="paid-text  tada infinite animated">耐心等待</p>
+                                <p className="paid-texts  tada infinite animated">耐心等待</p>
                                 <p className="paid-text">下一个百万富翁就是你</p>
                                 <p className="paid-text">长按扫描下方二维码进入课程公号</p>
                                 <div className="page-div">

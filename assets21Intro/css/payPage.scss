@@ -11,7 +11,7 @@
     display: flex;
     flex-flow: row nowrap;
     background-color: #fd8989;
-    //background-color: #747474;
+    position: fixed;
 
     .top-time{
       width: 50%;
@@ -227,6 +227,11 @@
   font-size: .95rem;
   text-align: center;
 }
+.paid-texts{
+  padding-bottom: .5rem;
+  font-size: .95rem;
+  text-align: center;
+}
 .page-div{
   margin: 0 auto;
   width: 5rem;
@@ -357,6 +362,8 @@
   }
 }
 .tada {
+  width: 90%;
+  margin: 0 auto;
   -webkit-animation-name: tada;
   animation-name: tada
 }
