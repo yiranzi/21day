@@ -27,7 +27,8 @@ var APPID = Config.environment ? FORMA_APPID : TEST_APPID;
 var PAID_APPID =  Config.environment ?FORMAL_PAID_APPID : TEST_PAID_APPID;
 
 const FORMAL_API_DOMAIN = 'https://m.ichangtou.com/';//生产环境 API域名
-const TEST_API_DOMAIN = 'http://devh5.ichangtou.com.cn/';//测试环境 API域名
+// const TEST_API_DOMAIN = 'http://devh5.ichangtou.com.cn/';//测试环境 API域名
+const TEST_API_DOMAIN = 'https://geek.ichangtou.com/';//测试环境 API域名
 
 const API_URL_DOMAIN = Config.environment ? FORMAL_API_DOMAIN : TEST_API_DOMAIN; //开发环境or生产环境
 
@@ -602,6 +603,78 @@ class Util {
 
         return  [days,hours,minutes,seconds]
     }
+
+
+    // static timeout(years,month,strDates,hours,minutess,seconds){
+    //
+    //     let date = new Date();
+    //     console.log('date',date);
+    //     let years = 2017;
+    //     let month = 4;
+    //     let strDate = 20;
+    //     let hours = 15;
+    //     let minutes = 55;
+    //     let seconds = 0;
+    //     let strDates = strDate;
+    //     let minutess = minutes+1;
+    //     this.setState({
+    //         month,
+    //         strDates,
+    //         years,
+    //         hours,
+    //         minutess,
+    //         seconds,
+    //     });
+    //     let seperator1 = "-";
+    //     let seperator2 = ":";
+    //     let months = date.getMonth() + 1;
+    //     console.log('month',month);
+    //
+    //     if(months > 12){
+    //         years = years+1;
+    //         month = 1;
+    //     }else if(months == 1||3||5||7||8||10||12){
+    //         if(strDates > 31){
+    //             strDates = 1;
+    //             month = month+1;
+    //         }
+    //     }else if (months == 4||6||9||11){
+    //         if(strDates > 30){
+    //             strDates = 1;
+    //             month = month+1;
+    //         }
+    //     }else {
+    //         if (strDates > 29){
+    //             strDates = 1;
+    //             month = month+1;
+    //         }
+    //     }
+    //     let currentdate = years + seperator1 + month + seperator1 + strDates
+    //         + " " + hours + seperator2 + minutess
+    //         + seperator2 + seconds;
+    //     let newcurrent = date.getFullYear() + seperator1 + months + seperator1 + date.getDate()
+    //         + " " + date.getHours() + seperator2 + date.getMinutes()
+    //         + seperator2 + date.getSeconds();
+    //     console.log('newcurrent',newcurrent);
+    //     console.log('currentdate',currentdate);
+    //     if (currentdate == newcurrent){
+    //         years = date.getFullYear();
+    //         month = date.getMonth() + 1;
+    //         strDate = date.getDate();
+    //         hours = date.getHours();
+    //         minutes = date.getMinutes();
+    //         seconds = date.getSeconds();
+    //         strDates = strDate;
+    //         minutess = minutes+1;
+    //     }
+    //     if (month >= 1 && month <= 9) {
+    //         month = "0" + month;
+    //     }
+    //     if (strDate >= 0 && strDate <= 9) {
+    //         strDate = "0" + strDate;
+    //     }
+    //     return  [years,month,strDates,hours,minutess,seconds]
+    // }
 
 
 }

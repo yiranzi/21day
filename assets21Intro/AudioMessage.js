@@ -87,7 +87,7 @@ class AudioMessage {
         //第1条语音，加入统计
         if( this.index === 0 && !this.czced ) {
             this.czced = true;//只统计一次
-            Util.postCnzzData('试听第一节');
+            // Util.postCnzzData('试听第一节');
         }
     }
 

@@ -28,7 +28,7 @@ const FirstSharePanel = React.createClass({
 
     clickSkip() {
         // window.location.href = "http://h5test.ichangtou.com.cn/redPacket/index.html";
-        Util.postCnzzData('跳转到拆红包页面');
+        // Util.postCnzzData('跳转到拆红包页面');
     },
 
 

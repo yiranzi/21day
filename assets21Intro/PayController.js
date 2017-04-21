@@ -77,7 +77,6 @@ class PayController {
 
     static wechatPay() {
 
-
         if( payPullingFlag ) {
             //如果正在拉取支付数据，阻止，避免重复请求
             setTimeout(()=>{

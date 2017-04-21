@@ -41,7 +41,7 @@ var PayPage = React.createClass({
             //21days2.0
             hasSenior: false, //是否有上线
             buttonPrice: 3.8, //
-
+            buttonChange:false,//判断提示时间截止panel
             //share
             showSharePanel: false, //显示分享panel
             showShareModal: false , //显示分享modal
@@ -54,8 +54,9 @@ var PayPage = React.createClass({
 
 
     componentWillMount(){
-        this.signUpNumber();
         // this.timeout();
+        this.signUpNumber();
+
         //分享成功后，通知后台，给用户加红包
         // OnFire.on('SHARE_SUCCESS',this.onShareSuccess);
 
@@ -122,7 +123,9 @@ var PayPage = React.createClass({
         this.forSeniors();
     },
 
-
+    /***
+     * 请求剩余报名人数和报名时间是否截止
+     */
     signUpNumber(){
 
         let fmall = 2017;
@@ -130,9 +133,11 @@ var PayPage = React.createClass({
 
             console.log('albumId', int);
             this.setState({
-                int: (300 - int),
+                int: (300 - int.number),
+                time:int.time,
             });
             console.log('int', this.state.int);
+            console.log('time', this.state.time);
         })
     },
     /**
@@ -322,7 +327,6 @@ var PayPage = React.createClass({
         })
     },
 
-
     /**
      * 按钮点击
      */
@@ -355,7 +359,7 @@ var PayPage = React.createClass({
 
         if(User.getUserInfo().userId){
             this.setState({
-                showBackup: false
+                showBackup: false,
             });
 
             //微信支付
@@ -368,7 +372,7 @@ var PayPage = React.createClass({
             });
 
             this.scrollToTop();
-
+            Util.postCnzzData('拿不到用户数据');
             //提醒用户加付费群
             window.dialogAlertComp.show('提示','你好像被流星砸中...服务器君拿不到你的数据，请点击页面上的QQ群报名训练营','知道啦',()=>{},()=>{},false);
         }
@@ -397,7 +401,7 @@ var PayPage = React.createClass({
      * 邀请好友
      */
     entryPosterHandler() {
-        Util.postCnzzData('邀请好友');
+        // Util.postCnzzData('邀请好友');
 
         //置顶
         scrollTo(0, 0);
@@ -408,14 +412,22 @@ var PayPage = React.createClass({
     },
 
     /**
-     * 隐藏分享panel
+     * 隐藏提示时间截止panel
      */
-    // closeSharePanelHandler() {
-    //     this.setState({
-    //         showSharePanel: false
-    //     });
-    // },
+    closeSharePanelHandler() {
+        this.setState({
+            buttonChange: false
+        });
+    },
+    /***
+     * 显示提示时间截止panel
+     */
+    didClickHandler(){
 
+        this.setState({
+            buttonChange:true,
+        })
+    },
     /**
      * 显示shareModal操作
      */
@@ -435,75 +447,75 @@ var PayPage = React.createClass({
     //         showShareModal: false
     //     })
     // },
-    //     timeout(){
+    //  timeout(){
     //
     //     let date = new Date();
     //     console.log('date',date);
     //     let years = 2017;
     //     let month = 4;
-    //     let strDate = 16;
-    //     let hours = 11;
-    //     let minutes = 25;
+    //     let strDate = 20;
+    //     let hours = 15;
+    //     let minutes = 55;
     //     let seconds = 0;
+    //     let strDates = strDate;
+    //     let minutess = minutes+1;
     //     this.setState({
     //         month,
-    //         strDate,
+    //         strDates,
     //         years,
     //         hours,
-    //         minutes,
+    //         minutess,
     //         seconds,
     //     });
     //     let seperator1 = "-";
     //     let seperator2 = ":";
     //     let months = date.getMonth() + 1;
     //     console.log('month',month);
-    //     let strDates = strDate;
-    //     let minutess = minutes+5;
-    //     if (currentdate == newcurrent){
     //
-    //         let years = date.getFullYear();
-    //         let month = date.getMonth() + 1;
-    //         let strDate = date.getDate();
-    //         let hours = date.getHours();
-    //         let minutes = date.getMinutes();
-    //         let seconds = date.getSeconds();
-    //         this.setState({
-    //             month,
-    //             strDate,
-    //             years,
-    //             hours,
-    //             minutes,
-    //             seconds,
-    //         });
-    //         let strDates = strDate;
-    //         let minutess = minutes+5;
-    //         let currentdate = years + seperator1 + month + seperator1 + strDates
-    //             + " " + hours + seperator2 + minutess
-    //             + seperator2 + seconds;
-    //
-    //         console.log('currentdate',currentdate);
+    //     if(months > 12){
+    //         years = years+1;
+    //         month = 1;
+    //     }else if(months == 1||3||5||7||8||10||12){
+    //         if(strDates > 31){
+    //            strDates = 1;
+    //            month = month+1;
+    //         }
+    //     }else if (months == 4||6||9||11){
+    //         if(strDates > 30){
+    //             strDates = 1;
+    //             month = month+1;
+    //         }
+    //     }else {
+    //         if (strDates > 29){
+    //             strDates = 1;
+    //             month = month+1;
+    //         }
     //     }
-    //
-    //
+    //     let currentdate = years + seperator1 + month + seperator1 + strDates
+    //         + " " + hours + seperator2 + minutess
+    //         + seperator2 + seconds;
+    //     let newcurrent = date.getFullYear() + seperator1 + months + seperator1 + date.getDate()
+    //         + " " + date.getHours() + seperator2 + date.getMinutes()
+    //         + seperator2 + date.getSeconds();
+    //     console.log('newcurrent',newcurrent);
+    //     console.log('currentdate',currentdate);
+    //     if (currentdate == newcurrent){
+    //         years = date.getFullYear();
+    //         month = date.getMonth() + 1;
+    //         strDate = date.getDate();
+    //         hours = date.getHours();
+    //         minutes = date.getMinutes();
+    //         seconds = date.getSeconds();
+    //         strDates = strDate;
+    //         minutess = minutes+1;
+    //     }
     //     if (month >= 1 && month <= 9) {
     //         month = "0" + month;
     //     }
     //     if (strDate >= 0 && strDate <= 9) {
     //         strDate = "0" + strDate;
     //     }
-    //     let newcurrent = date.getFullYear() + seperator1 + months + seperator1 + date.getDate()
-    //         + " " + date.getHours() + seperator2 + date.getMinutes()
-    //         + seperator2 + date.getSeconds();
-    //     console.log('newcurrent',newcurrent);
-    //     let currentdate = years + seperator1 + month + seperator1 + strDates
-    //         + " " + hours + seperator2 + minutess
-    //         + seperator2 + seconds;
-    //
-    //
-    //     console.log('currentdate',currentdate);
-    //
     //     return currentdate;
-    //
     // },
 
     render(){
@@ -514,14 +526,14 @@ var PayPage = React.createClass({
 
                 {/*点击报名但没有查到用户信息时提示加群*/}
                 {this.state.showBackup && <a className="backup-text" href="http://jq.qq.com/?_wv=1027&k=41976jN">QQ群号：
-                    <span className="red-text">239360505</span>
-                    <p className="red-text  tada animated infinite">暗号：理财</p></a>}
+                    <span className="red-text">429827363</span>
+                    <p className="red-text  tada animated infinite">暗号：7天</p></a>}
                 {/*首次进入时展示的长图*/}
                 {!this.state.hasPaid &&
                 <div>
                     <div className="top-time-bottom">
                         <div className="top-time">
-                            <Timeout finalDate={[2017,4,25,24,0,0]}/>
+                            <Timeout finalDate={[2017,4,24,24,0,0]}/>
                         </div>
 
                     <div className="entered">
@@ -532,7 +544,7 @@ var PayPage = React.createClass({
 
                         <span>{this.state.int}</span></div>
                     </div>
-                    <img src="./assets21Intro/image/21Intro.jpg" className="intro-img"/></div> }
+                    <img src="./assets21Intro/image/campaign.jpg" className="intro-img"/></div> }
                 {/*如果已经报名，打开别人的分享链接时展示*/}
                 {this.state.hasPaid && <div>
                     <div className="paid-bg" style={{height:window.innerHeight}}>
@@ -574,7 +586,8 @@ var PayPage = React.createClass({
 
                 {this.state.buttonPrice == 3.8 &&
                     <div className="bottom-button" >
-                        <span onClick={this.clickHandler}  className={this.state.hasSenior==false ?"join-button":"whole-join-button"}>立即参加（￥3.8）</span>
+                        {this.state.time ? <span onClick={this.didClickHandler}  className="join-button">报名截止下次再来吧</span> : <span onClick={this.clickHandler}  className={this.state.hasSenior==false ?"join-button":"whole-join-button"}>立即参加（￥3.8）</span>}
+
                         {/*{!this.state.hasSenior && <span className="share-button" onClick={this.shareModalHandler}>邀请好友</span>}*/}
                     </div>
                 }
@@ -588,12 +601,11 @@ var PayPage = React.createClass({
                         {/*{!this.state.hasSenior && <span className="share-button" onClick={this.shareModalHandler}>邀请好友</span>}*/}
                     </div>
                 }
-
                 {/*{this.state.showShareHint && <div className="share-hint"></div>}*/}
                 {/*{this.state.showShareHint && <div className="share-text"></div>}*/}
 
-                {/*进入页面时弹出的分享提示panel*/}
-                {/*{this.state.showSharePanel && <Modal hideOnTap={false}><SharePanel onClose={this.closeSharePanelHandler}/></Modal>}*/}
+                {/*入页面时弹出的分享提示panel*/}
+                {this.state.buttonChange && <Modal hideOnTap={false}><SharePanel onClose={this.closeSharePanelHandler}/></Modal>}
                 {/*{this.state.firstSharePanel && <Modal hideOnTap={false}><SharePanel onClose={this.firstSharePanels}/></Modal>}*/}
                 {/*{this.state.firstSharePanel && <Modal><FirstSharePanel /></Modal>}*/}
                 {/*点击分享时的提示模态引导框*/}

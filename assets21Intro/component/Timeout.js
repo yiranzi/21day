@@ -5,6 +5,7 @@
 var React = require('react');
 var ReactDom = require('react-dom');
 var Util = require('../Util');
+var PayPage = require('./PayPage');
 
 
 var Timeout = React.createClass({
@@ -13,6 +14,7 @@ var Timeout = React.createClass({
         return {
             finalDate: React.PropTypes.array.isRequired, //投票截止日期
             stopVote: React.PropTypes.function.isRequired,
+            // timeout: React.PropTypes.function.isRequired,
         }
     },
     getInitialState() {
@@ -52,6 +54,7 @@ var Timeout = React.createClass({
             if(days ==0 && hours ==0 && minutes ==0 && seconds ==0){
                 clearInterval();
                 this.props.stopVote();
+                // this.props.timeout();
             }
             this.setState({
                 days:days,

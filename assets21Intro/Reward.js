@@ -22,7 +22,7 @@ class Reward {
 
 
             Reward.hide();
-            Util.postCnzzData('打赏返回');
+            // Util.postCnzzData('打赏返回');
         });
 
         //默认价格
