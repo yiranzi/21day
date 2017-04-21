@@ -251,8 +251,12 @@ class PayController {
 
             error : (data)=>{
                 //标记请求结束
+                Loading.showLoading('请求微信支付失败');
                 payPullingFlag = false;
                 Loading.hideLoading();
+                OnFire.fire('PAID_LOSER','loserPay');
+                //提醒用户加付费群
+                window.dialogAlertComp.show('提示','你好像被流星砸中...服务器君拿不到你的数据，请点击页面上的QQ群报名训练营','知道啦',()=>{},()=>{},false);
             }
         });
     }
@@ -309,7 +313,7 @@ class PayController {
                         QRCodePay.showPayQrCode();
                     }
 
-                    Util.postCnzzData('点击取消');
+                    Util.postCnzzData('点击取消付费');
                 }
             }
         );

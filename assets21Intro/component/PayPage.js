@@ -59,7 +59,12 @@ var PayPage = React.createClass({
 
         //分享成功后，通知后台，给用户加红包
         // OnFire.on('SHARE_SUCCESS',this.onShareSuccess);
+        OnFire.on('PAID_LOSER',()=>{
 
+                this.setState({
+                    showBackup:true,
+                })
+        });
         //已付费
         OnFire.on('PAID_SUCCESS',(payWay)=>{
             if(!this.state.QQNum){

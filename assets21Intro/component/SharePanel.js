@@ -36,14 +36,15 @@ const SharePanel = React.createClass({
      */
     render(){
         return (<div className="share-panel-view">
-            <p className="share-title">邀请好友参加训练营</p>
-            <img src="./assets21Intro/image/sharePacket.png" className="share-img"/>
-            <p className="share-desc">首次分享报名链接给好友/到朋友圈</p >
-            <p className="share-desc">即可获得现金红包一个！</p >
-            <p className="share-desc">好友通过链接报名立享3元优惠</p >
-            <p className="share-desc">成功报名后你还能收到现金红包！</p >
-            <p className="share-desc">中奖率100%哦！</p >
-            <p className="share-title">爱TA就带TA理财</p>
+            <p className="share-title">你来晚了！</p>
+            <img src="./assets/image/logo.png" className="share-img"/>
+            <p className="share-desc">此次报名已结束</p >
+            <p className="share-desc">下次再来吧</p >
+            <p className="share-desc">长按扫描下方二维码进入课程公号</p >
+            <p className="share-desc">及时通知你最新开课信息呦</p >
+            <div className="page-div">
+                <img className="page-image" src="./assets21Intro/image/tousha-qrcode.jpg"/>
+            </div>
             <div className="share-confirm-button" onClick={this.clickHandler}>知道了</div>
         </div>)
     }
