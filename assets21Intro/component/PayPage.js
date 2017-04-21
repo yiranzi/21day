@@ -139,6 +139,7 @@ var PayPage = React.createClass({
             console.log('albumId', int);
             this.setState({
                 int: (300 - int.number),
+                // time:true
                 time:int.time,
             });
             console.log('int', this.state.int);
@@ -428,10 +429,13 @@ var PayPage = React.createClass({
      * 显示提示时间截止panel
      */
     didClickHandler(){
-
         this.setState({
             buttonChange:true,
         })
+    },
+
+    getTime(){
+        this.signUpNumber();
     },
     /**
      * 显示shareModal操作
@@ -590,7 +594,7 @@ var PayPage = React.createClass({
                 {/*}*/}
 
                 {this.state.buttonPrice == 3.8 &&
-                    <div className="bottom-button" >
+                    <div className="bottom-button" onClick={this.getTime}>
                         {this.state.time ? <span onClick={this.didClickHandler}  className="join-button">报名截止下次再来吧</span> : <span onClick={this.clickHandler}  className={this.state.hasSenior==false ?"join-button":"whole-join-button"}>立即参加（￥3.8）</span>}
 
                         {/*{!this.state.hasSenior && <span className="share-button" onClick={this.shareModalHandler}>邀请好友</span>}*/}

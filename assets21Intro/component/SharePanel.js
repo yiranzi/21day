@@ -37,7 +37,7 @@ const SharePanel = React.createClass({
     render(){
         return (<div className="share-panel-view">
             <p className="share-title">你来晚了！</p>
-            <img src="./assets/image/logo.png" className="share-img"/>
+            {/*<img src="./assets/image/logo.png" className="share-img"/>*/}
             <p className="share-desc">此次报名已结束</p >
             <p className="share-desc">下次再来吧</p >
             <p className="share-desc">长按扫描下方二维码进入课程公号</p >
