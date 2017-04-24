@@ -13,7 +13,7 @@ var Timeout = React.createClass({
     getPropsType(){
         return {
             finalDate: React.PropTypes.array.isRequired, //投票截止日期
-            stopVote: React.PropTypes.function.isRequired,
+            // stopVote: React.PropTypes.function.isRequired,
             // timeout: React.PropTypes.function.isRequired,
         }
     },
@@ -53,7 +53,7 @@ var Timeout = React.createClass({
             let seconds = time[3];
             if(days ==0 && hours ==0 && minutes ==0 && seconds ==0){
                 clearInterval();
-                this.props.stopVote();
+                // this.props.stopVote();
                 // this.props.timeout();
             }
             this.setState({
@@ -73,7 +73,7 @@ var Timeout = React.createClass({
                 <div className="container">
                     <img src="./assets21Intro/image/time.png" />
                     {(this.state.days <= 0 && this.state.hours <= 0 && this.state.minutes <= 0 && this.state.seconds <= 0) ?
-                        (<p>报名时间已过</p>) : (<div><p>距离截止日期</p>
+                        (<p>报名时间已过</p>) : (<div><p>报名时间还剩</p>
                             <div className="show-time">
                                 {this.state.days > 0 ? (<span>{this.state.days}天</span>) : (null)}
                                 {this.state.hours > 0 ? (<span>{this.state.hours}小时</span>) : (null)}

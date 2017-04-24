@@ -142,6 +142,7 @@ class User {
         userInfo.headImage = data.headImage;
 
         userInfo.subscribe = data.subscribe;//是否关注公众号
+        // console.log('userInfo.subscribe ', userInfo.subscribe);
 
         userInfo.unionId = data.unionId;
 
@@ -227,7 +228,6 @@ class User {
                 console.log('从服务器上获取用于支付的openId',data);
 
                 userInfo.payOpenId = data.openId;
-
                 OnFire.fire('OAUTH_SUCCESS',userInfo);
 
                 Loading.hideLoading();

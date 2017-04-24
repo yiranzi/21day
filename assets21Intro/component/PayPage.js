@@ -48,7 +48,9 @@ var PayPage = React.createClass({
 
             //wechat
             showWechatGroup: false, //显示微信联系方式
-            firstSharePanel:false //首次分享提示
+            firstSharePanel:false, //首次分享提示
+
+            showint:true,//初始剩余人数
         };
     },
 
@@ -126,6 +128,8 @@ var PayPage = React.createClass({
         }
 
         this.forSeniors();
+
+        console.log('isSubscribed',this.state.subscribe);
     },
 
     /***
@@ -141,6 +145,7 @@ var PayPage = React.createClass({
                 int: (300 - int.number),
                 // time:true
                 time:int.time,
+                showint:false,
             });
             console.log('int', this.state.int);
             console.log('time', this.state.time);
@@ -247,6 +252,7 @@ var PayPage = React.createClass({
                 //    });
                 //}
                 //else{
+
                     this.setState({
                         hasRecord: true,
                         hasPaid: true, //已报名
@@ -255,7 +261,18 @@ var PayPage = React.createClass({
                         QQCode: record.secret, //QQ暗号
                         buttonPrice: 0
                     });
-                //}
+
+                OnFire.on('OAUTH_SUCCESS',(userInfo)=>{
+                    console.log('OAUTH_SUCCESS-userInfo',userInfo);
+                    //获取用户是否有报名记录
+                    this.postRegisterRecord(userInfo);
+
+                    //设置订阅
+                    this.setSubscribeInfo(userInfo.subscribe);
+
+                    //设置上线
+                    // this.setSenior(seniorId,userInfo.userId);
+                });
 
 
             }else{
@@ -282,6 +299,19 @@ var PayPage = React.createClass({
         })
     },
 
+    // onGetWxInfoSuccess(data) {
+    //     if( !data || !data.userId ) {
+    //         //如果后台没有数据，代表没有授权过，去往snsapi_userinfo授权
+    //         User.redirectToUserinfo(false);
+    //         return;
+    //     }
+    //     console.log('data',data);
+    //     //保存用户信息
+    //     userInfo = {};
+    //     userInfo.subscribe = data.subscribe;//是否关注公众号
+    //     console.log('userInfo.subscribe',userInfo.subscribe);
+    //
+    // },
 
     /**
      * 2000人大群 付费群
@@ -328,9 +358,12 @@ var PayPage = React.createClass({
      * @param subscribe
      */
     setSubscribeInfo(subscribe){
+
         this.setState({
-            isSubscribed: subscribe
-        })
+            isSubscribed: subscribe,
+            followSubscribe:subscribe,
+        });
+        console.log('isSubscribed',this.state.followSubscribe);
     },
 
     /**
@@ -542,16 +575,15 @@ var PayPage = React.createClass({
                 <div>
                     <div className="top-time-bottom">
                         <div className="top-time">
-                            <Timeout finalDate={[2017,4,24,24,0,0]}/>
+                            <Timeout finalDate={[2017,4,25,24,0,0]}/>
                         </div>
-
                     <div className="entered">
                         <div className="show-entered">
                             <img src="./assets21Intro/image/number.png" />
                             <div className="show-number"> 剩余名额</div>
                         </div>
-
-                        <span>{this.state.int}</span></div>
+                        {this.state.showint ? <span>300</span>:<span>{this.state.int}</span>}
+                        </div>
                     </div>
                     <img src="./assets21Intro/image/campaign.jpg" className="intro-img"/></div> }
                 {/*如果已经报名，打开别人的分享链接时展示*/}
@@ -565,13 +597,14 @@ var PayPage = React.createClass({
                                 <img src="build21Intro/dashu.jpg" className="dashu-img"/>
                             </div>*/}
                             {!this.state.showWechatGroup && <div>
-                                <p className="paid-text">不要着急呦，还没开课呢！</p>
-                                <p className="paid-texts  tada infinite animated">耐心等待</p>
+                                <p className="paid-text">锁定公号“长投”或“长投网”</p>
+                                <p className="paid-text">每天上午九点准时开课</p>
+                                <p className="paid-texts  tada infinite ">耐心等待</p>
                                 <p className="paid-text">下一个百万富翁就是你</p>
-                                <p className="paid-text">长按扫描下方二维码进入课程公号</p>
+                                {!this.state.followSubscribe && <div><p className="paid-text">长按扫描下方二维码进入课程公号</p>
                                 <div className="page-div">
                                     <img className="page-image" src="./assets21Intro/image/tousha-qrcode.jpg"/>
-                                </div>
+                                    </div></div>}
 
                             </div>}
 
@@ -601,15 +634,15 @@ var PayPage = React.createClass({
                     </div>
                 }
 
-                {this.state.buttonPrice == 0 &&
-                    <div className="bottom-button attend-camp-button">
-                        {/*{!this.state.showWechatGroup && <span onClick={this.clickHandler} className={this.state.hasSenior==false ?"join-button":"whole-join-button"}>请等待开课</span>}*/}
+                {/*{this.state.buttonPrice == 0 &&*/}
+                    {/*<div className="bottom-button attend-camp-button">*/}
+                        {/*/!*{!this.state.showWechatGroup && <span onClick={this.clickHandler} className={this.state.hasSenior==false ?"join-button":"whole-join-button"}>请等待开课</span>}*!/*/}
 
                         {/*this.state.showWechatGroup && <span onClick={this.clickHandler} className={this.state.hasSenior==false ?"join-button":"whole-join-button"}>因人数较多，请耐心等待通过加群</span>*/}
 
                         {/*{!this.state.hasSenior && <span className="share-button" onClick={this.shareModalHandler}>邀请好友</span>}*/}
-                    </div>
-                }
+                    {/*</div>*/}
+                {/*}*/}
                 {/*{this.state.showShareHint && <div className="share-hint"></div>}*/}
                 {/*{this.state.showShareHint && <div className="share-text"></div>}*/}
 

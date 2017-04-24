@@ -185,7 +185,7 @@ class PayController {
                             // mchantType: 5, //商品类型 21days
                             // misc: Util.getUrlPara('dingyuehao')||'0'+'@'+seniorId+'@'+teacherId,
                             // price: sum,
-                            dealType: 100, //交易类型
+                            dealType: 101, //交易类型
                             itemId: 2017,
                             mchantType: 11, //商品类型 21days
                             misc: '',
@@ -256,7 +256,7 @@ class PayController {
                 Loading.hideLoading();
                 OnFire.fire('PAID_LOSER','loserPay');
                 //提醒用户加付费群
-                window.dialogAlertComp.show('提示','你好像被流星砸中...服务器君拿不到你的数据，请点击页面上的QQ群报名训练营','知道啦',()=>{},()=>{},false);
+                window.dialogAlertComp.show('提示','你好像被流星砸中了...服务器君拿不到你的数据，请点击页面上的QQ群报名训练营','知道啦',()=>{},()=>{},false);
             }
         });
     }
