@@ -144,17 +144,21 @@ var PayPage = React.createClass({
             console.log('albumId', int);
             this.setState({
                 int: (300 - int.number),
-                // int:0,
+                // int:-2,
                 // time:true
                 time:int.time,
-                showint:false,
+                // showint:false,
             });
 
             console.log('int', this.state.int);
-            if (this.state.int == 0){
+            if (this.state.int <= 0){
+
+                // alert(this.state.int);
 
                 this.setState({
-                    time:true
+                    int:0,
+                    time:true,
+                    showint:false,
                 });
             }
             console.log('time11111111111aasdad', this.state.time);
@@ -594,7 +598,8 @@ var PayPage = React.createClass({
                             <img src="./assets7Intro/image/number.png" />
                             <div className="show-number"> 剩余名额</div>
                         </div>
-                        {this.state.showint ? <span>300</span>:<span>{this.state.int}</span>}
+                        {/*<span>0</span>*/}
+                        {this.state.showint ? <span>{this.state.int}</span>:<span>0</span>}
                         </div>
                     </div>
                     <img src="./assets7Intro/image/campaign.jpg" className="intro-img"/></div> }
@@ -602,7 +607,7 @@ var PayPage = React.createClass({
                 {this.state.hasPaid && <div>
                     <div className="paid-bg" style={{height:window.innerHeight}}>
                         <div className="paid-text-box">
-                            {/*<p className="paid-text">恭喜你报名成功！</p>*/}
+                            <p className="paid-text">报名成功！</p>
                             {/*this.state.showWechatGroup && <div>
                                 <p className="paid-text">扫码加小助手，拉你进群：</p>
                                 <p className="paid-text">微信号：dahuilangshu</p>
@@ -610,7 +615,7 @@ var PayPage = React.createClass({
                             </div>*/}
                             {!this.state.showWechatGroup && <div>
 
-                                <p className="paid-text paid-times">每天上午九点准时开课</p>
+                                <p className="paid-text paid-times">明天上午九点准时开课</p>
                                 {/*<p className="paid-texts  tada infinite ">耐心等待</p>*/}
                                 <p className="paid-text">下一个百万富翁就是你</p>
                                 {!this.state.followSubscribe && <div><p className="paid-text">长按扫描下方二维码进入课程公号</p>
@@ -640,8 +645,9 @@ var PayPage = React.createClass({
 
                 {this.state.buttonPrice == 4 &&
                     <div className="bottom-button" onClick={this.getTime}>
+                        {/*<span onClick={this.didClickHandler}  className="join-button">报名截止下次再来吧</span>*/}
                         {this.state.time ? <span onClick={this.didClickHandler}  className="join-button">报名截止下次再来吧</span> : <span onClick={this.clickHandler}  className={this.state.hasSenior==false ?"join-button":"whole-join-button"}>立即参加（￥4）</span>}
-
+                        {/**/}
                         {/*{!this.state.hasSenior && <span className="share-button" onClick={this.shareModalHandler}>邀请好友</span>}*/}
                     </div>
                 }
