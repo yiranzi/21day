@@ -71,7 +71,7 @@ var Timeout = React.createClass({
         return (
             <div className="Timeout">
                 <div className="container">
-                    <img src="./assets21Intro/image/time.png" />
+                    <img src="./assets7Intro/image/time.png" />
                     {(this.state.days <= 0 && this.state.hours <= 0 && this.state.minutes <= 0 && this.state.seconds <= 0) ?
                         (<p>报名时间已过</p>) : (<div><p>报名时间还剩</p>
                             <div className="show-time">

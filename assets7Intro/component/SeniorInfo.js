@@ -13,7 +13,7 @@ var SeniorInfo = React.createClass({
 
     getInitialState() {
         return {
-            seniorImg: './assets21Intro/image/logo.png',
+            seniorImg: './assets7Intro/image/logo.png',
             seniorName: '你的小伙伴',
             test: false
         }
@@ -28,7 +28,7 @@ var SeniorInfo = React.createClass({
         .done((data)=> {
             console.log('data',data);
             this.setState({
-                seniorImg: data.portrait||'./assets21Intro/image/logo.png',
+                seniorImg: data.portrait||'./assets7Intro/image/logo.png',
                 seniorName: data.nickName
             });
         })

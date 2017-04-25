@@ -2,11 +2,11 @@ var webpack = require('webpack');
 
 module.exports = {
   entry:[
-    './assets21Intro/Entry.js'
+    './assets7Intro/Entry.js'
   ],
   output: {
-    path: __dirname + '/build21Intro/',
-    publicPath: 'build21Intro/',
+    path: __dirname + '/build7Intro/',
+    publicPath: 'build7Intro/',
     filename: 'bundle.js'
   },
   watch: true,

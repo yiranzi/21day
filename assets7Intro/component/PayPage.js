@@ -40,7 +40,7 @@ var PayPage = React.createClass({
 
             //21days2.0
             hasSenior: false, //是否有上线
-            buttonPrice: 3.8, //
+            buttonPrice: 4, //
             buttonChange:false,//判断提示时间截止panel
             //share
             showSharePanel: false, //显示分享panel
@@ -58,6 +58,7 @@ var PayPage = React.createClass({
     componentWillMount(){
         // this.timeout();
         this.signUpNumber();
+
 
         //分享成功后，通知后台，给用户加红包
         // OnFire.on('SHARE_SUCCESS',this.onShareSuccess);
@@ -143,13 +144,24 @@ var PayPage = React.createClass({
             console.log('albumId', int);
             this.setState({
                 int: (300 - int.number),
+                // int:0,
                 // time:true
                 time:int.time,
                 showint:false,
             });
+
             console.log('int', this.state.int);
-            console.log('time', this.state.time);
-        })
+            if (this.state.int == 0){
+
+                this.setState({
+                    time:true
+                });
+            }
+            console.log('time11111111111aasdad', this.state.time);
+            console.log('time111111111111', this.state.time);
+        });
+
+
     },
     /**
      * 分享成功时的操作
@@ -279,7 +291,7 @@ var PayPage = React.createClass({
                 this.setState({
                     hasRecord: false,
                     hasPaid: false, //未报名
-                    buttonPrice:3.8,
+                    buttonPrice:4,
                 });
             }
 
@@ -372,7 +384,7 @@ var PayPage = React.createClass({
     clickHandler() {
         switch(this.state.buttonPrice){
             // case 3.8:
-            case 3.8: this.payHandler();
+            case 4: this.payHandler();
                 break;
             case 0: {
                 //if(this.state.showWechatGroup){
@@ -579,31 +591,31 @@ var PayPage = React.createClass({
                         </div>
                     <div className="entered">
                         <div className="show-entered">
-                            <img src="./assets21Intro/image/number.png" />
+                            <img src="./assets7Intro/image/number.png" />
                             <div className="show-number"> 剩余名额</div>
                         </div>
                         {this.state.showint ? <span>300</span>:<span>{this.state.int}</span>}
                         </div>
                     </div>
-                    <img src="./assets21Intro/image/campaign.jpg" className="intro-img"/></div> }
+                    <img src="./assets7Intro/image/campaign.jpg" className="intro-img"/></div> }
                 {/*如果已经报名，打开别人的分享链接时展示*/}
                 {this.state.hasPaid && <div>
                     <div className="paid-bg" style={{height:window.innerHeight}}>
                         <div className="paid-text-box">
-                            <p className="paid-text">恭喜你报名成功！</p>
+                            {/*<p className="paid-text">恭喜你报名成功！</p>*/}
                             {/*this.state.showWechatGroup && <div>
                                 <p className="paid-text">扫码加小助手，拉你进群：</p>
                                 <p className="paid-text">微信号：dahuilangshu</p>
                                 <img src="build21Intro/dashu.jpg" className="dashu-img"/>
                             </div>*/}
                             {!this.state.showWechatGroup && <div>
-                                <p className="paid-text">锁定公号“长投”或“长投网”</p>
-                                <p className="paid-text">每天上午九点准时开课</p>
-                                <p className="paid-texts  tada infinite ">耐心等待</p>
+
+                                <p className="paid-text paid-times">每天上午九点准时开课</p>
+                                {/*<p className="paid-texts  tada infinite ">耐心等待</p>*/}
                                 <p className="paid-text">下一个百万富翁就是你</p>
                                 {!this.state.followSubscribe && <div><p className="paid-text">长按扫描下方二维码进入课程公号</p>
                                 <div className="page-div">
-                                    <img className="page-image" src="./assets21Intro/image/tousha-qrcode.jpg"/>
+                                    <img className="page-image" src="./assets7Intro/image/tousha-qrcode.jpg"/>
                                     </div></div>}
 
                             </div>}
@@ -626,9 +638,9 @@ var PayPage = React.createClass({
                     {/*</div>*/}
                 {/*}*/}
 
-                {this.state.buttonPrice == 3.8 &&
+                {this.state.buttonPrice == 4 &&
                     <div className="bottom-button" onClick={this.getTime}>
-                        {this.state.time ? <span onClick={this.didClickHandler}  className="join-button">报名截止下次再来吧</span> : <span onClick={this.clickHandler}  className={this.state.hasSenior==false ?"join-button":"whole-join-button"}>立即参加（￥3.8）</span>}
+                        {this.state.time ? <span onClick={this.didClickHandler}  className="join-button">报名截止下次再来吧</span> : <span onClick={this.clickHandler}  className={this.state.hasSenior==false ?"join-button":"whole-join-button"}>立即参加（￥4）</span>}
 
                         {/*{!this.state.hasSenior && <span className="share-button" onClick={this.shareModalHandler}>邀请好友</span>}*/}
                     </div>

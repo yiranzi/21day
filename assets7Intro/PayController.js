@@ -21,9 +21,9 @@ var DoneToast = require('./component/DoneToast');
 var OnFire =require('onfire.js');
 
 const GET_ORDER_API = Util.getAPIUrl('get_order');//获取统一下单API
-const COURSE_PRICE = 10;//课程价格，和长投数据库对应的数据，价格(元)
-const COURSE_SUM = 10;//传给微信后台的价格，价格(元)，由后台统一转换单位
-const CHEAP_PRICE = 10;//有上线的用户，享有的优惠价格
+const COURSE_PRICE = 4;//课程价格，和长投数据库对应的数据，价格(元)
+const COURSE_SUM = 4;//传给微信后台的价格，价格(元)，由后台统一转换单位
+const CHEAP_PRICE = 4;//有上线的用户，享有的优惠价格
 /**
  * 模块变量
  */
