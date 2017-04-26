@@ -250,6 +250,7 @@ class PayController {
             },
 
             error : (data)=>{
+                Util.postCnzzData("error-请求微信支付失败" + data.status + '-' + data.statusText + '-uid:' + userInfo.userId);
                 //标记请求结束
                 Loading.showLoading('请求微信支付失败');
                 payPullingFlag = false;

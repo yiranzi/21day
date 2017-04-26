@@ -152,9 +152,6 @@ var PayPage = React.createClass({
 
             console.log('int', this.state.int);
             if (this.state.int <= 0){
-
-                // alert(this.state.int);
-
                 this.setState({
                     int:0,
                     time:true,
@@ -412,6 +409,7 @@ var PayPage = React.createClass({
     payHandler() {
         Util.postCnzzData('点击报名');
 
+
         if(User.getUserInfo().userId){
             this.setState({
                 showBackup: false,
@@ -478,6 +476,7 @@ var PayPage = React.createClass({
      * 显示提示时间截止panel
      */
     didClickHandler(){
+        Util.postCnzzData('报名截止后点击报名');
         this.setState({
             buttonChange:true,
         })
@@ -586,7 +585,6 @@ var PayPage = React.createClass({
                 {this.state.showBackup && <a className="backup-text" href="http://jq.qq.com/?_wv=1027&k=41976jN">QQ群号：
                     <span className="red-text">429827363</span>
                     <p className="red-text  tada animated infinite">暗号：7天</p></a>}
-                {/*首次进入时展示的长图*/}
                 {!this.state.hasPaid &&
                 <div>
                     <div className="top-time-bottom">
@@ -603,7 +601,7 @@ var PayPage = React.createClass({
                         </div>
                     </div>
                     <img src="./assets7Intro/image/campaign.jpg" className="intro-img"/></div> }
-                {/*如果已经报名，打开别人的分享链接时展示*/}
+                {/*如果已经报名，报名链接时展示*/}
                 {this.state.hasPaid && <div>
                     <div className="paid-bg" style={{height:window.innerHeight}}>
                         <div className="paid-text-box">
