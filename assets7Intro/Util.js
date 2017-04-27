@@ -324,15 +324,15 @@ class Util {
         }
 
 
-        redirectUri = encodeURIComponent(redirectUri);
+        // redirectUri = encodeURIComponent(redirectUri);
+        //
+        // link = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=' + Util.getNormalAppId() +
+        //     '&redirect_uri=' + redirectUri +
+        //     '&response_type=code' +
+        //     '&scope=' + 'snsapi_base' +
+        //     '&state=minic#wechat_redirect';
 
-        link = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=' + Util.getNormalAppId() +
-            '&redirect_uri=' + redirectUri +
-            '&response_type=code' +
-            '&scope=' + 'snsapi_base' +
-            '&state=minic#wechat_redirect';
-
-        return link;
+        return redirectUri;
     }
 
     /**
