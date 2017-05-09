@@ -59,20 +59,12 @@ const courseSelect = React.createClass({
 
     renderList() {
         let dataList = this.state.dataList;
-
         if(!dataList || dataList.length == 0 ){
             return null;
-
         }else{
-
             let arr = [];
             let count = 0;
-
             for(let i of dataList) {
-                // console.log('=====id = ' + i.id);
-                // console.log('=====contentUpdate = ' + i.contentUpdate);
-                // 有更新的时候，去检查下是否已经打开该专辑
-                // 检查时根据当前日期 + 专辑id添加判断
                 let showUpdateIcon = false;
                 if (i.contentUpdate) {
                     showUpdateIcon = !Util.checkOpenedColumnFlag(i.id);
@@ -96,7 +88,6 @@ const courseSelect = React.createClass({
             }
             // 专辑列表倒叙排列，最新的放在最前面
             arr.reverse();
-
             return arr;
         }
 

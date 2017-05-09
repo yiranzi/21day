@@ -20,6 +20,9 @@ const CheckinPanel = require('../CheckinPanel');
 const DidCheckinPanel = require('../DidCheckinPanel');
 const EnterPanel = require('../EnterPanel');
 
+const ChooseBar = require('./Choose');
+const AudioBar = require('./Audio');
+
 
 
 const User = require('../../User');
@@ -55,7 +58,49 @@ const ListenCourse = React.createClass({
             isPlay: true,
             showEnterPanel:false,
             showEnterPaneltest:false,
+            currentPlaying: -1,
+            defaultAnswer: true,
+            // userChoose: [
+            //     [-1],[-1],[-1],[-1]
+            // ],
             myTest: 'PhP is Best',
+            questions: [
+                [
+                    {
+                        content: ['一a','二b','三c'],
+                        title: '1哪个是正确的?',
+                        answer: 0,
+                        process: true,
+                    },
+                ],
+                [
+                    {
+                        content: ['地球是方的','长投是好的1','天是圆的'],
+                        title: '2哪个是正确的?',
+                        answer: 1,
+                        process: true,
+                    },
+                ],
+                [
+                    {
+                        content: ['一a','二b','三c'],
+                        title: '3哪个是正确的?',
+                        process: true,
+                    },
+                ],
+            ],
+            audios: [
+                {
+                    audioSource: '连接1',
+                    title: '第一节',
+                    process: true,
+                },
+                {
+                    audioSource: '连接2',
+                    title: '第二节',
+                    process: true,
+                }
+            ]
         }
     },
 
@@ -246,6 +291,28 @@ const ListenCourse = React.createClass({
 
     },
 
+    /**
+     * 设置选中的答案
+     * @param fmid
+     */
+    OnChoosePass() {
+        console.log('pass');
+    },
+
+    /**
+     * 点击按钮的回调
+     * @returns {*}
+     */
+    OnAudioButton(index, isPlaying) {
+        console.log(index,isPlaying);
+        if (isPlaying) {
+            this.state.currentPlaying = index;
+        } else {
+            this.state.currentPlaying = -1;
+        }
+        console.log('现在播放的是',this.state.currentPlaying);
+    },
+
 
     /**
      *
@@ -265,13 +332,6 @@ const ListenCourse = React.createClass({
 
                     </Modal></div>
                 }
-                {/*{this.state.showEnterPaneltest && <div onClick={this.modalClickHandlertest}>*/}
-                {/*<Modal  hideOnTap={false}>*/}
-
-                {/*<EnterPanel/>*/}
-
-                {/*</Modal></div>*/}
-                {/*}*/}
                 <span>welcom</span>
                 <h2 className="fm-title">{this.state.fmTitle}</h2>
                 <h1 className="fm-title">{this.state.myTest}</h1>
@@ -289,9 +349,88 @@ const ListenCourse = React.createClass({
                     />
 
                 </div>
+                {this.renderLesson()}
             </div>
         )
     },
+
+
+
+    /**
+     * 渲染听课列表
+     * @returns {*}
+     */
+    renderLesson() {
+        console.log('startrender111');
+        let audios = this.state.audios;
+        let questions = this.state.questions;
+        let arr = [];
+        let count = 0;
+        //循环所有的FM
+        for (let i = 0;i < audios.length; i++) {
+            if(i === 0 || audios[i-1].process){
+                //如果满足...渲染FM
+                arr.push(this.renderFMBar(i, audios[i]))
+                //如果fm听完
+                if(audios[i].process){
+                    let lessonQuestions = questions[i];
+                    //循环某一节的所有的题目
+                    for (let j = 0; j < lessonQuestions.length; j++){
+                        //如果上一道题答对
+                        if( j === 0 || lessonQuestions[j-1].process) {
+                            //如果满足...渲染题目
+                            arr.push(this.renderChooseBar(lessonQuestions[j]))
+                        }
+                    }
+                }
+            } else {
+                break;
+            }
+        }
+        return arr;
+    },
+
+    /**
+     * 渲染播放音频列表
+     * @returns {*}
+     */
+    renderFMBar(index, FMContent) {
+        // let FMList = this.state.audios;
+        // let arr = [];
+        // let count = 0;
+        // if( !FMList ) {
+        //     return null;
+        // } else {
+        //     for(let item of FMList) {
+        //         // arr.push(<span key={count}>{item.audioSource}</span>)
+        //         arr.push(<ChooseBar question={this.state.questions[this.state.playingIndex][0]} passCallBack = {this.OnChoosePass}/>)
+        //         count++;
+        //     }
+        //     return arr;
+        // }
+        return <AudioBar
+            content = {FMContent}
+            playingIndex = {this.state.currentPlaying}
+            audioIndex={index}
+            audioCallBack = {this.OnAudioButton}/>
+    },
+
+    renderChooseBar(questions) {
+        if( !questions ) {
+            return null;
+        } else {
+            return <ChooseBar question={questions} passCallBack = {this.OnChoosePass}/>
+
+        }
+    },
+
+    renderCourseList() {
+        // let FMList = this.state.audios;
+        // for(let item of FMList) {
+        //     item.audioSource
+        // }
+    },
+
 
     /**
      * 渲染用户头像
