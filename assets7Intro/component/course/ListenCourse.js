@@ -64,6 +64,7 @@ const ListenCourse = React.createClass({
             //     [-1],[-1],[-1],[-1]
             // ],
             myTest: 'PhP is Best',
+            audiosTest: [],
             questions: [
                 [
                     {
@@ -176,17 +177,11 @@ const ListenCourse = React.createClass({
         Loading.showLoading('获取信息...');
 
         let fmid = this.props.params.courseId;
-        this.state.fmId =  this.props.params.courseId;
-        console.log('fmid获取',fmid);
-
-        // let fm = 20171;
-
-        Material.getFmInfoFromServer(fmid).always((fmInfo)=>{
+        this.state.fmId = this.props.params.courseId;
+        Material.getFmInfoFromServer(fmid).always((fmInfo) => {
             Loading.hideLoading();
-
-            // console.log('fmid',fmid);
-            console.log('fmInfo',fmInfo);
-            if(fmInfo){
+            console.log('fmInfo', fmInfo);
+            if (fmInfo) {
                 this.setState({
                     audioSource: fmInfo.audioSource,
                     commentCount: fmInfo.commentCount,
@@ -197,15 +192,37 @@ const ListenCourse = React.createClass({
                     fmId: fmInfo.fmId,
                 });
                 let fmid = this.state.fmId;
-                this.setShareConfig(fmid,fmInfo.fmTitle);
+                this.setShareConfig(fmid, fmInfo.fmTitle);
                 this.getFmColumn();
-
-
             }
-
-            console.log('fmid',this.state.fmId);
-        })
+        });
+        let arr = [];
+        Material.getFmInfoFromServer(fmid).always((fmInfo) => {
+            Loading.hideLoading();
+            console.log('fmInfo', fmInfo);
+            if (fmInfo) {
+                arr.push(fmInfo.audioSource)
+            }
+        });
+        Material.getFmInfoFromServer(20174).always((fmInfo) => {
+            Loading.hideLoading();
+            console.log('fmInfo', fmInfo);
+            if (fmInfo) {
+                arr.push(fmInfo.audioSource)
+            }
+        });
+        Material.getFmInfoFromServer(20175).always((fmInfo) => {
+            Loading.hideLoading();
+            console.log('fmInfo', fmInfo);
+            if (fmInfo) {
+                arr.push(fmInfo.audioSource)
+            }
+        });
+        this.setState({
+            audiosTest: arr,
+        });
     },
+
 
 
     /**
@@ -230,28 +247,7 @@ const ListenCourse = React.createClass({
             showEnterPanel: true,
         });
     },
-    /**
-     * 控制播放键操作
-     */
 
-    controlHandler() {
-        if (this.state.isPlaying) {
-            GlobalAudio.pause();
-            this.setState({
-                isPlaying: false
-            });
-            console.log('isPlaying: false');
-        } else {
-            GlobalAudio.play(this.state.audioSource, this.state.fmId);
-            console.log(this.state.fmId);
-            this.setState({
-                isPlaying: true
-            });
-            console.log('isPlaying: true');
-        }
-
-
-    },
 
     modalClickHandler() {
         this.setState({
@@ -309,14 +305,25 @@ const ListenCourse = React.createClass({
      * @returns {*}
      */
     OnAudioButton(index, isPlaying) {
-        console.log(index,isPlaying);
-        console.log('现在播放的是',this.state.currentPlaying);
+        console.log('fatther click', index, isPlaying);
         if (isPlaying) {
             this.setState({currentPlaying: -1});
         } else {
             this.setState({currentPlaying: index});
         }
-        console.log('现在播放的是',this.state.currentPlaying);
+        this.controlHandler(index, isPlaying)
+    },
+
+    /**
+     * 多个组件,同一个回调函数控制播放键操作
+     */
+    controlHandler(index, isPlaying) {
+        if (isPlaying) {
+            GlobalAudio.pause();
+        } else {
+            GlobalAudio.pause();
+            GlobalAudio.play(this.state.audioSource, this.state.fmId);
+        }
     },
 
 
@@ -351,7 +358,7 @@ const ListenCourse = React.createClass({
 
                     <img src={this.state.isPlaying ? './assets/image/player/play.png':'./assets/image/player/pause.png'}
                          className="play-pause-button"
-                         onClick={this.state.isPlay ? this.controlHandler : this.not_controlHandler}
+                         // onClick={this.state.isPlay ? this.controlHandler : this.not_controlHandler}
                     />
 
                 </div>
