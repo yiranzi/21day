@@ -72,6 +72,7 @@ var PayPage = React.createClass({
         OnFire.on('PAID_SUCCESS',(payWay)=>{
             if(!this.state.QQNum){
                 //查询报名
+                console.log('2')
                 this.postRegisterRecord(User.getUserInfo(),payWay)
             }else{
                 this.setState({
@@ -96,7 +97,7 @@ var PayPage = React.createClass({
             //todo
             // window.dialogAlertComp.show('报名成功','点击“立即加群”进入QQ群。也可以复制页面上的QQ群号，手动进群。请注意页面上的加群【暗号】哟~','知道啦',()=>{},()=>{},false);
         });
-
+        console.log('openid')
         let seniorId = Util.getUrlPara('ictchannel'),
             openId = User.getUserInfo().openId;
 
@@ -106,7 +107,9 @@ var PayPage = React.createClass({
         if(openId){
             //获取用户是否有报名记录
             //(同时绑定上下线关系，因为要在加入21天表后，才可以有后续行为)
-            this.postRegisterRecord(Util.getCurrentBatch(),User.getUserInfo());
+            console.log('3 3 ')
+            // this.postRegisterRecord(Util.getCurrentBatch(),User.getUserInfo());
+            this.postRegisterRecord(User.getUserInfo());
 
             //设置订阅
             this.setSubscribeInfo(User.getUserInfo().subscribe);
@@ -118,6 +121,7 @@ var PayPage = React.createClass({
         else{
             OnFire.on('OAUTH_SUCCESS',(userInfo)=>{
                 //获取用户是否有报名记录
+                console.log('4')
                 this.postRegisterRecord(userInfo);
 
                 //设置订阅
@@ -223,7 +227,7 @@ var PayPage = React.createClass({
     setSenior(seniorId,userId) {
         //seniorId则表示该用户拥有上线
         if(seniorId && seniorId!=userId){
-            console.log('userid',userId);
+            console.log('设置用户上线'+'userid',userId);
             this.sendSeniorInfo();
 
             this.setState({
@@ -242,7 +246,7 @@ var PayPage = React.createClass({
     postRegisterRecord (userInfo,payWay) {
         Loading.showLoading('获取信息...');
 
-        console.log('userInfo',userInfo);
+        console.log('是否报名'+'userInfo',userInfo);
 
         let fmall = 2017;
 
@@ -278,6 +282,7 @@ var PayPage = React.createClass({
                 OnFire.on('OAUTH_SUCCESS',(userInfo)=>{
                     console.log('OAUTH_SUCCESS-userInfo',userInfo);
                     //获取用户是否有报名记录
+                    console.log('1')
                     this.postRegisterRecord(userInfo);
 
                     //设置订阅
@@ -407,6 +412,7 @@ var PayPage = React.createClass({
      * 支付动作
      */
     payHandler() {
+        console.log('支付动作')
         Util.postCnzzData('点击报名');
 
 
@@ -578,6 +584,7 @@ var PayPage = React.createClass({
     render(){
         return (
             <div className="pay_page">
+
                 {/*。。。。。从上线发的链接打开时展示*/}
                 {/*{this.state.hasSenior && <SeniorInfo/>}*/}
 

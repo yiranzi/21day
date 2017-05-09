@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="author" content="ichangtou_LIP">
+    <meta name="Copyright" content="ichangtou">
+    <meta name="Keywords" content="买房,理财,投资,资产配置,MINI课">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no, minimal-ui">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection"content="telephone=no">
+
+    <title>7天训练营报名</title>
+    <style>
+        /* loading开始 */
+        * {
+            -webkit-box-sizing: border-box;
+            -moz-box-sizing: border-box;
+            box-sizing: border-box;
+
+            padding: 0;
+            margin: 0;
+        }
+        html, body {
+            height: 100%;
+        }
+        body {
+            width: 100%;
+            font-size: 16px;
+            line-height: 1.2;
+            font-family: "Helvetica Neue","微软雅黑";
+        }
+        .spinner-outer {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate3d(-50%, -50%, 0);
+            -webkit-transform: translate3d(-50%, -50%, 0);
+            /*width: 7rem;*/
+            width: 125px;
+            /*height: 7rem;*/
+            height: 125px;
+            z-index: 2;
+            background-color: rgba(255,255,255,.85);
+            border-radius: 6px;
+        }
+        .spinner {
+            position: relative;
+            top: 25%;
+            margin: 0 auto;
+            width: 45px;
+            height: 45px;
+            font-size: 16px;
+        }
+        .container1 > div, .container2 > div, .container3 > div {
+            width: 12px;
+            height: 12px;
+            background-color: #04be02;
+
+            border-radius: 50%;
+            position: absolute;
+            -webkit-animation: bouncedelay 1.2s infinite ease-in-out;
+            animation: bouncedelay 1.2s infinite ease-in-out;
+            -webkit-animation-fill-mode: both;
+            animation-fill-mode: both;
+        }
+        .spinner .spinner-container {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+        }
+        .container2 {
+            -webkit-transform: rotateZ(45deg);
+            transform: rotateZ(45deg);
+        }
+        .container3 {
+            -webkit-transform: rotateZ(90deg);
+            transform: rotateZ(90deg);
+        }
+        .circle1 { top: 0; left: 0; }
+        .circle2 { top: 0; right: 0; }
+        .circle3 { right: 0; bottom: 0; }
+        .circle4 { left: 0; bottom: 0; }
+        .container2 .circle1 {
+            -webkit-animation-delay: -1.1s;
+            animation-delay: -1.1s;
+        }
+        .container3 .circle1 {
+            -webkit-animation-delay: -1.0s;
+            animation-delay: -1.0s;
+        }
+        .container1 .circle2 {
+            -webkit-animation-delay: -0.9s;
+            animation-delay: -0.9s;
+        }
+        .container2 .circle2 {
+            -webkit-animation-delay: -0.8s;
+            animation-delay: -0.8s;
+        }
+        .container3 .circle2 {
+            -webkit-animation-delay: -0.7s;
+            animation-delay: -0.7s;
+        }
+        .container1 .circle3 {
+            -webkit-animation-delay: -0.6s;
+            animation-delay: -0.6s;
+        }
+        .container2 .circle3 {
+            -webkit-animation-delay: -0.5s;
+            animation-delay: -0.5s;
+        }
+        .container3 .circle3 {
+            -webkit-animation-delay: -0.4s;
+            animation-delay: -0.4s;
+        }
+        .container1 .circle4 {
+            -webkit-animation-delay: -0.3s;
+            animation-delay: -0.3s;
+        }
+        .container2 .circle4 {
+            -webkit-animation-delay: -0.2s;
+            animation-delay: -0.2s;
+        }
+        .container3 .circle4 {
+            -webkit-animation-delay: -0.1s;
+            animation-delay: -0.1s;
+        }
+        @-webkit-keyframes bouncedelay {
+            0%, 80%, 100% { -webkit-transform: scale(0.0) }
+            40% { -webkit-transform: scale(1.0) }
+        }
+        @keyframes bouncedelay {
+            0%, 80%, 100% {
+                transform: scale(0.0);
+                -webkit-transform: scale(0.0);
+            } 40% {
+                  transform: scale(1.0);
+                  -webkit-transform: scale(1.0);
+              }
+        }
+        .loading-progress {
+            color: #4b4b4b;
+            position: absolute;
+            text-align: center;
+            bottom: -80%;
+            width: 100%;
+        }
+        /* loading样式结束 */
+    </style>
+</head>
+
+<body>
+
+<!-- 进入页面的初始loading -->
+<div class="spinner-outer" id="loading">
+    <div class="spinner">
+        <div class="spinner-container container1">
+            <div class="circle1"></div>
+            <div class="circle2"></div>
+            <div class="circle3"></div>
+            <div class="circle4"></div>
+        </div>
+        <div class="spinner-container container2">
+            <div class="circle1"></div>
+            <div class="circle2"></div>
+            <div class="circle3"></div>
+            <div class="circle4"></div>
+        </div>
+        <div class="spinner-container container3">
+            <div class="circle1"></div>
+            <div class="circle2"></div>
+            <div class="circle3"></div>
+            <div class="circle4"></div>
+        </div>
+        <p class="loading-progress"><span id="loadPrencetage">10%</span>...</p>
+    </div>
+</div>
+
+<!--微信loading -->
+<div class="weui_loading_toast" id="weLoader" style="display: none">
+</div>
+
+
+<!--DOM入口 -->
+<div id="root">
+
+</div>
+<div id="audio"></div>
+<span>123</span>
+
+<!--Modal-->
+<div id="modal"></div>
+
+<!--Toast-->
+<div id="toast"></div>
+<div id="errorToast"></div>
+
+<div id="dialog"></div>
+
+<!--警告窗口 -->
+<div id="dialogAlert"></div>
+
+
+<script src="https://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+
+<!--每次提交代码前修改v的值，使代码生效更快-->
+<script src="build7IntroTest/bundle.js?v=31"></script>
+<script type="text/javascript">
+    if( location.href.indexOf('h5.ichangtou.com') > 1 ){
+        var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");
+        document.write(unescape("%3Cspan style='display:none;' " +
+            "id='cnzz_stat_icon_1261792526'%3E%3C/span%3E%3Cscript src='" +
+            cnzz_protocol + "s95.cnzz.com/z_stat.php%3Fid%3D1261792526' type='text/javascript'%3E%3C/script%3E"));
+    }else {
+        var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");
+        document.write(unescape("%3Cspan style='display:none;' id='cnzz_stat_icon_1259367582'%3E%3C/span%3E%3Cscript src='" +
+                cnzz_protocol + "s11.cnzz.com/z_stat.php%3Fid%3D1259367582' type='text/javascript'%3E%3C/script%3E"));
+
+    }
+</script>
+
+</body>
+</html>

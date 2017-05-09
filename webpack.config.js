@@ -5,7 +5,7 @@ module.exports = {
     './assets7Intro/Entry.js'
   ],
   output: {
-    path: __dirname + '/build7Intro/',
+    path: __dirname + '/build7IntroTest/',
     publicPath: 'build7Intro/',
     filename: 'bundle.js'
   },
@@ -31,7 +31,8 @@ module.exports = {
   plugins : [
     new webpack.DefinePlugin({
       "process.env" : {
-        NODE_ENV: JSON.stringify('production')
+        // NODE_ENV: JSON.stringify('production')
+        NODE_ENV: JSON.stringify('development')
       }
     })
   ]

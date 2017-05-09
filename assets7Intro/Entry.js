@@ -21,6 +21,8 @@ var Tabbar = require('./component/Tabbar');
 
 var style = require('./css/style.scss');
 
+var InnerRouter = require('./InnerRouter');
+
 if( !Util.getUrlPara('code') ) {
     User.redirectToBaseInfo();
 }
@@ -33,7 +35,9 @@ $(document).ready(() => {
     new Dimensions().init();
 
     window.entry = ()=>{
-        return ReactDom.render(<Main/>, $('#root')[0]);
+        // return ReactDom.render(<Main/>, $('#root')[0]);
+        return ReactDom.render(<InnerRouter/>, $('#root')[0]);
+
     };
 
     //Loading初始化

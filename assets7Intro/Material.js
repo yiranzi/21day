@@ -34,6 +34,109 @@ const BACKUP_QQ = [
 ];
 
 class Material {
+    /**
+     * 获取链接中的参数内容
+     * @param key
+     * @returns {Array}
+     */
+    static getUrlPara( key ) {
+        let href = location.href,
+            res = href.split( key + '=' );
+
+        if( res[1] ) {
+            res = decodeURIComponent(res[1].split('&')[0]);
+        }else {
+            res = null;
+        }
+        return res;
+    }
+
+    /***
+     * 判断是否报名
+     * @param albumId
+     * @returns {*}
+     */
+    static getJudgeFromServer(albumId){
+        var User = require('./User');
+        const Util = require('./Util'),
+            apiUrl = Util.getAPIUrl('get_judge_signup').replace('{albumId}',albumId);
+        let userInfo = User.getUserInfo();
+        return $.ajax(
+            {
+                url: apiUrl,
+                type: 'put',
+                cache: false,
+                contentType: 'application/json;charset=utf-8',
+                headers: {
+                    Accept: 'application/json'
+                },
+                beforeSend: (request)=>{
+                    request.setRequestHeader("X-iChangTou-Json-Api-Token", Util.getApiToken());
+                    request.setRequestHeader("X-iChangTou-Json-Api-User", userInfo.userId);
+                }
+            }
+        )
+    }
+
+    /**
+     * 获取fm信息
+     * @param fmid
+     */
+    static getFmInfoFromServer(fmid) {
+        console.log('fmid');
+        var User = require('./User');
+        const Util = require('./Util'),
+            apiUrl = Util.getAPIUrl('get_fmid_info').replace('{fmId}',fmid);
+        return $.ajax(
+            {
+                url: apiUrl,
+                type: 'get',
+                cache: false,
+                contentType: 'application/json;charset=utf-8',
+                headers: {
+                    Accept: 'application/json'
+                },
+                beforeSend: (request)=>{
+                    request.setRequestHeader("X-iChangTou-Json-Api-Token", Util.getApiToken());
+                    request.setRequestHeader("X-iChangTou-Json-Api-User", User.getUserInfo().userId);
+                }
+            }
+        )
+    }
+
+    /**
+     * 更新学习时间
+     * @param fmid
+     * @param duration 秒
+     * @returns {*}
+     */
+    static updateLearningTime() {
+        const Util = require('./Util');
+        const User = require('./User');
+
+        let userInfo = User.getUserInfo();
+        let apiUrl = Util.getAPIUrl('post_audio_time'); //打卡
+
+        let jsonData = JSON.stringify({
+            fmid: 0,
+        });
+
+        return $.ajax({
+            url: apiUrl,
+            data: jsonData,
+            type: 'post',
+            cache: false,
+            contentType: 'application/json;charset=utf-8',
+            headers: {
+                Accept:"application/json"
+            },
+            beforeSend: function(request) {
+                request.setRequestHeader("X-iChangTou-Json-Api-User", userInfo.userId);
+                request.setRequestHeader("X-iChangTou-Json-Api-Token", Util.getApiToken());
+            }
+        });
+    }
+
 
     /**
      * 获取后备QQ号
