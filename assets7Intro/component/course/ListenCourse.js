@@ -99,6 +99,11 @@ const ListenCourse = React.createClass({
                     audioSource: '连接2',
                     title: '第二节',
                     process: true,
+                },
+                {
+                    audioSource: '连接2',
+                    title: '第二节',
+                    process: true,
                 }
             ]
         }
@@ -305,10 +310,11 @@ const ListenCourse = React.createClass({
      */
     OnAudioButton(index, isPlaying) {
         console.log(index,isPlaying);
+        console.log('现在播放的是',this.state.currentPlaying);
         if (isPlaying) {
-            this.state.currentPlaying = index;
+            this.setState({currentPlaying: -1});
         } else {
-            this.state.currentPlaying = -1;
+            this.setState({currentPlaying: index});
         }
         console.log('现在播放的是',this.state.currentPlaying);
     },

@@ -26,27 +26,25 @@ const AudioBar = React.createClass({
         console.log('1.yiran');
     },
 
-    componentWillReceiveProps() {
-        console.log('change');
-        this.ifThisPlaying();
+    componentWillReceiveProps(nextProps) {
+        console.log(nextProps);
+        console.log('判断是否正在播放')
+        if (this.state.index === nextProps.playingIndex) {
+            console.log(nextProps.playingIndex);
+            this.setState({isPlaying: true});
+        } else {
+            console.log(nextProps.playingIndex);
+            this.setState({isPlaying: false});
+        }
     },
 
 
     controlHandler: function() {
-        this.state.isPlaying = !this.state.isPlaying
-        if (this.state.isPlaying)
-        {
-            console.log('开始播放')
-            //TODO  播放
-        } else {
-            console.log('暂停')
-            //TODO  暂停
-        }
+        console.log('child click!')
         this.props.audioCallBack(this.state.index, this.state.isPlaying);
     },
 
     render() {
-
         let content = this.props.content
         return(
             <div className="control-button-container">
@@ -58,15 +56,6 @@ const AudioBar = React.createClass({
                 <p>{content.title}</p>
             </div>
         )
-    },
-
-    ifThisPlaying() {
-        console.log('判断是否正在播放')
-        if (this.state.index === this.props.playingIndex) {
-            this.setState({isPlaying: true});
-        } else {
-            this.setState({isPlaying: false});
-        }
     }
 });
 
