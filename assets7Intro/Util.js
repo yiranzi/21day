@@ -28,7 +28,7 @@ var PAID_APPID =  Config.environment ?FORMAL_PAID_APPID : TEST_PAID_APPID;
 
 const FORMAL_API_DOMAIN = 'https://m.ichangtou.com/';//生产环境 API域名
 // const TEST_API_DOMAIN = 'http://devh5.ichangtou.com.cn/';//测试环境 API域名
-const TEST_API_DOMAIN = 'https://test.ichangtou.com/';//测试环境 API域名
+const TEST_API_DOMAIN = 'https://geek.ichangtou.com/';//测试环境 API域名
 
 const API_URL_DOMAIN = Config.environment ? FORMAL_API_DOMAIN : TEST_API_DOMAIN; //开发环境or生产环境
 
@@ -38,14 +38,12 @@ const FORMAL_API_Token = 'DE:_:w2qlJFV@ccOeiq41ENp><ETXh3o@aX8M<[_QOsZ<d8[Yz:NIM
 const TEST_API_Token = 'XX:_:w2qlJFV@ccOeiq41ENp><ETXh3o@aX8M<[_QOsZ<d8[Yz:NIMcKwpjtBk0e';//测试环境 API Token
 const API_Token = Config.environment ? FORMAL_API_Token : TEST_API_Token; //开发环境or生产环境
 
-
-
 const MINIC_ID = '7';  //迷你课买房与资产配置课程ID
 const MINIC_NAME = '7天训练营报名'; //迷你课课程名称  英国脱欧
-const VERSION = '1.0.0'; // 项目版本
+const VERSION = '1.1.0_test'; // TODO roy 项目版本
 const CHARGE_INDEX = 0; //收费部分下标（0~N）
 
-const CURRENT_BATCH = 1; //当前期数 TODO
+const CURRENT_BATCH = 2; //当前期数
 
 const SHARE_TITLE = '邀请你一起参加7天小白理财训练营';
 
@@ -92,12 +90,11 @@ const API_URL_GROUP = {
 
     //7day
     'get_registered': '7eval/signUpNumber/{albumId}',//获取报名人数
-    //用户是否已报名
-    'has_registered': '7eval/judgeusersignup/{albumId}',
 
     //音频
     'get_fmid_info': 'fm/broadcast/{fmId}',
-    'get_judge_signup': '7eval/judgeusersignup/{albumId}', //判断用户是否购买
+    //用户是否已报名
+    'get_judge_signup': '7eval/judgeusersignup/' + CURRENT_BATCH, //判断用户是否购买
 
     //
     'post_audio_time': 'fm/learn-audio-record', //学习时间和排名

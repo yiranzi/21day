@@ -56,10 +56,10 @@ class Material {
      * @param albumId
      * @returns {*}
      */
-    static getJudgeFromServer(albumId){
+    static getJudgeFromServer() {
         var User = require('./User');
         const Util = require('./Util'),
-            apiUrl = Util.getAPIUrl('get_judge_signup').replace('{albumId}',albumId);
+            apiUrl = Util.getAPIUrl('get_judge_signup');
         let userInfo = User.getUserInfo();
         return $.ajax(
             {
@@ -242,46 +242,6 @@ class Material {
 
         });
     }
-
-
-    /**
-     * 获取注册记录
-     * @param albumId
-     * @param userId
-     * @returns {*}
-     */
-    static getRegisterRecord(userId,albumId) {
-        // const Util = require('./Util');
-        // const User = require('./User');
-        console.log('userIdssssssssss',userId);
-        console.log('albumId',albumId);
-        if(!userId){
-            Toast.show('用户未登录，请退出重试');
-            return;
-        }
-        // let userInfo = User.getUserInfo();
-        let apiUrl = Util.getAPIUrl('has_registered').replace('{albumId}',albumId);
-        //
-        // let data = JSON.stringify({
-        //     termId: termId+''
-        // });
-        return $.ajax({
-            url: apiUrl,
-            type: 'put',
-            // data: data,
-            cache: false,
-            contentType: 'application/json;charset=utf-8',
-            dataType:'json',
-            headers: {
-                Accept:"application/json"
-            },
-            beforeSend: function(request) {
-                request.setRequestHeader("X-iChangTou-Json-Api-User", userId);
-                request.setRequestHeader("X-iChangTou-Json-Api-Token", Util.getApiToken());
-            }
-        });
-    }
-
 
     /**
      * 获取上线信息

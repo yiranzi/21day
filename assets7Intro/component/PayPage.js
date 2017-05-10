@@ -243,41 +243,26 @@ var PayPage = React.createClass({
      * @param userInfo
      * @param payWay
      */
-    postRegisterRecord (userInfo,payWay) {
+    postRegisterRecord (userInfo) {
         Loading.showLoading('获取信息...');
 
         console.log('是否报名'+'userInfo',userInfo);
 
         let fmall = 2017;
 
-        Material.getRegisterRecord(userInfo.userId,fmall).done((record)=>{
-
+        Material.getJudgeFromServer().done((record)=>{
             Loading.hideLoading();
             console.log('record',record);
 
             if(record){
-
-                ////todo 123343135
-                //
-                //if(record.qqGroup ==123343135){
-                //    //大群人到微信号
-                //    this.setState({
-                //        buttonPrice: 0,
-                //        hasRecord: true,
-                //        hasPaid: true, //已报名
-                //        showWechatGroup: true
-                //    });
-                //}
-                //else{
-
-                    this.setState({
-                        hasRecord: true,
-                        hasPaid: true, //已报名
-                        QQNum: record.qqGroup, //QQ群号
-                        QQLink: record.qqGroupUrl, //QQ群链接
-                        QQCode: record.secret, //QQ暗号
-                        buttonPrice: 0
-                    });
+                this.setState({
+                    hasRecord: true,
+                    hasPaid: true, //已报名
+                    QQNum: record.qqGroup, //QQ群号
+                    QQLink: record.qqGroupUrl, //QQ群链接
+                    QQCode: record.secret, //QQ暗号
+                    buttonPrice: 0
+                });
 
                 OnFire.on('OAUTH_SUCCESS',(userInfo)=>{
                     console.log('OAUTH_SUCCESS-userInfo',userInfo);
@@ -291,16 +276,13 @@ var PayPage = React.createClass({
                     //设置上线
                     // this.setSenior(seniorId,userInfo.userId);
                 });
-
-
-            }else{
+            } else {
                 this.setState({
                     hasRecord: false,
                     hasPaid: false, //未报名
                     buttonPrice:4,
                 });
             }
-
         })
         .fail(()=>{
             Loading.hideLoading();
@@ -404,9 +386,9 @@ var PayPage = React.createClass({
             default:
                 console.log('出错');
                 break;
-        }  
+        }
     },
-    
+
 
     /**
      * 支付动作
