@@ -15,19 +15,36 @@ const courseSelect = React.createClass({
     //     return{
     //         playbarWidth: 0
     //     }
-    // },
-
 
     getInitialState: function() {
         return {
             liked: false,
-            dataList: [0,0,1,2,-1,-1,-1]
+            dataList: [1,1,0,2,2,0,0],
+            type: [
+                '未解锁',
+                '新的!未听!',
+                '没听完',
+                '已完成'
+            ]
         };
     },
 
     componentWillMount() {
-        console.log('1.yiran');
-        // OnFire.on('PLAY',this.keepgoing);
+        console.log('1.yiran12');
+        if (!this.counter) {
+            this.counter = 0;
+        }
+        this.counter = this.counter + 1
+        //TODO 接收完成课程.缺少参数.1
+        // OnFire.on('Pass_Lesson',this.keepgoing);
+        //
+        OnFire.on('Pass_Lesson', (index)=>{
+            console.log('接收到作业通过的回调');
+            this.state.dataList[index] = 3;
+            let localData = this.state.dataList;
+            console.log(this.state.dataList);
+            // this.setState({dataList: localData});
+        })
     },
 
 
@@ -59,20 +76,18 @@ const courseSelect = React.createClass({
 
     renderList() {
         let dataList = this.state.dataList;
+        console.log(this.state.dataList);
         if(!dataList || dataList.length == 0 ){
             return null;
         }else{
             let arr = [];
             let count = 0;
             for(let i of dataList) {
-                let showUpdateIcon = false;
-                if (i.contentUpdate) {
-                    showUpdateIcon = !Util.checkOpenedColumnFlag(i.id);
-                }
                 console.log((20171 + count));
                 arr.push(<div className="column-container" key={count}>
-                    <Link to={"/course/"+ (20171 + count)}>
+                    <Link to={{pathname:"/course/"+ (20171 + count),query:{name: i}}}>
                         <span>{20171 + count}</span>
+                        <span>{this.state.type[i]}</span>
                         {/*<img src={i.cover} className="column-cover"/>*/}
                         {/*<div className="column-info">*/}
                             {/*<div className="info-title-bottom">*/}

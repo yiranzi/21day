@@ -68,44 +68,33 @@ const ListenCourse = React.createClass({
             questions: [
                 [
                     {
-                        content: ['一a','二b','三c'],
+                        content: ['增长最帅','PHP is Best','no bug no game'],
                         title: '1哪个是正确的?',
                         answer: 0,
-                        process: true,
+                        process: false,
                     },
                 ],
                 [
                     {
-                        content: ['地球是方的','长投是好的1','天是圆的'],
+                        content: ['地球是方的','长投是好的','天是圆的'],
                         title: '2哪个是正确的?',
                         answer: 1,
-                        process: true,
+                        process: false,
                     },
                 ],
-                [
-                    {
-                        content: ['一a','二b','三c'],
-                        title: '3哪个是正确的?',
-                        process: true,
-                    },
-                ],
+
             ],
             audios: [
                 {
                     audioSource: '连接1',
                     title: '第一节',
-                    process: true,
+                    process: false,
                 },
                 {
                     audioSource: '连接2',
                     title: '第二节',
-                    process: true,
+                    process: false,
                 },
-                {
-                    audioSource: '连接2',
-                    title: '第二节',
-                    process: true,
-                }
             ]
         }
     },
@@ -125,6 +114,7 @@ const ListenCourse = React.createClass({
         }
 
         OnFire.on('AUDIO_END',()=>{
+            console.log('Fire AUDIO_END end!!!!!')
             // 听完后自动播放下一节
             if (this.state.nextIssue) {
                 // this.clickNextHandler();
@@ -133,6 +123,9 @@ const ListenCourse = React.createClass({
                     isPlaying: false
                 })
             }
+            this.state.audios[this.state.currentPlaying].process = true;
+            let localAudios = this.state.audios;
+            this.setState({audios: localAudios});
         });
 
         // Util.postCnzzData('点击小节',this.state.fmid);
@@ -197,21 +190,14 @@ const ListenCourse = React.createClass({
             }
         });
         let arr = [];
-        Material.getFmInfoFromServer(fmid).always((fmInfo) => {
+        Material.getFmInfoFromServer(20171).always((fmInfo) => {
             Loading.hideLoading();
             console.log('fmInfo', fmInfo);
             if (fmInfo) {
                 arr.push(fmInfo.audioSource)
             }
         });
-        Material.getFmInfoFromServer(20174).always((fmInfo) => {
-            Loading.hideLoading();
-            console.log('fmInfo', fmInfo);
-            if (fmInfo) {
-                arr.push(fmInfo.audioSource)
-            }
-        });
-        Material.getFmInfoFromServer(20175).always((fmInfo) => {
+        Material.getFmInfoFromServer(20172).always((fmInfo) => {
             Loading.hideLoading();
             console.log('fmInfo', fmInfo);
             if (fmInfo) {
@@ -296,8 +282,11 @@ const ListenCourse = React.createClass({
      * 设置选中的答案
      * @param fmid
      */
-    OnChoosePass() {
+    OnChoosePass(index) {
         console.log('pass');
+        this.state.questions[this.state.currentPlaying][index].process = true;
+        let localQuestions = this.state.questions;
+        this.setState({questions: localQuestions});
     },
 
     /**
@@ -321,8 +310,7 @@ const ListenCourse = React.createClass({
         if (isPlaying) {
             GlobalAudio.pause();
         } else {
-            GlobalAudio.pause();
-            GlobalAudio.play(this.state.audioSource, this.state.fmId);
+            GlobalAudio.play(this.state.audiosTest[index]);
         }
     },
 
@@ -351,22 +339,25 @@ const ListenCourse = React.createClass({
                 <span>11{this.state.isPlay}</span>
                 <span>{this.state.isPlay ? "/"+this.state.fmId+"/comment" : ''}</span>
                 <img src={this.state.cover} className="fm-cover"/>
-
                 <AudioProgressBar/>
-
                 <div className="control-button-container">
-
-                    <img src={this.state.isPlaying ? './assets/image/player/play.png':'./assets/image/player/pause.png'}
-                         className="play-pause-button"
-                         // onClick={this.state.isPlay ? this.controlHandler : this.not_controlHandler}
-                    />
-
                 </div>
+                <div>{this.props.location.query.name}</div>
                 {this.renderLesson()}
+                {this.passLessonRender()}
             </div>
         )
     },
 
+    passLessonRender() {
+        let question = this.state.questions[this.state.questions.length - 1];
+        if(question[question.length - 1].process === true) {
+            let index = this.props.params.courseId - 20171;
+            console.log('fire!',index);
+            OnFire.fire('Pass_Lesson',index);
+            return (<div>祝贺 完成本节 这是你的道具卡 快快可以你的战利品吧!!</div>);
+        }
+    },
 
 
     /**
@@ -379,25 +370,29 @@ const ListenCourse = React.createClass({
         let questions = this.state.questions;
         let arr = [];
         let count = 0;
+
+        let allPass = false;
+        if (this.props.location.query.name === 3) {
+            allPass = true;
+        }
         //循环所有的FM
+        OUT:
         for (let i = 0;i < audios.length; i++) {
-            if(i === 0 || audios[i-1].process){
-                //如果满足...渲染FM
+            //如果满足...渲染FM.无条件渲染fm
+            if(allPass || i === 0 || questions[i-1][(questions[i-1].length) - 1].process) {
                 arr.push(this.renderFMBar(i, audios[i]))
                 //如果fm听完
-                if(audios[i].process){
+                if(allPass || audios[i].process){
                     let lessonQuestions = questions[i];
                     //循环某一节的所有的题目
                     for (let j = 0; j < lessonQuestions.length; j++){
                         //如果上一道题答对
-                        if( j === 0 || lessonQuestions[j-1].process) {
+                        if( allPass || j === 0 || lessonQuestions[j-1].process) {
                             //如果满足...渲染题目
-                            arr.push(this.renderChooseBar(lessonQuestions[j]))
-                        }
+                            arr.push(this.renderChooseBar(lessonQuestions[j], j))
+                        } else break OUT;
                     }
-                }
-            } else {
-                break;
+                } else break OUT;
             }
         }
         return arr;
@@ -428,11 +423,11 @@ const ListenCourse = React.createClass({
             audioCallBack = {this.OnAudioButton}/>
     },
 
-    renderChooseBar(questions) {
+    renderChooseBar(questions, questionIndex) {
         if( !questions ) {
             return null;
         } else {
-            return <ChooseBar question={questions} passCallBack = {this.OnChoosePass}/>
+            return <ChooseBar index = {questionIndex} question={questions} passCallBack = {this.OnChoosePass}/>
 
         }
     },
