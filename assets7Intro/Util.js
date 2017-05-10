@@ -44,6 +44,9 @@ const VERSION = '1.1.0_test'; // TODO roy 项目版本
 const CHARGE_INDEX = 0; //收费部分下标（0~N）
 
 const CURRENT_BATCH = 2; //当前期数
+const END_TIME = [2017,5,11,24,0,0]; // TODO roy 截止时间，需要和后台同步
+const USER_NUMBER = 1000; // TODO roy 活动报名总人数
+
 
 const SHARE_TITLE = '邀请你一起参加7天小白理财训练营';
 
@@ -89,12 +92,12 @@ const API_URL_GROUP = {
     'get_first_share': '21enter/first-share',
 
     //7day
-    'get_registered': '7eval/signUpNumber/{albumId}',//获取报名人数
+    'get_registered': '7day/signUpNumber/' + CURRENT_BATCH,//获取报名人数
 
     //音频
     'get_fmid_info': 'fm/broadcast/{fmId}',
     //用户是否已报名
-    'get_judge_signup': '7eval/judgeusersignup/' + CURRENT_BATCH, //判断用户是否购买
+    'get_judge_signup': '7day/judgeusersignup/' + CURRENT_BATCH, //判断用户是否购买
 
     //
     'post_audio_time': 'fm/learn-audio-record', //学习时间和排名
@@ -680,6 +683,17 @@ class Util {
     //     return  [years,month,strDates,hours,minutess,seconds]
     // }
 
+    /** 获取截止时间
+    */
+    static getEndTime() {
+        return END_TIME;
+    }
+
+    /** 获取活动报名人数
+    */
+    static getUserNumber() {
+        return USER_NUMBER;
+    }
 
 }
 window.Util = Util;

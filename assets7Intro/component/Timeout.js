@@ -7,6 +7,7 @@ var ReactDom = require('react-dom');
 var Util = require('../Util');
 var PayPage = require('./PayPage');
 
+var timer = null;
 
 var Timeout = React.createClass({
 
@@ -45,7 +46,10 @@ var Timeout = React.createClass({
         let f_minutes = f_time[4];
         let f_seconds = f_time[5];
 
-        setInterval(()=>{
+        if (timer) {
+          clearInterval(timer);
+        }
+        timer = setInterval(()=>{
             let time = Util.FormatTime(f_years,f_mounths,f_days,f_hours,f_minutes,f_seconds);
             let days = time[0];
             let hours = time[1];
@@ -56,8 +60,9 @@ var Timeout = React.createClass({
                 // this.props.stopVote();
                 // this.props.timeout();
             }
+
             this.setState({
-                days:days,
+                days: days,
                 hours: hours,
                 minutes: minutes,
                 seconds: seconds,
@@ -66,13 +71,19 @@ var Timeout = React.createClass({
 
     },
 
+    componentWillUnmount() {
+        if (timer) {
+            clearInterval(timer);
+        }
+    },
+
 
     render() {
         return (
             <div className="Timeout">
                 <div className="container">
                     <img src="./assets7Intro/image/time.png" />
-                    {(this.state.days <= 0 && this.state.hours <= 0 && this.state.minutes <= 0 && this.state.seconds <= 0) ?
+                    {this.props.hasEnded || (this.state.days <= 0 && this.state.hours <= 0 && this.state.minutes <= 0 && this.state.seconds <= 0) ?
                         (<p>报名时间已过</p>) : (<div><p>报名时间还剩</p>
                             <div className="show-time">
                                 {this.state.days > 0 ? (<span>{this.state.days}天</span>) : (null)}

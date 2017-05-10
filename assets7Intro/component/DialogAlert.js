@@ -82,7 +82,7 @@ var DialogAlert = React.createClass({
             <div className={"weui_dialog_alert dialog-alert " + display}>
                 <div className="weui_mask"></div>
                 <div className="weui_dialog">
-                    <div className="weui_dialog_hd"><strong class="weui_dialog_title">{this.state.title}</strong></div>
+                    <div className="weui_dialog_hd"><strong className="weui_dialog_title">{this.state.title}</strong></div>
 
                     <div className="weui_dialog_bd">{this.state.desc}</div>
 

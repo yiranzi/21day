@@ -350,12 +350,11 @@ class Material {
      * @param albumId
      * @returns {*}
      */
-    static getRegistered(albumId) {
+    static getRegistered() {
         const Util = require('./Util');
         const User = require('./User');
 
-        // let userInfo = User.getUserInfo();
-        let apiUrl = Util.getAPIUrl('get_registered').replace("{albumId}",albumId);
+        let apiUrl = Util.getAPIUrl('get_registered');
 
         return $.ajax({
             url: apiUrl,
