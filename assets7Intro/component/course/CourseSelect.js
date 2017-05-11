@@ -34,8 +34,6 @@ const CourseSelect = React.createClass({
         this.checkUserPayStatue();
       } else {
         OnFire.on(Config.OAUTH_SUCCESS, ()=>{
-          console.log("===OAUTH_SUCCESS");
-
           this.checkUserPayStatue();
         });
       }
