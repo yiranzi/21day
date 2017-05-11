@@ -12,6 +12,9 @@ if( location.href.indexOf('h5.ichangtou.com') > -1 ){
 
 
 var Config = {
+
+    OAUTH_SUCCESS: "OAUTH_SUCCESS", // 登录成功的广播字段
+
     refresher: false,//刷新模块
 
     follower: true,//跟随者数量

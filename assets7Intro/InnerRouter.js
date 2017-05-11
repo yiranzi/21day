@@ -9,7 +9,7 @@ var React = require('react');
 var App = require('./component/App');
 // const FMView = require('./component/FMView');
 
-const CourseSelect = require('./component/course/courseSelect');
+const CourseSelect = require('./component/course/CourseSelect');
 const PayPage = require('./component/PayPage');
 const ListenCourse = require('./component/course/ListenCourse');
 

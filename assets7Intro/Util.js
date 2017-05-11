@@ -38,14 +38,15 @@ const FORMAL_API_Token = 'DE:_:w2qlJFV@ccOeiq41ENp><ETXh3o@aX8M<[_QOsZ<d8[Yz:NIM
 const TEST_API_Token = 'XX:_:w2qlJFV@ccOeiq41ENp><ETXh3o@aX8M<[_QOsZ<d8[Yz:NIMcKwpjtBk0e';//测试环境 API Token
 const API_Token = Config.environment ? FORMAL_API_Token : TEST_API_Token; //开发环境or生产环境
 
-
-
 const MINIC_ID = '7';  //迷你课买房与资产配置课程ID
 const MINIC_NAME = '7天训练营报名'; //迷你课课程名称  英国脱欧
-const VERSION = '1.0.0'; // 项目版本
+const VERSION = '1.1.0_test'; // TODO roy 项目版本
 const CHARGE_INDEX = 0; //收费部分下标（0~N）
 
-const CURRENT_BATCH = 1; //当前期数 TODO
+const CURRENT_BATCH = 2; //当前期数
+const END_TIME = [2017,5,11,24,0,0]; // TODO roy 截止时间，需要和后台同步
+const USER_NUMBER = 1000; // TODO roy 活动报名总人数
+
 
 const SHARE_TITLE = '邀请你一起参加7天小白理财训练营';
 
@@ -91,9 +92,7 @@ const API_URL_GROUP = {
     'get_first_share': '21enter/first-share',
 
     //7day
-    'get_registered': '7eval/signUpNumber/{albumId}',//获取报名人数
-    //用户是否已报名
-    'has_registered': '7eval/judgeusersignup/{albumId}',
+    'get_registered': '7day/signUpNumber/' + CURRENT_BATCH,//获取报名人数
 
     //音频
     'get_fmid_info': 'fm/broadcast/{fmId}',
@@ -101,6 +100,8 @@ const API_URL_GROUP = {
     'get_course_progress': '7day/checkpoint-progress/{checkpointid}', //判断用户关卡进度
     'finish_work': '7day/complete/{type}/{id}', //判断用户关卡进度
     'have_start_lesson': '7day/firstlisten/{fmid}', //判断用户关卡进度
+    //用户是否已报名
+    'get_judge_signup': '7day/judgeusersignup/' + CURRENT_BATCH, //判断用户是否购买
 
     //
     'post_audio_time': 'fm/learn-audio-record', //学习时间和排名
@@ -688,6 +689,17 @@ class Util {
     //     return  [years,month,strDates,hours,minutess,seconds]
     // }
 
+    /** 获取截止时间
+    */
+    static getEndTime() {
+        return END_TIME;
+    }
+
+    /** 获取活动报名人数
+    */
+    static getUserNumber() {
+        return USER_NUMBER;
+    }
 
 }
 window.Util = Util;

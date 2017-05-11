@@ -21,7 +21,7 @@ const Timeout = require('./Timeout');
 const Modal = require('./Modal');
 const FirstSharePanel = require('./FirstSharePanel');
 
-var REMAIN_NUM = 852;
+var REMAIN_NUM = 1000;
 
 var PayPage = React.createClass({
 
@@ -51,35 +51,33 @@ var PayPage = React.createClass({
             firstSharePanel:false, //首次分享提示
 
             showint:true,//初始剩余人数
+
+            endTime: Util.getEndTime(),
         };
     },
 
 
     componentWillMount(){
         // this.timeout();
+
+        console.log("endTime:", this.state.endTime);
+
         this.signUpNumber();
 
 
         //分享成功后，通知后台，给用户加红包
         // OnFire.on('SHARE_SUCCESS',this.onShareSuccess);
         OnFire.on('PAID_LOSER',()=>{
-
-                this.setState({
-                    showBackup:true,
-                })
+            this.setState({
+                showBackup:true,
+            })
         });
         //已付费
         OnFire.on('PAID_SUCCESS',(payWay)=>{
-            if(!this.state.QQNum){
-                //查询报名
-                console.log('2')
-                this.postRegisterRecord(User.getUserInfo(),payWay)
-            }else{
-                this.setState({
-                    hasPaid: true,
-                    buttonPrice: 0
-                })
-            }
+            this.setState({
+                hasPaid: true,
+                buttonPrice: 0
+            })
 
             this.scrollToTop();
 
@@ -141,29 +139,29 @@ var PayPage = React.createClass({
      * 请求剩余报名人数和报名时间是否截止
      */
     signUpNumber(){
+        Material.getRegistered().done((result) => {
+            console.log('signUpNumber-result', result);
+            // TODO test roy
+            result.time = false;
 
-        let fmall = 2017;
-        Material.getRegistered(fmall).always((int) => {
+            let restNum = Util.getUserNumber() - result.number;
+            console.log("剩余人数：", restNum);
 
-            console.log('albumId', int);
-            this.setState({
-                int: (300 - int.number),
-                // int:-2,
-                // time:true
-                time:int.time,
-                // showint:false,
-            });
-
-            console.log('int', this.state.int);
-            if (this.state.int <= 0){
+            if (restNum <= 0){
                 this.setState({
-                    int:0,
-                    time:true,
-                    showint:false,
+                    num: 0,
+                    time: result.time,
+                    showint: false,
                 });
+            } else {
+              this.setState({
+                  num: restNum,
+                  time: result.time,
+                  showint: true,
+              });
             }
-            console.log('time11111111111aasdad', this.state.time);
-            console.log('time111111111111', this.state.time);
+        }).fail(()=>{
+
         });
 
 
@@ -243,77 +241,50 @@ var PayPage = React.createClass({
      * @param userInfo
      * @param payWay
      */
-    postRegisterRecord (userInfo,payWay) {
+    postRegisterRecord (userInfo, payWay) {
         Loading.showLoading('获取信息...');
 
         console.log('是否报名'+'userInfo',userInfo);
 
-        let fmall = 2017;
-
-        Material.getRegisterRecord(userInfo.userId,fmall).done((record)=>{
-
+        Material.getJudgeFromServer().done((record)=>{
             Loading.hideLoading();
             console.log('record',record);
 
+            // TODO test roy
+            // record = true;
+
             if(record){
-
-                ////todo 123343135
-                //
-                //if(record.qqGroup ==123343135){
-                //    //大群人到微信号
-                //    this.setState({
-                //        buttonPrice: 0,
-                //        hasRecord: true,
-                //        hasPaid: true, //已报名
-                //        showWechatGroup: true
-                //    });
-                //}
-                //else{
-
-                    this.setState({
-                        hasRecord: true,
-                        hasPaid: true, //已报名
-                        QQNum: record.qqGroup, //QQ群号
-                        QQLink: record.qqGroupUrl, //QQ群链接
-                        QQCode: record.secret, //QQ暗号
-                        buttonPrice: 0
-                    });
-
-                OnFire.on('OAUTH_SUCCESS',(userInfo)=>{
-                    console.log('OAUTH_SUCCESS-userInfo',userInfo);
-                    //获取用户是否有报名记录
-                    console.log('1')
-                    this.postRegisterRecord(userInfo);
-
-                    //设置订阅
-                    this.setSubscribeInfo(userInfo.subscribe);
-
-                    //设置上线
-                    // this.setSenior(seniorId,userInfo.userId);
+                this.setState({
+                    hasRecord: true,
+                    hasPaid: true, //已报名
+                    buttonPrice: 0
                 });
 
-
-            }else{
+                // OnFire.on('OAUTH_SUCCESS',(userInfo)=>{
+                //     console.log('OAUTH_SUCCESS-userInfo',userInfo);
+                //     //获取用户是否有报名记录
+                //     console.log('1')
+                //     this.postRegisterRecord(userInfo);
+                //
+                //     //设置订阅
+                //     this.setSubscribeInfo(userInfo.subscribe);
+                //
+                //     //设置上线
+                //     // this.setSenior(seniorId,userInfo.userId);
+                // });
+            } else {
                 this.setState({
                     hasRecord: false,
                     hasPaid: false, //未报名
                     buttonPrice:4,
                 });
             }
-
         })
         .fail(()=>{
             Loading.hideLoading();
-            if(payWay=='normalPay') {
-                //获取报名记录失败，但是有正常支付记录的，进入2000人大群
-                //设置备选QQ群
-                this.setBackUpQQState();
-            }else{
-                //获取报名记录失败的（包含没报名的和扫码支付过的）
-                this.setState({
-                    hasRecord: false //未获得报名记录
-                })
-            }
+            this.setState({
+                hasRecord: false //未获得报名记录
+            })
         })
     },
 
@@ -330,31 +301,6 @@ var PayPage = React.createClass({
     //     console.log('userInfo.subscribe',userInfo.subscribe);
     //
     // },
-
-    /**
-     * 2000人大群 付费群
-     * 设置备用QQ群号
-     */
-    setBackUpQQState() {
-
-        ////todo备用群人到微信号
-        //this.setState({
-        //    buttonPrice: 0,
-        //    hasRecord: true,
-        //    hasPaid: true, //已报名
-        //    showWechatGroup: true
-        //});
-
-
-        this.setState({
-            buttonPrice: 0,
-            hasRecord: true,
-            hasPaid: true, //已报名
-            QQNum: '123343135', //QQ群号
-            QQLink: 'http://jq.qq.com/?_wv=1027&k=4193kAr', //QQ群链接
-            QQCode: '理财' //QQ暗号
-        })
-    },
 
     /**
      * 绑定上下线关系
@@ -404,9 +350,9 @@ var PayPage = React.createClass({
             default:
                 console.log('出错');
                 break;
-        }  
+        }
     },
-    
+
 
     /**
      * 支付动作
@@ -596,7 +542,7 @@ var PayPage = React.createClass({
                 <div>
                     <div className="top-time-bottom">
                         <div className="top-time">
-                            <Timeout finalDate={[2017,4,25,24,0,0]}/>
+                            <Timeout hasEnded={this.state.time} finalDate={this.state.endTime}/>
                         </div>
                     <div className="entered">
                         <div className="show-entered">
@@ -604,7 +550,7 @@ var PayPage = React.createClass({
                             <div className="show-number"> 剩余名额</div>
                         </div>
                         {/*<span>0</span>*/}
-                        {this.state.showint ? <span>{this.state.int}</span>:<span>0</span>}
+                        {this.state.showint ? <span>{this.state.num}</span>:<span>0</span>}
                         </div>
                     </div>
                     <img src="./assets7Intro/image/campaign.jpg" className="intro-img"/></div> }

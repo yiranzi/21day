@@ -5,12 +5,12 @@ const $ = window.$ = require('jquery');
 const React = require('react');
 const ReactDom = require('react-dom');
 const OnFire = require('onfire.js');
-
-
+const User = require('../../User');
+const Config = require('../../Config');
 const Link = require('react-router').Link;
 const LessonBar = require('./LessonBar');
 
-const courseSelect = React.createClass({
+const CourseSelect = React.createClass({
 
     // getInitialState(){
     //     return{
@@ -26,6 +26,21 @@ const courseSelect = React.createClass({
     },
 
     componentWillMount() {
+      // TODO roy 判断用户当前的购买状态，未购买则直接跳转到支付页面
+      // 购买后留在关卡页面
+      let userId = User.getUserInfo().userId;
+      console.log("===userId = " + userId);
+      if (userId) {
+        this.checkUserPayStatue();
+      } else {
+        OnFire.on(Config.OAUTH_SUCCESS, ()=>{
+          console.log("===OAUTH_SUCCESS");
+
+          this.checkUserPayStatue();
+        });
+      }
+
+        console.log('1.yiran12');
         if (!this.counter) {
             this.counter = 0;
         }
@@ -49,6 +64,24 @@ const courseSelect = React.createClass({
                 this.getCourseList();
             })
         }
+    },
+
+    /**
+    * 检查用户购买状态
+    */
+    checkUserPayStatue() {
+      Material.getJudgeFromServer().done((result)=>{
+          Loading.hideLoading();
+          console.log("是否购买：", result);
+          if(result){
+              console.log('购买过');
+
+          } else{ // 未购买直接跳到购买页面
+              location.hash = "/payPage";
+          }
+      }).fail(()=>{
+
+      });
     },
 
 
@@ -140,4 +173,4 @@ const courseSelect = React.createClass({
     }
 });
 
-module.exports = courseSelect;
+module.exports = CourseSelect;

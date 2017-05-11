@@ -149,6 +149,7 @@ const ListenCourse = React.createClass({
      */
     getFmColumn() {
 
+      // TODO roy 判断逻辑需要修改
         Loading.showLoading('获取信息...');
         console.log('接收到的是' + this.props.params.courseId);
         let fmall = 2017;
