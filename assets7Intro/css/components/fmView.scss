@@ -3,7 +3,13 @@
   width: 100%;
   height: auto;
   padding-top: px2rem(18);
-  //background-color: #F6F5F5;
+
+  .lesson-column-line{
+    background-image: url("../image/course/DividingLine.png");
+    background-size:cover;
+    height: px2rem(18);
+    margin: px2rem(18) 0 px2rem(18) 0;
+  }
 
   .fm-title{
     padding: 2.5rem .5rem 1rem;

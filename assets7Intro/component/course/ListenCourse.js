@@ -377,23 +377,28 @@ const ListenCourse = React.createClass({
         OUT:
         for (let i = 0;i < lessons.length; i++) {
             //如果满足...渲染FM.无条件渲染fm
-            console.log('开始渲染11');
             if(i === 0 || lessons[i-1].subs[(lessons[i-1].subs.length) - 1].process) {
                 arr.push(this.renderFMBar(i, lessons[i],count));
-                count = count + 2;
+                count++;
                 //如果fm听完
                 if(lessons[i].process){
                     let lessonQuestions = lessons[i].subs;
                     //循环某一节的所有的题目
                     for (let j = 0; j < lessonQuestions.length; j++){
-                        //如果上一道题答对
+                        //如果上一道题答对1
                         if( j === 0 || lessonQuestions[j-1].process) {
                             //如果满足...渲染题目
                             arr.push(this.renderChooseBar(lessonQuestions[j], i, j,count));
                             count++;
                         } else break OUT;
                     }
+                    //如果选择题都完成了1
+                    if(lessonQuestions[lessonQuestions.length - 1].process) {
+                        arr.push(<div className="lesson-column-line"></div>)
+                        count++;
+                    }
                 } else break OUT;
+
             }
         }
         return arr;
