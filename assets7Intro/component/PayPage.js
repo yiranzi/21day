@@ -140,7 +140,7 @@ var PayPage = React.createClass({
         Material.getRegistered().done((result) => {
             console.log('signUpNumber-result', result);
             // TODO test roy
-            result.time = false;
+            // result.time = false;
 
             let restNum = Util.getUserNumber() - result.number;
             console.log("剩余人数：", restNum);
@@ -249,7 +249,7 @@ var PayPage = React.createClass({
             console.log('record',record);
 
             // TODO test roy
-            // record = true;
+            record = true;
 
             if(record){
                 this.setState({
