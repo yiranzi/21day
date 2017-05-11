@@ -7,6 +7,13 @@ var React = require('react');
 var ReactDom = require('react-dom');
 var Util = require('./Util');
 var Config = require('./Config');
+var OnFire =require('onfire.js');
+var PayController = require('./PayController');
+var RankingList = require('./RankingList');
+var GHGuider = require('./component/GHGuider');
+var DoneToast = require('./component/DoneToast');
+var Loading = require('./Loading');
+var WxConfig = require('./WxConfig');
 
 const ACCESS_TOKEN_API = Util.getAPIUrl('authorization');
 const USER_LEVEL_GENERAL = 0; //普通用户
@@ -15,16 +22,6 @@ const USER_LEVEL_VIP = 1;   //VIP用户（已付费）
 //用户信息
 var userInfo = null;
 var userProfile = null;
-
-var OnFire =require('onfire.js');
-
-var PayController = require('./PayController');
-var RankingList = require('./RankingList');
-var GHGuider = require('./component/GHGuider');
-var DoneToast = require('./component/DoneToast');
-var Loading = require('./Loading');
-
-
 //免费期限
 var FREE_DEADLINE = '2016/7/22 12:0:0';
 
@@ -51,11 +48,9 @@ class User {
             return;
         }
 
-        console.log('111111111111');
-
-
         //初始化微信通用接口
-        User.signWxApi();
+        // User.signWxApi();
+        WxConfig.initWxConfig();
 
         //蓝号进行授权后的
         if(Util.getUrlPara('istopay')){
@@ -153,7 +148,7 @@ class User {
         }
 
         //配置分享内容
-        User.shareConfig();
+        WxConfig.shareConfig();
 
         console.log('unionId'+userInfo.unionId);
 
@@ -341,144 +336,6 @@ class User {
     static onGetWxInfoError(topay) {
         console.log('获取微信数据失败');
         User.redirectToUserinfo(topay);
-    }
-
-    /**
-     * 初始化为微信的普通API
-     */
-    static signWxApi() {
-        console.log('初始化为微信的普通API');
-        let url = JSON.stringify({'url': location.href}),
-            me = User;
-
-        $.ajax({
-            url: Util.getAPIUrl('wx_sign'),
-            data: url,
-            type: 'post',
-            cache: false,
-            contentType: 'application/json;charset=utf-8',
-            dataType:'json',
-            headers: {
-                Accept:"application/json"
-            },
-            beforeSend: (request)=>{
-                request.setRequestHeader("X-iChangTou-Json-Api-Token", Util.getApiToken());
-            },
-            success: (data) => {
-                User.wxdata = data;
-                me.wxconfig(data);
-            },
-            error: () => {
-
-            }
-        });
-    }
-
-    /**
-     * 获取微信数据，包括
-     * wechat_appid
-     * timestamp
-     * nonceStr
-     * signature
-     * @returns {*}
-     */
-    static getWxData() {
-        return User.wxdata;
-    }
-
-    /**
-     * 配置微信
-     * @param data
-     */
-    static wxconfig(data) {
-        wx.config({
-            appId: data.wechat_appid,
-            timestamp: data.timestamp,
-            nonceStr: data.nonceStr,
-            signature: data.signature,
-            jsApiList: [
-                'onMenuShareTimeline',
-                'onMenuShareAppMessage',
-                'onMenuShareQQ',
-                'onMenuShareWeibo',
-                'chooseWXPay'
-            ]
-        });
-
-        wx.ready( () => {
-            User.shareConfig();
-        });
-    }
-
-    /**
-     * 分享设置
-     */
-    static shareConfig() {
-        let imgUrl = User.getUserInfo().headImage,
-            desc = Util.getShareDesc(),
-            title = Util.getShareTitle(),
-            link = Util.getShareLink();
-
-        if( !imgUrl ) {
-            imgUrl = Util.getDomain() + 'build21/shareLogo.png';
-        }
-
-        let timelineOpt = {
-            title,
-            desc,
-            link,
-            imgUrl,
-            success: ()=>{
-                Util.onShareSuccess('朋友圈');
-            },
-            cancel: ()=>{
-                Util.onShareFailure('朋友圈');
-            }
-        }, messageOpt = {
-            title,
-            desc,
-            link,
-            imgUrl,
-            success: ()=>{
-                Util.onShareSuccess('消息');
-            },
-            cancel: ()=>{
-                Util.onShareFailure('消息');
-            }
-        }, QQOpt = {
-            title,
-            desc,
-            link,
-            imgUrl,
-            success: ()=>{
-                Util.onShareSuccess('QQ');
-            },
-            cancel: ()=>{
-                Util.onShareFailure('QQ');
-            }
-        }, weiboOpt = {
-            title,
-            desc,
-            link,
-            imgUrl,
-            success: ()=>{
-                Util.onShareSuccess('weibo');
-            },
-            cancel: ()=>{
-                Util.onShareFailure('weibo');
-            }
-        };
-
-        //QQ的分享链接单独设置（为了能在QQ中打开）
-        QQOpt.link = Util.getQQShareLink();
-
-        //朋友圈的分享标题使用通用标题
-        timelineOpt.title = Util.getTimelineTitle();
-
-        wx.onMenuShareTimeline(timelineOpt);
-        wx.onMenuShareAppMessage(messageOpt);
-        wx.onMenuShareQQ(QQOpt);
-        wx.onMenuShareWeibo(weiboOpt);
     }
 
     /**
@@ -757,4 +614,3 @@ class User {
 window.User = User;
 
 module.exports = User;
-

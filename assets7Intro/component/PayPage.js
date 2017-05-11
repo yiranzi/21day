@@ -35,12 +35,11 @@ var PayPage = React.createClass({
             QQLink: null, //QQ群链接
             QQCode: null, //QQ暗号
             showBackup: false, //显示备用QQ
-            hasRecord: true, //获得报名记录
             remain: parseInt(localStorage.getItem('remain-num'))||REMAIN_NUM, //剩余席位
 
             //21days2.0
             hasSenior: false, //是否有上线
-            buttonPrice: 4, //
+            buttonPrice: Util.getNormalPrice(), //
             buttonChange:false,//判断提示时间截止panel
             //share
             showSharePanel: false, //显示分享panel
@@ -76,7 +75,6 @@ var PayPage = React.createClass({
         OnFire.on('PAID_SUCCESS',(payWay)=>{
             this.setState({
                 hasPaid: true,
-                buttonPrice: 0
             })
 
             this.scrollToTop();
@@ -142,7 +140,7 @@ var PayPage = React.createClass({
         Material.getRegistered().done((result) => {
             console.log('signUpNumber-result', result);
             // TODO test roy
-            result.time = false;
+            // result.time = false;
 
             let restNum = Util.getUserNumber() - result.number;
             console.log("剩余人数：", restNum);
@@ -222,7 +220,7 @@ var PayPage = React.createClass({
     /**
      * 设置用户的上线
      */
-    setSenior(seniorId,userId) {
+    setSenior(seniorId, userId) {
         //seniorId则表示该用户拥有上线
         if(seniorId && seniorId!=userId){
             console.log('设置用户上线'+'userid',userId);
@@ -230,7 +228,7 @@ var PayPage = React.createClass({
 
             this.setState({
                 hasSenior: true,
-                // buttonPrice: 6
+                buttonPrice: Util.getCheapPrice()
             });
         }
     },
@@ -251,13 +249,12 @@ var PayPage = React.createClass({
             console.log('record',record);
 
             // TODO test roy
-            // record = true;
+            record = true;
 
             if(record){
                 this.setState({
-                    hasRecord: true,
                     hasPaid: true, //已报名
-                    buttonPrice: 0
+                    buttonPrice: Util.getNormalPrice(),
                 });
 
                 // OnFire.on('OAUTH_SUCCESS',(userInfo)=>{
@@ -274,16 +271,15 @@ var PayPage = React.createClass({
                 // });
             } else {
                 this.setState({
-                    hasRecord: false,
                     hasPaid: false, //未报名
-                    buttonPrice:4,
+                    buttonPrice: Util.getNormalPrice(),
                 });
             }
         })
         .fail(()=>{
             Loading.hideLoading();
             this.setState({
-                hasRecord: false //未获得报名记录
+                hasPaid: false, //未报名
             })
         })
     },
@@ -334,23 +330,7 @@ var PayPage = React.createClass({
      * 按钮点击
      */
     clickHandler() {
-        switch(this.state.buttonPrice){
-            // case 3.8:
-            case 4: this.payHandler();
-                break;
-            case 0: {
-                //if(this.state.showWechatGroup){
-                //    dialogAlertComp.show('提示','赶紧扫描加入吧','知道啦',()=>{},'',false);
-                //}else{
-                    this.entryQQClickHandler();
-                //}
-            }
-
-                break;
-            default:
-                console.log('出错');
-                break;
-        }
+        this.payHandler();
     },
 
 
@@ -372,7 +352,6 @@ var PayPage = React.createClass({
         }else{
             this.setState({
                 showBackup: true,
-                buttonPrice: 0,
                 FMLink:'http://jq.qq.com/?_wv=1027&k=41976jN' //非付费的QQ群号
             });
 
@@ -594,10 +573,10 @@ var PayPage = React.createClass({
                     {/*</div>*/}
                 {/*}*/}
 
-                {this.state.buttonPrice == 4 &&
+                {!this.state.hasPaid &&
                     <div className="bottom-button" onClick={this.getTime}>
                         {/*<span onClick={this.didClickHandler}  className="join-button">报名截止下次再来吧</span>*/}
-                        {this.state.time ? <span onClick={this.didClickHandler}  className="join-button">报名截止下次再来吧</span> : <span onClick={this.clickHandler}  className={this.state.hasSenior==false ?"join-button":"whole-join-button"}>立即参加（￥4）</span>}
+                        {this.state.time ? <span onClick={this.didClickHandler}  className="join-button">报名截止下次再来吧</span> : <span onClick={this.clickHandler}  className={this.state.hasSenior==false ?"join-button":"whole-join-button"}>立即参加（￥{this.state.buttonPrice}）</span>}
                         {/**/}
                         {/*{!this.state.hasSenior && <span className="share-button" onClick={this.shareModalHandler}>邀请好友</span>}*/}
                     </div>

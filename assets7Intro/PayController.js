@@ -22,8 +22,7 @@ var OnFire =require('onfire.js');
 
 const GET_ORDER_API = Util.getAPIUrl('get_order');//获取统一下单API
 const COURSE_PRICE = 4;//课程价格，和长投数据库对应的数据，价格(元)
-const COURSE_SUM = 4;//传给微信后台的价格，价格(元)，由后台统一转换单位
-const CHEAP_PRICE = 4;//有上线的用户，享有的优惠价格
+
 /**
  * 模块变量
  */
@@ -154,25 +153,24 @@ class PayController {
         }
 
         userInfo = userInfo || window.User.getUserInfo();
-        sum = COURSE_SUM;
-        console.log('sumhhhhhh',sum);
+        sum = Util.getNormalPrice();
+        console.log('getNormalPrice',sum);
         let seniorId = Util.getUrlPara('ictchannel'),
-            teacherId = Util.getUrlPara('teacherid'),
+            // teacherId = Util.getUrlPara('teacherid'),
             userId = userInfo.userId;
 
-        if(seniorId && seniorId!=userId){
-            sum = CHEAP_PRICE;
+        if(seniorId && seniorId != userId) {
+            sum = Util.getCheapPrice();
+            console.log('getCheapPrice',sum);
         }
 
         if(!seniorId){
             seniorId = '';
         }
 
-        if(!teacherId){
-            teacherId = '';
-        }
-
-        console.log('sum113231'+sum);
+        // if(!teacherId){
+        //     teacherId = '';
+        // }
 
         let jsonData = JSON.stringify(
             {
@@ -185,7 +183,7 @@ class PayController {
                             // mchantType: 5, //商品类型 21days
                             // misc: Util.getUrlPara('dingyuehao')||'0'+'@'+seniorId+'@'+teacherId,
                             // price: sum,
-                            dealType: 101, //交易类型
+                            dealType: 102, //交易类型
                             itemId: 2017,
                             mchantType: 11, //商品类型 21days
                             misc: '',

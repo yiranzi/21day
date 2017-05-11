@@ -47,10 +47,11 @@ const CURRENT_BATCH = 2; //当前期数
 const END_TIME = [2017,5,11,24,0,0]; // TODO roy 截止时间，需要和后台同步
 const USER_NUMBER = 1000; // TODO roy 活动报名总人数
 
+const NORMAL_PRICE = 2;// TODO roy 上线价格，普通用户
+const CHEAP_PRICE = 1;// TODO roy 下线价格，享有的优惠价格
 
-const SHARE_TITLE = '邀请你一起参加7天小白理财训练营';
-
-const SHARE_DESC = '你和富人之间，只差一个训练营';
+const SHARE_TITLE = '只需6元，和我一起提高财商吧！';
+const SHARE_DESC = '邀请你一起参加7天小白财商训练营';
 
 //是否是debug
 const IS_DEBUG = location.href.indexOf('localhost') > 0;
@@ -153,7 +154,7 @@ class Util {
      * @returns {*}
      */
     static getHtmlUrl() {
-        return location.href.split('?')[0];
+      return location.protocol + "//" + location.host + location.pathname;
     }
 
     /**
@@ -351,15 +352,15 @@ class Util {
     /**
      * 获取分享到QQ的链接
      */
-    static getQQShareLink() {
-        let userInfo = User.getUserInfo() || {},
-            link = Util.getHtmlUrl() + '?ictchannel=' + userInfo.userId;
-        if( Config.gift ) {
-            link = link + '&ictgift='+ userInfo.userId + '&ictnickname='+userInfo.nickName;
-        }
-
-        return link;
-    }
+    // static getQQShareLink() {
+    //     let userInfo = User.getUserInfo() || {},
+    //         link = Util.getHtmlUrl() + '?ictchannel=' + userInfo.userId;
+    //     if( Config.gift ) {
+    //         link = link + '&ictgift='+ userInfo.userId + '&ictnickname='+userInfo.nickName;
+    //     }
+    //
+    //     return link;
+    // }
 
     /**
      * 获取APPID
@@ -436,11 +437,13 @@ class Util {
     static getShareTitle() {
         let nickName = User.getUserInfo().nickName;
         console.log('获取分享标题时nickName:' + nickName);
-        if( Config.gift ) {
-            return nickName + '送了一个迷你课给你';
-        }else{
-            return nickName + SHARE_TITLE;
-        }
+        // if( Config.gift ) {
+        //     return nickName + '送了一个迷你课给你';
+        // }else{
+            // return nickName + SHARE_TITLE;
+        // }
+
+        return SHARE_TITLE;
     }
 
     /**
@@ -699,6 +702,18 @@ class Util {
     */
     static getUserNumber() {
         return USER_NUMBER;
+    }
+
+    /** 获取普通用户价格
+    */
+    static getNormalPrice() {
+        return NORMAL_PRICE;
+    }
+
+    /** 获取优惠用户价格
+    */
+    static getCheapPrice() {
+        return CHEAP_PRICE;
     }
 
 }

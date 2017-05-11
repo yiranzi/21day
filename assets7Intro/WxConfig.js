@@ -12,7 +12,9 @@ class WxConfig {
      * 初始化微信配置
      */
     static initWxConfig() {
-        Util.isWeixin() && WxConfig.signWxApi().done(WxConfig.wxconfig);
+        Util.isWeixin() && WxConfig.signWxApi().done((data)=>{
+          WxConfig.wxconfig(data)
+        });
     }
 
     /**
@@ -53,13 +55,14 @@ class WxConfig {
                 'onMenuShareTimeline',
                 'onMenuShareAppMessage',
                 'onMenuShareQQ',
-                'onMenuShareWeibo'
+                'onMenuShareWeibo',
+                'chooseWXPay'
             ]
         });
 
         wx.ready( () => {
-            //WxConfig.shareConfig();
-            OnFire.fire('WX_SIGN_SUCCESS');
+            // 登录后再配置微信分享
+            // WxConfig.shareConfig();
         });
     }
 
@@ -67,6 +70,7 @@ class WxConfig {
      * 分享配置
      */
     static shareConfig(title, desc,fmid,link) {
+        console.log('初始化为微信的普通API');
 
         //console.log('分享配置',title, desc,fmid,link);
         //if(!shareConfigFlag){
@@ -76,19 +80,22 @@ class WxConfig {
 
         let imgUrl = User.getUserInfo().headImage || User.getLocalUserInfo()&& User.getLocalUserInfo().headImage;
 
-        link = link || Util.getCurrentUrl()+'?fmid='+fmid;
+        link = link || Util.getShareLink();
         desc = desc || Util.getShareDesc();
         title = title || Util.getShareTitle();
 
         if( !imgUrl ) {
-            imgUrl =  'http://h5test.ichangtou.com.cn/minicfm/build/shareLogo.png';
+          imgUrl = Util.getDomain() + 'build21/shareLogo.png';
         }
+
+        let type = "img";
 
         let timelineOpt = {
             title,
             desc,
             link,
             imgUrl,
+            type,
             success: ()=>{
                 Util.onShareSuccess('朋友圈');
             },
@@ -100,6 +107,7 @@ class WxConfig {
             desc,
             link,
             imgUrl,
+            type,
             success: ()=>{
                 Util.onShareSuccess('消息');
             },
