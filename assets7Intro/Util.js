@@ -98,11 +98,17 @@ const API_URL_GROUP = {
 
     //音频
     'get_fmid_info': 'fm/broadcast/{fmId}',
+    'get_judge_signup': '7eval/judgeusersignup/{albumId}', //判断用户是否购买
+    'get_course_progress': '7day/checkpoint-progress/{checkpointid}', //判断用户关卡进度
+    'finish_work': '7day/complete/{type}/{id}', //判断用户关卡进度
+    'have_start_lesson': '7day/firstlisten/{fmid}', //判断用户关卡进度
     //用户是否已报名
     'get_judge_signup': '7day/judgeusersignup/' + CURRENT_BATCH, //判断用户是否购买
 
     //
     'post_audio_time': 'fm/learn-audio-record', //学习时间和排名
+    'get_course_list': '7day/course-list', //学习时间和排名
+
 
 };
 

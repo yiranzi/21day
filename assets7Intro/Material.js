@@ -371,6 +371,106 @@ class Material {
         });
     }
 
+    /***
+     * 获得关卡列表
+     */
+    static getCourseList() {
+        const Util = require('./Util');
+        const User = require('./User');
+
+        // let userInfo = User.getUserInfo();
+        let apiUrl = Util.getAPIUrl('get_course_list');
+
+        return $.ajax({
+            url: apiUrl,
+            type: 'get',
+            cache: false,
+            contentType: 'application/json;charset=utf-8',
+            headers: {
+                Accept:"application/json"
+            },
+            beforeSend: function(request) {
+                request.setRequestHeader("X-iChangTou-Json-Api-User", User.getUserInfo().userId);
+                request.setRequestHeader("X-iChangTou-Json-Api-Token", Util.getApiToken());
+            }
+        });
+    }
+
+    /***
+     * 获得课程进度和内容
+     */
+    static getCourseProgress(checkpointid){
+        var User = require('./User');
+        const Util = require('./Util'),
+            apiUrl = Util.getAPIUrl('get_course_progress').replace('{checkpointid}',checkpointid);
+        let userInfo = User.getUserInfo();
+        return $.ajax(
+            {
+                url: apiUrl,
+                type: 'get',
+                cache: false,
+                contentType: 'application/json;charset=utf-8',
+                headers: {
+                    Accept: 'application/json'
+                },
+                beforeSend: (request)=>{
+                    request.setRequestHeader("X-iChangTou-Json-Api-Token", Util.getApiToken());
+                    request.setRequestHeader("X-iChangTou-Json-Api-User", userInfo.userId);
+                }
+            }
+        )
+    }
+
+    /***
+     *上传作业
+     */
+    static finishWork(type,id){
+        var User = require('./User');
+        const Util = require('./Util'),
+            apiUrl = Util.getAPIUrl('finish_work').replace('{type}',type).replace('{id}',id);
+        let userInfo = User.getUserInfo();
+        return $.ajax(
+            {
+                url: apiUrl,
+                type: 'put',
+                cache: false,
+                contentType: 'application/json;charset=utf-8',
+                headers: {
+                    Accept: 'application/json'
+                },
+                beforeSend: (request)=>{
+                    request.setRequestHeader("X-iChangTou-Json-Api-Token", Util.getApiToken());
+                    request.setRequestHeader("X-iChangTou-Json-Api-User", userInfo.userId);
+                }
+            }
+        )
+    }
+
+    /***
+     *已经听过课
+     */
+    static haveStartLesson(id){
+        var User = require('./User');
+        const Util = require('./Util'),
+            apiUrl = Util.getAPIUrl('have_start_lesson').replace('{fmid}',id);
+        let userInfo = User.getUserInfo();
+        return $.ajax(
+            {
+                url: apiUrl,
+                type: 'put',
+                cache: false,
+                contentType: 'application/json;charset=utf-8',
+                headers: {
+                    Accept: 'application/json'
+                },
+                beforeSend: (request)=>{
+                    request.setRequestHeader("X-iChangTou-Json-Api-Token", Util.getApiToken());
+                    request.setRequestHeader("X-iChangTou-Json-Api-User", userInfo.userId);
+                }
+            }
+        )
+    }
+
 
 }
 

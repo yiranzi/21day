@@ -29,7 +29,7 @@ const ChooseBar = React.createClass({
     handleClick(index) {
         // this.setState({liked: !this.state.liked});
         console.log('click' + index)
-        if(index === this.props.question.answer)
+        if(index === this.props.question.trueindex[0])
         {
             console.log('right');
             this.setState({answer: 1});
@@ -43,19 +43,24 @@ const ChooseBar = React.createClass({
         var question = this.props.question
         return(
         <div className="choose-bar">
-            <h2>{question.title}</h2>
-            {this.OptionRender(question)}
+            <div className="choose-question">
+                <h1>问题</h1>
+                {question.introduce}
+            </div>
+            {this.optionRender()}
+            {this.tipsRender()}
         </div>
         )
     },
 
-    OptionRender (question) {
+    optionRender () {
+        var question = this.props.question
         console.log('choose render')
         let arr=[];
         let count = 0
-        for (let item of question.content) {
+        for (let item of question.answerList) {
             arr.push( <div className="choose-options" key={count}>
-                <p onClick={this.handleClick.bind(this, count)}>{item}</p>
+                <p onClick={this.handleClick.bind(this, count)}>{item.detail}</p>
             </div>)
             count++;
         }
@@ -67,8 +72,14 @@ const ChooseBar = React.createClass({
                 arr.push(<div>回答对了少年</div>)
             }
         }
-
         return arr;
+    },
+
+    tipsRender () {
+        return (<div className="choose-tips">
+            <h1>Tips:</h1>
+            <p>知识点1</p>
+        </div>);
     }
 });
 

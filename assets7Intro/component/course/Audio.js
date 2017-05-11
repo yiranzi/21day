@@ -24,11 +24,14 @@ const AudioBar = React.createClass({
 
     componentWillMount() {
         console.log('1.yiran');
+        if (this.state.index === this.props.playingIndex) {
+            this.setState({isPlaying: true});
+        } else {
+            this.setState({isPlaying: false});
+        }
     },
 
     componentWillReceiveProps(nextProps) {
-        console.log(nextProps);
-        console.log('判断是否正在播放')
         if (this.state.index === nextProps.playingIndex) {
             console.log(nextProps.playingIndex);
             this.setState({isPlaying: true});
@@ -47,13 +50,10 @@ const AudioBar = React.createClass({
     render() {
         let content = this.props.content
         return(
-            <div className="control-button-container">
-                <span>{this.state.isPlaying}</span>
-                <img src={this.state.isPlaying ? './assets/image/player/play.png':'./assets/image/player/pause.png'}
-                     className="play-pause-button"
-                     onClick={this.controlHandler}
+            <div onClick={this.controlHandler} className="audio-title">
+                <img className="click-button" src={this.state.isPlaying ? './assets/image/course/btnPlay.png':'./assets/image/course/btnPressed.png'}
                 />
-                <p>{content.title}</p>
+                <p className={this.state.isPlaying ? 'title-top':'title-bottom'}>{content.title}</p>
             </div>
         )
     }
