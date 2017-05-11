@@ -8,6 +8,7 @@ const OnFire = require('onfire.js');
 
 
 const Link = require('react-router').Link;
+const LessonBar = require('./LessonBar');
 
 const courseSelect = React.createClass({
 
@@ -20,17 +21,11 @@ const courseSelect = React.createClass({
         return {
             liked: false,
             dataList: [1,1,0,2,2,0,0],
-            type: [
-                '未解锁',
-                '新的!未听!',
-                '没听完',
-                '已完成'
-            ]
+            courseList: {},
         };
     },
 
     componentWillMount() {
-        console.log('1.yiran12');
         if (!this.counter) {
             this.counter = 0;
         }
@@ -45,6 +40,15 @@ const courseSelect = React.createClass({
             console.log(this.state.dataList);
             // this.setState({dataList: localData});
         })
+        console.log('push ajax')
+
+        if (User.getUserInfo().userId) {
+            this.getCourseList();
+        } else {
+            OnFire.on('OAUTH_SUCCESS', ()=>{
+                this.getCourseList();
+            })
+        }
     },
 
 
@@ -52,10 +56,17 @@ const courseSelect = React.createClass({
         this.setState({liked: !this.state.liked});
     },
 
+    getCourseList () {
+        Material.getCourseList().always( (data) => {
+            console.log('get ajax',data)
+            this.setState({courseList: data})
+        })
+    },
+
     render() {
         var text = this.state.liked ? 'like' : 'haven\'t liked';
         return(
-            <div className="choice-work">
+            <div className="course-select">
                 <div>
                     <span>123</span>
                     <p onClick={this.handleClick}>
@@ -69,15 +80,35 @@ const courseSelect = React.createClass({
                         </p>
                     </Link>
                 </div>
-                {this.renderList()}
+                {this.renderCourseList()}
+
             </div>
         )
     },
 
+    renderCourseList() {
+        console.log('render list')
+        let courseList = this.state.courseList;
+        let arr = []
+        if(!courseList || courseList.length === 0 ){
+            return null;
+        } else {
+            for (let i = 0; i < courseList.length; i++) {
+                arr.push(
+                    <Link key={i} to={{pathname:"/course/"+ (i + 1), query:{name: courseList[i].status}}}>
+                        <LessonBar content = {courseList[i]} ></LessonBar>
+                    </Link>
+                    )
+            }
+            return arr
+        }
+    },
+
+
     renderList() {
         let dataList = this.state.dataList;
         console.log(this.state.dataList);
-        if(!dataList || dataList.length == 0 ){
+        if(!dataList || dataList.length === 0 ){
             return null;
         }else{
             let arr = [];

@@ -14,6 +14,10 @@
 @import "components/timeOut.scss";
 @import "components/fmView";
 @import "components/audioProgressBar";
+@import "components/course/LessonBar";
+@import "components/course/CourseSelect";
+@import "components/course/chooseBar";
+@import "components/course/audioPlayer";
 
 .dialog_text{
   text-align: center;

@@ -12,7 +12,9 @@ const AudioProgressBar = React.createClass({
 
     getInitialState(){
         return{
-            playbarWidth: 0
+            playbarWidth: 0,
+            index: this.props.audioIndex,
+            isPlaying: false,
         }
     },
 
@@ -135,36 +137,61 @@ const AudioProgressBar = React.createClass({
         this.keepgoing(newCurrentTime);
     },
 
+    componentWillReceiveProps(nextProps) {
+        console.log(nextProps);
+        console.log('判断是否正在播放')
+        if (this.state.index === nextProps.playingIndex) {
+            console.log(nextProps.playingIndex);
+            this.setState({isPlaying: true});
+        } else {
+            console.log(nextProps.playingIndex);
+            this.setState({isPlaying: false});
+        }
+    },
+
     render() {
         let audio = $('#globalAudio')[0];
+        console.log('renderOut')
         return(
             <div className="audio-progress-bar">
+                {/*<span>是否在播放{this.state.isPlaying ? 'true':'false'}</span>*/}
+                {/*<span>这是编号{this.state.index}</span>*/}
                 <div className={this.state.isPlaying ? 'is-playing' : 'is-paused'}>
                     <div className="process-panel" onClick={this.progressClickHandler}>
-                        <span className="time player_position">{audio && this.formatTime(audio.currentTime,0)}</span>
-                        <span className="time duration">{audio && this.formatTime(audio.duration,1)}</span>
-                        <div className="progressbar player_progressbar" onClick={this.progressClickHandler}>
-                            <div className="seekbar player_seekbar" style={{width: '100%'}}></div>
-
-                            <div className="moving-bar" style={{width:"100%",maxWidth:"100%"}}>
-                                <div className="playbar player_playbar" style={{width: this.state.playbarWidth,maxWidth:"100%"}}></div>
-                                {
-                                    <Draggable
-                                        axis="x"  bounds="parent"
-                                        onStart={this.dragTargetHandler}
-                                        onDrag={this.dragTargetHandler}
-                                        onStop={this.dropOverProgressHandler}>
-                                        <div className="moving-ball" style={{transform:' translate(0, 0)'}}></div>
-                                    </Draggable>
-                                }
-
-                            </div>
+                        <div className="process-panel">
+                            <span className="time player_position">{this.state.isPlaying && audio && this.formatTime(audio.currentTime,0)}</span>
+                            <span className="time duration">{this.state.isPlaying && audio && this.formatTime(audio.duration,1)}</span>
                         </div>
+                        {this.renderMovingBar()}
                     </div>
                 </div>
             </div>
 
         )
+    },
+
+    renderMovingBar () {
+        console.log('renderMovingBar')
+        if (!this.state.isPlaying) {
+            return null
+        }
+        return ( <div className="progressbar player_progressbar" onClick={this.progressClickHandler}>
+            <div className="seekbar player_seekbar" style={{width: '100%'}}></div>
+
+            <div className="moving-bar" style={{width:"100%",maxWidth:"100%"}}>
+                <div className="playbar player_playbar" style={{width: this.state.playbarWidth,maxWidth:"100%"}}></div>
+                {this.state.isPlaying &&
+                <Draggable
+                    axis="x"  bounds="parent"
+                    onStart={this.dragTargetHandler}
+                    onDrag={this.dragTargetHandler}
+                    onStop={this.dropOverProgressHandler}>
+                    <div className="moving-ball" style={{transform:' translate(0, 0)'}}></div>
+                </Draggable>
+                }
+
+            </div>
+        </div>);
     }
 });
 

@@ -28,7 +28,7 @@ var PAID_APPID =  Config.environment ?FORMAL_PAID_APPID : TEST_PAID_APPID;
 
 const FORMAL_API_DOMAIN = 'https://m.ichangtou.com/';//生产环境 API域名
 // const TEST_API_DOMAIN = 'http://devh5.ichangtou.com.cn/';//测试环境 API域名
-const TEST_API_DOMAIN = 'https://test.ichangtou.com/';//测试环境 API域名
+const TEST_API_DOMAIN = 'https://geek.ichangtou.com/';//测试环境 API域名
 
 const API_URL_DOMAIN = Config.environment ? FORMAL_API_DOMAIN : TEST_API_DOMAIN; //开发环境or生产环境
 
@@ -98,9 +98,14 @@ const API_URL_GROUP = {
     //音频
     'get_fmid_info': 'fm/broadcast/{fmId}',
     'get_judge_signup': '7eval/judgeusersignup/{albumId}', //判断用户是否购买
+    'get_course_progress': '7day/checkpoint-progress/{checkpointid}', //判断用户关卡进度
+    'finish_work': '7day/complete/{type}/{id}', //判断用户关卡进度
+    'have_start_lesson': '7day/firstlisten/{fmid}', //判断用户关卡进度
 
     //
     'post_audio_time': 'fm/learn-audio-record', //学习时间和排名
+    'get_course_list': '7day/course-list', //学习时间和排名
+
 
 };
 
