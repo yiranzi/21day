@@ -3,21 +3,16 @@
  */
 const $ = window.$ = require('jquery');
 const React = require('react');
-const OnFire = require('onfire.js');
 
 const ChooseBar = React.createClass({
-
-    // getInitialState(){
-    //     return{
-    //         playbarWidth: 0
-    //     }
-    // },
-
 
     getInitialState: function() {
         return {
             choose: -1,
-            answer: 0,
+            tipShow: -1,
+            answer: -1,
+            process: this.props.question.process,
+            results: [-1,-1,-1,-1],
         };
     },
 
@@ -31,11 +26,15 @@ const ChooseBar = React.createClass({
         console.log('click' + index)
         if(index === this.props.question.trueindex[0])
         {
+            this.state.results[index] = 1;
+            this.setState({results: this.state.results})
             console.log('right');
             this.setState({answer: 1});
-            this.props.passCallBack(this.props.index);
+            this.props.passCallBack(this.props.lessonIndex ,this.props.index);
         } else {
-            this.setState({answer: -1});
+            this.state.results[index] = 0;
+            this.setState({results: this.state.results})
+            this.setState({answer: 0});
         }
     },
 
@@ -54,32 +53,44 @@ const ChooseBar = React.createClass({
     },
 
     optionRender () {
-        var question = this.props.question
-        console.log('choose render')
+        let question = this.props.question;
         let arr=[];
-        let count = 0
-        for (let item of question.answerList) {
-            arr.push( <div className="choose-options" key={count}>
-                <p onClick={this.handleClick.bind(this, count)}>{item.detail}</p>
-            </div>)
-            count++;
-        }
-        let answer = this.state.answer
-        if ( answer!== 0) {
-           if(answer === -1) {
-               arr.push(<div>再想想</div>)
-           } else {
-                arr.push(<div>回答对了少年</div>)
-            }
+        for(let i = 0; i< question.answerList.length; i++) {
+            arr.push( <div className="choose-options" key={i}>
+                <div className="click-bar" onClick={this.props.question.process ? null : this.handleClick.bind(this, i)}></div>
+                <p>{question.answerList[i].detail}</p>
+                {this.resultRender(i)}
+                </div>)
         }
         return arr;
     },
 
+    resultRender(index) {
+        let question = this.props.question;
+        //通过情况下.绘制正确答案
+        if(this.state.process) {
+            if(question.trueindex[0] === index) {
+                return <img src={'./assets/image/course/indRight.png'}></img>
+            } else {
+                return null;
+            }
+        } else {
+            if(this.state.results[index] === 1) {
+                return <img src={'./assets/image/course/indRight.png'}></img>
+            } else if(this.state.results[index] === 0){
+                return <img src={'./assets/image/course/indWrong.png'}></img>
+            }
+        }
+    },
+
     tipsRender () {
-        return (<div className="choose-tips">
-            <h1>Tips:</h1>
-            <p>知识点1</p>
-        </div>);
+        if(this.state.answer !== -1 || this.props.question.process)
+        {
+            return (<div className="choose-tips">
+                <h1>Tips:</h1>
+                <p>知识点1</p>
+            </div>);
+        }
     }
 });
 

@@ -18,12 +18,25 @@
     }
   }
   .choose-options{
+    position: relative;
     background-color: #3a3a3a;
     border-radius: 4px;
     height: px2rem(40);
     line-height: px2rem(40);
     margin: px2rem(8) 0 px2rem(8) 0;
-
+    .click-bar{
+      position: absolute;
+      height: 100%;
+      width: 100%;
+    }
+    img{
+      top: 0;
+      position: absolute;
+      height: px2rem(28);
+      width: px2rem(28);
+      right: px2rem(4);
+      margin-top: px2rem(6);
+    }
   }
   .choose-tips{
     background-color: #3a3a3a;

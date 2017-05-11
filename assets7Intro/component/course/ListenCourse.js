@@ -64,7 +64,6 @@ const ListenCourse = React.createClass({
             // userChoose: [
             //     [-1],[-1],[-1],[-1]
             // ],
-            myTest: 'PhP is Best',
             audiosTest: [],
             questions: [
                 [
@@ -272,16 +271,16 @@ const ListenCourse = React.createClass({
 
     /**
      * 设置选中的答案
-     * @param fmid
+     * @param index 当前某一音频第几个选择题
      */
-    OnChoosePass(index) {
+    OnChoosePass(lessonIndex,index) {
         console.log('pass');
-        let questions = this.state.lessons[this.state.currentPlaying].subs;
+        let questions = this.state.lessons[lessonIndex].subs;
         questions[index].process = true;
         let localLessons = this.state.lessons;
         this.setState({lessons: localLessons});
         //发送修改1
-        Material.finishWork(1, this.state.lessons[this.state.currentPlaying].subs[index].subjectid).always( (data) => {
+        Material.finishWork(1, this.state.lessons[lessonIndex].subs[index].subjectid).always( (data) => {
             console.log(data)
             console.log('拿到回调22222')
         })
@@ -311,6 +310,7 @@ const ListenCourse = React.createClass({
             let lesson = this.state.lessons[index]
             //保存当前正在播放的音频
             this.setState({currentfmid: lesson.fmid})
+            console.log('11111111111111',this.state.currentfmid);
             GlobalAudio.play(lesson.audio, lesson.fmid);
         }
     },
@@ -334,9 +334,9 @@ const ListenCourse = React.createClass({
 
                     </Modal></div>
                 }
-                <span>当前点击的index{this.state.currentPlaying}</span>
-                <span>当前播放的fmid{this.state.currentfmid}</span>
-                <div>进入时,这门课程的状态时{this.props.location.query.name}</div>
+                {/*<span>当前点击的index{this.state.currentPlaying}</span>*/}
+                {/*<span>当前播放的fmid{this.state.currentfmid}</span>*/}
+                {/*<div>进入时,这门课程的状态时{this.props.location.query.name}</div>*/}
                 {this.renderLesson()}
                 {this.passLessonRender()}
             </div>
@@ -388,12 +388,8 @@ const ListenCourse = React.createClass({
                     for (let j = 0; j < lessonQuestions.length; j++){
                         //如果上一道题答对
                         if( j === 0 || lessonQuestions[j-1].process) {
-                            //没有播放的额外处理
-                            if (this.state.currentPlaying === -1) {
-                                break OUT;
-                            }
                             //如果满足...渲染题目
-                            arr.push(this.renderChooseBar(lessonQuestions[j], j,count));
+                            arr.push(this.renderChooseBar(lessonQuestions[j], i, j,count));
                             count++;
                         } else break OUT;
                     }
@@ -412,19 +408,25 @@ const ListenCourse = React.createClass({
         return (<div key={count} className="audio-player">
             <AudioBar
                 content = {FMContent}
-                playingIndex = {this.state.currentPlaying}
+                playingIndex = {this.state.currentPlaying}//控制暂停按钮的逻辑
                 audioIndex={index}
                 audioCallBack = {this.OnAudioButton}/>
-            <AudioProgressBar audioIndex={this.state.lessons[index].fmid}  playingIndex = {this.state.currentfmid}/>
+            <AudioProgressBar
+                audioIndex={this.state.lessons[index].fmid} //控制播放哪个音频
+                playingIndex = {this.state.currentfmid}/>
         </div>)
     },
 
-    renderChooseBar(questions, questionIndex,count) {
+    /**
+     * 渲染选择题
+     * @param 问题内容,第几节,第几个选择题
+     */
+    renderChooseBar(questions, lessonIndex,questionIndex,count) {
         console.log('questionIndex is ',questionIndex);
         if( !questions ) {
             return null;
         } else {
-            return <ChooseBar  key={count} index = {questionIndex} question={questions} passCallBack = {this.OnChoosePass}/>
+            return <ChooseBar  key={count} lessonIndex = {lessonIndex} index = {questionIndex} question={questions} passCallBack = {this.OnChoosePass}/>
 
         }
     },
