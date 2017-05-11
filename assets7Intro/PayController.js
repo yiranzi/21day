@@ -300,6 +300,13 @@ class PayController {
 
                     OnFire.fire('PAID_SUCCESS','normalPay');
 
+                    // 下线支付成功后上报
+                    let seniorId = Util.getUrlPara('ictchannel');
+                    if(seniorId && seniorId != User.getUserInfo().userId) {
+                        console.log("下线购买成功");
+                        Util.postCnzzData("下线购买成功");
+                    }
+
                     Util.postCnzzData('报名成功');
                 }else {
                     //支付失败

@@ -78,19 +78,14 @@ var PayPage = React.createClass({
 
             this.scrollToTop();
 
-            // 下线支付成功后上报
-            let seniorId = Util.getUrlPara('ictchannel');
-            if(seniorId && seniorId != User.getUserInfo().userId) {
-                console.log("下线购买成功");
-                Util.postCnzzData("下线购买成功");
-            }
-
             //统计班主任信息
             // let teacherId = Util.getUrlPara('teacherid');
             // teacherId && Util.postCnzzData('班主任'+teacherId);
 
             //购买成功后的dialog
             DoneToast.show('报名成功');
+
+            location.hash = "/select";
 
             //todo
             // window.dialogAlertComp.show('报名成功','点击“立即加群”进入QQ群。也可以复制页面上的QQ群号，手动进群。请注意页面上的加群【暗号】哟~','知道啦',()=>{},()=>{},false);

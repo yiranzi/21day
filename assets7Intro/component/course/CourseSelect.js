@@ -31,7 +31,7 @@ const CourseSelect = React.createClass({
       let userId = User.getUserInfo().userId;
       console.log("===userId = " + userId);
       if (userId) {
-        // this.checkUserPayStatue();
+        this.checkUserPayStatue();
       } else {
         OnFire.on(Config.OAUTH_SUCCESS, ()=>{
           this.checkUserPayStatue();
