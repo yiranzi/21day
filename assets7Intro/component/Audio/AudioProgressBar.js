@@ -30,7 +30,6 @@ const AudioProgressBar = React.createClass({
      */
     progressClickHandler: function progressClickHandler(e) {
         let audio = $('#globalAudio')[0];
-        //console.log('onclick');
         let x = e.nativeEvent.pageX,
             newCurrentTime = audio.duration * (x / window.innerWidth);
 
@@ -73,12 +72,12 @@ const AudioProgressBar = React.createClass({
         //标记播放进度
         if( audio && audio.duration ) {
 
-            if(currentTime / audio.duration * 100 >95){
-                return
-            }
+            // if(currentTime / audio.duration * 100 >95){
+            //     return
+            // }
 
             this.setState({
-                playbarWidth : currentTime / audio.duration * 100 + '%'
+                playbarWidth : currentTime / audio.duration * 90 + '%'
             })
         }
     },
@@ -89,8 +88,6 @@ const AudioProgressBar = React.createClass({
      * @param ev
      */
     dragTargetHandler(ev) {
-        //console.log('dragTargetHandler',ev)
-
         let audio = $('#globalAudio')[0];
         let x = ev.changedTouches[0].pageX;
         let newCurrentTime = audio.duration * ( x/ window.innerWidth );
@@ -138,32 +135,29 @@ const AudioProgressBar = React.createClass({
     },
 
     componentWillReceiveProps(nextProps) {
-        console.log(nextProps);
-        console.log('判断是否正在播放')
         if (this.state.index === nextProps.playingIndex) {
-            console.log(nextProps.playingIndex);
             this.setState({isPlaying: true});
         } else {
-            console.log(nextProps.playingIndex);
             this.setState({isPlaying: false});
         }
     },
 
     render() {
         let audio = $('#globalAudio')[0];
-        console.log('renderOut')
         return(
             <div className="audio-progress-bar">
                 {/*<span>是否在播放{this.state.isPlaying ? 'true':'false'}</span>*/}
                 {/*<span>这是编号{this.state.index}</span>*/}
                 <div className={this.state.isPlaying ? 'is-playing' : 'is-paused'}>
                     <div className="process-panel" onClick={this.progressClickHandler}>
-                        <div className="process-panel">
+                        <div className="time-bar">
                             <span className="time player_position">{this.state.isPlaying && audio && this.formatTime(audio.currentTime,0)}</span>
+                            <span className="time">{this.state.isPlaying && audio ? ' / ' : ''}</span>
                             <span className="time duration">{this.state.isPlaying && audio && this.formatTime(audio.duration,1)}</span>
                         </div>
                         {this.renderMovingBar()}
                     </div>
+                    <div className="background-bar"></div>
                 </div>
             </div>
 
@@ -171,13 +165,11 @@ const AudioProgressBar = React.createClass({
     },
 
     renderMovingBar () {
-        console.log('renderMovingBar')
         if (!this.state.isPlaying) {
             return null
         }
         return ( <div className="progressbar player_progressbar" onClick={this.progressClickHandler}>
             <div className="seekbar player_seekbar" style={{width: '100%'}}></div>
-
             <div className="moving-bar" style={{width:"100%",maxWidth:"100%"}}>
                 <div className="playbar player_playbar" style={{width: this.state.playbarWidth,maxWidth:"100%"}}></div>
                 {this.state.isPlaying &&

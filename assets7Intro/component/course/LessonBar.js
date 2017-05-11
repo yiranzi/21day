@@ -16,6 +16,18 @@ const LessonBar = React.createClass({
                 '没听完',
                 '已完成'
             ],
+            lockPic: [
+                "./assets/image/course/card_1.png"
+            ],
+            unlockPic: [
+                "./assets/image/course/card_2.png"
+            ],
+            typePic: [
+                "./assets/image/course/indWrong.png",
+                "./assets/image/course/indRight.png",
+                "./assets/image/course/indRight.png",
+                "./assets/image/course/indRight.png",
+            ],
         };
     },
 
@@ -29,9 +41,11 @@ const LessonBar = React.createClass({
     // style={{backgroundImage:'url('+content.image+')'}}
     LineRender() {
         let content = this.state.content;
-        return (<div className="column-container" style={{backgroundImage:'url('+content.image+')'}}>
-            <span>{content.title}</span>
+        return (<div className="column-container">
+            <img className="column-pic" src={content.status === 2 ? this.state.unlockPic[0]:this.state.lockPic[0]}/>
+            <span className="column-container-title">{content.title}</span>
             <span>{this.state.type[content.status + 1]}</span>
+            <img className="column-type" src={this.state.typePic[content.status + 1]}/>
         </div>)
     }
 });

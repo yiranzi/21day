@@ -107,14 +107,14 @@ const CourseSelect = React.createClass({
     renderCourseList() {
 
         let courseList = this.state.courseList;
-        let arr = []
+        let arr = [];
         if(!courseList || courseList.length === 0 ){
             return null;
         } else {
             for (let i = 0; i < courseList.length; i++) {
                 arr.push(
                     <Link key={i} to={{pathname:"/course/"+ (i + 1), query:{name: courseList[i].status}}}>
-                        <LessonBar content = {courseList[i]} ></LessonBar>
+                        <LessonBar index = {i} content = {courseList[i]} ></LessonBar>
                     </Link>
                     )
             }
