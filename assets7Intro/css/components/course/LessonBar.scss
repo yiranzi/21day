@@ -1,9 +1,31 @@
 .lesson-bar{
   .column-container{
-    height: 140px;
-    margin: 8px;
+    height: px2rem(140);
+    margin: 0 auto px2rem(8) auto;
     width: 90%;
     //border-bottom: 1px solid #efefef;
-    border-radius: 4px;
+    border-radius: px2rem(4);
+    background-size: cover;
+    background-color: #ffffff;
+  }
+
+  .column-container-title{
+    vertical-align: middle;
+  }
+  .sub-title{
+    vertical-align: middle;
+
+  }
+  .column-pic{
+    vertical-align: middle;
+    width:  72px;
+    height: 121px;
+    margin: px2rem(10);
+  }
+  .column-type{
+    vertical-align: middle;
+    width:  28px;
+    height: 28px;
+    margin: px2rem(10);
   }
 }

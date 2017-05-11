@@ -33,17 +33,14 @@ const AudioBar = React.createClass({
 
     componentWillReceiveProps(nextProps) {
         if (this.state.index === nextProps.playingIndex) {
-            console.log(nextProps.playingIndex);
             this.setState({isPlaying: true});
         } else {
-            console.log(nextProps.playingIndex);
             this.setState({isPlaying: false});
         }
     },
 
 
     controlHandler: function() {
-        console.log('child click!')
         this.props.audioCallBack(this.state.index, this.state.isPlaying);
     },
 
@@ -51,9 +48,9 @@ const AudioBar = React.createClass({
         let content = this.props.content
         return(
             <div onClick={this.controlHandler} className="audio-title">
-                <img className="click-button" src={this.state.isPlaying ? './assets/image/course/btnPlay.png':'./assets/image/course/btnPressed.png'}
+                <img className="click-button" src={this.state.isPlaying ? './assets/image/course/btnPressed.png':'./assets/image/course/btnPlay.png'}
                 />
-                <p className={this.state.isPlaying ? 'title-top':'title-bottom'}>{content.title}</p>
+                <p className={this.state.isPlaying ? 'title-bottom':'title-top'}>{content.title}</p>
             </div>
         )
     }
