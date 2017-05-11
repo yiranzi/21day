@@ -28,9 +28,9 @@ const LessonBar = React.createClass({
     },
     // style={{backgroundImage:'url('+content.image+')'}}
     LineRender() {
-        let content = this.state.content
+        let content = this.state.content;
         return (<div className="column-container" style={{backgroundImage:'url('+content.image+')'}}>
-            <span style={{color:'red'}}>{content.title}</span>
+            <span>{content.title}</span>
             <span>{this.state.type[content.status + 1]}</span>
         </div>)
     }

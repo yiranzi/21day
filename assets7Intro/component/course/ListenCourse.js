@@ -120,6 +120,7 @@ const ListenCourse = React.createClass({
             if (this.state.currentPlaying<0) {
                 return null;
             }
+            alert(this.state.currentPlaying);
             // 听完后自动播放下一节
             if (this.state.nextIssue) {
                 // this.clickNextHandler();
