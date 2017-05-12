@@ -1,7 +1,8 @@
 .audio-player{
-  margin: 0 auto px2rem(18) auto;
+  margin: 0 auto 0 auto;
   color: #ffffff;
   width: px2rem(359);
+  padding-top: px2rem(18);
   .audio-title{
     border-radius: 4px;
     position: relative;

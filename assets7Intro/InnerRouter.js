@@ -12,6 +12,7 @@ var App = require('./component/App');
 const CourseSelect = require('./component/course/CourseSelect');
 const PayPage = require('./component/PayPage');
 const ListenCourse = require('./component/course/ListenCourse');
+const GetReward = require('./component/course/GetReword');
 
 let InnerRouter = React.createClass({
 
@@ -24,6 +25,7 @@ let InnerRouter = React.createClass({
                     <Route path="/select" component={CourseSelect}/>
                     <Route path="/payPage" component={PayPage}/>
                     <Route path="/course/:courseId" component={ListenCourse}/>
+                    <Route path="/getReward" component={GetReward}/>
                     {/*<Route path="/FMView" component={FMView}/>*/}
                 </Route>
             </Router>

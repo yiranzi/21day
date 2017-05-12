@@ -6,16 +6,15 @@ const React = require('react');
 const ReactDom = require('react-dom');
 const OnFire = require('onfire.js');
 const User = require('../../User');
+
 const Config = require('../../Config');
 const Link = require('react-router').Link;
 const LessonBar = require('./LessonBar');
+const FixedBg = require('./FixedBg');
+// const GetReword = require('./GetReword');
 
 const CourseSelect = React.createClass({
 
-    // getInitialState(){
-    //     return{
-    //         playbarWidth: 0
-    //     }
 
     getInitialState: function() {
         return {
@@ -33,15 +32,13 @@ const CourseSelect = React.createClass({
       console.log("===userId = " + userId);
       if (userId) {
           this.init();
-        // this.checkUserPayStatue();
       } else {
         OnFire.on(Config.OAUTH_SUCCESS, ()=>{
           this.init();
-          // this.checkUserPayStatue();
         });
       }
 
-        console.log('1.yiran12');
+        console.log('1.yiran112');
         if (!this.counter) {
             this.counter = 0;
         }
@@ -98,9 +95,12 @@ const CourseSelect = React.createClass({
 
     render() {
         return(
-            <div className="course-select">
-                {this.renderCourseList()}
-                {this.renderTreasure()}
+            <div>
+                <FixedBg/>
+                <div>
+                    {this.renderCourseList()}
+                    {this.renderTreasure()}
+                </div>
             </div>
         )
     },
@@ -136,26 +136,27 @@ const CourseSelect = React.createClass({
     },
 
     renderTreasure() {
-        return (<div onClick={this.openTreasure}>123</div>)
+        return (<div onClick={this.openTreasure}></div>)
     },
 
     openTreasure() {
         console.log('click');
-        for (let i in this.state.haveOpen) {
-            if(i === 'treasure2') {
-                Material.openTreasure().always( (data) => {
-                    //弹出打开宝箱的界面
-                    console.log(data)
-                })
-            }
-        }
+        location.hash = '/getReward';
 
+        // for (let i in this.state.haveOpen) {
+        //     if(i === 'treasure2') {
+        //         Material.openTreasure().always( (data) => {
+        //             //弹出打开宝箱的界面
+        //             console.log(data)
+        //         })
+        //     }
+        // }
     },
 
     init() {
         console.log('init');
         //支付
-        this.checkUserPayStatue();
+        // this.checkUserPayStatue();
         //获取宝箱信息
         Material.getTreasureInfo().always( (data) => {
             console.log(data)
@@ -163,7 +164,6 @@ const CourseSelect = React.createClass({
                 this.state.haveOpen.push('treasure2');
                 this.setState({haveOpen: this.state.haveOpen});
             }
-
         })
     }
 });

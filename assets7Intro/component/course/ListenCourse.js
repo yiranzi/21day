@@ -22,6 +22,7 @@ const EnterPanel = require('../EnterPanel');
 
 const ChooseBar = require('./Choose');
 const AudioBar = require('./Audio');
+const FixedBg = require('./FixedBg');
 
 
 
@@ -125,7 +126,7 @@ const ListenCourse = React.createClass({
                     isPlaying: false
                 })
             }
-            //修改进度1
+            //修改进度
             this.state.lessons[this.state.currentPlaying].process = true;
             let localLessons = this.state.lessons;
             this.setState({lessons: localLessons});
@@ -312,6 +313,7 @@ const ListenCourse = React.createClass({
 
         return(
             <div className="fm-view">
+                <FixedBg/>
                 {this.state.showEnterPanel && <div onClick={this.modalClickHandler}>
                     <Modal  hideOnTap={false}>
 
