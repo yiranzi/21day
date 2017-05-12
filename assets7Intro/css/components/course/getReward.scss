@@ -1,8 +1,12 @@
 .get-reward{
-  height: auto;
-  width: 100%;
-
+  background-size: cover;
   .reward-pic{
-
+    position:absolute;
+    left:0;
+    right:0;
+    top:0;
+    bottom:0;
+    width: 70%;
+    margin:auto;
   }
 }

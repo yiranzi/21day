@@ -1,5 +1,5 @@
 /**
- * Created by yiran on 2017/5/5.
+ * Created by yiran1 on 2017/5/5.
  */
 const $ = window.$ = require('jquery');
 const React = require('react');
@@ -34,7 +34,7 @@ const GetReward = React.createClass({
     // style = {fullbg}
     render() {
         return(
-            <div className="bg-ground" style = {{backgroundImage: 'url("./assets7Intro/image/course/bg_1.png")',width: Dimensions.getWindowHeight(), height: Dimensions.getWindowHeight()}}  onClick={this.handleClick}>
+            <div className="get-reward" style = {{backgroundImage: 'url("./assets7Intro/image/course/bg_1.png")',width: Dimensions.getWindowWidth(), height: Dimensions.getWindowHeight()}}  onClick={this.handleClick}>
                 <img className="reward-pic" src={this.state.lockPic[this.props.params.lessonId]}/>
             </div>
         )
