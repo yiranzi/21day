@@ -375,8 +375,9 @@ var PayPage = React.createClass({
 
                 {!this.state.hasPaid &&
                     <div className="bottom-button" onClick={this.getTime}>
-                        {this.state.time ? <span onClick={this.didClickHandler}  className="join-button">报名截止下次再来吧</span> : <span onClick={this.clickHandler}  className={!this.state.hasSenior ?"join-button":"whole-join-button"}>立即参加（￥{this.state.buttonPrice}）</span>}
+                        {(this.state.time && !this.state.hasSenior) ? <span onClick={this.didClickHandler}  className="join-button">报名截止下次再来吧</span> : <span onClick={this.clickHandler}  className={!this.state.hasSenior ?"join-button":"whole-join-button"}>立即参加（￥{this.state.buttonPrice}）</span>}
                         {/**/}
+                        // {/*{!this.state.hasSenior && <span className="share-button" onClick={this.shareModalHandler}>邀请好友</span>}*/}
                     </div>
                 }
 
