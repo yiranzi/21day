@@ -104,6 +104,10 @@ const API_URL_GROUP = {
     //用户是否已报名
     'get_judge_signup': '7day/judgeusersignup/' + CURRENT_BATCH, //判断用户是否购买
 
+    //宝箱
+    'get_treasure_info': '7day/whetheropengift', //判断用户领了哪些宝箱
+    'open_treasure': '7day/opengift', //领取宝箱
+
     //
     'post_audio_time': 'fm/learn-audio-record', //学习时间和排名
     'get_course_list': '7day/course-list', //学习时间和排名
