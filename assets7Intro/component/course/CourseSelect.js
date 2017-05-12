@@ -113,7 +113,7 @@ const CourseSelect = React.createClass({
         } else {
             for (let i = 0; i < courseList.length; i++) {
                 //TODO 应该是-1表示未解锁111
-                if (courseList[i].status !== -1) {
+                if (courseList[i].status !== -2) {
                     arr.push(
                         <Link key={i} to={{pathname:"/course/"+ (i + 1), query:{name: courseList[i].status}}}>
                             <LessonBar index = {i} content = {courseList[i]} ></LessonBar>

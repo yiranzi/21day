@@ -142,7 +142,7 @@ const ListenCourse = React.createClass({
      */
     getFmColumn() {
 
-      // TODO roy 判断逻辑需要修改
+      // TODO roy 判断逻辑需要修改1
         Loading.showLoading('获取信息...');
         let fmall = 2017;
         Material.getJudgeFromServer(fmall).always((albumId)=>{
@@ -265,6 +265,7 @@ const ListenCourse = React.createClass({
      * @param index 当前某一音频第几个选择题
      */
     OnChoosePass(lessonIndex,index) {
+        console.log('123123123123')
         let questions = this.state.lessons[lessonIndex].subs;
         questions[index].process = true;
         let localLessons = this.state.lessons;
@@ -273,7 +274,8 @@ const ListenCourse = React.createClass({
         Material.finishWork(1, this.state.lessons[lessonIndex].subs[index].subjectid).always( (data) => {
         });
         //如果最后一课作业完成了.并且当前章节还没有完成,就弹出成就卡
-        if (this.props.location.query.name !== '2' && questions[questions.length-1].process === true) {
+        let lastLesson = this.state.lessons[this.state.lessons.length - 1].subs;
+        if(lastLesson[lastLesson.length - 1].process === true) {
             location.hash = '/getReward/' + 1;
         }
     },
