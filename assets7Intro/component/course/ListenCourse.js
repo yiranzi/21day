@@ -272,6 +272,11 @@ const ListenCourse = React.createClass({
         //发送修改1
         Material.finishWork(1, this.state.lessons[lessonIndex].subs[index].subjectid).always( (data) => {
         })
+        //如果最后一课作业完成了.并且当前章节还没有完成,就弹出成就卡
+        if (this.props.location.query.name !== '2' && questions[questions.length-1].process === true) {
+            console.log('弹出成就卡')
+            location.hash = '/getReward' + 1;
+        }
     },
 
     /**

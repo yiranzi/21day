@@ -9,30 +9,33 @@ const GetReward = React.createClass({
     getInitialState: function() {
         console.log('123');
         return {
-          content: this.props.content
+            content: this.props.content,
+            lockPic: [
+                "./assets/image/course/card_1.png",
+                "./assets/image/course/card_2.png",
+                "./assets/image/course/card_3.png",
+                "./assets/image/course/card_4.png",
+                "./assets/image/course/card_5.png",
+                "./assets/image/course/card_6.png",
+                "./assets/image/course/card_7.png",
+            ],
         };
     },
 
     componentWillMount() {
-        console.log(Dimensions.getWidthScale());
-        console.log('22222211');
-        console.log(Dimensions);
+        let lessonId = this.props.params.lessonId;
+        console.log(lessonId)
     },
 
 
     handleClick() {
-        // this.setState({liked: !this.state.liked});
-        console.log(screenHeight)
-        console.log('关闭界面1111');
         location.hash = "/select";
     },
     // style = {fullbg}
     render() {
         return(
             <div className="bg-ground" style = {{backgroundImage: 'url("./assets7Intro/image/course/bg_1.png")',width: Dimensions.getWindowHeight(), height: Dimensions.getWindowHeight()}}  onClick={this.handleClick}>
-                <img className="reward-pic" src={this.state.content}/>
-                <div className="reward-pic">123</div>
-                <div className="reward-pic">123</div>
+                <img className="reward-pic" src={this.state.lockPic[this.props.params.lessonId]}/>
             </div>
         )
     }

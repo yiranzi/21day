@@ -136,17 +136,17 @@ const CourseSelect = React.createClass({
     },
 
     renderTreasure() {
-        return (<div onClick={this.openTreasure}></div>)
+        return (<div onClick={this.openTreasure}>123</div>)
     },
 
     openTreasure() {
         console.log('click');
-        location.hash = '/getReward';
+        location.hash = '/getReward/' + 1;
 
         // for (let i in this.state.haveOpen) {
         //     if(i === 'treasure2') {
         //         Material.openTreasure().always( (data) => {
-        //             //弹出打开宝箱的界面
+        //             //弹出打开宝箱的界面1
         //             console.log(data)
         //         })
         //     }

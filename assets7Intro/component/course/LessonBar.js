@@ -17,10 +17,22 @@ const LessonBar = React.createClass({
                 '已完成'
             ],
             lockPic: [
-                "./assets/image/course/card_1.png"
+                "./assets/image/course/card_1.png",
+                "./assets/image/course/card_2.png",
+                "./assets/image/course/card_3.png",
+                "./assets/image/course/card_4.png",
+                "./assets/image/course/card_5.png",
+                "./assets/image/course/card_6.png",
+                "./assets/image/course/card_7.png",
             ],
             unlockPic: [
-                "./assets/image/course/card_2.png"
+                "./assets/image/course/card_1.png",
+                "./assets/image/course/card_2.png",
+                "./assets/image/course/card_3.png",
+                "./assets/image/course/card_4.png",
+                "./assets/image/course/card_5.png",
+                "./assets/image/course/card_6.png",
+                "./assets/image/course/card_7.png",
             ],
             typePic: [
                 "./assets/image/course/indWrong.png",

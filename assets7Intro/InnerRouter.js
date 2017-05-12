@@ -25,7 +25,7 @@ let InnerRouter = React.createClass({
                     <Route path="/select" component={CourseSelect}/>
                     <Route path="/payPage" component={PayPage}/>
                     <Route path="/course/:courseId" component={ListenCourse}/>
-                    <Route path="/getReward" component={GetReward}/>
+                    <Route path="/getReward/:lessonId" component={GetReward}/>
                     {/*<Route path="/FMView" component={FMView}/>*/}
                 </Route>
             </Router>
