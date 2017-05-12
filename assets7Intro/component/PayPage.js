@@ -65,7 +65,6 @@ var PayPage = React.createClass({
 
 
         //分享成功后，通知后台，给用户加红包
-        // OnFire.on('SHARE_SUCCESS',this.onShareSuccess);
         OnFire.on('PAID_LOSER',()=>{
             this.setState({
                 showBackup:true,
@@ -79,16 +78,14 @@ var PayPage = React.createClass({
 
             this.scrollToTop();
 
-            //绑定上线信息(userId)
-            //let seniorId = Util.getUrlPara('ictchannel');
-            //seniorId && this.bindSenior(seniorId);
-
             //统计班主任信息
             // let teacherId = Util.getUrlPara('teacherid');
             // teacherId && Util.postCnzzData('班主任'+teacherId);
 
             //购买成功后的dialog
             DoneToast.show('报名成功');
+
+            location.hash = "/select";
 
             //todo
             // window.dialogAlertComp.show('报名成功','点击“立即加群”进入QQ群。也可以复制页面上的QQ群号，手动进群。请注意页面上的加群【暗号】哟~','知道啦',()=>{},()=>{},false);
@@ -97,21 +94,17 @@ var PayPage = React.createClass({
         let seniorId = Util.getUrlPara('ictchannel'),
             openId = User.getUserInfo().openId;
 
-
-        // this.sendSeniorInfo();
-
-        if(openId){
+        if(openId) {
             //获取用户是否有报名记录
             //(同时绑定上下线关系，因为要在加入21天表后，才可以有后续行为)
-            console.log('3 3 ')
             // this.postRegisterRecord(Util.getCurrentBatch(),User.getUserInfo());
             this.postRegisterRecord(User.getUserInfo());
 
             //设置订阅
             this.setSubscribeInfo(User.getUserInfo().subscribe);
 
-            //设置上线
-            // this.setSenior(seniorId,User.getUserInfo().userId);
+            // 下线打开分享链接
+            this.setSenior(seniorId,User.getUserInfo().userId);
 
         }
         else{
@@ -123,12 +116,10 @@ var PayPage = React.createClass({
                 //设置订阅
                 this.setSubscribeInfo(userInfo.subscribe);
 
-                //设置上线
-                // this.setSenior(seniorId,userInfo.userId);
+                // 下线打开分享链接
+                this.setSenior(seniorId,userInfo.userId);
             });
         }
-
-        this.forSeniors();
 
         console.log('isSubscribed',this.state.subscribe);
     },
@@ -140,7 +131,7 @@ var PayPage = React.createClass({
         Material.getRegistered().done((result) => {
             console.log('signUpNumber-result', result);
             // TODO test roy
-            // result.time = false;
+            result.time = false;
 
             let restNum = Util.getUserNumber() - result.number;
             console.log("剩余人数：", restNum);
@@ -164,72 +155,20 @@ var PayPage = React.createClass({
 
 
     },
-    /**
-     * 分享成功时的操作
-     */
-    onShareSuccess() {
-        // let userInfo = User.getUserInfo();
-
-        // if(userInfo.userId){
-        //     //得红包
-        //     Material.getFirstShare(userInfo.userId).always((result)=>{
-        //         console.log('result',result);
-        //         if(result == true){
-        //             //提示红包在哪里
-        //             Material.alertRedPacketLocation(this.firstSharePanels);
-        //         }
-        //     });
-        //
-        // }else{
-            console.log('分享成功');
-        // }
-    },
-    //
-    // firstSharePanels(){
-    //     this.setState({
-    //         firstSharePanel :true
-    //     })
-    // },
-
-
-
-    // sendSeniorInfo() {
-    //     const User = require('../User');
-    //     let seniorId = Util.getUrlPara('ictchannel');
-    //     let userInfo = User.getUserInfo(),
-    //         userId = userInfo.userId;
-    //     console.log('userInfo',userInfo);
-    //     console.log('sid',seniorId);
-    //     console.log("userid",userId);
-    //     Material.postRecordSenior(seniorId,userId);
-    // },
-
-
-
-
-    forSeniors() {
-
-        if(!Util.getUrlPara('ictchannel')){
-            //上线用户，显示分享panel
-            this.setState({
-                showSharePanel: true
-            });
-        }
-    },
 
     /**
-     * 设置用户的上线
+     * 下线打开分享链接
      */
     setSenior(seniorId, userId) {
         //seniorId则表示该用户拥有上线
-        if(seniorId && seniorId!=userId){
-            console.log('设置用户上线'+'userid',userId);
-            this.sendSeniorInfo();
-
+        if(seniorId && seniorId != userId) {
             this.setState({
                 hasSenior: true,
                 buttonPrice: Util.getCheapPrice()
             });
+
+            console.log("下线打开分享链接");
+            Util.postCnzzData("下线打开分享链接");
         }
     },
 
@@ -246,10 +185,10 @@ var PayPage = React.createClass({
 
         Material.getJudgeFromServer().done((record)=>{
             Loading.hideLoading();
-            console.log('record',record);
+            console.log('是否报名', record);
 
             // TODO test roy
-            record = true;
+            // record = true;
 
             if(record){
                 this.setState({
@@ -283,35 +222,6 @@ var PayPage = React.createClass({
             })
         })
     },
-
-    // onGetWxInfoSuccess(data) {
-    //     if( !data || !data.userId ) {
-    //         //如果后台没有数据，代表没有授权过，去往snsapi_userinfo授权
-    //         User.redirectToUserinfo(false);
-    //         return;
-    //     }
-    //     console.log('data',data);
-    //     //保存用户信息
-    //     userInfo = {};
-    //     userInfo.subscribe = data.subscribe;//是否关注公众号
-    //     console.log('userInfo.subscribe',userInfo.subscribe);
-    //
-    // },
-
-    /**
-     * 绑定上下线关系
-     * @param seniorId
-     */
-   /* bindSenior(seniorId) {
-
-        let userInfo = User.getUserInfo();
-
-        if(seniorId == userInfo.userId){
-            return;
-        }
-
-        User.bindPyramidRelation(userInfo.openId,seniorId);
-    },*/
 
     /**
      * 设置用户关注信息
@@ -367,34 +277,6 @@ var PayPage = React.createClass({
         scrollTo(0,0);
     },
 
-
-
-
-    /**
-     * 点击进入QQ群
-     */
-    // entryQQClickHandler(){
-    //     Util.postCnzzData('点击进入QQ群');
-    //
-    //     //QQ
-    //     location.href = this.state.FMLink;
-    //
-    // },
-
-    /**
-     * 邀请好友
-     */
-    entryPosterHandler() {
-        // Util.postCnzzData('邀请好友');
-
-        //置顶
-        scrollTo(0, 0);
-
-        this.setState({
-            showShareHint: true
-        });
-    },
-
     /**
      * 隐藏提示时间截止panel
      */
@@ -416,95 +298,6 @@ var PayPage = React.createClass({
     getTime(){
         this.signUpNumber();
     },
-    /**
-     * 显示shareModal操作
-     */
-    // shareModalHandler() {
-    //     var speed=10;//滑动的速度
-    //     $('body,html').animate({ scrollTop: 0 }, speed);
-    //     this.setState({
-    //         showShareModal: true
-    //     })
-    // },
-
-    /**
-     * 隐藏分享modal
-     */
-    // hideShareModalHandler() {
-    //     this.setState({
-    //         showShareModal: false
-    //     })
-    // },
-    //  timeout(){
-    //
-    //     let date = new Date();
-    //     console.log('date',date);
-    //     let years = 2017;
-    //     let month = 4;
-    //     let strDate = 20;
-    //     let hours = 15;
-    //     let minutes = 55;
-    //     let seconds = 0;
-    //     let strDates = strDate;
-    //     let minutess = minutes+1;
-    //     this.setState({
-    //         month,
-    //         strDates,
-    //         years,
-    //         hours,
-    //         minutess,
-    //         seconds,
-    //     });
-    //     let seperator1 = "-";
-    //     let seperator2 = ":";
-    //     let months = date.getMonth() + 1;
-    //     console.log('month',month);
-    //
-    //     if(months > 12){
-    //         years = years+1;
-    //         month = 1;
-    //     }else if(months == 1||3||5||7||8||10||12){
-    //         if(strDates > 31){
-    //            strDates = 1;
-    //            month = month+1;
-    //         }
-    //     }else if (months == 4||6||9||11){
-    //         if(strDates > 30){
-    //             strDates = 1;
-    //             month = month+1;
-    //         }
-    //     }else {
-    //         if (strDates > 29){
-    //             strDates = 1;
-    //             month = month+1;
-    //         }
-    //     }
-    //     let currentdate = years + seperator1 + month + seperator1 + strDates
-    //         + " " + hours + seperator2 + minutess
-    //         + seperator2 + seconds;
-    //     let newcurrent = date.getFullYear() + seperator1 + months + seperator1 + date.getDate()
-    //         + " " + date.getHours() + seperator2 + date.getMinutes()
-    //         + seperator2 + date.getSeconds();
-    //     console.log('newcurrent',newcurrent);
-    //     console.log('currentdate',currentdate);
-    //     if (currentdate == newcurrent){
-    //         years = date.getFullYear();
-    //         month = date.getMonth() + 1;
-    //         strDate = date.getDate();
-    //         hours = date.getHours();
-    //         minutes = date.getMinutes();
-    //         seconds = date.getSeconds();
-    //         strDates = strDate;
-    //         minutess = minutes+1;
-    //     }
-    //     if (month >= 1 && month <= 9) {
-    //         month = "0" + month;
-    //     }
-    //     if (strDate >= 0 && strDate <= 9) {
-    //         strDate = "0" + strDate;
-    //     }
-    //     return currentdate;
-    // },
 
     render(){
         return (
@@ -582,25 +375,9 @@ var PayPage = React.createClass({
                     </div>
                 }
 
-                {/*{this.state.buttonPrice == 0 &&*/}
-                    {/*<div className="bottom-button attend-camp-button">*/}
-                        {/*/!*{!this.state.showWechatGroup && <span onClick={this.clickHandler} className={this.state.hasSenior==false ?"join-button":"whole-join-button"}>请等待开课</span>}*!/*/}
-
-                        {/*this.state.showWechatGroup && <span onClick={this.clickHandler} className={this.state.hasSenior==false ?"join-button":"whole-join-button"}>因人数较多，请耐心等待通过加群</span>*/}
-
-                        {/*{!this.state.hasSenior && <span className="share-button" onClick={this.shareModalHandler}>邀请好友</span>}*/}
-                    {/*</div>*/}
-                {/*}*/}
-                {/*{this.state.showShareHint && <div className="share-hint"></div>}*/}
-                {/*{this.state.showShareHint && <div className="share-text"></div>}*/}
-
                 {/*入页面时弹出的分享提示panel*/}
                 {this.state.buttonChange && <Modal hideOnTap={false}><SharePanel onClose={this.closeSharePanelHandler}/></Modal>}
-                {/*{this.state.firstSharePanel && <Modal hideOnTap={false}><SharePanel onClose={this.firstSharePanels}/></Modal>}*/}
-                {/*{this.state.firstSharePanel && <Modal><FirstSharePanel /></Modal>}*/}
-                {/*点击分享时的提示模态引导框*/}
-                {/*{this.state.showShareModal && <img src="./assets21Intro/image/shareModal.png" onClick={this.hideShareModalHandler} className="share-modal"/>}*/}
-            </div>
+                </div>
         )
     }
 

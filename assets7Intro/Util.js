@@ -44,7 +44,7 @@ const VERSION = '1.1.0_test'; // TODO roy 项目版本
 const CHARGE_INDEX = 0; //收费部分下标（0~N）
 
 const CURRENT_BATCH = 2; //当前期数
-const END_TIME = [2017,5,11,24,0,0]; // TODO roy 截止时间，需要和后台同步
+const END_TIME = [2017,5,12,24,0,0]; // TODO roy 截止时间，需要和后台同步
 const USER_NUMBER = 1000; // TODO roy 活动报名总人数
 
 const NORMAL_PRICE = 2;// TODO roy 上线价格，普通用户
@@ -81,13 +81,9 @@ const API_URL_GROUP = {
     'exchange_prize':'21eval/product/purchase/id', //兑换奖品
     'get_exchange_record':'21eval/product/orders', //兑换记录
 
-    //绑定上下线关系
-    'bind_pyramid_relation': '21eval/user/add-child',
-
     //获取上线信息
     'get_senior_info': '21eval/user/parent-profile',
-    //记录下线打开上线的分享链接
-    'post_record_info': '21enter/parent-share/{parentId}',
+
     //获取支付的openID
     'get_pay_openid': 'wx/h5/base/pay/openId',
     'get_first_share': '21enter/first-share',

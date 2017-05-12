@@ -60,8 +60,6 @@ class PayController {
             if( QRCodePay.isNeedQRCodePay() ) {
                 //订阅号微信的IOS用户要使用扫码支付
                 PayController.getOrder(null, 0, true);
-
-                //PayController.removePayButtonHanlder();
             }else {
                 PayController.getOrder();
             }
@@ -83,7 +81,6 @@ class PayController {
             }, 3000);
         }
 
-       // PayController.scrollToPayCenter();
 
         if( !Util.isWeixin() ){
             QRCodePay.showWxQrCode(location.href, '保存二维码，微信扫描购买', $('#modal'));
@@ -97,9 +94,7 @@ class PayController {
             console.log('获取通用订单');
             PayController.getOrder(null, 0, true);
 
-            //PayController.removePayButtonHanlder();
         }else {
-            console.log('lalalalal');
             PayController.getOrder();
         }
 
@@ -305,6 +300,13 @@ class PayController {
 
                     OnFire.fire('PAID_SUCCESS','normalPay');
 
+                    // 下线支付成功后上报
+                    let seniorId = Util.getUrlPara('ictchannel');
+                    if(seniorId && seniorId != User.getUserInfo().userId) {
+                        console.log("下线购买成功");
+                        Util.postCnzzData("下线购买成功");
+                    }
+
                     Util.postCnzzData('报名成功');
                 }else {
                     //支付失败
@@ -355,43 +357,6 @@ class PayController {
             beforeSend: function(request) {
                 request.setRequestHeader("X-iChangTou-Json-Api-Token", Util.getApiToken());
             }
-        });
-    }
-
-    /**
-     * 提交上下线关系
-     */
-    static postRyramid() {
-        let parentId = Util.getIctChannel(),
-            userInfo = window.User.getUserInfo();
-        if( !parentId || parentId == userInfo.userId ){
-            //没有上线信息的话，不提交
-            return;
-        }
-
-        let jsonData = JSON.stringify({'minicId': Util.getMinicId(),
-            'parentId': parentId
-        });
-
-
-        $.ajax({
-            url: Util.getAPIUrl('add_pyramid'),
-            data: jsonData,
-            type: 'post',
-            cache: false,
-            contentType: 'application/json;charset=utf-8',
-            dataType:'json',
-            headers: {
-                Accept:"application/json"
-            },
-            beforeSend: function(request) {
-                request.setRequestHeader("X-iChangTou-Json-Api-User", userInfo.userId);
-                request.setRequestHeader("X-iChangTou-Json-Api-Token", Util.getApiToken());
-            },
-            success: (data)=> {
-                console.log('绑定上下线关系成功', data);
-            },
-            error: ()=>{}
         });
     }
 

@@ -36,7 +36,6 @@ const CourseSelect = React.createClass({
         // this.checkUserPayStatue();
       } else {
         OnFire.on(Config.OAUTH_SUCCESS, ()=>{
-          console.log("===OAUTH_SUCCESS");
           this.init();
           // this.checkUserPayStatue();
         });
@@ -155,6 +154,8 @@ const CourseSelect = React.createClass({
 
     init() {
         console.log('init');
+        //支付
+        this.checkUserPayStatue();
         //获取宝箱信息
         Material.getTreasureInfo().always( (data) => {
             console.log(data)
