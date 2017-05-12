@@ -31,10 +31,10 @@ const CourseSelect = React.createClass({
       let userId = User.getUserInfo().userId;
       console.log("===userId = " + userId);
       if (userId) {
-          this.init();
+            this.checkUserPayStatue();
       } else {
         OnFire.on(Config.OAUTH_SUCCESS, ()=>{
-          this.init();
+            this.checkUserPayStatue();
         });
       }
 
@@ -70,7 +70,8 @@ const CourseSelect = React.createClass({
 
           if(result){
               console.log('显示关卡列表');
-              this.getCourseList();
+              this.init()
+
 
           } else{ // 未购买直接跳到购买页面
               location.hash = "/payPage";
@@ -111,8 +112,8 @@ const CourseSelect = React.createClass({
             return null;
         } else {
             for (let i = 0; i < courseList.length; i++) {
-                //todo应该是-1表示未解锁
-                if (courseList[i].status !== -2) {
+                //TODO 应该是-1表示未解锁111
+                if (courseList[i].status !== -1) {
                     arr.push(
                         <Link key={i} to={{pathname:"/course/"+ (i + 1), query:{name: courseList[i].status}}}>
                             <LessonBar index = {i} content = {courseList[i]} ></LessonBar>
@@ -120,7 +121,9 @@ const CourseSelect = React.createClass({
                     )
                 } else {
                     arr.push(
-                        <LessonBar key={i} index = {i} content = {courseList[i]} onclick={this.renderNotEnter(i)}></LessonBar>
+                        <div onClick={this.renderNotEnter.bind(this,1)}>
+                            <LessonBar key={i} index = {i} content = {courseList[i]}>12345</LessonBar>
+                        </div>
                     )
                 }
 
@@ -134,7 +137,7 @@ const CourseSelect = React.createClass({
     },
 
     renderTreasure() {
-        return (<div onClick={this.openTreasure}>123</div>)
+        return (<div onClick={this.openTreasure}></div>)
     },
 
     openTreasure() {
@@ -153,9 +156,7 @@ const CourseSelect = React.createClass({
 
     init() {
         console.log('init');
-        //支付
-        // this.checkUserPayStatue();
-        //获取宝箱信息
+        //获取宝箱信息1
         Material.getTreasureInfo().always( (data) => {
             console.log(data)
             if(data) {
@@ -163,6 +164,7 @@ const CourseSelect = React.createClass({
                 this.setState({haveOpen: this.state.haveOpen});
             }
         })
+        this.getCourseList();
     }
 });
 

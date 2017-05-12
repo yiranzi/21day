@@ -11,13 +11,13 @@ const GetReward = React.createClass({
         return {
             content: this.props.content,
             lockPic: [
-                "./assets/image/course/card_1.png",
-                "./assets/image/course/card_2.png",
-                "./assets/image/course/card_3.png",
-                "./assets/image/course/card_4.png",
-                "./assets/image/course/card_5.png",
-                "./assets/image/course/card_6.png",
-                "./assets/image/course/card_7.png",
+                "./assets7Intro/image/course/card_1.png",
+                "./assets7Intro/image/course/card_2.png",
+                "./assets7Intro/image/course/card_3.png",
+                "./assets7Intro/image/course/card_4.png",
+                "./assets7Intro/image/course/card_5.png",
+                "./assets7Intro/image/course/card_6.png",
+                "./assets7Intro/image/course/card_7.png",
             ],
         };
     },

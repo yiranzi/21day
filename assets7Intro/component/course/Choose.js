@@ -70,15 +70,15 @@ const ChooseBar = React.createClass({
         //通过情况下.绘制正确答案
         if(this.state.process) {
             if(question.trueindex[0] === index) {
-                return <img src={'./assets/image/course/indRight.png'}></img>
+                return <img src={'./assets7Intro/image/course/indRight.png'}></img>
             } else {
                 return null;
             }
         } else {
             if(this.state.results[index] === 1) {
-                return <img src={'./assets/image/course/indRight.png'}></img>
+                return <img src={'./assets7Intro/image/course/indRight.png'}></img>
             } else if(this.state.results[index] === 0){
-                return <img src={'./assets/image/course/indWrong.png'}></img>
+                return <img src={'./assets7Intro/image/course/indWrong.png'}></img>
             }
         }
     },

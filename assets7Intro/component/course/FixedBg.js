@@ -22,14 +22,12 @@ const GetReward = React.createClass({
 
     handleClick() {
         // this.setState({liked: !this.state.liked});
-        console.log(screenHeight)
-        console.log('关闭界面1111');
         location.hash = "/select";
     },
     // style = {fullbg}
     render() {
         return(
-            <div className="bg-ground" style = {{backgroundImage: 'url("./assets7Intro/image/course/bg_1.png")',width: Dimensions.getWindowHeight(), height: Dimensions.getWindowHeight()}}></div>
+            <div className="bg-ground" style = {{backgroundImage: 'url("./assets7Intro/image/course/bg_1.png")', width:Dimensions.getWindowWidth(), height: Dimensions.getWindowHeight()}}></div>
         )
     }
 });

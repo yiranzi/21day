@@ -17,28 +17,28 @@ const LessonBar = React.createClass({
                 '已完成'
             ],
             lockPic: [
-                "./assets/image/course/card_1.png",
-                "./assets/image/course/card_2.png",
-                "./assets/image/course/card_3.png",
-                "./assets/image/course/card_4.png",
-                "./assets/image/course/card_5.png",
-                "./assets/image/course/card_6.png",
-                "./assets/image/course/card_7.png",
+                "./assets7Intro/image/course/card_1.png",
+                "./assets7Intro/image/course/card_2.png",
+                "./assets7Intro/image/course/card_3.png",
+                "./assets7Intro/image/course/card_4.png",
+                "./assets7Intro/image/course/card_5.png",
+                "./assets7Intro/image/course/card_6.png",
+                "./assets7Intro/image/course/card_7.png",
             ],
             unlockPic: [
-                "./assets/image/course/card_1.png",
-                "./assets/image/course/card_2.png",
-                "./assets/image/course/card_3.png",
-                "./assets/image/course/card_4.png",
-                "./assets/image/course/card_5.png",
-                "./assets/image/course/card_6.png",
-                "./assets/image/course/card_7.png",
+                "./assets7Intro/image/course/card_1.png",
+                "./assets7Intro/image/course/card_2.png",
+                "./assets7Intro/image/course/card_3.png",
+                "./assets7Intro/image/course/card_4.png",
+                "./assets7Intro/image/course/card_5.png",
+                "./assets7Intro/image/course/card_6.png",
+                "./assets7Intro/image/course/card_7.png",
             ],
             typePic: [
-                "./assets/image/course/indWrong.png",
-                "./assets/image/course/indRight.png",
-                "./assets/image/course/indRight.png",
-                "./assets/image/course/indRight.png",
+                "./assets7Intro/image/course/indWrong.png",
+                "./assets7Intro/image/course/indRight.png",
+                "./assets7Intro/image/course/indRight.png",
+                "./assets7Intro/image/course/indRight.png",
             ],
         };
     },
@@ -54,7 +54,7 @@ const LessonBar = React.createClass({
     LineRender() {
         let content = this.state.content;
         return (<div className="column-container">
-            <img className="column-pic" src={content.status === 2 ? this.state.unlockPic[0]:this.state.lockPic[0]}/>
+            <img className="column-pic" src={content.status === 2 ? this.state.unlockPic[this.state.index]:this.state.lockPic[this.state.index]}/>
             <span className="column-container-title">{content.title}</span>
             <span>{this.state.type[content.status + 1]}</span>
             <img className="column-type" src={this.state.typePic[content.status + 1]}/>
