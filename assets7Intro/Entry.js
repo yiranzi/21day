@@ -29,19 +29,12 @@ if( !Util.getUrlPara('code') ) {
 
 $(document).ready(() => {
 
+    alert("10");
+
     Util.postCnzzData('进入页面');
 
     //尺寸初始化
     new Dimensions().init();
-
-    window.entry = ()=>{
-        // return ReactDom.render(<Main/>, $('#root')[0]);
-        return ReactDom.render(<InnerRouter/>, $('#root')[0]);
-
-    };
-
-    //Loading初始化
-    new Loading().init();
 
     Loading.showLoading('获取信息...');
 
@@ -55,4 +48,5 @@ $(document).ready(() => {
     ////初始化用户信息
     User.initAccessInfo();
 
+    ReactDom.render(<InnerRouter/>, $('#root')[0]);
 });

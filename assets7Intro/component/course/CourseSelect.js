@@ -55,13 +55,6 @@ const CourseSelect = React.createClass({
         })
         console.log('push ajax')
 
-        if (User.getUserInfo().userId) {
-            this.getCourseList();
-        } else {
-            OnFire.on('OAUTH_SUCCESS', ()=>{
-                this.getCourseList();
-            })
-        }
     },
 
     /**
@@ -70,9 +63,14 @@ const CourseSelect = React.createClass({
     checkUserPayStatue() {
       Material.getJudgeFromServer().done((result)=>{
           Loading.hideLoading();
-          console.log("是否购买：", result);
+          console.log("关卡页面判断是否购买：", result);
+
+          // TODO test roy
+          // location.hash = "/payPage";
+
           if(result){
-              console.log('购买过');
+              console.log('显示关卡列表');
+              this.getCourseList();
 
           } else{ // 未购买直接跳到购买页面
               location.hash = "/payPage";
