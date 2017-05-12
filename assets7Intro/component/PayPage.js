@@ -61,9 +61,6 @@ var PayPage = React.createClass({
 
         console.log("endTime:", this.state.endTime);
 
-        this.signUpNumber();
-
-
         //分享成功后，通知后台，给用户加红包
         OnFire.on('PAID_LOSER',()=>{
             this.setState({
@@ -100,8 +97,6 @@ var PayPage = React.createClass({
 
         if(openId) {
             //获取用户是否有报名记录
-            //(同时绑定上下线关系，因为要在加入21天表后，才可以有后续行为)
-            // this.postRegisterRecord(Util.getCurrentBatch(),User.getUserInfo());
             this.postRegisterRecord(User.getUserInfo());
 
             //设置订阅
@@ -114,7 +109,6 @@ var PayPage = React.createClass({
         else{
             OnFire.on('OAUTH_SUCCESS',(userInfo)=>{
                 //获取用户是否有报名记录
-                console.log('4')
                 this.postRegisterRecord(userInfo);
 
                 //设置订阅
@@ -143,12 +137,14 @@ var PayPage = React.createClass({
                     num: 0,
                     time: result.time,
                     showint: false,
+                    hasSenior: false
                 });
             } else {
               this.setState({
                   num: restNum,
                   time: result.time,
                   showint: true,
+                  hasSenior: false
               });
             }
         }).fail(()=>{
@@ -171,6 +167,12 @@ var PayPage = React.createClass({
 
             console.log("下线打开分享链接");
             Util.postCnzzData("下线打开分享链接");
+        } else {
+            this.setState({
+                buttonPrice: Util.getNormalPrice()
+            });
+            // 请求倒计时和剩余人数
+            this.signUpNumber();
         }
     },
 
@@ -196,7 +198,6 @@ var PayPage = React.createClass({
             if(record){
                 this.setState({
                     hasPaid: true, //已报名
-                    buttonPrice: Util.getNormalPrice(),
                 });
 
                 // OnFire.on('OAUTH_SUCCESS',(userInfo)=>{
@@ -214,7 +215,6 @@ var PayPage = React.createClass({
             } else {
                 this.setState({
                     hasPaid: false, //未报名
-                    buttonPrice: Util.getNormalPrice(),
                 });
             }
         })
@@ -313,21 +313,25 @@ var PayPage = React.createClass({
                 {this.state.showBackup && <a className="backup-text" href="http://jq.qq.com/?_wv=1027&k=41976jN">QQ群号：
                     <span className="red-text">429827363</span>
                     <p className="red-text  tada animated infinite">暗号：7天</p></a>}
+                {/*如果未报名，并且不是下线，则显示报名时间和人数*/}
                 {!this.state.hasPaid &&
                 <div>
-                    <div className="top-time-bottom">
-                        <div className="top-time">
-                            <Timeout hasEnded={this.state.time} finalDate={this.state.endTime}/>
-                        </div>
-                    <div className="entered">
-                        <div className="show-entered">
-                            <img src="./assets7Intro/image/number.png" />
-                            <div className="show-number"> 剩余名额</div>
-                        </div>
-                        {/*<span>0</span>*/}
-                        {this.state.showint ? <span>{this.state.num}</span>:<span>0</span>}
-                        </div>
-                    </div>
+                   {!this.state.hasSenior && <div>
+                     <div className="top-time-bottom">
+                         <div className="top-time">
+                             <Timeout hasEnded={this.state.time} finalDate={this.state.endTime}/>
+                         </div>
+                     <div className="entered">
+                         <div className="show-entered">
+                             <img src="./assets7Intro/image/number.png" />
+                             <div className="show-number"> 剩余名额</div>
+                         </div>
+                         {/*<span>0</span>*/}
+                         {this.state.showint ? <span>{this.state.num}</span>:<span>0</span>}
+                         </div>
+                     </div>
+                   </div>}
+
                     <img src="./assets7Intro/image/campaign.jpg" className="intro-img"/></div> }
                 {/*如果已经报名，报名链接时展示*/}
                 {this.state.hasPaid && <div>
@@ -371,10 +375,8 @@ var PayPage = React.createClass({
 
                 {!this.state.hasPaid &&
                     <div className="bottom-button" onClick={this.getTime}>
-                        {/*<span onClick={this.didClickHandler}  className="join-button">报名截止下次再来吧</span>*/}
-                        {this.state.time ? <span onClick={this.didClickHandler}  className="join-button">报名截止下次再来吧</span> : <span onClick={this.clickHandler}  className={this.state.hasSenior==false ?"join-button":"whole-join-button"}>立即参加（￥{this.state.buttonPrice}）</span>}
+                        {this.state.time ? <span onClick={this.didClickHandler}  className="join-button">报名截止下次再来吧</span> : <span onClick={this.clickHandler}  className={!this.state.hasSenior ?"join-button":"whole-join-button"}>立即参加（￥{this.state.buttonPrice}）</span>}
                         {/**/}
-                        {/*{!this.state.hasSenior && <span className="share-button" onClick={this.shareModalHandler}>邀请好友</span>}*/}
                     </div>
                 }
 
