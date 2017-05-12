@@ -72,20 +72,24 @@ var PayPage = React.createClass({
         });
         //已付费
         OnFire.on('PAID_SUCCESS',(payWay)=>{
-            this.setState({
-                hasPaid: true,
-            })
+            let isSubscribed = User.getUserInfo().subscribe;
+            console.log("支付完判断是否关注公号", isSubscribed);
 
-            this.scrollToTop();
+            // 已关注公号的用户直接跳转关卡页面学习
+            if (isSubscribed) {
+              DoneToast.show('报名成功，开始学习第一课吧！');
+              location.hash = "/select";
+            } else { // 未关注引导关注公号
+              this.setState({
+                  hasPaid: true,
+              })
+              this.scrollToTop();
+              DoneToast.show('报名成功，记得关注长投公号哦！');
+            }
 
             //统计班主任信息
             // let teacherId = Util.getUrlPara('teacherid');
             // teacherId && Util.postCnzzData('班主任'+teacherId);
-
-            //购买成功后的dialog
-            DoneToast.show('报名成功');
-
-            location.hash = "/select";
 
             //todo
             // window.dialogAlertComp.show('报名成功','点击“立即加群”进入QQ群。也可以复制页面上的QQ群号，手动进群。请注意页面上的加群【暗号】哟~','知道啦',()=>{},()=>{},false);
@@ -120,8 +124,6 @@ var PayPage = React.createClass({
                 this.setSenior(seniorId,userInfo.userId);
             });
         }
-
-        console.log('isSubscribed',this.state.subscribe);
     },
 
     /***
@@ -189,6 +191,7 @@ var PayPage = React.createClass({
 
             // TODO test roy
             // record = true;
+            alert("是否报名：" + record);
 
             if(record){
                 this.setState({
@@ -233,7 +236,7 @@ var PayPage = React.createClass({
             isSubscribed: subscribe,
             followSubscribe:subscribe,
         });
-        console.log('isSubscribed',this.state.followSubscribe);
+        console.log('isSubscribed', subscribe);
     },
 
     /**
@@ -338,10 +341,10 @@ var PayPage = React.createClass({
                             </div>*/}
                             {!this.state.showWechatGroup && <div>
 
-                                <p className="paid-text paid-times">明天上午九点准时开课</p>
+                                <p className="paid-text paid-times"></p>
                                 {/*<p className="paid-texts  tada infinite ">耐心等待</p>*/}
                                 <p className="paid-text">下一个百万富翁就是你</p>
-                                {!this.state.followSubscribe && <div><p className="paid-text">长按扫描下方二维码进入课程公号</p>
+                                {!this.state.followSubscribe && <div><p className="paid-text">长按扫描下方二维码进入课程公号，开始学习吧</p>
                                 <div className="page-div">
                                     <img className="page-image" src="./assets7Intro/image/tousha-qrcode.jpg"/>
                                     </div></div>}

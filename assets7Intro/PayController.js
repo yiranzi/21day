@@ -179,7 +179,7 @@ class PayController {
                             // misc: Util.getUrlPara('dingyuehao')||'0'+'@'+seniorId+'@'+teacherId,
                             // price: sum,
                             dealType: 102, //交易类型
-                            itemId: 2017,
+                            itemId: Util.getCurrentBatch(),
                             mchantType: 11, //商品类型 21days
                             misc: '',
                             price: sum
@@ -296,18 +296,17 @@ class PayController {
                 payPullingFlag = false;
 
                 if( res.err_msg == "get_brand_wcpay_request:ok"  ) {
-                    //支付成功
-
-                    OnFire.fire('PAID_SUCCESS','normalPay');
-
                     // 下线支付成功后上报
                     let seniorId = Util.getUrlPara('ictchannel');
                     if(seniorId && seniorId != User.getUserInfo().userId) {
-                        console.log("下线购买成功");
-                        Util.postCnzzData("下线购买成功");
+                        console.log("下线报名成功");
+                        Util.postCnzzData("下线报名成功");
                     }
 
                     Util.postCnzzData('报名成功');
+
+                    //支付成功
+                    OnFire.fire('PAID_SUCCESS','normalPay');
                 }else {
                     //支付失败
                     if( QRCodePay.isNeedQRCodePay() ){
