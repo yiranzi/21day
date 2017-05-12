@@ -166,24 +166,30 @@ const AudioProgressBar = React.createClass({
 
     renderMovingBar () {
         if (!this.state.isPlaying) {
-            return null
-        }
-        return ( <div className="progressbar player_progressbar" onClick={this.progressClickHandler}>
-            <div className="seekbar player_seekbar" style={{width: '100%'}}></div>
-            <div className="moving-bar" style={{width:"100%",maxWidth:"100%"}}>
-                <div className="playbar player_playbar" style={{width: this.state.playbarWidth,maxWidth:"100%"}}></div>
-                {this.state.isPlaying &&
-                <Draggable
-                    axis="x"  bounds="parent"
-                    onStart={this.dragTargetHandler}
-                    onDrag={this.dragTargetHandler}
-                    onStop={this.dropOverProgressHandler}>
+            return ( <div className="progressbar player_progressbar" onClick={this.progressClickHandler}>
+                <div className="seekbar player_seekbar" style={{width: '100%'}}></div>
+                <div className="moving-bar" style={{width:"100%",maxWidth:"100%"}}>
                     <div className="moving-ball" style={{transform:' translate(0, 0)'}}></div>
-                </Draggable>
-                }
+                </div>
+            </div>);
+        } else {
+            return ( <div className="progressbar player_progressbar" onClick={this.progressClickHandler}>
+                <div className="seekbar player_seekbar" style={{width: '100%'}}></div>
+                <div className="moving-bar" style={{width:"100%",maxWidth:"100%"}}>
+                    <div className="playbar player_playbar" style={{width: this.state.playbarWidth,maxWidth:"100%"}}></div>
+                    {this.state.isPlaying &&
+                    <Draggable
+                        axis="x"  bounds="parent"
+                        onStart={this.dragTargetHandler}
+                        onDrag={this.dragTargetHandler}
+                        onStop={this.dropOverProgressHandler}>
+                        <div className="moving-ball" style={{transform:' translate(0, 0)'}}></div>
+                    </Draggable>
+                    }
+                </div>
+            </div>);
+        }
 
-            </div>
-        </div>);
     }
 });
 

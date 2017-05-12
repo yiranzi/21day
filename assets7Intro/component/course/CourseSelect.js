@@ -22,6 +22,7 @@ const CourseSelect = React.createClass({
             liked: false,
             dataList: [1,1,0,2,2,0,0],
             courseList: {},
+            haveOpen: [],
         };
     },
 
@@ -31,10 +32,12 @@ const CourseSelect = React.createClass({
       let userId = User.getUserInfo().userId;
       console.log("===userId = " + userId);
       if (userId) {
-        this.checkUserPayStatue();
+          this.init();
+        // this.checkUserPayStatue();
       } else {
         OnFire.on(Config.OAUTH_SUCCESS, ()=>{
-          this.checkUserPayStatue();
+          this.init();
+          // this.checkUserPayStatue();
         });
       }
 
@@ -92,10 +95,10 @@ const CourseSelect = React.createClass({
     },
 
     render() {
-        var text = this.state.liked ? 'like' : 'haven\'t liked';
         return(
             <div className="course-select">
                 {this.renderCourseList()}
+                {this.renderTreasure()}
             </div>
         )
     },
@@ -108,15 +111,59 @@ const CourseSelect = React.createClass({
             return null;
         } else {
             for (let i = 0; i < courseList.length; i++) {
-                arr.push(
-                    <Link key={i} to={{pathname:"/course/"+ (i + 1), query:{name: courseList[i].status}}}>
-                        <LessonBar index = {i} content = {courseList[i]} ></LessonBar>
-                    </Link>
+                //todo应该是-1表示未解锁
+                if (courseList[i].status !== -2) {
+                    arr.push(
+                        <Link key={i} to={{pathname:"/course/"+ (i + 1), query:{name: courseList[i].status}}}>
+                            <LessonBar index = {i} content = {courseList[i]} ></LessonBar>
+                        </Link>
                     )
+                } else {
+                    arr.push(
+                        <LessonBar key={i} index = {i} content = {courseList[i]} onclick={this.renderNotEnter(i)}></LessonBar>
+                    )
+                }
+
             }
             return arr
         }
     },
+
+    renderNotEnter(index) {
+        window.dialogAlertComp.show('还没有开放课程哦','每天更新一课哦,耐心等一等吧,可以微信关注长投网','知道啦',()=>{},()=>{},false);
+    },
+
+    renderTreasure() {
+        return (<div onClick={this.openTreasure}>123</div>)
+    },
+
+    openTreasure() {
+        console.log('click');
+        for (let i in this.state.haveOpen) {
+            if(i === 'treasure2') {
+                Material.openTreasure().always( (data) => {
+                    //弹出打开宝箱的界面
+                    console.log(data)
+                })
+            }
+        }
+
+    },
+
+    init() {
+        console.log('init');
+        //支付
+        this.checkUserPayStatue();
+        //获取宝箱信息
+        Material.getTreasureInfo().always( (data) => {
+            console.log(data)
+            if(data) {
+                this.state.haveOpen.push('treasure2');
+                this.setState({haveOpen: this.state.haveOpen});
+            }
+
+        })
+    }
 });
 
 module.exports = CourseSelect;
