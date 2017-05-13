@@ -2,13 +2,15 @@
   //background-color: #00b3ee;
   width: 100%;
   height: auto;
+  color: black;
   //padding-top: px2rem(18);
 
   .lesson-column-line{
     background-image: url("../image/course/DividingLine.png");
     background-size:cover;
     height: px2rem(18);
-    margin: px2rem(18) 0 px2rem(18) 0;
+    margin: px2rem(18) auto 0 auto;
+    width: px2rem(359);
   }
 
   .fm-title{

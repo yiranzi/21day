@@ -87,8 +87,8 @@ const ChooseBar = React.createClass({
         if(this.state.answer !== -1 || this.props.question.process)
         {
             return (<div className="choose-tips">
-                <h1>Tips:</h1>
-                <p>知识点1</p>
+                <h1 className="tips-font">Tips:</h1>
+                <p className="tips-font">知识点1</p>
             </div>);
         }
 

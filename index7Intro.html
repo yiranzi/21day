@@ -11,6 +11,10 @@
     <meta name="apple-mobile-web-app-capable" content="yes"/>
     <meta name="apple-mobile-web-app-status-bar-style" content="black"/>
     <meta name="format-detection"content="telephone=no" />
+    <!-- TODO roy 避免微信缓存问题 -->
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
 
     <title>7天训练营报名</title>
     <style>
@@ -66,7 +70,7 @@
 <script src="https://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
 
 <!--每次提交代码前修改v的值，使代码生效更快-->
-<script src="build7Intro/bundle.js?v=1"></script>
+<script src="build7Intro/bundle.js?v=2"></script>
 <script type="text/javascript">
     if( location.href.indexOf('h5.ichangtou.com') > 1 ){
         var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");

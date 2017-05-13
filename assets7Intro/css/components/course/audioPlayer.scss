@@ -1,13 +1,15 @@
 .audio-player{
   margin: 0 auto 0 auto;
-  color: #ffffff;
+  //color: #ffffff;
   width: px2rem(359);
   padding-top: px2rem(18);
+  margin-bottom: px2rem(18);
   .audio-title{
-    border-radius: 4px;
+    border-radius: px2rem(4) px2rem(4) 0 0 ;
     position: relative;
-    background-color: #3a3a3a;
+    background-color: #ffffff;
     height: 8rem;
+    opacity: 0.9;
     .click-button{
       width: px2rem(86);
       height: px2rem(86);
@@ -28,7 +30,7 @@
       bottom: 0;
       right: 0;
       z-index: 999;
-      color: #ffffff;
+      //color: #ffffff;
       width: 200px;
       height: 80px;
       line-height: 80px;
