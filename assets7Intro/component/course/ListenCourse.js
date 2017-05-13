@@ -336,7 +336,6 @@ const ListenCourse = React.createClass({
                 {/*<span>当前播放的fmid{this.state.currentfmid}</span>*/}
                 {/*<div>进入时,这门课程的状态时{this.props.location.query.name}</div>*/}
                 {this.renderLesson()}
-                {this.passLessonRender()}
             </div>
         )
     },
@@ -347,7 +346,6 @@ const ListenCourse = React.createClass({
         }
         let lesson = this.state.lessons[this.state.lessons.length - 1].subs;
         if(lesson[lesson.length - 1].process === true) {
-            let index = this.props.params.courseId - 20171;
             return (<div>祝贺 完成本节 这是你的道具卡 快快可以你的战利品吧!!</div>);
         }
     },
@@ -365,11 +363,6 @@ const ListenCourse = React.createClass({
 
         let arr = [];
         let count = 0;
-
-        let allPass = false;
-        if (this.props.location.query.name === 3) {
-            allPass = true;
-        }
 
         OUT:
         for (let i = 0;i < lessons.length; i++) {
@@ -427,65 +420,9 @@ const ListenCourse = React.createClass({
             return null;
         } else {
             return <ChooseBar  key={count} lessonIndex = {lessonIndex} index = {questionIndex} question={questions} passCallBack = {this.OnChoosePass}/>
-
         }
     },
 
-    renderCourseList() {
-        // let FMList = this.state.audios;
-        // for(let item of FMList) {
-        //     item.audioSource
-        // }
-    },
-
-
-    /**
-     * 渲染用户头像
-     * @returns {*}
-     */
-    renderUserImages() {
-        let imgList = this.state.userImages;
-
-        if( !imgList || imgList.length == 0){
-            return null;
-        }else{
-
-            let arr = [];
-
-            for(let i of imgList){
-                arr.push(<img src={i} className="user-headimage"/>)
-            }
-
-            return arr;
-        }
-    },
-
-
-    /**
-     * 渲染fm小节
-     * @returns {*}
-     */
-    renderFmList() {
-        let fmList = this.state.fmList;
-
-        if( fmList.length == 0){
-            return null;
-        }else{
-
-            let arr = [];
-
-            for(let i of fmList){
-                arr.push(<div className="section-item"
-                              onClick={this.changeSectionHandler.bind(this,i)}>
-                    <p className="section-title">{i.fmTitle}</p>
-                    <p className="section-duration">{i.createTime}</p>
-                </div>)
-            }
-
-            return arr;
-        }
-
-    }
 });
 
 module.exports = ListenCourse;

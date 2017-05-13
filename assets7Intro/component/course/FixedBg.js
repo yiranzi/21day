@@ -7,16 +7,16 @@ const Dimensions = require('../../Dimensions');
 
 const GetReward = React.createClass({
     getInitialState: function() {
-        console.log('123');
+        // console.log('123');
         return {
             content: this.props.content
         };
     },
 
     componentWillMount() {
-        console.log(Dimensions.getWidthScale());
-        console.log('22222211');
-        console.log(Dimensions);
+        // console.log(Dimensions.getWidthScale());
+        // console.log('22222211');
+        // console.log(Dimensions);
     },
 
 
