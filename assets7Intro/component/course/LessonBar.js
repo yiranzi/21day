@@ -10,6 +10,15 @@ const LessonBar = React.createClass({
         return {
             content: this.props.content,
             index: this.props.index,
+            day: [
+                '第一天',
+                '第二天',
+                '第三天',
+                '第四天',
+                '第五天',
+                '第六天',
+                '第七天',
+            ],
             type: [
                 '未解锁!',
                 '新的!未听!',
@@ -53,12 +62,44 @@ const LessonBar = React.createClass({
     // style={{backgroundImage:'url('+content.image+')'}}
     LineRender() {
         let content = this.state.content;
-        return (<div className="column-container">
-            <img className="column-pic" src={content.status === 2 ? this.state.unlockPic[this.state.index]:this.state.lockPic[this.state.index]}/>
-            <span className="column-container-title">{content.title}</span>
-            <span>{this.state.type[content.status + 1]}</span>
-            <img className="column-type" src={this.state.typePic[content.status + 1]}/>
-        </div>)
+        //TODO 这里面需要修改
+        if(content.status === -2)
+        {
+            return (<div className="column-container">
+                <div className="column-not-view">
+                    <h1>
+                        {this.state.day[this.state.index]}
+                    </h1>
+                    <h2>
+                        {content.title}
+                    </h2>
+                </div>
+
+            </div>)
+        } else {
+            return (<div className="column-container">
+                <img className="column-pic" src={content.status === 2 ? this.state.unlockPic[this.state.index]:this.state.lockPic[this.state.index]}/>
+                <span className="column-container-title">
+                <h1>
+                    {this.state.day[this.state.index]}
+                </h1>
+                <h2>
+                    {content.title}
+                </h2>
+                    {this.renderFinish()}
+            </span>
+            </div>)
+        }
+
+    },
+
+// {/*<span>{this.state.type[content.status + 1]}</span>*/}
+// {/*<img className="column-type" src={this.state.typePic[content.status + 1]}/>*/}
+
+    renderFinish() {
+        if( this.state.content.status === 2) {
+            return <img className="column-type" src={'./assets7Intro/image/course/indFinished.png'}/>
+        }
     }
 });
 

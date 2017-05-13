@@ -91,7 +91,13 @@ const ChooseBar = React.createClass({
                 <p>知识点1</p>
             </div>);
         }
-    }
+
+    },
+
+    componentDidUpdate() {
+        window.scrollTo(100,999);
+    },
+
 });
 
 module.exports = ChooseBar;

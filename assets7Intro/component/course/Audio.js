@@ -53,7 +53,11 @@ const AudioBar = React.createClass({
                 <p className={this.state.isPlaying ? 'title-bottom':'title-top'}>{content.title}</p>
             </div>
         )
-    }
+    },
+
+    componentDidUpdate() {
+        window.scrollTo(100,999);
+    },
 });
 
 module.exports = AudioBar;

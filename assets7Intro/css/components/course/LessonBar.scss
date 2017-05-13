@@ -1,21 +1,48 @@
 .lesson-bar{
+  padding-top: px2rem(18);
   .column-container{
+    background-color: #40b0f0;
+    margin: 0 auto 0 auto;
     height: px2rem(140);
-    margin: 0 auto px2rem(8) auto;
     width: 90%;
     //border-bottom: 1px solid #efefef;
     border-radius: px2rem(4);
     background-size: cover;
-    background-color: #ffffff;
+  }
+
+  .column-not-view{
+    text-align: center;
+    color: #7C7C7C;
+    padding-top: px2rem(16);
+    h1{
+      margin-bottom: px2rem(10);
+      font-size: px2rem(42);
+      line-height: px2rem(59);
+    }
+    h2{
+      font-size: px2rem(16);
+      line-height: px2rem(22);
+    }
   }
 
   .column-container-title{
-    vertical-align: middle;
+    color: #FFFFFF;
+    text-align: right;
+    margin: px2rem(10) px2rem(16) 0 0;
+    display: inline-block;
+    float: right;
+    h1{
+      font-size: px2rem(42);
+      line-height: px2rem(59);
+    }
+    h2{
+      font-size: px2rem(16);
+      border-bottom: #ffffff px2rem(2) solid;
+      border-top: #ffffff px2rem(2) solid;
+      line-height: px2rem(22);
+    }
   }
-  .sub-title{
-    vertical-align: middle;
 
-  }
   .column-pic{
     vertical-align: middle;
     width:  72px;
@@ -23,9 +50,7 @@
     margin: px2rem(10);
   }
   .column-type{
-    vertical-align: middle;
-    width:  28px;
-    height: 28px;
-    margin: px2rem(10);
+    width:  px2rem(77);
+    margin-top: px2rem(5);
   }
 }

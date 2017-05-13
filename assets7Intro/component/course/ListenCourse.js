@@ -169,6 +169,8 @@ const ListenCourse = React.createClass({
             }
         })
     },
+
+
     /**
      * 获取信息
      */
@@ -307,6 +309,9 @@ const ListenCourse = React.createClass({
         }
     },
 
+    componentDidUpdate() {
+        window.scrollTo(100,999);
+    },
 
     /**
      *
