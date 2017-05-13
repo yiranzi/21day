@@ -14,7 +14,7 @@ var screenHeight = 0;
 class AutoMove {
     constructor(perTime,TotalTime) {
         console.log(screenHeight)
-        this.screenHeight = Dimensions.getWindowHeight();
+
         console.log(screenHeight)
         this.perTime = perTime;
         this.TotalTime = TotalTime;
@@ -26,11 +26,29 @@ class AutoMove {
     }
 
     static startMove(divHeight) {
-        if(divHeight > this.screenHeight) {
-            console.log('move')
+
+        let screenHeight = Dimensions.getWindowHeight();
+        let perTime = 200;
+        let totalTime = 1000;
+        let posY = window.pageYOffset;
+        let transY = divHeight - (posY + screenHeight)
+        if(transY > 0) {
+            let preMove = transY/(totalTime/perTime)
+            return new Promise(function(resolve,reject){
+                setInterval("move(preMove)",perTime)
+                setTimeout(function(){
+                }, TotalTime);
+            })
         } else {
-            console.log('nothing')
+            return new Promise( function(resolve, reject) {
+
+            })
         }
+    }
+
+    static move() {
+        let nextPos = window.pageYOffset + preMove
+        scrollTo(0,nextPos)
     }
 }
 

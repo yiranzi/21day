@@ -324,7 +324,8 @@ const ListenCourse = React.createClass({
 
         return(
             <div className="fm-view">
-                <FixedBg/>
+                <FixedBg />
+                <div className="fix-bg-space"></div>
                 {this.state.showEnterPanel && <div onClick={this.modalClickHandler}>
                     <Modal  hideOnTap={false}>
 
@@ -383,7 +384,7 @@ const ListenCourse = React.createClass({
                         } else break OUT;
                     }
                     //如果选择题都完成了1
-                    if(lessonQuestions[lessonQuestions.length - 1].process) {
+                    if(lessonQuestions[lessonQuestions.length - 1].process && i !== lessons.length - 1) {
                         arr.push(<div className="lesson-column-line"></div>)
                         count++;
                     }
@@ -399,10 +400,10 @@ const ListenCourse = React.createClass({
      * @returns {*}
      */
     renderFMBar(index, FMContent,count) {
-        return (<div key={count} className="audio-player">
+        return (<div key={count} className={this.state.currentPlaying === index ? 'audio-player-on' : 'audio-player-off'}>
             <AudioBar
                 content = {FMContent}
-                playingIndex = {this.state.currentPlaying}//控制暂停按钮的逻辑
+                playingIndex = {this.state.currentPlaying}//控制暂停按钮的逻辑11
                 audioIndex={index}
                 audioCallBack = {this.OnAudioButton}/>
             <AudioProgressBar

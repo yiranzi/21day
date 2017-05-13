@@ -93,22 +93,22 @@ const CourseSelect = React.createClass({
         })
     },
 
-    // render() {
-    //     return(
-    //         <div>
-    //             <FixedBg/>
-    //             <div>
-    //                 {this.renderCourseList()}
-    //                 {this.renderTreasure()}
-    //             </div>
-    //         </div>
-    //     )
-    // },
     render() {
         return(
-            <Father></Father>
+            <div>
+                <FixedBg/>
+                <div>
+                    {this.renderCourseList()}
+                    {this.renderTreasure()}
+                </div>
+            </div>
         )
     },
+    // render() {
+    //     return(
+    //         <Father>1</Father>
+    //     )
+    // },
 
     renderCourseList() {
         let courseList = this.state.courseList;
@@ -120,13 +120,13 @@ const CourseSelect = React.createClass({
                 //TODO 应该是-1表示未解锁111
                 if (courseList[i].status !== -1) {
                     arr.push(
-                        <Link key={i} to={{pathname:"/course/"+ (i + 1), query:{name: courseList[i].status}}}>
+                        <Link className="lesson-bar" key={i} to={{pathname:"/course/"+ (i + 1), query:{name: courseList[i].status}}}>
                             <LessonBar index = {i} content = {courseList[i]} ></LessonBar>
                         </Link>
                     )
                 } else {
                     arr.push(
-                        <div onClick={this.renderNotEnter.bind(this,1)}>
+                        <div className="lesson-bar" onClick={this.renderNotEnter.bind(this,1)}>
                             <LessonBar key={i} index = {i} content = {courseList[i]}>12345</LessonBar>
                         </div>
                     )

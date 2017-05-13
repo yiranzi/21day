@@ -29,7 +29,7 @@ if( !Util.getUrlPara('code') ) {
 
 $(document).ready(() => {
 
-    alert("3");
+    // alert("3");
 
     Util.postCnzzData('进入页面');
 

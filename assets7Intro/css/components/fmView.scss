@@ -3,13 +3,15 @@
   width: 100%;
   height: auto;
   color: black;
-  //padding-top: px2rem(18);
-
+  .fix-bg-space{
+    height: px2rem(18);
+    width: 100%;
+  }
   .lesson-column-line{
     background-image: url("../image/course/DividingLine.png");
     background-size:cover;
     height: px2rem(18);
-    margin: px2rem(18) auto 0 auto;
+    margin: 0 auto px2rem(18) auto;
     width: px2rem(359);
   }
 

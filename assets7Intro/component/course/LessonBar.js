@@ -54,7 +54,8 @@ const LessonBar = React.createClass({
 
     render() {
         return(
-            <div  className="lesson-bar">
+            <div>
+                <div className="bar-background"></div>
                 {this.LineRender()}
             </div>
         )
@@ -63,7 +64,7 @@ const LessonBar = React.createClass({
     LineRender() {
         let content = this.state.content;
         //TODO 这里面需要修改
-        if(content.status === -2)
+        if(content.status === -1)
         {
             return (<div className="column-container">
                 <div className="column-not-view">
@@ -78,15 +79,18 @@ const LessonBar = React.createClass({
             </div>)
         } else {
             return (<div className="column-container">
-                <img className="column-pic" src={content.status === 2 ? this.state.unlockPic[this.state.index]:this.state.lockPic[this.state.index]}/>
+                <div className="pic-container">
+                    <img className="column-pic" src={content.status === 2 ? this.state.unlockPic[this.state.index]:this.state.lockPic[this.state.index]}/>
+                </div>
                 <span className="column-container-title">
                 <h1>
                     {this.state.day[this.state.index]}
                 </h1>
+                    {this.renderFinish()}
                 <h2>
                     {content.title}
                 </h2>
-                    {this.renderFinish()}
+
             </span>
             </div>)
         }
@@ -99,6 +103,8 @@ const LessonBar = React.createClass({
     renderFinish() {
         if( this.state.content.status === 2) {
             return <img className="column-type" src={'./assets7Intro/image/course/indFinished.png'}/>
+        } else {
+            return <div className="space-pic"></div>
         }
     }
 });
