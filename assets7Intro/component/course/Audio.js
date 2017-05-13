@@ -39,6 +39,11 @@ const AudioBar = React.createClass({
         }
     },
 
+    componentDidUpdate() {
+        console.log('bbbbbbbbbbbbbbbbbbbbbbbbbbbbbb')
+        OnFire.fire('Course_AutoMove')
+    },
+
 
     controlHandler: function() {
         this.props.audioCallBack(this.state.index, this.state.isPlaying);
@@ -55,9 +60,6 @@ const AudioBar = React.createClass({
         )
     },
 
-    componentDidUpdate() {
-        window.scrollTo(100,999);
-    },
 });
 
 module.exports = AudioBar;

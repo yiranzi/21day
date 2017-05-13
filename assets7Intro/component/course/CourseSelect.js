@@ -106,9 +106,11 @@ const CourseSelect = React.createClass({
     },
     // render() {
     //     return(
-    //         <Father>1</Father>
+    //         <Father></Father>
     //     )
     // },
+
+
 
     renderCourseList() {
         let courseList = this.state.courseList;
@@ -117,7 +119,7 @@ const CourseSelect = React.createClass({
             return null;
         } else {
             for (let i = 0; i < courseList.length; i++) {
-                //TODO 应该是-1表示未解锁111
+                //TODO 应该是-1表示未解锁11
                 if (courseList[i].status !== -1) {
                     arr.push(
                         <Link className="lesson-bar" key={i} to={{pathname:"/course/"+ (i + 1), query:{name: courseList[i].status}}}>

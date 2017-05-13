@@ -1,26 +1,10 @@
 /**
- * Created by ichangtou on 2017/5/13.
+ * Created by ichangtou on 2017/5/13.1
  */
-var Moveing = false;
-var HeightMe = 100;
 const Dimensions = require('./Dimensions');
-
-var perTime = 0;
-var TotalTime = 0;
-var isMoving = false;
-
-var screenHeight = 0;
+var preMove = 0
 
 class AutoMove {
-    constructor(perTime,TotalTime) {
-        console.log(screenHeight)
-
-        console.log(screenHeight)
-        this.perTime = perTime;
-        this.TotalTime = TotalTime;
-        this.isMoving = false;
-    }
-
     static autoMove() {
         console.log('automove')
     }
@@ -28,27 +12,30 @@ class AutoMove {
     static startMove(divHeight) {
 
         let screenHeight = Dimensions.getWindowHeight();
-        let perTime = 200;
-        let totalTime = 1000;
+        let perTime = 5;
+        let totalTime = 600;
         let posY = window.pageYOffset;
-        let transY = divHeight - (posY + screenHeight)
+        let transY = divHeight - (posY + screenHeight);
         if(transY > 0) {
-            let preMove = transY/(totalTime/perTime)
-            return new Promise(function(resolve,reject){
-                setInterval("move(preMove)",perTime)
-                setTimeout(function(){
-                }, TotalTime);
-            })
+            preMove = transY/(totalTime/perTime);
+            var func = (preMove,TotalTime) => {
+                return new Promise((resolve,reject) => {
+                    var timer = setInterval(this.move,perTime);
+                    setTimeout(function(){
+                        resolve(window.clearInterval(timer))
+                    }, totalTime);
+                })
+            }
+            return func()
         } else {
-            return new Promise( function(resolve, reject) {
-
-            })
+            return Promise.resolve();
         }
     }
 
     static move() {
-        let nextPos = window.pageYOffset + preMove
-        scrollTo(0,nextPos)
+        let nextPos = window.pageYOffset + Math.ceil(preMove);
+        scrollTo(0,nextPos);
+        console.log(window.pageYOffset);
     }
 }
 

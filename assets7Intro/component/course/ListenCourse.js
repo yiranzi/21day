@@ -28,6 +28,10 @@ const FixedBg = require('./FixedBg');
 
 const User = require('../../User');
 
+const autoMove = require('../../AutoMove');
+
+var isMoving = 0;
+
 const ListenCourse = React.createClass({
 
     getPropsType() {
@@ -101,7 +105,6 @@ const ListenCourse = React.createClass({
         }
     },
 
-
     componentWillMount() {
         if (User.getUserInfo().userId) {
 
@@ -134,6 +137,23 @@ const ListenCourse = React.createClass({
             Material.finishWork(0, this.state.lessons[this.state.currentPlaying].fmid).always( (data) => {
             })
         });
+
+        OnFire.on('Course_AutoMove', ()=>{
+            if  (this.props.location.query.name === '2') {
+                return
+            }
+            console.log('enter');
+            let divHeight = document.getElementById("fmView").offsetHeight;
+            if(isMoving === 0) {
+                isMoving = 1
+                // this.state.isMoving = true;
+                autoMove.startMove(divHeight).then(() => {
+                    // this.state.isMoving = false;
+                    isMoving = 0;
+                })
+            }
+        })
+
         Material.getCourseList().always( (data) => {
         })
     },
@@ -309,10 +329,6 @@ const ListenCourse = React.createClass({
         }
     },
 
-    componentDidUpdate() {
-        window.scrollTo(100,999);
-    },
-
     /**
      *
      * @returns {XML}
@@ -323,7 +339,7 @@ const ListenCourse = React.createClass({
         nextStyle.visibility = this.state.nextIssue ?  'visible' : 'hidden';
 
         return(
-            <div className="fm-view">
+            <div id="fmView" className="fm-view">
                 <FixedBg />
                 <div className="fix-bg-space"></div>
                 {this.state.showEnterPanel && <div onClick={this.modalClickHandler}>

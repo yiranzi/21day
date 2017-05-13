@@ -3,6 +3,7 @@
  */
 const $ = window.$ = require('jquery');
 const React = require('react');
+const OnFire = require('onfire.js');
 
 const ChooseBar = React.createClass({
 
@@ -19,6 +20,11 @@ const ChooseBar = React.createClass({
 
     componentWillMount() {
 
+    },
+
+    componentDidUpdate() {
+        console.log('aaaaaaaaaaaaaaaaaaa')
+        OnFire.fire('Course_AutoMove')
     },
 
 
@@ -91,15 +97,11 @@ const ChooseBar = React.createClass({
         if(this.state.answer !== -1 || this.props.question.process)
         {
             return (<div className="choose-tips">
-                <h1 className="tips-font">Tips:</h1>
+                <h1 className="tips-font">Tips</h1>
                 <p className="tips-font">知识点1</p>
             </div>);
         }
 
-    },
-
-    componentDidUpdate() {
-        window.scrollTo(100,999);
     },
 
 });
