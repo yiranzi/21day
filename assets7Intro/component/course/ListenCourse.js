@@ -166,7 +166,7 @@ const ListenCourse = React.createClass({
 
         Material.getCourseProgress(courseId).always((progressData) => {
 
-            Loading.hideLoading();
+          Loading.hideLoading();
             if (progressData) {
                 if  (this.props.location.query.name === '0') {
                     Material.haveStartLesson(progressData[0].fmid);
@@ -284,12 +284,12 @@ const ListenCourse = React.createClass({
         if (isPlaying) {
             GlobalAudio.pause();
         } else {
-            Util.postCnzzData("播放", lesson.fmid);
-
             let lesson = this.state.lessons[index]
             //保存当前正在播放的音频
             this.setState({currentfmid: lesson.fmid})
             GlobalAudio.play(lesson.audio, lesson.fmid);
+
+            Util.postCnzzData("播放", lesson.fmid);
         }
     },
 

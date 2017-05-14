@@ -91,7 +91,7 @@ const ChooseBar = React.createClass({
         {
             return (<div className="choose-tips">
                 <h1 className="tips-font">Tips</h1>
-                <p className="tips-font">知识点1</p>
+                <p className="tips-font">{this.props.question.tips}</p>
             </div>);
         }
 

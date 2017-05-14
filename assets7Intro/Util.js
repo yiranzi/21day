@@ -227,7 +227,7 @@ class Util {
         channel = channel || '';
         Util.postCnzzData('分享成功');
 
-        let seniorId = Util.getUrlPara('ictchannel'),
+        let seniorId = Util.getUrlPara('ictchannel');
         if (seniorId && seniorId != userInfo.userId) {
           Util.postCnzzData('下线分享成功');
         }
