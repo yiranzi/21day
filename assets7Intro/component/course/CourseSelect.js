@@ -103,13 +103,6 @@ const CourseSelect = React.createClass({
             </div>
         )
     },
-    // render() {
-    //     return(
-    //         <Father></Father>
-    //     )
-    // },
-
-
 
     renderCourseList() {
         let courseList = this.state.courseList;
