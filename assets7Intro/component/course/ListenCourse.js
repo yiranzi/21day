@@ -358,7 +358,7 @@ const ListenCourse = React.createClass({
     },
 
     passLessonRender() {
-        if (!courseList.length || courseList.length === 0) {
+        if (this.state.lessons.length === 0) {
             return null;
         }
         let lesson = this.state.lessons[this.state.lessons.length - 1].subs;
@@ -370,7 +370,6 @@ const ListenCourse = React.createClass({
             } else {
                 //1如果已经通过 ,会有提示.
                 return (<div>祝贺 完成本节 这是你的道具卡 快快可以你的战利品吧!!</div>);
-
             }
         }
     },
