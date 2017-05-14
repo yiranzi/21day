@@ -39,9 +39,9 @@ const AudioBar = React.createClass({
         }
     },
 
-    componentDidUpdate() {
-        OnFire.fire('Course_AutoMove')
-    },
+    // componentDidUpdate() {
+    //     OnFire.fire('Course_AutoMove')
+    // },
 
 
     controlHandler: function() {

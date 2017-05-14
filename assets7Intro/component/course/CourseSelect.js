@@ -213,6 +213,7 @@ const CourseSelect = React.createClass({
     },
 
     openTreasure() {
+        Util.postCnzzData("点击宝箱");
         if(this.state.treasure.canView) {
             if(this.state.treasure.canOpen){
                 if(this.state.treasure.haveOpen) {
@@ -222,12 +223,15 @@ const CourseSelect = React.createClass({
                     //听完课,还没领,
                     Material.openTreasure().always( (data) => {
                         //弹出打开宝箱的界面1
-                        console.log('click');
-                        console.log(data);
                         if(data.status)
                         {
-                            location.hash = '/getReward/' + 1;
+                            Util.postCnzzData("成功领取宝箱");
+                            window.dialogAlertComp.show('领取了50金币','去FM听师兄的更多财商提升秘籍吧','这就去',()=>{
+                                Util.postCnzzData("宝箱跳转FM");
+                                location.href = "https://h5.ichangtou.com/h5/fm/index.html#/mine";},'算了',false);
+                            // location.hash = '/getReward/' + 1;
                         } else {
+                            Util.postCnzzData("失败领取宝箱",data.msg);
                             window.dialogAlertComp.show(data.msg,'微信关注"长投网"公众号.让你的财商指数增长吧！','原来如此',()=>{},()=>{},false);
                         }
                     })

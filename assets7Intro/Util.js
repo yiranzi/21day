@@ -39,7 +39,7 @@ const TEST_API_Token = 'XX:_:w2qlJFV@ccOeiq41ENp><ETXh3o@aX8M<[_QOsZ<d8[Yz:NIMcK
 const API_Token = Config.environment ? FORMAL_API_Token : TEST_API_Token; //开发环境or生产环境
 
 const MINIC_ID = '7';  //迷你课买房与资产配置课程ID
-const MINIC_NAME = '7天训练营报名'; //迷你课课程名称  英国脱欧
+const MINIC_NAME = '7天财商训练营'; //迷你课课程名称  英国脱欧
 const VERSION = '1.1.0_test'; // TODO roy 项目版本
 const CHARGE_INDEX = 0; //收费部分下标（0~N）
 

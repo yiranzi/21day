@@ -121,15 +121,8 @@ const ListenCourse = React.createClass({
             if (this.state.currentPlaying<0) {
                 return null;
             }
-            // alert(this.state.currentPlaying);
-            // 听完后自动播放下一节
-            if (this.state.nextIssue) {
-                // this.clickNextHandler();
-            } else {
-                this.setState({
-                    isPlaying: false
-                })
-            }
+            //
+            OnFire.fire('Course_AutoMove');
             //修改进度
             this.state.lessons[this.state.currentPlaying].process = true;
             let localLessons = this.state.lessons;
@@ -366,15 +359,19 @@ const ListenCourse = React.createClass({
         if(lesson[lesson.length - 1].process === true) {
             //1如果第一次通过 ,会有提示.
             if(this.props.location.query.name !== '2') {
-                return (<div onClick={this.goReward}>祝贺 完成本节 这是你的道具卡 快快可以你的战利品吧!!</div>);
+                return (<div className = "get-reward" onClick={this.goReward.bind(this,1)}>祝贺！完成本节！点击我领取成就卡！</div>);
             } else {
                 //1如果已经通过 ,会有提示.
-                return (<div>祝贺 完成本节 这是你的道具卡 快快可以你的战利品吧!!</div>);
+                return (<div className = "get-reward" onClick={this.goReward.bind(this,2)}>查看我的成就卡！</div>);
             }
         }
     },
 
-    goReward() {
+    goReward(type) {
+        if (type === 1) {
+            Util.postCnzzData("第一次点击成就卡");
+        }
+        Util.postCnzzData("多次点击成就卡");
         location.hash = '/getReward/' + this.props.params.courseId;
     },
 
