@@ -174,7 +174,7 @@ const CourseSelect = React.createClass({
             // return(<div className="lesson-bar" onClick={this.openTreasure}>
             //         <TreasureBar treasure = {this.state.treasure}></TreasureBar>
             //         </div>)
-        return <img onClick={this.openTreasure} className="fix-treasure" src={'./assets7Intro/image/course/indFinished.png'}/>
+        return <img onClick={this.openTreasure} className="fix-treasure" src={'./assets7Intro/image/course/treasure.png'}/>
 
 
     },
