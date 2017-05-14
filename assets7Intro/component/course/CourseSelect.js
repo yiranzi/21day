@@ -218,7 +218,7 @@ const CourseSelect = React.createClass({
                             Util.postCnzzData("成功领取宝箱");
                             window.dialogAlertComp.show('领取了50金币！','快去长投FM听Lip师兄的更多理财秘籍吧！','去看看',()=>{
                                 Util.postCnzzData("宝箱跳转FM");
-                                location.href = "https://h5.ichangtou.com/h5/fm/index.html#/mine";},'等一等',false);
+                                location.href = "https://h5.ichangtou.com/h5/fm/index.html#/mine";},'等一等',true);
                             // location.hash = '/getReward/' + 1;
                         } else {
                             Util.postCnzzData("失败领取宝箱",data.msg);
