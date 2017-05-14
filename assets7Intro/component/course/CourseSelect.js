@@ -11,8 +11,6 @@ const Config = require('../../Config');
 const Link = require('react-router').Link;
 const LessonBar = require('./LessonBar');
 const FixedBg = require('./FixedBg');
-const Father = require('./Father');
-// const TreasureBar = require('./TreasureBar');
 // const GetReword = require('./GetReword');
 
 const CourseSelect = React.createClass({
@@ -140,12 +138,26 @@ const CourseSelect = React.createClass({
         }
     },
 
+    //点击成就卡回调
+    OnPicClick (index) {
+        console.log('onPicClick');
+        if(this.state.courseList[index].status === 2) {
+            location.hash = '/getReward/' + index;
+            console.log('click pic')
+        } else {
+            console.log('click pic222');
+            window.dialogAlertComp.show('还没有开放课程哦','每天更新一课哦,耐心等一等吧,可以微信关注长投网','知道啦',()=>{},()=>{},false);
+        }
+
+    },
+
     renderNotEnter(index) {
+        console.log('render no enter');
         window.dialogAlertComp.show('还没有开放课程哦','每天更新一课哦,耐心等一等吧,可以微信关注长投网','知道啦',()=>{},()=>{},false);
     },
 
     renderTreasure() {
-        console.log('render treasure')
+        console.log('render treasure');
         let courseList = this.state.courseList;
         let countUnlock = 0;
         let countPass = 0;

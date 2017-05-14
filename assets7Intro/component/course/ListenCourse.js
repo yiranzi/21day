@@ -283,11 +283,10 @@ const ListenCourse = React.createClass({
     },
 
     /**
-     * 设置选中的答案
+     * 完成选择题
      * @param index 当前某一音频第几个选择题
      */
     OnChoosePass(lessonIndex,index) {
-        console.log('123123123123')
         let questions = this.state.lessons[lessonIndex].subs;
         questions[index].process = true;
         let localLessons = this.state.lessons;
@@ -295,11 +294,11 @@ const ListenCourse = React.createClass({
         //发送修改1
         Material.finishWork(1, this.state.lessons[lessonIndex].subs[index].subjectid).always( (data) => {
         });
-        //如果最后一课作业完成了.并且当前章节还没有完成,就弹出成就卡
-        let lastLesson = this.state.lessons[this.state.lessons.length - 1].subs;
-        if(lastLesson[lastLesson.length - 1].process === true) {
-            location.hash = '/getReward/' + 1;
-        }
+        // //如果最后一课作业完成了.并且当前章节还没有完成,就弹出成就卡
+        // let lastLesson = this.state.lessons[this.state.lessons.length - 1].subs;
+        // if(lastLesson[lastLesson.length - 1].process === true) {
+        //     location.hash = '/getReward/' + 1;
+        // }
     },
 
     /**
@@ -353,6 +352,7 @@ const ListenCourse = React.createClass({
                 {/*<span>当前播放的fmid{this.state.currentfmid}</span>*/}
                 {/*<div>进入时,这门课程的状态时{this.props.location.query.name}</div>*/}
                 {this.renderLesson()}
+                {this.passLessonRender()}
             </div>
         )
     },
@@ -362,11 +362,22 @@ const ListenCourse = React.createClass({
             return null;
         }
         let lesson = this.state.lessons[this.state.lessons.length - 1].subs;
+        //1完成全部选择题后
         if(lesson[lesson.length - 1].process === true) {
-            return (<div>祝贺 完成本节 这是你的道具卡 快快可以你的战利品吧!!</div>);
+            //1如果第一次通过 ,会有提示.
+            if(this.props.location.query.name !== '2') {
+                return (<div onClick={this.goReward}>祝贺 完成本节 这是你的道具卡 快快可以你的战利品吧!!</div>);
+            } else {
+                //1如果已经通过 ,会有提示.
+                return (<div>祝贺 完成本节 这是你的道具卡 快快可以你的战利品吧!!</div>);
+
+            }
         }
     },
 
+    goReward() {
+        location.hash = '/getReward/' + this.props.params.courseId;
+    },
 
     /**
      * 渲染听课列表

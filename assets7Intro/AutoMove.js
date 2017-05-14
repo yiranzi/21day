@@ -35,7 +35,6 @@ class AutoMove {
     static move() {
         let nextPos = window.pageYOffset + Math.ceil(preMove);
         scrollTo(0,nextPos);
-        console.log(window.pageYOffset);
     }
 }
 
