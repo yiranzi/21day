@@ -342,8 +342,9 @@ const ListenCourse = React.createClass({
     goReward(type) {
         if (type === 1) {
             Util.postCnzzData("第一次点击成就卡");
+        } else {
+            Util.postCnzzData("再次点击成就卡");
         }
-        Util.postCnzzData("多次点击成就卡");
         location.hash = '/getReward/' + this.props.params.courseId;
     },
 

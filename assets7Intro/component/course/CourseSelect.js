@@ -121,7 +121,7 @@ const CourseSelect = React.createClass({
                 } else {
                     console.log('不能听的')
                     arr.push(
-                        <div className="lesson-bar">
+                        <div className="lesson-bar" onClick={this.renderNotEnter.bind(this,i)}>
                             <LessonBar key={i} index = {i} content = {courseList[i]}></LessonBar>
                         </div>
                     )
@@ -134,7 +134,7 @@ const CourseSelect = React.createClass({
 
     renderNotEnter(index) {
         console.log('render no enter');
-        window.dialogAlertComp.show('还没有开放课程哦','每天更新一课哦,耐心等一等吧！','知道啦',()=>{},()=>{},false);
+        window.dialogAlertComp.show('还没有开放课程哦','每天更新一课哦，耐心等一等吧！','知道啦',()=>{},()=>{},false);
     },
 
     renderTreasure() {
