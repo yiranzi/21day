@@ -34,7 +34,6 @@ class Dimensions {
      * @returns {number}
      */
     static getWindowHeight() {
-        console.log('123')
         return Math.min(screen.height, window.innerHeight);
     }
 
