@@ -164,39 +164,6 @@ const ListenCourse = React.createClass({
         Material.getCourseList().always( (data) => {
         })
     },
-    /**
-     * 获取已购买专辑，判断是否购买
-     */
-    getFmColumn() {
-
-      // TODO roy 判断逻辑需要修改1
-        Loading.showLoading('获取信息...');
-        let fmall = 2017;
-        Material.getJudgeFromServer(fmall).always((albumId)=>{
-            Loading.hideLoading();
-            console.log('albumId8888888888',albumId);
-            if(albumId){
-                console.log('购买过');
-                if (!Util.isIphone()) {
-                    GlobalAudio.play(this.state.audioSource,this.state.fmId);
-                    this.setState({
-                        isPlaying: true,
-                        isPlay: true,
-                    });
-                }
-
-            } else{
-
-                this.setState({
-                    isPlaying: false,
-                    isPlay: false,
-                    showEnterPanel:true,
-                });
-
-            }
-        })
-    },
-
 
     /**
      * 获取信息
@@ -215,9 +182,6 @@ const ListenCourse = React.createClass({
                 this.setState({
                     lessons: progressData
                 });
-                // let fmid = this.state.fmId;
-                // this.setShareConfig(fmid, fmInfo.fmTitle);
-                // this.getFmColumn();
             }
         });
     },
