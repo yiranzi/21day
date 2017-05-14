@@ -11,7 +11,6 @@ const Config = require('../../Config');
 const Link = require('react-router').Link;
 const LessonBar = require('./LessonBar');
 const FixedBg = require('./FixedBg');
-const Father = require('./Father');
 // const GetReword = require('./GetReword');
 
 const CourseSelect = React.createClass({

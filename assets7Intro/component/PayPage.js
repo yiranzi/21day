@@ -388,7 +388,7 @@ var PayPage = React.createClass({
 
                 {!this.state.hasPaid &&
                     <div className="bottom-button">
-                        {(this.state.time && !this.state.hasSenior) ? <span onClick={this.didClickHandler}  className="join-button">报名截止下次再来吧</span> : <span onClick={this.clickHandler}  className={!this.state.hasSenior ?"join-button":"whole-join-button"}>立即参加（￥{this.state.buttonPrice}）</span>}
+                        {((this.state.time || !this.state.showint ) && !this.state.hasSenior) ? <span onClick={this.didClickHandler}  className="join-button">还想报名？点我！</span> : <span onClick={this.clickHandler}  className={!this.state.hasSenior ?"join-button":"whole-join-button"}>立即参加（￥{this.state.buttonPrice}）</span>}
                         <span className="share-button" onClick={this.shareModalHandler}>邀请好友</span>
                     </div>
                 }
@@ -396,7 +396,7 @@ var PayPage = React.createClass({
                 {this.state.showShareModal && <img src="./assets7Intro/image/shareModal.png" onClick={this.hideShareModalHandler} className="share-modal"/>}
 
                 {/*入页面时弹出的分享提示panel*/}
-                {this.state.buttonChange && <Modal hideOnTap={false}><SharePanel onClose={this.closeSharePanelHandler}/></Modal>}
+                {this.state.buttonChange && <Modal hideOnTap={false}><SharePanel onClose={this.closeSharePanelHandler} isSubscribed={this.state.isSubscribed}/></Modal>}
                 </div>
         )
     }
