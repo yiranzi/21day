@@ -106,6 +106,9 @@ const ListenCourse = React.createClass({
     },
 
     componentWillMount() {
+
+        Util.postCnzzData("进入听课页面");
+
         if (User.getUserInfo().userId) {
 
             this.getFmInfo();
@@ -120,6 +123,7 @@ const ListenCourse = React.createClass({
             if (this.state.currentPlaying<0) {
                 return null;
             }
+
             // alert(this.state.currentPlaying);
             // 听完后自动播放下一节
             if (this.state.nextIssue) {
@@ -135,7 +139,10 @@ const ListenCourse = React.createClass({
             this.setState({lessons: localLessons});
             //发送修改1
             Material.finishWork(0, this.state.lessons[this.state.currentPlaying].fmid).always( (data) => {
-            })
+            });
+
+            Util.postCnzzData("听完", this.state.lessons[this.state.currentPlaying].fmid);
+
         });
 
         OnFire.on('Course_AutoMove', ()=>{
@@ -321,6 +328,8 @@ const ListenCourse = React.createClass({
         if (isPlaying) {
             GlobalAudio.pause();
         } else {
+            Util.postCnzzData("播放", lesson.fmid);
+
             let lesson = this.state.lessons[index]
             //保存当前正在播放的音频
             this.setState({currentfmid: lesson.fmid})

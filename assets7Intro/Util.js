@@ -39,12 +39,12 @@ const TEST_API_Token = 'XX:_:w2qlJFV@ccOeiq41ENp><ETXh3o@aX8M<[_QOsZ<d8[Yz:NIMcK
 const API_Token = Config.environment ? FORMAL_API_Token : TEST_API_Token; //开发环境or生产环境
 
 const MINIC_ID = '7';  //迷你课买房与资产配置课程ID
-const MINIC_NAME = '7天训练营报名'; //迷你课课程名称  英国脱欧
+const MINIC_NAME = '7day'; // 项目名称
 const VERSION = '1.1.0_test'; // TODO roy 项目版本
 const CHARGE_INDEX = 0; //收费部分下标（0~N）
 
 const CURRENT_BATCH = 2; //当前期数
-const END_TIME = [2017,5,13,24,0,0]; // TODO roy 截止时间，需要和后台同步
+const END_TIME = [2017,5,14,24,0,0]; // TODO roy 截止时间，需要和后台同步
 const USER_NUMBER = 1000; // TODO roy 活动报名总人数
 
 const NORMAL_PRICE = 2;// TODO roy 上线价格，普通用户
@@ -226,6 +226,11 @@ class Util {
 
         channel = channel || '';
         Util.postCnzzData('分享成功');
+
+        let seniorId = Util.getUrlPara('ictchannel'),
+        if (seniorId && seniorId != userInfo.userId) {
+          Util.postCnzzData('下线分享成功');
+        }
 
         OnFire.fire('SHARE_SUCCESS');
     }

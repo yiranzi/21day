@@ -57,7 +57,8 @@ var PayPage = React.createClass({
 
 
     componentWillMount(){
-        // this.timeout();
+
+        Util.postCnzzData("进入报名页面");
 
         console.log("endTime:", this.state.endTime);
 
@@ -82,6 +83,8 @@ var PayPage = React.createClass({
               })
               this.scrollToTop();
               DoneToast.show('报名成功，记得关注长投公号哦！');
+
+              Util.postCnzzData("报名成功未关注公号");
             }
 
             //统计班主任信息

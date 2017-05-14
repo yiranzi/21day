@@ -161,6 +161,7 @@ class User {
             //设置用户信息缓存 此处缓存是为了第二次蓝号授权后，可以使用用户的其他信息
             localStorage.setItem('user-info',JSON.stringify(userInfo));
 
+            Util.postCnzzData("用户登录");
 
             //触发登录成功事件
             OnFire.fire('OAUTH_SUCCESS',data);
@@ -223,6 +224,9 @@ class User {
                 console.log('从服务器上获取用于支付的openId',data);
 
                 userInfo.payOpenId = data.openId;
+
+                Util.postCnzzData("用户登录");
+
                 OnFire.fire('OAUTH_SUCCESS',userInfo);
 
                 Loading.hideLoading();
