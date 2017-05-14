@@ -18,19 +18,12 @@ const ChooseBar = React.createClass({
         };
     },
 
-    componentWillMount() {
-
-    },
-
-    componentDidUpdate() {
-        OnFire.fire('Course_AutoMove')
-    },
-
 
     handleClick(index) {
         // this.setState({liked: !this.state.liked});
-        console.log('click' + index)
-        this.setState({nowClick: index})
+        OnFire.fire('Course_AutoMove');
+        Util.postCnzzData("完成作业点击成就卡");
+        this.setState({nowClick: index});
         if(index === this.props.question.trueindex[0])
         {
 
@@ -40,8 +33,9 @@ const ChooseBar = React.createClass({
             this.setState({answer: 1});
             this.props.passCallBack(this.props.lessonIndex ,this.props.index);
         } else {
+            Util.postCnzzData("完成作业点击成就卡",this.props.question.subjectid);
             this.state.results[index] = 0;
-            this.setState({results: this.state.results})
+            this.setState({results: this.state.results});
             this.setState({answer: 0});
         }
     },
