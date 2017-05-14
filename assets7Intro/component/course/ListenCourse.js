@@ -116,6 +116,7 @@ const ListenCourse = React.createClass({
             })
         }
 
+        //音频完成之后
         OnFire.on('AUDIO_END',()=>{
             if (this.state.currentPlaying<0) {
                 return null;
@@ -142,7 +143,6 @@ const ListenCourse = React.createClass({
             if  (this.props.location.query.name === '2') {
                 return
             }
-            console.log('enter');
             let divHeight = document.getElementById("fmView").offsetHeight;
             if(isMoving === 0) {
                 isMoving = 1
