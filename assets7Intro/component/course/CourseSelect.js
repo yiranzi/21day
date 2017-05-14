@@ -214,6 +214,7 @@ const CourseSelect = React.createClass({
                                 location.href = "https://h5.ichangtou.com/h5/fm/index.html#/mine";},'等一等',true);
                             // location.hash = '/getReward/' + 1;
                         } else {
+                            this.state.this.state.treasure.haveOpen = false;
                             Util.postCnzzData("失败领取宝箱",data.msg);
                             window.dialogAlertComp.show(data.msg,'来长投网公众号收听长投FM！让你的财商指数增长吧！','原来如此',()=>{},()=>{},false);
                         }
