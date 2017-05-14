@@ -83,14 +83,9 @@ const LessonBar = React.createClass({
                     <img className="column-pic" src={content.status === 2 ? this.state.unlockPic[this.state.index]:this.state.lockPic[this.state.index]}/>
                 </div>
                 <span className="column-container-title">
-                <h1>
-                    {this.state.day[this.state.index]}
-                </h1>
-                    {this.renderFinish()}
-                <h2>
-                    {content.title}
-                </h2>
-
+                <h1>{this.state.day[this.state.index]}</h1>
+                {this.renderFinish()}
+                <h2>{content.title}</h2>
             </span>
             </div>)
         }

@@ -12,6 +12,7 @@ const Link = require('react-router').Link;
 const LessonBar = require('./LessonBar');
 const FixedBg = require('./FixedBg');
 const Father = require('./Father');
+// const TreasureBar = require('./TreasureBar');
 // const GetReword = require('./GetReword');
 
 const CourseSelect = React.createClass({
@@ -22,7 +23,13 @@ const CourseSelect = React.createClass({
             liked: false,
             dataList: [1,1,0,2,2,0,0],
             courseList: {},
-            haveOpen: [],
+            tips:[],
+            treasure: {
+                status: -1,
+                haveOpen: true,
+                canOpen: false,
+                canView: false,
+            }
         };
     },
 
@@ -38,24 +45,6 @@ const CourseSelect = React.createClass({
             this.checkUserPayStatue();
         });
       }
-
-        console.log('1.yiran112');
-        if (!this.counter) {
-            this.counter = 0;
-        }
-        this.counter = this.counter + 1
-        //TODO 接收完成课程.缺少参数.1
-        // OnFire.on('Pass_Lesson',this.keepgoing);
-        //
-        OnFire.on('Pass_Lesson', (index)=>{
-            console.log('接收到作业通过的回调');
-            this.state.dataList[index] = 3;
-            let localData = this.state.dataList;
-            console.log(this.state.dataList);
-            // this.setState({dataList: localData});
-        })
-        console.log('push ajax')
-
     },
 
     /**
@@ -82,10 +71,22 @@ const CourseSelect = React.createClass({
       });
     },
 
-
-    handleClick: function(event) {
-        this.setState({liked: !this.state.liked});
+    init() {
+        console.log('init');
+        //获取宝箱信息1
+        Material.getTreasureInfo().always( (data) => {
+            console.log(data)
+            //TODO 测试下这块的逻辑
+            //如果未领取.
+            if(!data) {
+                this.state.treasure.haveOpen = false;
+                this.setState({treasure: this.state.treasure});
+            }
+        })
+        //获取听课列表
+        this.getCourseList();
     },
+
 
     getCourseList () {
         Material.getCourseList().always( (data) => {
@@ -95,11 +96,11 @@ const CourseSelect = React.createClass({
 
     render() {
         return(
-            <div>
+            <div className="course-list">
                 <FixedBg/>
                 <div>
-                    {this.renderCourseList()}
                     {this.renderTreasure()}
+                    {this.renderCourseList()}
                 </div>
             </div>
         )
@@ -128,7 +129,7 @@ const CourseSelect = React.createClass({
                     )
                 } else {
                     arr.push(
-                        <div className="lesson-bar" onClick={this.renderNotEnter.bind(this,1)}>
+                        <div className="lesson-bar" onClick={this.renderNotEnter.bind(this,i)}>
                             <LessonBar key={i} index = {i} content = {courseList[i]}>12345</LessonBar>
                         </div>
                     )
@@ -144,34 +145,86 @@ const CourseSelect = React.createClass({
     },
 
     renderTreasure() {
-        return (<div onClick={this.openTreasure}></div>)
+        console.log('render treasure')
+        let courseList = this.state.courseList;
+        let countUnlock = 0;
+        let countPass = 0;
+        let countTotle = this.state.courseList.length;
+        let result = 0;
+        for ( let i = 0; i < courseList.length; i++){
+            result = courseList[i].status;
+            if (result !== -1) {
+                countUnlock++;
+            }
+            if (result === 2) {
+                countPass++;
+            }
+        }
+        if( countUnlock === countTotle ) {
+            this.state.treasure.canView = true;
+        }
+        if( countPass === countTotle ) {
+            this.state.treasure.canOpen = true;
+        }
+        // this.calcTreasureInfo();
+        if (this.state.treasure.canView) {
+            // return(<div className="lesson-bar" onClick={this.openTreasure}>
+            //         <TreasureBar treasure = {this.state.treasure}></TreasureBar>
+            //         </div>)
+            return <img onClick={this.openTreasure} className="fix-treasure" src={'./assets7Intro/image/course/indFinished.png'}/>
+        }
+
+    },
+
+    calcTreasureInfo() {
+        let treasure =  this.state.treasure;
+        if(treasure.canView) {
+            //
+            treasure.status = 0;
+        }else if(!treasure.canOpen) {
+            //不可以打开,因为没有完成所有的课程
+            treasure.status = 0;
+        } else if (this.state.treasure.canOpen) {
+            //可以打开
+            treasure.status = 1;
+        }
+        else if (!treasure.haveOpen) {
+            //不可以打开,页还没打开
+            treasure.status = 3;
+        } else {
+            //已经领取
+            treasure.status = 2;
+        }
     },
 
     openTreasure() {
-        console.log('click');
-        location.hash = '/getReward/' + 1;
-
-        // for (let i in this.state.haveOpen) {
-        //     if(i === 'treasure2') {
-        //         Material.openTreasure().always( (data) => {
-        //             //弹出打开宝箱的界面1
-        //             console.log(data)
-        //         })
-        //     }
-        // }
-    },
-
-    init() {
-        console.log('init');
-        //获取宝箱信息1
-        Material.getTreasureInfo().always( (data) => {
-            console.log(data)
-            if(data) {
-                this.state.haveOpen.push('treasure2');
-                this.setState({haveOpen: this.state.haveOpen});
+        if(this.state.treasure.canView) {
+            if(this.state.treasure.canOpen){
+                if(this.state.treasure.haveOpen) {
+                    //领了
+                    window.dialogAlertComp.show('你已经领取过宝箱啦','微信关注"长投网"公众号.使用长投FM来使用奖励吧！','好的',()=>{},()=>{},false);
+                } else {
+                    //听完课,还没领,
+                    Material.openTreasure().always( (data) => {
+                        //弹出打开宝箱的界面1
+                        console.log('click');
+                        console.log(data);
+                        if(data.status)
+                        {
+                            location.hash = '/getReward/' + 1;
+                        } else {
+                            window.dialogAlertComp.show(data.msg,'微信关注"长投网"公众号.让你的财商指数增长吧！','原来如此',()=>{},()=>{},false);
+                        }
+                    })
+                }
+            } else {
+                ////到了第七天,还没听完课
+                window.dialogAlertComp.show('毕业宝箱等着你呢！','完成全部的作业,全部Finish之后领取你的毕业证和毕业宝箱吧！加油！','我会加油的',()=>{},()=>{},false);
             }
-        })
-        this.getCourseList();
+        } else {
+            //还没有到第七天
+            window.dialogAlertComp.show('毕业宝箱等着你呢！','坚持就是胜利呦,完成7天课程,领取你的毕业证和毕业宝箱吧！加油！','我会加油的',()=>{},()=>{},false);
+        }
     }
 });
 
