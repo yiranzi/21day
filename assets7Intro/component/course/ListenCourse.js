@@ -119,6 +119,7 @@ const ListenCourse = React.createClass({
             })
         }
 
+        //音频完成之后
         OnFire.on('AUDIO_END',()=>{
             if (this.state.currentPlaying<0) {
                 return null;
@@ -149,7 +150,6 @@ const ListenCourse = React.createClass({
             if  (this.props.location.query.name === '2') {
                 return
             }
-            console.log('enter');
             let divHeight = document.getElementById("fmView").offsetHeight;
             if(isMoving === 0) {
                 isMoving = 1
@@ -379,7 +379,6 @@ const ListenCourse = React.createClass({
             } else {
                 //1如果已经通过 ,会有提示.
                 return (<div>祝贺 完成本节 这是你的道具卡 快快可以你的战利品吧!!</div>);
-
             }
         }
     },

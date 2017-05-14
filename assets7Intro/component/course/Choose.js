@@ -23,7 +23,6 @@ const ChooseBar = React.createClass({
     },
 
     componentDidUpdate() {
-        console.log('aaaaaaaaaaaaaaaaaaa')
         OnFire.fire('Course_AutoMove')
     },
 

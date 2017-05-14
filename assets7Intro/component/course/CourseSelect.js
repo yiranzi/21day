@@ -159,6 +159,9 @@ const CourseSelect = React.createClass({
     renderTreasure() {
         console.log('render treasure');
         let courseList = this.state.courseList;
+        if (!courseList.length || courseList.length === 0) {
+            return null;
+        }
         let countUnlock = 0;
         let countPass = 0;
         let countTotle = this.state.courseList.length;
@@ -179,12 +182,12 @@ const CourseSelect = React.createClass({
             this.state.treasure.canOpen = true;
         }
         // this.calcTreasureInfo();
-        if (this.state.treasure.canView) {
+
             // return(<div className="lesson-bar" onClick={this.openTreasure}>
             //         <TreasureBar treasure = {this.state.treasure}></TreasureBar>
             //         </div>)
-            return <img onClick={this.openTreasure} className="fix-treasure" src={'./assets7Intro/image/course/indFinished.png'}/>
-        }
+        return <img onClick={this.openTreasure} className="fix-treasure" src={'./assets7Intro/image/course/indFinished.png'}/>
+
 
     },
 

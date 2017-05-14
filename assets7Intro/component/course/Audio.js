@@ -40,7 +40,6 @@ const AudioBar = React.createClass({
     },
 
     componentDidUpdate() {
-        console.log('bbbbbbbbbbbbbbbbbbbbbbbbbbbbbb')
         OnFire.fire('Course_AutoMove')
     },
 
