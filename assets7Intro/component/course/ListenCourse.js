@@ -358,7 +358,7 @@ const ListenCourse = React.createClass({
     },
 
     passLessonRender() {
-        if (this.state.lessons.length === 0) {
+        if (!courseList.length || courseList.length === 0) {
             return null;
         }
         let lesson = this.state.lessons[this.state.lessons.length - 1].subs;
