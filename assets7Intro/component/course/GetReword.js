@@ -35,7 +35,7 @@ const GetReward = React.createClass({
     render() {
         return(
             <div className="get-reward" style = {{backgroundImage: 'url("./assets7Intro/image/course/bg_1.png")',width: Dimensions.getWindowWidth(), height: Dimensions.getWindowHeight()}}  onClick={this.handleClick}>
-                <img className="reward-pic" src={this.state.lockPic[this.props.params.lessonId]}/>
+                <img className="reward-pic" src={this.state.lockPic[this.props.params.lessonId - 1]}/>
             </div>
         )
     }

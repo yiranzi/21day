@@ -126,9 +126,10 @@ const CourseSelect = React.createClass({
                         </Link>
                     )
                 } else {
+                    console.log('不能听的')
                     arr.push(
-                        <div className="lesson-bar" onClick={this.renderNotEnter.bind(this,i)}>
-                            <LessonBar key={i} index = {i} content = {courseList[i]}>12345</LessonBar>
+                        <div className="lesson-bar">
+                            <LessonBar key={i} index = {i} content = {courseList[i]}></LessonBar>
                         </div>
                     )
                 }
@@ -138,22 +139,9 @@ const CourseSelect = React.createClass({
         }
     },
 
-    //点击成就卡回调
-    OnPicClick (index) {
-        console.log('onPicClick');
-        if(this.state.courseList[index].status === 2) {
-            location.hash = '/getReward/' + index;
-            console.log('click pic')
-        } else {
-            console.log('click pic222');
-            window.dialogAlertComp.show('还没有开放课程哦','每天更新一课哦,耐心等一等吧,可以微信关注长投网','知道啦',()=>{},()=>{},false);
-        }
-
-    },
-
     renderNotEnter(index) {
         console.log('render no enter');
-        window.dialogAlertComp.show('还没有开放课程哦','每天更新一课哦,耐心等一等吧,可以微信关注长投网','知道啦',()=>{},()=>{},false);
+        window.dialogAlertComp.show('还没有开放课程哦','每天更新一课哦,耐心等一等吧！','知道啦',()=>{},()=>{},false);
     },
 
     renderTreasure() {
@@ -218,7 +206,9 @@ const CourseSelect = React.createClass({
             if(this.state.treasure.canOpen){
                 if(this.state.treasure.haveOpen) {
                     //领了
-                    window.dialogAlertComp.show('你已经领取过宝箱啦','微信关注"长投网"公众号.使用长投FM来使用奖励吧！','好的',()=>{},()=>{},false);
+                    window.dialogAlertComp.show('你已经领取过宝箱啦','使用长投FM来道具商城使用奖励吧！','好的',()=>{
+                        location.href = "https://h5.ichangtou.com/h5/fm/index.html#/mine";
+                    },()=>{},false);
                 } else {
                     //听完课,还没领,
                     Material.openTreasure().always( (data) => {
@@ -226,23 +216,23 @@ const CourseSelect = React.createClass({
                         if(data.status)
                         {
                             Util.postCnzzData("成功领取宝箱");
-                            window.dialogAlertComp.show('领取了50金币','去FM听师兄的更多财商提升秘籍吧','这就去',()=>{
+                            window.dialogAlertComp.show('领取了50金币！','快去长投FM听Lip师兄的更多理财秘籍吧！','去看看',()=>{
                                 Util.postCnzzData("宝箱跳转FM");
-                                location.href = "https://h5.ichangtou.com/h5/fm/index.html#/mine";},'算了',false);
+                                location.href = "https://h5.ichangtou.com/h5/fm/index.html#/mine";},'等一等',false);
                             // location.hash = '/getReward/' + 1;
                         } else {
                             Util.postCnzzData("失败领取宝箱",data.msg);
-                            window.dialogAlertComp.show(data.msg,'微信关注"长投网"公众号.让你的财商指数增长吧！','原来如此',()=>{},()=>{},false);
+                            window.dialogAlertComp.show(data.msg,'来长投网公众号收听长投FM！让你的财商指数增长吧！','原来如此',()=>{},()=>{},false);
                         }
                     })
                 }
             } else {
                 ////到了第七天,还没听完课
-                window.dialogAlertComp.show('毕业宝箱等着你呢！','完成全部的作业,全部Finish之后领取你的毕业证和毕业宝箱吧！加油！','我会加油的',()=>{},()=>{},false);
+                window.dialogAlertComp.show('毕业宝箱等着你！','每一天都拿到“完成”之后才能领取你的毕业宝箱吧！希望就在前方！','我没问题的',()=>{},()=>{},false);
             }
         } else {
             //还没有到第七天
-            window.dialogAlertComp.show('毕业宝箱等着你呢！','坚持就是胜利呦,完成7天课程,领取你的毕业证和毕业宝箱吧！加油！','我会加油的',()=>{},()=>{},false);
+            window.dialogAlertComp.show('毕业宝箱等着你！','坚持就是胜利呦，完成7天课程，领取你的毕业证和毕业宝箱吧！加油！','我会加油的',()=>{},()=>{},false);
         }
     }
 });
