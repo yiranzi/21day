@@ -134,7 +134,7 @@ const CourseSelect = React.createClass({
 
     renderNotEnter(index) {
         console.log('render no enter');
-        window.dialogAlertComp.show('还没有开放课程哦','每天更新一课哦，耐心等一等吧！','知道啦',()=>{},()=>{},false);
+        window.dialogAlertComp.show('本课还未开放','每天更新一课哦，耐心等等吧','知道啦',()=>{},()=>{},false);
     },
 
     renderTreasure() {
@@ -199,7 +199,7 @@ const CourseSelect = React.createClass({
             if(this.state.treasure.canOpen){
                 if(this.state.treasure.haveOpen) {
                     //领了
-                    window.dialogAlertComp.show('你已经领取过宝箱啦','使用长投FM来道具商城使用奖励吧！','好的',()=>{
+                    window.dialogAlertComp.show('你已领取过宝箱啦','去长投FM来的金币商城使用奖励吧！','好的',()=>{
                         location.href = "https://h5.ichangtou.com/h5/fm/index.html#/mine";
                     },()=>{},false);
                 } else {
@@ -222,11 +222,11 @@ const CourseSelect = React.createClass({
                 }
             } else {
                 ////到了第七天,还没听完课
-                window.dialogAlertComp.show('毕业宝箱等着你！','每一天都拿到“完成”之后才能领取你的毕业宝箱吧！希望就在前方！','我没问题的',()=>{},()=>{},false);
+                window.dialogAlertComp.show('毕业宝箱等着你！','完成了7天所有的训练才能获得毕业宝箱！希望就在前方！','我没问题的',()=>{},()=>{},false);
             }
         } else {
             //还没有到第七天
-            window.dialogAlertComp.show('毕业宝箱等着你！','坚持就是胜利呦，完成7天课程，领取你的毕业证和毕业宝箱吧！加油！','我会加油的',()=>{},()=>{},false);
+            window.dialogAlertComp.show('毕业宝箱等着你！','完成7天的训练后，才可以领取毕业证和宝箱噢。加油！','我会加油的',()=>{},()=>{},false);
         }
     }
 });
