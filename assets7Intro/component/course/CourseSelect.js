@@ -147,7 +147,7 @@ const CourseSelect = React.createClass({
         let countPass = 0;
         let countTotle = this.state.courseList.length;
         let result = 0;
-        for ( let i = 0; i < courseList.length; i++){
+        for ( let i = 0; i < courseList.length; i++ ){
             result = courseList[i].status;
             if (result !== -1) {
                 countUnlock++;
