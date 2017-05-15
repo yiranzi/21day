@@ -2,7 +2,6 @@
 
   .container{
     width: 100%;
-    background-color: #fff291;
     color: #414041;
     display: flex;
     flex-flow:row nowrap;
@@ -10,7 +9,6 @@
     margin: .5rem 0 0 .5rem;
 
     .show-time{
-      margin-left: -1.2rem;
       font-size: px2rem(19);
     }
     img{

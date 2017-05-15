@@ -5,7 +5,7 @@ module.exports = {
     './assets7Intro/Entry.js'
   ],
   output: {
-    path: __dirname + '/build7IntroTest/',
+    path: __dirname + '/build7Intro/',
     publicPath: 'build7Intro/',
     filename: 'bundle.js'
   },
