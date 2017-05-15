@@ -34,6 +34,7 @@ const CourseSelect = React.createClass({
     componentWillMount() {
       // TODO roy 判断用户当前的购买状态，未购买则直接跳转到支付页面
       // 购买后留在关卡页面
+        // 测试提交
       let userId = User.getUserInfo().userId;
       console.log("===userId = " + userId);
       if (userId) {
@@ -134,7 +135,7 @@ const CourseSelect = React.createClass({
 
     renderNotEnter(index) {
         console.log('render no enter');
-        window.dialogAlertComp.show('本课还未开放','每天更新一课哦，耐心等等吧','知道啦',()=>{},()=>{},false);
+        window.dialogAlertComp.show('还没有开放课程哦','每天更新一课哦，耐心等一等吧！','知道啦',()=>{},()=>{},false);
     },
 
     renderTreasure() {
@@ -199,7 +200,7 @@ const CourseSelect = React.createClass({
             if(this.state.treasure.canOpen){
                 if(this.state.treasure.haveOpen) {
                     //领了
-                    window.dialogAlertComp.show('你已领取过宝箱啦','去长投FM来的金币商城使用奖励吧！','好的',()=>{
+                    window.dialogAlertComp.show('你已经领取过宝箱啦','使用长投FM来道具商城使用奖励吧！','好的',()=>{
                         location.href = "https://h5.ichangtou.com/h5/fm/index.html#/mine";
                     },()=>{},false);
                 } else {
