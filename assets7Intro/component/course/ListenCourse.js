@@ -331,10 +331,10 @@ const ListenCourse = React.createClass({
         if(lesson[lesson.length - 1].process === true) {
             //1如果第一次通过 ,会有提示.
             if(this.props.location.query.name !== '2') {
-                return (<div className = "get-reward" onClick={this.goReward.bind(this,1)}>祝贺！完成本节！点击我领取成就卡！</div>);
+                return (<div className = "get-reward-command" onClick={this.goReward.bind(this,1)}>祝贺！完成本节！点击我领取成就卡！</div>);
             } else {
                 //1如果已经通过 ,会有提示.
-                return (<div className = "get-reward" onClick={this.goReward.bind(this,2)}>查看我的成就卡！</div>);
+                return (<div className = "get-reward-command" onClick={this.goReward.bind(this,2)}>查看我的成就卡！</div>);
             }
         }
     },

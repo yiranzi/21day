@@ -1,12 +1,29 @@
 .get-reward{
   background-size: cover;
+  position: relative;
   .reward-pic{
     position:absolute;
     left:0;
     right:0;
     top:0;
     bottom:0;
-    width: 70%;
+    width: 50%;
     margin:auto;
+    z-index: 150;
   }
+  .reward-recommand{
+    position: fixed;
+    bottom: px2rem(7);
+    right: px2rem(130);
+    z-index: 100;
+    width: 29%;
+  }
+  .rewar-light{
+    position: fixed;
+    z-index: 50;
+    left: px2rem(-150);
+    top: px2rem(-50);
+    height: px2rem(700);
+  }
+
 }

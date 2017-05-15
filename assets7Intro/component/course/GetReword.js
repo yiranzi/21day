@@ -7,7 +7,7 @@ const Dimensions = require('../../Dimensions');
 
 const GetReward = React.createClass({
     getInitialState: function() {
-        console.log('123');
+
         return {
             content: this.props.content,
             lockPic: [
@@ -28,16 +28,24 @@ const GetReward = React.createClass({
     },
 
 
+//<p className="reward-recommand" onClick={this.goCommand()}>1231211231</p>
     handleClick() {
         location.hash = "/select";
     },
     // style = {fullbg}
     render() {
         return(
-            <div className="get-reward" style = {{backgroundImage: 'url("./assets7Intro/image/course/bg_1.png")',width: Dimensions.getWindowWidth(), height: Dimensions.getWindowHeight()}}  onClick={this.handleClick}>
-                <img className="reward-pic" src={this.state.lockPic[this.props.params.lessonId - 1]}/>
+            <div className="get-reward" style = {{backgroundImage: 'url("./assets7Intro/image/course/bg_1.png")',width: Dimensions.getWindowWidth(), height: Dimensions.getWindowHeight()}}  >
+                <img className="rewar-light" onClick={this.handleClick} src={'./assets7Intro/image/course/bglight.png'}/>
+                <img className="reward-pic" onClick={this.handleClick} src={this.state.lockPic[this.props.params.lessonId - 1]}/>
+                <img className="reward-recommand" onClick = {this.goCommand} src={'./assets7Intro/image/course/recommand.png'}/>
             </div>
         )
+    },
+
+    goCommand() {
+        Util.postCnzzData("成就卡界面跳转到FM");
+        location.href = "https://h5.ichangtou.com/h5/fm/index.html#/mine";
     }
 });
 
