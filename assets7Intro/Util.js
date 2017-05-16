@@ -324,8 +324,16 @@ class Util {
         //    nickName = nickName.substr(0, nickName.length-6);
         //}
 
-        //上线userid
-        redirectUri = redirectUri + '?ictchannel=' + userInfo.userId;
+        //sharefix
+
+        if(!userInfo.userId){
+            redirectUri = redirectUri + '?ictchannel=' + 214;
+            console.log('id is 214')
+        } else {
+            //上线userid
+            redirectUri = redirectUri + '?ictchannel=' + userInfo.userId;
+        }
+
 
         //订阅号
         if(Util.getUrlPara('dingyuehao')){

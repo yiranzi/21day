@@ -51,6 +51,7 @@ class User {
         //初始化微信通用接口
         // User.signWxApi();
         WxConfig.initWxConfig();
+        //sharefix
 
         //蓝号进行授权后的
         if(Util.getUrlPara('istopay')){

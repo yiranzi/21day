@@ -61,8 +61,9 @@ class WxConfig {
         });
 
         wx.ready( () => {
+            //sharefix
             // 登录后再配置微信分享
-            // WxConfig.shareConfig();
+             WxConfig.shareConfig();
         });
     }
 
@@ -78,14 +79,19 @@ class WxConfig {
         //    return;
         //}
 
-        let imgUrl = User.getUserInfo().headImage || User.getLocalUserInfo()&& User.getLocalUserInfo().headImage;
+        //sharefix
+        let imgUrl;
+        let userInfo = User.getUserInfo();
+        if (userInfo) {
+            imgUrl = userInfo.headImage;
+        }
 
         link = link || Util.getShareLink();
         desc = desc || Util.getShareDesc();
         title = title || Util.getShareTitle();
 
         if( !imgUrl ) {
-          imgUrl = Util.getDomain() + 'build21/shareLogo.png';
+          imgUrl = 'https://h5test.ichangtou.com/minic/assets7Intro/image/logo.png';
         }
 
         let type = "img";
