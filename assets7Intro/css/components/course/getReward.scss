@@ -3,27 +3,39 @@
   position: relative;
   .reward-pic{
     position:absolute;
-    left:0;
-    right:0;
-    top:0;
-    bottom:0;
+    top:50%;
+    left:50%;
+    margin-top: px2rem(-180);
+    margin-left: px2rem(-93);
     width: 50%;
-    margin:auto;
     z-index: 150;
   }
   .reward-recommand{
-    position: fixed;
-    bottom: px2rem(7);
-    right: px2rem(130);
-    z-index: 100;
+    position:fixed;
+    top:50%;
+    left:50%;
+    margin-top: px2rem(156);
+    margin-left: px2rem(-54);
     width: 29%;
+    z-index: 100;
   }
   .rewar-light{
-    position: fixed;
+    position:fixed;
+    top:50%;
+    left:50%;
+    margin-top: px2rem(-360);
+    margin-left: px2rem(-350);
+    width: px2rem(700);
     z-index: 50;
-    left: px2rem(-150);
-    top: px2rem(-50);
-    height: px2rem(700);
+    animation: rotate 8s infinite;
+    animation-timing-function: linear;
+  }
+
+
+  @keyframes rotate
+  {
+    0% {transform:rotate(0deg);}
+    100% {transform:rotate(360deg);}
   }
 
 }
