@@ -60,6 +60,36 @@ var PayPage = React.createClass({
 
         console.log("endTime:", this.state.endTime);
 
+
+        OnFire.on('PAID_DONE', ()=>{
+          Material.getJudgeFromServer().done((record)=>{
+              // TODO test roy
+              // record = true;
+
+              if(record){
+                // alert("PAID_DONE已报名");
+
+                  this.setState({
+                      hasPaid: true, //已报名
+                  });
+                  OnFire.fire('PAID_SUCCESS','normalPay');
+              } else {
+                // alert("PAID_DONE未报名");
+
+                  this.setState({
+                      hasPaid: false, //未报名
+                  });
+                  Util.postCnzzData('点击取消付费');
+              }
+          })
+          .fail(()=>{
+              Loading.hideLoading();
+              this.setState({
+                  hasPaid: false, //未报名
+              })
+          })
+        });
+
         //分享成功后，通知后台，给用户加红包
         OnFire.on('PAID_LOSER',()=>{
             this.setState({
@@ -68,22 +98,35 @@ var PayPage = React.createClass({
         });
         //已付费
         OnFire.on('PAID_SUCCESS',(payWay)=>{
-            let isSubscribed = User.getUserInfo().subscribe;
-            console.log("支付完判断是否关注公号", isSubscribed);
+          // alert("报名成功");
 
-            // 已关注公号的用户直接跳转关卡页面学习
-            if (isSubscribed) {
-              DoneToast.show('报名成功，开始学习第一课吧！');
-              location.hash = "/select";
-            } else { // 未关注引导关注公号
-              this.setState({
-                  hasPaid: true,
-              })
-              this.scrollToTop();
-              DoneToast.show('报名成功，记得关注长投公号哦！');
+          // 下线支付成功后上报
+          let seniorId = Util.getUrlPara('ictchannel');
 
-              Util.postCnzzData("报名成功未关注公号");
-            }
+          if(seniorId && seniorId != User.getUserInfo().userId) {
+              Util.postCnzzData("下线报名成功");
+
+              // alert("下线报名成功");
+          }
+
+          Util.postCnzzData('报名成功');
+
+          let isSubscribed = User.getUserInfo().subscribe;
+          console.log("支付完判断是否关注公号", isSubscribed);
+
+          // 已关注公号的用户直接跳转关卡页面学习
+          if (isSubscribed) {
+            DoneToast.show('报名成功，开始学习第一课吧！');
+            location.hash = "/select";
+          } else { // 未关注引导关注公号
+            this.setState({
+                hasPaid: true,
+            })
+            this.scrollToTop();
+            DoneToast.show('报名成功，记得关注长投公号哦！');
+
+            Util.postCnzzData("报名成功未关注公号");
+          }
 
             //统计班主任信息
             // let teacherId = Util.getUrlPara('teacherid');
