@@ -318,8 +318,16 @@ const ListenCourse = React.createClass({
                 {/*<div>进入时,这门课程的状态时{this.props.location.query.name}</div>*/}
                 {this.renderLesson()}
                 {this.passLessonRender()}
+                {this.preLoadPic()}
             </div>
         )
+    },
+
+    preLoadPic() {
+        return(<div className="pre-load">
+            <img src={'./assets7Intro/image/course/bglight.png'}/>
+            <img src={'./assets7Intro/image/course/recommand.png'}/>
+        </div>)
     },
 
     passLessonRender() {

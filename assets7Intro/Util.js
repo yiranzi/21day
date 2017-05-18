@@ -108,6 +108,10 @@ const API_URL_GROUP = {
     'post_audio_time': 'fm/learn-audio-record', //学习时间和排名
     'get_course_list': '7day/course-list', //学习时间和排名
 
+    //获取进度
+    'get_course_finish_rank': '7day/subject-ranking/{userId}/{subjectId}',//获得这一课的排名
+
+
 
 };
 
