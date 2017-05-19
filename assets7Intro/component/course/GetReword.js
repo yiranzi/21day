@@ -82,9 +82,9 @@ const GetReward = React.createClass({
         //TODO 冲掉特殊的分享连接
         console.log('didUnMount')
         let senior = this.state.senior;
-        let shareTitle = '快和我一起参加训练营吧',
+        let shareTitle = '快和我一起参加财商训练营吧',
             link = Util.getShareLink(),
-            desc = '点击链接报名只需6元哦,毕业还有奖学金!';
+            desc = '点击链接报名只需6元哦,按时毕业还有奖学金!';
         WxConfig.shareConfig(shareTitle,desc,link);
     },
 
