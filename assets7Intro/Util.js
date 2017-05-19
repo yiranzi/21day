@@ -26,7 +26,7 @@ var APPID = Config.environment ? FORMA_APPID : TEST_APPID;
 //测试APPID
 var PAID_APPID =  Config.environment ?FORMAL_PAID_APPID : TEST_PAID_APPID;
 
-const FORMAL_API_DOMAIN = 'https://m.ichangtou.com/';//生产环境 API域名
+const FORMAL_API_DOMAIN = 'https://growth.ichangtou.com/';//生产环境 API域名
 // const TEST_API_DOMAIN = 'http://devh5.ichangtou.com.cn/';//测试环境 API域名
 const TEST_API_DOMAIN = 'https://geek.ichangtou.com/';//测试环境 API域名
 
