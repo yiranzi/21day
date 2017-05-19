@@ -35,15 +35,22 @@ const CourseSelect = React.createClass({
       // TODO roy 判断用户当前的购买状态，未购买则直接跳转到支付页面
       // 购买后留在关卡页面
         // 测试提交
-      let userId = User.getUserInfo().userId;
-      console.log("===userId = " + userId);
-      if (userId) {
-            this.checkUserPayStatue();
-      } else {
-        OnFire.on(Config.OAUTH_SUCCESS, ()=>{
-            this.checkUserPayStatue();
-        });
-      }
+        let courseId = Util.getUrlPara('courseId');
+        if(courseId) {
+            Loading.hideLoading();
+            location.hash = '/getReward/' + courseId;
+        } else {
+            let userId = User.getUserInfo().userId;
+            console.log("===userId = " + userId);
+            if (userId) {
+
+                this.checkUserPayStatue();
+            } else {
+                OnFire.on(Config.OAUTH_SUCCESS, ()=>{
+                    this.checkUserPayStatue();
+                });
+            }
+        }
     },
 
     /**

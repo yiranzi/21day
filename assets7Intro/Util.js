@@ -592,6 +592,15 @@ class Util {
             prefix = '&';
         }
 
+        //courseId
+        let courseId;
+        if( courseId = Util.getUrlPara('courseId') ) {
+            redirectUri = redirectUri + prefix + 'courseId=' + courseId;
+            redirectUri = redirectUri + prefix + 'name=' + Util.getUrlPara('name');
+            redirectUri = redirectUri + prefix + 'rank=' + Util.getUrlPara('rank');
+            prefix = '&';
+        }
+
 
         if( isUserInfo ) {
             //区分baseInfo和userInfo

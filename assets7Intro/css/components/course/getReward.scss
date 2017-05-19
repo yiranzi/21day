@@ -1,14 +1,77 @@
 .get-reward{
   background-size: cover;
   position: relative;
+  padding-top: px2rem(5);
+
+  .text-stroke{
+    position: relative;
+    text-align: center;
+    height: px2rem(36);
+    line-height: px2rem(36);
+    .text-stroke-inner
+    {
+      //margin: 10px auto 0 auto;
+      position: absolute;
+      font-size: px2rem(22);
+      font-family: '幼圆';
+      font-weight: 900;
+      color: #1CA6DF;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%,-50%);
+      z-index: 70;
+      width: 100%;
+    }
+    .text-stroke-out
+    {
+      position: absolute;
+      //margin: 10px auto 0 auto;
+      font-size: px2rem(22);
+      font-family: '幼圆';
+      font-weight: 900;
+      color: white;
+      -webkit-text-stroke: 4px white;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%,-50%);
+      z-index: 60;
+      width: 100%;
+    }
+  }
+
   .reward-pic{
     position:absolute;
     top:50%;
     left:50%;
-    margin-top: px2rem(-180);
+    margin-top: px2rem(-170);
     margin-left: px2rem(-93);
     width: 50%;
     z-index: 150;
+  }
+  .reward-button{
+    position: relative;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    z-index: 100;
+    margin-top: px2rem(100);
+    img{
+      position: absolute;
+      z-index: 100;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%,-50%);
+      width: 50%;
+    }
+    p{
+      color: white;
+      font-size: px2rem(22);
+      position: absolute;
+      z-index: 101;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%,-50%);
+    }
   }
   .reward-recommand{
     position:fixed;
@@ -40,7 +103,7 @@
     margin-left: px2rem(-350);
     width: px2rem(700);
     z-index: 50;
-    animation: rotate 8s infinite;
+    animation: rotate 20s infinite;
     animation-timing-function: linear;
   }
 
