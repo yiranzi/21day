@@ -108,6 +108,10 @@ const API_URL_GROUP = {
     'post_audio_time': 'fm/learn-audio-record', //学习时间和排名
     'get_course_list': '7day/course-list', //学习时间和排名
 
+    //获取进度
+    'get_course_finish_rank': '7day/subject-ranking/{userId}/{subjectId}',//获得这一课的排名
+
+
 
 };
 
@@ -585,6 +589,15 @@ class Util {
         if( teacherid = Util.getUrlPara('teacherid') ) {
             //把班主任ID拼接到地址栏中
             redirectUri = redirectUri  + prefix + 'teacherid=' + teacherid;
+            prefix = '&';
+        }
+
+        //courseId
+        let courseId;
+        if( courseId = Util.getUrlPara('courseId') ) {
+            redirectUri = redirectUri + prefix + 'courseId=' + courseId;
+            redirectUri = redirectUri + prefix + 'name=' + Util.getUrlPara('name');
+            redirectUri = redirectUri + prefix + 'rank=' + Util.getUrlPara('rank');
             prefix = '&';
         }
 

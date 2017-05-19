@@ -444,6 +444,33 @@ class Material {
         )
     }
 
+    /***
+     * 获取排名
+     */
+    static courseFinishRank(subjectId,userId) {
+        var User = require('./User');
+        const Util = require('./Util'),
+            apiUrl = Util.getAPIUrl('get_course_finish_rank').replace('{userId}',userId).replace('{subjectId}',subjectId);
+        return $.ajax(
+            {
+                url: apiUrl,
+                type: 'get',
+                cache: false,
+                contentType: 'application/json;charset=utf-8',
+                headers: {
+                    Accept: 'application/json'
+                },
+                beforeSend: (request)=>{
+                    request.setRequestHeader("X-iChangTou-Json-Api-Token", Util.getApiToken());
+                    request.setRequestHeader("X-iChangTou-Json-Api-User", userId);
+                }
+            }
+        )
+    }
+
+
+
+
 
 }
 
