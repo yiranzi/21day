@@ -597,7 +597,7 @@ class Util {
         if( courseId = Util.getUrlPara('courseId') ) {
             redirectUri = redirectUri + prefix + 'courseId=' + courseId;
             redirectUri = redirectUri + prefix + 'name=' + Util.getUrlPara('name');
-            redirectUri = redirectUri + prefix + 'rank=' + Util.getUrlPara('rank');
+            // redirectUri = redirectUri + prefix + 'rank=' + Util.getUrlPara('rank');
             prefix = '&';
         }
 
