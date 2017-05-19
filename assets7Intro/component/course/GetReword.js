@@ -96,7 +96,7 @@ const GetReward = React.createClass({
     setShareConfig() {
         //TODO 设置好进入参数
         let senior = this.state.senior;
-        let shareTitle = '我是第'+ this.state.senior.rank+'个完成'+this.state.shareTitle[ this.state.senior.courseId - 1] + '课的人，快来看看我的成就卡吧！',
+        let shareTitle = '我是第'+ this.state.senior.rank+'名完成'+this.state.shareTitle[ this.state.senior.courseId - 1] + '课的人，快来看看我的成就卡吧！',
             link = Util.getShareLink(),
             desc = '快比比谁的财商更高吧?';
         link = link + '&courseId=' + senior.courseId;
@@ -154,7 +154,7 @@ const GetReward = React.createClass({
         if(this.state.type ==='mine') {
             return <div className="reward-button" onClick = {this.goCommand}>
                 <img src={'./assets7Intro/image/course/btnSignin.png'}/>
-                <p>分享一下</p>
+                <p>我要分享</p>
             </div>
         } else {
             return <div className="reward-button" onClick = {this.goSignUp}>
