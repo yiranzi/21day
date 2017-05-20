@@ -2,7 +2,35 @@
   background-size: cover;
   position: relative;
   padding-top: px2rem(5);
-
+  .get-graduated{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    margin: 0;
+    text-align: center;
+    width: 80%;
+    height: 80%;
+    background-size: 100% 100%;
+    font-size: 0;
+    z-index: 100;
+    margin-top: px2rem(-40);
+    .head{
+      margin: px2rem(133) auto px2rem(24) auto;
+      border-radius: px2rem(70);
+      border:2px solid #1CA6DF;
+      width: px2rem(70);
+      height: px2rem(70);
+    }
+    .title{
+      line-height: px2rem(25);
+      color: #1CA6DF;
+      p{
+        height: px2rem(25);
+        font-size: px2rem(18);
+      }
+    }
+  }
   .text-stroke{
     position: relative;
     text-align: center;
@@ -39,29 +67,38 @@
     }
   }
 
+  .card-title{
+    top:50%;
+    left:50%;
+    transform: translate(-50%,-50%);
+    width: 100%;
+    margin-top: px2rem(-270);
+    position: absolute;
+    z-index: 51;
+  }
+
   .reward-pic{
     position:absolute;
     top:50%;
     left:50%;
-    margin-top: px2rem(-170);
-    margin-left: px2rem(-93);
-    width: 50%;
+    transform: translate(-50%,-50%);
     z-index: 150;
   }
   .reward-button{
-    position: relative;
+    position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%,-50%);
     z-index: 100;
-    margin-top: px2rem(100);
+    margin-top: px2rem(250);
+    text-align: center;
+    width: 100%;
     img{
       position: absolute;
       z-index: 100;
       top: 50%;
       left: 50%;
       transform: translate(-50%,-50%);
-      width: 50%;
     }
     p{
       color: white;
@@ -71,6 +108,7 @@
       top: 50%;
       left: 50%;
       transform: translate(-50%,-50%);
+      width: 100%
     }
   }
   .reward-recommand{
@@ -95,7 +133,7 @@
       100% {transform:rotate(0deg);}
     }
   }
-  .rewar-light{
+  .reward-light{
     position:fixed;
     top:50%;
     left:50%;

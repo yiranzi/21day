@@ -47,6 +47,7 @@ const GetReward = React.createClass({
                 courseId: 1,
                 name: '长投学员',
                 rank: 214,
+                headImg: '',
             },
         };
     },
@@ -69,6 +70,7 @@ const GetReward = React.createClass({
             //获得自己的课程排名
             Material.courseFinishRank(courseId,userId).done((data) =>{
                 this.state.senior.name = User.getUserInfo().nickName;
+                this.state.senior.headImg = User.getUserInfo().headImage;
                 this.state.senior.rank = data;
                 this.state.senior.courseId = this.props.params.courseId;
                 this.setState({senior: this.state.senior});
@@ -96,13 +98,21 @@ const GetReward = React.createClass({
     setShareConfig() {
         //TODO 设置好进入参数
         let senior = this.state.senior;
-        let shareTitle = '我是第'+ this.state.senior.rank+'名完成'+this.state.shareTitle[ this.state.senior.courseId - 1] + '课的人，快来看看我的成就卡吧！',
-            link = Util.getShareLink(),
-            desc = '快比比谁的财商更高吧?';
-        link = link + '&courseId=' + senior.courseId;
-        link = link + '&name=' + senior.name;
-        link = link + '&rank=' + senior.rank;
-
+        if(senior.courseId === '8'){
+            let shareTitle = '7天财商训练营毕业证到手!满满的成就感啊!一切都值了!',
+                link = Util.getShareLink(),
+                desc = '快为我鼓掌吧!';
+            link = link + '&courseId=' + senior.courseId;
+            link = link + '&name=' + senior.name;
+            // link = link + '&rank=' + senior.rank;
+        } else {
+            let shareTitle = '我是第'+ this.state.senior.rank+'名完成'+this.state.shareTitle[ this.state.senior.courseId - 1] + '课的人，快来看看我的成就卡吧！',
+                link = Util.getShareLink(),
+                desc = '快比比谁的财商更高吧?';
+            link = link + '&courseId=' + senior.courseId;
+            link = link + '&name=' + senior.name;
+            // link = link + '&rank=' + senior.rank;
+        }
         WxConfig.shareConfig(shareTitle,desc,link);
     },
 
@@ -121,8 +131,33 @@ const GetReward = React.createClass({
     render() {
         return(
             <div className="get-reward" style = {{backgroundImage: 'url("./assets7Intro/image/course/bg_1.png")',width: Dimensions.getWindowWidth(), height: Dimensions.getWindowHeight()}}>
+                {this.state.senior.courseId === '8' ? this.renderGraduated(): this.renderFinishCard()}
+                <img className="reward-light" onClick={this.handleClick} src={'./assets7Intro/image/course/bglight.png'}/>
+            </div>
+        )
+    },
+
+    renderGraduated() {
+        return(
+            <div>
+               <div className="get-graduated" style = {{backgroundImage: 'url("./assets7Intro/image/course/graduated.png")'}}>
+                   <img className="head" src={this.state.senior.headImg}/>
+                   <div className="title">
+                       <p>{this.state.senior.name}</p>
+                       <p>是第888名</p>
+                       <p>完成财商训练营的学员</p>
+                   </div>
+               </div>
+                {this.buttonRender()}
+            </div>
+        )
+    },
+
+    renderFinishCard() {
+        return(
+            <div>
                 {this.renderTitle()}
-                <img className="rewar-light" onClick={this.handleClick} src={'./assets7Intro/image/course/bglight.png'}/>
+                {/*<img className="reward-light" onClick={this.handleClick} src={'./assets7Intro/image/course/bglight.png'}/>*/}
                 <img className="reward-pic" onClick={this.handleClick} src={this.state.lockPic[this.state.senior.courseId - 1] }/>
                 {this.buttonRender()}
             </div>
@@ -131,16 +166,22 @@ const GetReward = React.createClass({
 
     renderTitle() {
         if(this.state.type ==='mine') {
-            return (<div>
-                {this.renderFont('恭喜你成为')}
-                {this.renderFont('第' + this.state.senior.rank+'名')}
-                {this.renderFont('完成该课程的学员')}
+            return (<div className="card-title">
+                {/*{this.renderFont('恭喜你成为')}*/}
+                {/*{this.renderFont('第' + this.state.senior.rank+'名')}*/}
+                {/*{this.renderFont('完成该课程的学员')}*/}
+                {this.renderFont('')}
+                {this.renderFont('恭喜你完成该课程')}
+                {this.renderFont('这是你赢得的成就卡')}
             </div>)
         } else {
-            return (<div>
-                {this.renderFont(this.state.senior.name+'是')}
-                {this.renderFont('第' + this.state.senior.rank+'名')}
-                {this.renderFont('完成'+this.state.shareTitle[this.state.senior.courseId - 1] + '课的学员')}
+            return (<div className="card-title">
+                {/*{this.renderFont(this.state.senior.name+'是')}*/}
+                {/*{this.renderFont('第' + this.state.senior.rank+'名')}*/}
+                {/*{this.renderFont('完成'+this.state.shareTitle[this.state.senior.courseId - 1] + '课的学员')}*/}
+                {this.renderFont('')}
+                {this.renderFont(this.state.senior.name + '完成了'+this.state.shareTitle[this.state.senior.courseId - 1] + '课')}
+                {this.renderFont('获得了专属成就卡')}
             </div>)
         }
     },

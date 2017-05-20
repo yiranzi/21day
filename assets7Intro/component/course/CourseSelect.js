@@ -202,6 +202,13 @@ const CourseSelect = React.createClass({
     },
 
     openTreasure() {
+        // let courseId = Util.getUrlPara('courseId');
+        let courseId = 8;
+        if(courseId) {
+            Loading.hideLoading();
+            location.hash = '/getReward/' + courseId;
+        }
+        return;
         Util.postCnzzData("点击宝箱");
         if(this.state.treasure.canView) {
             if(this.state.treasure.canOpen){
