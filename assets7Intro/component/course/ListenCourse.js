@@ -353,7 +353,7 @@ const ListenCourse = React.createClass({
         } else {
             Util.postCnzzData("再次点击成就卡");
         }
-        location.hash = '/getReward/' + this.props.params.courseId;
+        location.hash = '/getReward/' + this.props.params.courseId + '/-2' ;
     },
 
     /**

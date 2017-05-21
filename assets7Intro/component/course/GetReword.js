@@ -60,23 +60,41 @@ const GetReward = React.createClass({
         if (this.state.senior.courseId) {
             this.state.senior.name = Util.getUrlPara('name');
             this.state.senior.rank = Util.getUrlPara('rank');
+            this.state.senior.headImg = Util.getUrlPara('headimage');
             this.setState({type: 'other'});
         } else {
-            //获得课程的Id
-            let courseId = this.props.params.courseId;
-            userId = User.getUserInfo().userId;
-            this.setState({type: 'mine'});
-            this.setState({userInfo: User.getUserInfo()});
-            //获得自己的课程排名
-            Material.courseFinishRank(courseId,userId).done((data) =>{
+            //如果毕业证
+            let rank = this.props.params.rank;
+            if( rank !== '-2' ){
+                console.log('毕业证!!!');
+                userId = User.getUserInfo().userId;
+                this.setState({type: 'mine'});
+                this.setState({userInfo: User.getUserInfo()});
+
                 this.state.senior.name = User.getUserInfo().nickName;
                 this.state.senior.headImg = User.getUserInfo().headImage;
-                this.state.senior.rank = data;
-                this.state.senior.courseId = this.props.params.courseId;
+                this.state.senior.rank = rank;
+                this.state.senior.courseId = '8';
                 this.setState({senior: this.state.senior});
                 this.setShareConfig();
-                //TODO 将参数传入分享url中.
-            })
+            } else {
+                //获得课程的Id
+                let courseId = this.props.params.courseId;
+                userId = User.getUserInfo().userId;
+                this.setState({type: 'mine'});
+                this.setState({userInfo: User.getUserInfo()});
+                //获得自己的课程排名
+                Material.courseFinishRank(courseId,userId).done((data) =>{
+                    this.state.senior.name = User.getUserInfo().nickName;
+                    this.state.senior.headImg = User.getUserInfo().headImage;
+                    this.state.senior.rank = data;
+                    this.state.senior.courseId = this.props.params.courseId;
+                    this.setState({senior: this.state.senior});
+                    this.setShareConfig();
+                    //TODO 将参数传入分享url中.
+                })
+            }
+
         }
     },
 
@@ -98,22 +116,25 @@ const GetReward = React.createClass({
     setShareConfig() {
         //TODO 设置好进入参数
         let senior = this.state.senior;
-        if(senior.courseId === '8'){
+        if (senior.courseId === '8') {
             let shareTitle = '7天财商训练营毕业证到手!满满的成就感啊!一切都值了!',
                 link = Util.getShareLink(),
                 desc = '快为我鼓掌吧!';
             link = link + '&courseId=' + senior.courseId;
             link = link + '&name=' + senior.name;
-            // link = link + '&rank=' + senior.rank;
+            link = link + '&rank=' + senior.rank;
+            link = link + '&headimage=' + senior.headImg;
+            WxConfig.shareConfig(shareTitle,desc,link);
         } else {
             let shareTitle = '我是第'+ this.state.senior.rank+'名完成'+this.state.shareTitle[ this.state.senior.courseId - 1] + '课的人，快来看看我的成就卡吧！',
                 link = Util.getShareLink(),
                 desc = '快比比谁的财商更高吧?';
             link = link + '&courseId=' + senior.courseId;
             link = link + '&name=' + senior.name;
-            // link = link + '&rank=' + senior.rank;
+            link = link + '&rank=' + senior.rank;
+            WxConfig.shareConfig(shareTitle,desc,link);
         }
-        WxConfig.shareConfig(shareTitle,desc,link);
+
     },
 
 
@@ -144,7 +165,7 @@ const GetReward = React.createClass({
                    <img className="head" src={this.state.senior.headImg}/>
                    <div className="title">
                        <p>{this.state.senior.name}</p>
-                       <p>是第888名</p>
+                       <p>是第{this.state.senior.rank}名</p>
                        <p>完成财商训练营的学员</p>
                    </div>
                </div>
@@ -167,21 +188,15 @@ const GetReward = React.createClass({
     renderTitle() {
         if(this.state.type ==='mine') {
             return (<div className="card-title">
-                {/*{this.renderFont('恭喜你成为')}*/}
-                {/*{this.renderFont('第' + this.state.senior.rank+'名')}*/}
-                {/*{this.renderFont('完成该课程的学员')}*/}
-                {this.renderFont('')}
-                {this.renderFont('恭喜你完成该课程')}
-                {this.renderFont('这是你赢得的成就卡')}
+                {this.renderFont('恭喜你成为')}
+                {this.renderFont('第' + this.state.senior.rank+'名')}
+                {this.renderFont('完成该课程的学员')}
             </div>)
         } else {
             return (<div className="card-title">
-                {/*{this.renderFont(this.state.senior.name+'是')}*/}
-                {/*{this.renderFont('第' + this.state.senior.rank+'名')}*/}
-                {/*{this.renderFont('完成'+this.state.shareTitle[this.state.senior.courseId - 1] + '课的学员')}*/}
-                {this.renderFont('')}
-                {this.renderFont(this.state.senior.name + '完成了'+this.state.shareTitle[this.state.senior.courseId - 1] + '课')}
-                {this.renderFont('获得了专属成就卡')}
+                {this.renderFont(this.state.senior.name+'是')}
+                {this.renderFont('第' + this.state.senior.rank+'名')}
+                {this.renderFont('完成'+this.state.shareTitle[this.state.senior.courseId - 1] + '课的学员')}
             </div>)
         }
     },

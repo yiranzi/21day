@@ -37,8 +37,13 @@ const CourseSelect = React.createClass({
         // 测试提交
         let courseId = Util.getUrlPara('courseId');
         if(courseId) {
+            if (courseId === '8') {
+                Util.postCnzzData("分享途径查看毕业证");
+            } else {
+                Util.postCnzzData("分享途径查看成就卡");
+            }
             Loading.hideLoading();
-            location.hash = '/getReward/' + courseId;
+            location.hash = '/getReward/' + courseId + '/-2' ;
         } else {
             let userId = User.getUserInfo().userId;
             console.log("===userId = " + userId);
@@ -105,6 +110,7 @@ const CourseSelect = React.createClass({
             <div className="course-list">
                 <FixedBg/>
                 <div>
+                    {this.renderGraduated()}
                     {this.renderTreasure()}
                     {this.renderCourseList()}
                 </div>
@@ -201,24 +207,41 @@ const CourseSelect = React.createClass({
         }
     },
 
+    renderGraduated(){
+        return(
+            <div className="">
+                <p onClick={this.openGraduated}>点击我领取毕业证</p>
+            </div>
+        )
+    },
+
+    openGraduated() {
+        Util.postCnzzData("点击毕业证");
+        Material.getGraduatedRank().always( (rank) => {
+            //2如果请求道有效值
+            // rank !== -1
+            if ( rank!== -1 ) {
+                let courseId = 8;
+                if (courseId) {
+                    location.hash = '/getReward/' + courseId + '/' + rank;
+                }
+            } else {
+                window.dialogAlertComp.show('还不能领取毕业证哦！','你还没有完成全部课程呢，要都通过才行哦。','好的',()=>{},'',false);
+            }
+        });
+    },
+
     openTreasure() {
-        // let courseId = Util.getUrlPara('courseId');
-        let courseId = 8;
-        if(courseId) {
-            Loading.hideLoading();
-            location.hash = '/getReward/' + courseId;
-        }
-        return;
-        Util.postCnzzData("点击宝箱");
         if(this.state.treasure.canView) {
             if(this.state.treasure.canOpen){
                 if(this.state.treasure.haveOpen) {
                     //领了
-                    window.dialogAlertComp.show('你已经领取过宝箱啦','使用长投FM来道具商城使用奖励吧！','好的',()=>{
+                    window.dialogAlertComp.show('你已经领取过宝箱啦','使用长投FM去商城兑换奖励吧！','去看看',()=>{
                         location.href = "https://h5.ichangtou.com/h5/fm/index.html#/mine";
-                    },()=>{},false);
+                    },'等一等',true);
                 } else {
                     //听完课,还没领,
+                    //1如果可以完成毕业证
                     Material.openTreasure().always( (data) => {
                         //弹出打开宝箱的界面1
                         if(data.status)
@@ -227,8 +250,7 @@ const CourseSelect = React.createClass({
                             this.state.treasure.haveOpen = true;
                             window.dialogAlertComp.show('领取了50金币！','快去长投FM听Lip师兄的更多理财秘籍吧！','去看看',()=>{
                                 Util.postCnzzData("宝箱跳转FM");
-                                location.href = "https://h5.ichangtou.com/h5/fm/index.html#/mine";},'等一等',true);
-                            // location.hash = '/getReward/' + 1;
+                                location.href = "https://h5.ichangtou.com/h5/fm/index.html#/mine";},'看毕业证',true);
                         } else {
                             Util.postCnzzData("失败领取宝箱",data.msg);
                             window.dialogAlertComp.show(data.msg,'来长投网公众号收听长投FM！让你的财商指数增长吧！','原来如此',()=>{},()=>{},false);
