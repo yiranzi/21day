@@ -4,17 +4,16 @@
   padding-top: px2rem(5);
   .get-graduated{
     position: absolute;
-    top: 50%;
+    top: px2rem(10);
     left: 50%;
-    transform: translate(-50%,-50%);
+    transform: translate(-50%,0);
     margin: 0;
     text-align: center;
-    width: 80%;
-    height: 80%;
+    width: px2rem(300);
+    height: px2rem(500);
     background-size: 100% 100%;
     font-size: 0;
     z-index: 100;
-    margin-top: px2rem(-40);
     .head{
       margin: px2rem(133) auto px2rem(24) auto;
       border-radius: px2rem(70);
@@ -68,11 +67,10 @@
   }
 
   .card-title{
-    top:50%;
+    top: 10px;
     left:50%;
-    transform: translate(-50%,-50%);
+    transform: translate(-50%,0);
     width: 100%;
-    margin-top: px2rem(-270);
     position: absolute;
     z-index: 51;
   }
@@ -83,14 +81,14 @@
     left:50%;
     transform: translate(-50%,-50%);
     z-index: 150;
+    margin-top: 10px;
   }
   .reward-button{
     position: absolute;
-    top: 50%;
+    bottom: 30px;
     left: 50%;
-    transform: translate(-50%,-50%);
+    transform: translate(-50%,0);
     z-index: 100;
-    margin-top: px2rem(250);
     text-align: center;
     width: 100%;
     img{

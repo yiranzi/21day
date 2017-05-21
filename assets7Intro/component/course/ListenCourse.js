@@ -175,7 +175,32 @@ const ListenCourse = React.createClass({
                     lessons: progressData
                 });
             }
+            this.fixProcess();
         });
+    },
+
+    fixProcess() {
+        //如果最后一课已经完成
+        let allLesson = this.state.lessons;
+        let lastLesson = allLesson[allLesson.length - 1].subs;
+        //1完成全部选择题后
+        if(lastLesson[lastLesson.length - 1].process === true) {
+            for (let lesson of allLesson) {
+                if(lesson.process!==true){
+                    Material.finishWork(0, lesson.fmid).always( (data) => {
+                    });
+                }
+                for(let choose of lesson.subs){
+                    if(choose.process!==true){
+                        //发送修改1
+                        Material.finishWork(1, choose.subjectid).always( (data) => {
+                        });
+                    }
+                }
+            }
+        } else {
+            return;
+        }
     },
 
     /**
@@ -349,6 +374,7 @@ const ListenCourse = React.createClass({
 
     goReward(type) {
         if (type === 1) {
+            this.fixProcess();
             Util.postCnzzData("第一次点击成就卡");
         } else {
             Util.postCnzzData("再次点击成就卡");
