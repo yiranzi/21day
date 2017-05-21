@@ -493,6 +493,33 @@ class Material {
         )
     }
 
+    /***
+     * 获取头像`
+     */
+    static getOtherHeadImage(userId) {
+        var User = require('./User');
+        const Util = require('./Util'),
+            apiUrl = Util.getAPIUrl('get_other_headinfo').replace('{userId}',userId);
+        let userInfo = User.getUserInfo();
+        return $.ajax(
+            {
+                url: apiUrl,
+                type: 'get',
+                cache: false,
+                contentType: 'application/json;charset=utf-8',
+                headers: {
+                    Accept: 'application/json'
+                },
+                beforeSend: (request)=>{
+                    request.setRequestHeader("X-iChangTou-Json-Api-Token", Util.getApiToken());
+                    request.setRequestHeader("X-iChangTou-Json-Api-User", userInfo.userId);
+                }
+            }
+        )
+    }
+
+
+
 
 
 

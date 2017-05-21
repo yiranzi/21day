@@ -18,8 +18,6 @@ const CourseSelect = React.createClass({
 
     getInitialState: function() {
         return {
-            liked: false,
-            dataList: [1,1,0,2,2,0,0],
             courseList: {},
             tips:[],
             treasure: {
@@ -27,7 +25,8 @@ const CourseSelect = React.createClass({
                 haveOpen: true,
                 canOpen: false,
                 canView: false,
-            }
+            },
+            allFinish: false
         };
     },
 
@@ -102,6 +101,12 @@ const CourseSelect = React.createClass({
     getCourseList () {
         Material.getCourseList().always( (data) => {
             this.setState({courseList: data})
+            for( let process of this.state.courseList) {
+                if (process.status !== 2) {
+                    return;
+                }
+            }
+            this.setState({allFinish: true})
         })
     },
 
@@ -181,7 +186,7 @@ const CourseSelect = React.createClass({
             // return(<div className="lesson-bar" onClick={this.openTreasure}>
             //         <TreasureBar treasure = {this.state.treasure}></TreasureBar>
             //         </div>)
-        return <img onClick={this.openTreasure} className="fix-treasure" src={'./assets7Intro/image/course/treasure.png'}/>
+        return <img onClick={this.openTreasure} className={this.state.allFinish ? 'fix-treasure-shake' : 'fix-treasure'} src={'./assets7Intro/image/course/treasure.png'}/>
 
 
     },
@@ -236,7 +241,7 @@ const CourseSelect = React.createClass({
             if(this.state.treasure.canOpen){
                 if(this.state.treasure.haveOpen) {
                     //领了
-                    window.dialogAlertComp.show('你已经领取过宝箱啦','使用长投FM去商城兑换奖励吧！','去看看',()=>{
+                    window.dialogAlertComp.show('你已经领取过宝箱啦','使用长投FM去积分商城兑换奖励吧！','去看看',()=>{
                         location.href = "https://h5.ichangtou.com/h5/fm/index.html#/mine";
                     },'等一等',true);
                 } else {

@@ -58,9 +58,13 @@ const GetReward = React.createClass({
         //判定是否有分享成就卡
         this.state.senior.courseId = Util.getUrlPara('courseId');
         if (this.state.senior.courseId) {
+            userId = Util.getUrlPara('ictchannel');
+            Material.getOtherHeadImage(userId).always( (img)=>{
+                this.state.senior.headImg = img.responseText;
+                this.setState({senior: this.state.senior});
+            })
             this.state.senior.name = Util.getUrlPara('name');
             this.state.senior.rank = Util.getUrlPara('rank');
-            this.state.senior.headImg = Util.getUrlPara('headimage');
             this.setState({type: 'other'});
         } else {
             //如果毕业证
