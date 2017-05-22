@@ -1,4 +1,9 @@
 .fm-view{
+  .pre-load{
+    width: 0;
+    height: 0;
+    display: none;
+  }
   .get-reward-command{
       text-align: center;
       width: px2rem(359);

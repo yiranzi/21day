@@ -70,7 +70,7 @@ class WxConfig {
     /**
      * 分享配置
      */
-    static shareConfig(title, desc,fmid,link) {
+    static shareConfig(title, desc,link) {
         console.log('初始化为微信的普通API');
 
         //console.log('分享配置',title, desc,fmid,link);

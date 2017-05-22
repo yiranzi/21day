@@ -26,7 +26,7 @@ var APPID = Config.environment ? FORMA_APPID : TEST_APPID;
 //测试APPID
 var PAID_APPID =  Config.environment ?FORMAL_PAID_APPID : TEST_PAID_APPID;
 
-const FORMAL_API_DOMAIN = 'https://m.ichangtou.com/';//生产环境 API域名
+const FORMAL_API_DOMAIN = 'https://growth.ichangtou.com/';//生产环境 API域名
 // const TEST_API_DOMAIN = 'http://devh5.ichangtou.com.cn/';//测试环境 API域名
 const TEST_API_DOMAIN = 'https://geek.ichangtou.com/';//测试环境 API域名
 
@@ -107,6 +107,12 @@ const API_URL_GROUP = {
     //
     'post_audio_time': 'fm/learn-audio-record', //学习时间和排名
     'get_course_list': '7day/course-list', //学习时间和排名
+
+    //获取进度
+    'get_course_finish_rank': '7day/subject-ranking/{userId}/{subjectId}',//获得这一课的排名
+    'get_graduated_finish_rank': '7day/graduation/ranking',//获得这一课的排名
+    'get_other_headinfo': '7day/user-image/{userId}',//获取用户头像
+
 
 
 };
@@ -585,6 +591,15 @@ class Util {
         if( teacherid = Util.getUrlPara('teacherid') ) {
             //把班主任ID拼接到地址栏中
             redirectUri = redirectUri  + prefix + 'teacherid=' + teacherid;
+            prefix = '&';
+        }
+
+        //courseId
+        let courseId;
+        if( courseId = Util.getUrlPara('courseId') ) {
+            redirectUri = redirectUri + prefix + 'courseId=' + courseId;
+            redirectUri = redirectUri + prefix + 'name=' + Util.getUrlPara('name');
+            redirectUri = redirectUri + prefix + 'rank=' + Util.getUrlPara('rank');
             prefix = '&';
         }
 

@@ -1,14 +1,113 @@
 .get-reward{
   background-size: cover;
   position: relative;
+  padding-top: px2rem(5);
+  .get-graduated{
+    position: absolute;
+    top: px2rem(10);
+    left: 50%;
+    transform: translate(-50%,0);
+    margin: 0;
+    text-align: center;
+    width: px2rem(300);
+    height: px2rem(500);
+    background-size: 100% 100%;
+    font-size: 0;
+    z-index: 100;
+    .head{
+      margin: px2rem(133) auto px2rem(24) auto;
+      border-radius: px2rem(70);
+      border:2px solid #1CA6DF;
+      width: px2rem(70);
+      height: px2rem(70);
+    }
+    .title{
+      line-height: px2rem(25);
+      color: #1CA6DF;
+      p{
+        height: px2rem(25);
+        font-size: px2rem(18);
+      }
+    }
+  }
+  .text-stroke{
+    position: relative;
+    text-align: center;
+    height: px2rem(36);
+    line-height: px2rem(36);
+    .text-stroke-inner
+    {
+      //margin: 10px auto 0 auto;
+      position: absolute;
+      font-size: px2rem(22);
+      font-family: '幼圆';
+      font-weight: 900;
+      color: #1CA6DF;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%,-50%);
+      z-index: 70;
+      width: 100%;
+    }
+    .text-stroke-out
+    {
+      position: absolute;
+      //margin: 10px auto 0 auto;
+      font-size: px2rem(22);
+      font-family: '幼圆';
+      font-weight: 900;
+      color: white;
+      -webkit-text-stroke: 4px white;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%,-50%);
+      z-index: 60;
+      width: 100%;
+    }
+  }
+
+  .card-title{
+    top: 10px;
+    left:50%;
+    transform: translate(-50%,0);
+    width: 100%;
+    position: absolute;
+    z-index: 51;
+  }
+
   .reward-pic{
     position:absolute;
     top:50%;
     left:50%;
-    margin-top: px2rem(-180);
-    margin-left: px2rem(-93);
-    width: 50%;
+    transform: translate(-50%,-50%);
     z-index: 150;
+    margin-top: 10px;
+  }
+  .reward-button{
+    position: absolute;
+    bottom: 30px;
+    left: 50%;
+    transform: translate(-50%,0);
+    z-index: 100;
+    text-align: center;
+    width: 100%;
+    img{
+      position: absolute;
+      z-index: 100;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%,-50%);
+    }
+    p{
+      color: white;
+      font-size: px2rem(22);
+      position: absolute;
+      z-index: 101;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%,-50%);
+      width: 100%
+    }
   }
   .reward-recommand{
     position:fixed;
@@ -32,7 +131,7 @@
       100% {transform:rotate(0deg);}
     }
   }
-  .rewar-light{
+  .reward-light{
     position:fixed;
     top:50%;
     left:50%;
@@ -40,7 +139,7 @@
     margin-left: px2rem(-350);
     width: px2rem(700);
     z-index: 50;
-    animation: rotate 8s infinite;
+    animation: rotate 20s infinite;
     animation-timing-function: linear;
   }
 

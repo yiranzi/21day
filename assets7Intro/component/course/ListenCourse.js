@@ -175,7 +175,33 @@ const ListenCourse = React.createClass({
                     lessons: progressData
                 });
             }
+            this.fixProcess();
         });
+    },
+
+    fixProcess() {
+        //如果最后一课已经完成
+        let allLesson = this.state.lessons;
+        let lastLesson = allLesson[allLesson.length - 1].subs;
+        //1完成全部选择题后
+        if(lastLesson[lastLesson.length - 1].process === true) {
+            for (let lesson of allLesson) {
+                if(lesson.process!==true){
+
+                    Util.postCnzzData("修复音频数据" + lesson.fmid + '/' + User.getUserInfo().userId);
+                    Material.finishWork(0, lesson.fmid);
+                }
+                for(let choose of lesson.subs){
+                    if(choose.process!==true){
+                        //发送修改1
+                        Util.postCnzzData("修复作业数据" + choose.subjectid + '/' + User.getUserInfo().userId);
+                        Material.finishWork(1, choose.subjectid);
+                    }
+                }
+            }
+        } else {
+            return;
+        }
     },
 
     /**
@@ -318,8 +344,16 @@ const ListenCourse = React.createClass({
                 {/*<div>进入时,这门课程的状态时{this.props.location.query.name}</div>*/}
                 {this.renderLesson()}
                 {this.passLessonRender()}
+                {this.preLoadPic()}
             </div>
         )
+    },
+
+    preLoadPic() {
+        return(<div className="pre-load">
+            <img src={'./assets7Intro/image/course/bglight.png'}/>
+            <img src={'./assets7Intro/image/course/recommand.png'}/>
+        </div>)
     },
 
     passLessonRender() {
@@ -341,11 +375,12 @@ const ListenCourse = React.createClass({
 
     goReward(type) {
         if (type === 1) {
+            this.fixProcess();
             Util.postCnzzData("第一次点击成就卡");
         } else {
             Util.postCnzzData("再次点击成就卡");
         }
-        location.hash = '/getReward/' + this.props.params.courseId;
+        location.hash = '/getReward/' + this.props.params.courseId + '/-2' ;
     },
 
     /**
