@@ -187,14 +187,15 @@ const ListenCourse = React.createClass({
         if(lastLesson[lastLesson.length - 1].process === true) {
             for (let lesson of allLesson) {
                 if(lesson.process!==true){
-                    Material.finishWork(0, lesson.fmid).always( (data) => {
-                    });
+
+                    Util.postCnzzData("修复音频数据" + lesson.fmid + '/' + User.getUserInfo().userId);
+                    Material.finishWork(0, lesson.fmid);
                 }
                 for(let choose of lesson.subs){
                     if(choose.process!==true){
                         //发送修改1
-                        Material.finishWork(1, choose.subjectid).always( (data) => {
-                        });
+                        Util.postCnzzData("修复作业数据" + choose.subjectid + '/' + User.getUserInfo().userId);
+                        Material.finishWork(1, choose.subjectid);
                     }
                 }
             }

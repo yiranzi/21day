@@ -106,16 +106,22 @@ const CourseSelect = React.createClass({
                     return;
                 }
             }
-            this.setState({allFinish: true})
+            if(!this.state.treasure.haveOpen){
+                console.log('treasure out' + this.state.treasure.haveOpen)
+                this.setState({allFinish: true})
+            }
+            console.log('treasure out' + this.state.treasure.haveOpen)
         })
     },
+
+//TODO 毕业证
+// {this.renderGraduated()}
 
     render() {
         return(
             <div className="course-list">
                 <FixedBg/>
                 <div>
-                    {this.renderGraduated()}
                     {this.renderTreasure()}
                     {this.renderCourseList()}
                 </div>
@@ -191,26 +197,26 @@ const CourseSelect = React.createClass({
 
     },
 
-    calcTreasureInfo() {
-        let treasure =  this.state.treasure;
-        if(treasure.canView) {
-            //
-            treasure.status = 0;
-        }else if(!treasure.canOpen) {
-            //不可以打开,因为没有完成所有的课程
-            treasure.status = 0;
-        } else if (this.state.treasure.canOpen) {
-            //可以打开
-            treasure.status = 1;
-        }
-        else if (!treasure.haveOpen) {
-            //不可以打开,页还没打开
-            treasure.status = 3;
-        } else {
-            //已经领取
-            treasure.status = 2;
-        }
-    },
+    // calcTreasureInfo() {
+    //     let treasure =  this.state.treasure;
+    //     if(treasure.canView) {
+    //         //
+    //         treasure.status = 0;
+    //     }else if(!treasure.canOpen) {
+    //         //不可以打开,因为没有完成所有的课程
+    //         treasure.status = 0;
+    //     } else if (this.state.treasure.canOpen) {
+    //         //可以打开
+    //         treasure.status = 1;
+    //     }
+    //     else if (!treasure.haveOpen) {
+    //         //不可以打开,页还没打开
+    //         treasure.status = 3;
+    //     } else {
+    //         //已经领取
+    //         treasure.status = 2;
+    //     }
+    // },
 
     renderGraduated(){
         return(
@@ -242,8 +248,7 @@ const CourseSelect = React.createClass({
                 if(this.state.treasure.haveOpen) {
                     //领了
                     window.dialogAlertComp.show('你已经领取过宝箱啦','使用长投FM去积分商城兑换奖励吧！','去看看',()=>{
-                        location.href = "https://h5.ichangtou.com/h5/fm/index.html#/mine";
-                    },'等一等',true);
+                        location.href = "https://h5.ichangtou.com/h5/fm/index.html#/mall";},'等一等',true);
                 } else {
                     //听完课,还没领,
                     //1如果可以完成毕业证
@@ -253,12 +258,12 @@ const CourseSelect = React.createClass({
                         {
                             Util.postCnzzData("成功领取宝箱");
                             this.state.treasure.haveOpen = true;
-                            window.dialogAlertComp.show('领取了50金币！','快去长投FM听Lip师兄的更多理财秘籍吧！','去看看',()=>{
+                            window.dialogAlertComp.show('领取了50金币！','使用长投FM去积分商城兑换奖励吧！','去看看',()=>{
                                 Util.postCnzzData("宝箱跳转FM");
-                                location.href = "https://h5.ichangtou.com/h5/fm/index.html#/mine";},'看毕业证',true);
+                                location.href = "https://h5.ichangtou.com/h5/fm/index.html#/mall";},'等一等',true);
                         } else {
                             Util.postCnzzData("失败领取宝箱",data.msg);
-                            window.dialogAlertComp.show(data.msg,'来长投网公众号收听长投FM！让你的财商指数增长吧！','原来如此',()=>{},()=>{},false);
+                            window.dialogAlertComp.show(data.msg,'领取失败了','我知道了',()=>{},()=>{},false);
                         }
                     })
                 }
