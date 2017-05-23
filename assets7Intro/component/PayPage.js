@@ -193,7 +193,7 @@ var PayPage = React.createClass({
 
             console.log("是否免费用户", free);
             // TODO test roy
-            free = true;
+            // free = true;
 
             if (free) {
               this.setState({
