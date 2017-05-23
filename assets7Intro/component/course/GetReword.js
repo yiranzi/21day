@@ -180,14 +180,16 @@ const GetReward = React.createClass({
             Material.FreeShareSignUp(upId,myName).always( (result)=>{
                 if (result.whether) {
                     window.dialogAlertComp.show('已经成功领取','你已经领取啦','去课堂看看',()=>{
-                        let url = Util.getHtmlUrl() + '?ictchannel=' + Util.getUrlPara('ictchannel') + '&free=' + 1;
-                        location.href = url;
+                        // let url = Util.getHtmlUrl() + '#/paypage?ictchannel=' + Util.getUrlPara('ictchannel') + '&free=' + 1;
+                        // location.href = url;
+                        location.hash = "/paypage/1"
                     },()=>{},false);
 
                 } else {
                     window.dialogAlertComp.show('免费机会没啦',result.errorMessage,'去围观吧',()=>{
-                        let url = Util.getHtmlUrl() + '?ictchannel=' + Util.getUrlPara('ictchannel');
-                        location.href = url;
+                        // let url = Util.getHtmlUrl() + '#/paypage?ictchannel=' + Util.getUrlPara('ictchannel');
+                        // location.href = url;
+                        location.hash = "/paypage"
                     },'先不看',true);
                 }
             });
