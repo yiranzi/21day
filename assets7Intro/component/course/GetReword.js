@@ -138,7 +138,6 @@ const GetReward = React.createClass({
                 link = link + '&courseId=' + senior.courseId;
                 link = link + '&name=' + senior.name;
                 link = link + '&rank=' + senior.rank;
-                link = link + '&headimage=' + senior.headImg;
                 WxConfig.shareConfig(shareTitle,desc,link);
             } else {
                 let shareTitle = '7天财商训练营毕业证到手!满满的成就感啊!一切都值了!',
@@ -147,7 +146,6 @@ const GetReward = React.createClass({
                 link = link + '&courseId=' + senior.courseId;
                 link = link + '&name=' + senior.name;
                 link = link + '&rank=' + senior.rank;
-                link = link + '&headimage=' + senior.headImg;
                 WxConfig.shareConfig(shareTitle,desc,link);
             }
         } else {
@@ -184,9 +182,7 @@ const GetReward = React.createClass({
                     },'待会再看',true);
 
                 } else {
-                    window.dialogAlertComp.show('免费机会没啦',result.errorMessage,'去围观吧',()=>{
-                        location.hash = "/paypage"
-                    },'先不看',true);
+                    location.hash = "/paypage";
                 }
             });
         } else {
