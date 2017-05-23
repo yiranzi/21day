@@ -89,6 +89,9 @@ class User {
         if( Util.getUrlPara('isuserinfo') ) {
             //如果正在请求用户信息，则发送注册请求
             APIUrl = Util.getAPIUrl('userinfo_authorization');
+
+            //增加channel
+            jsonData =  JSON.stringify({'code': code , 'channel': '7'});
         }
 
         $.ajax({
