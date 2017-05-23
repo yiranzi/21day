@@ -49,7 +49,9 @@ var PayPage = React.createClass({
 
             showint:true,//初始剩余人数
 
-            endTime: Util.getEndTime(),
+            endTime: Util.getEndTime(), // 截止时间
+
+            isFreeUser: false, // 是否免费用户
         };
     },
 
@@ -59,7 +61,6 @@ var PayPage = React.createClass({
         Util.postCnzzData("进入报名页面");
 
         console.log("endTime:", this.state.endTime);
-
 
         OnFire.on('PAID_DONE', ()=>{
           Material.getJudgeFromServer().done((record)=>{
@@ -111,23 +112,7 @@ var PayPage = React.createClass({
 
           Util.postCnzzData('报名成功');
 
-          let isSubscribed = User.getUserInfo().subscribe;
-          console.log("支付完判断是否关注公号", isSubscribed);
-
-          // 已关注公号的用户直接跳转关卡页面学习
-          if (isSubscribed) {
-            DoneToast.show('报名成功，开始学习第一课吧！');
-            location.hash = "/select";
-          } else { // 未关注引导关注公号
-            this.setState({
-                hasPaid: true,
-            })
-            this.scrollToTop();
-            DoneToast.show('报名成功，记得关注长投公号哦！');
-
-            Util.postCnzzData("报名成功未关注公号");
-          }
-
+          this.checkSubscribe();
             //统计班主任信息
             // let teacherId = Util.getUrlPara('teacherid');
             // teacherId && Util.postCnzzData('班主任'+teacherId);
@@ -204,13 +189,30 @@ var PayPage = React.createClass({
     setSenior(seniorId, userId) {
         //seniorId则表示该用户拥有上线
         if(seniorId && seniorId != userId) {
-            this.setState({
-                hasSenior: true,
-                buttonPrice: Util.getCheapPrice()
-            });
+            let free = Util.getUrlPara('free');
 
-            console.log("下线打开分享链接");
-            Util.postCnzzData("下线打开分享链接");
+            console.log("是否免费用户", free);
+            // TODO test roy
+            free = true;
+
+            if (free) {
+              this.setState({
+                  hasSenior: true,
+                  isFreeUser: true
+              });
+
+              console.log("免费用户进入报名页");
+              Util.postCnzzData("免费用户进入报名页");
+            } else {
+              this.setState({
+                  hasSenior: true,
+                  isFreeUser: false,
+                  buttonPrice: Util.getCheapPrice()
+              });
+
+              console.log("下线打开分享链接");
+              Util.postCnzzData("下线打开分享链接");
+            }
         } else {
             this.setState({
                 buttonPrice: Util.getNormalPrice()
@@ -343,6 +345,35 @@ var PayPage = React.createClass({
     },
 
     /**
+     * 跳转到关卡页面
+     */
+    gotoSelectPage() {
+      location.hash = "/select";
+    },
+
+    /**
+     * 检测购买后是否关注公号
+     */
+    checkSubscribe () {
+      let isSubscribed = User.getUserInfo().subscribe;
+      console.log("支付完判断是否关注公号", isSubscribed);
+
+      // 已关注公号的用户直接跳转关卡页面学习
+      if (isSubscribed) {
+        DoneToast.show('报名成功，开始学习第一课吧！');
+        this.gotoSelectPage();
+      } else { // 未关注引导关注公号
+        this.setState({
+            hasPaid: true,
+        })
+        this.scrollToTop();
+        DoneToast.show('报名成功，记得关注长投公号哦！');
+
+        Util.postCnzzData("报名成功未关注公号");
+      }
+    },
+
+    /**
      * 显示shareModal操作
      */
     shareModalHandler() {
@@ -404,7 +435,7 @@ var PayPage = React.createClass({
                                 <p className="paid-text paid-times"></p>
                                 {/*<p className="paid-texts  tada infinite ">耐心等待</p>*/}
                                 <p className="paid-text">下一个百万富翁就是你</p>
-                                {!this.state.followSubscribe && <div><p className="paid-text">长按扫描下方二维码进入课程公号，开始学习吧</p>
+                                {!this.state.followSubscribe && <div><p className="paid-text">长按扫描下方二维码进入课程公号的“财商训练”，开始学习吧</p>
                                 <div className="page-div">
                                     <img className="page-image" src="./assets7Intro/image/tousha-qrcode.jpg"/>
                                     </div></div>}
@@ -429,12 +460,22 @@ var PayPage = React.createClass({
                     {/*</div>*/}
                 {/*}*/}
 
-                {!this.state.hasPaid &&
+                {/*普通用户底部购买按钮*/}
+                {(!this.state.hasPaid && !this.state.isFreeUser) &&
                     <div className="bottom-button">
                         {((this.state.time || !this.state.showint ) && !this.state.hasSenior) ? <span onClick={this.didClickHandler}  className="join-button">还想报名？点我！</span> : <span onClick={this.clickHandler}  className={!this.state.hasSenior ?"join-button":"whole-join-button"}>立即参加（{this.state.buttonPrice}元）</span>}
                         <span className="share-button" onClick={this.shareModalHandler}>邀请好友</span>
                     </div>
                 }
+
+                {/*免费用户底部购买按钮*/}
+                {(!this.state.hasPaid && this.state.isFreeUser) &&
+                    <div className="bottom-button">
+                        <span onClick={this.checkSubscribe} className="join-button">开始学习吧！</span>
+                        <span className="share-button" onClick={this.shareModalHandler}>邀请好友</span>
+                    </div>
+                }
+
                 {/*点击分享时的提示模态引导框*/}
                 {this.state.showShareModal && <img src="./assets7Intro/image/shareModal.png" onClick={this.hideShareModalHandler} className="share-modal"/>}
 
