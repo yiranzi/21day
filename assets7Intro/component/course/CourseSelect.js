@@ -158,6 +158,12 @@ const CourseSelect = React.createClass({
         }
     },
 
+    componentDidUpdate() {
+        if(this.state.treasure.canOpen){
+            scrollTo(0,999);
+        }
+    },
+
     renderNotEnter(index) {
         console.log('render no enter');
         window.dialogAlertComp.show('还没有开放课程哦','每天更新一课哦，耐心等一等吧！','知道啦',()=>{},()=>{},false);
@@ -248,6 +254,7 @@ const CourseSelect = React.createClass({
     openTreasure() {
         if(this.state.treasure.canView) {
             if(this.state.treasure.canOpen){
+
                 if(this.state.treasure.haveOpen) {
                     //领了
                     window.dialogAlertComp.show('你已经领取过宝箱啦','使用长投FM去积分商城兑换奖励吧！','去看看',()=>{

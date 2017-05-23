@@ -375,7 +375,7 @@ var PayPage = React.createClass({
       } else { // 未关注引导关注公号
         this.setState({
             hasPaid: true,
-        })
+        });
         this.scrollToTop();
         DoneToast.show('报名成功，记得关注长投公号哦！');
 

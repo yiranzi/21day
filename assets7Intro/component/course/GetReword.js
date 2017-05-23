@@ -119,7 +119,7 @@ const GetReward = React.createClass({
         let senior = this.state.senior;
         let shareTitle = '快和我一起参加财商训练营吧',
             link = Util.getShareLink(),
-            desc = '点击链接报名只需6元哦,按时毕业还有奖学金!';
+            desc = '点击链接报名只需3元哦,按时毕业还有奖学金!';
         WxConfig.shareConfig(shareTitle,desc,link);
     },
 
@@ -132,7 +132,7 @@ const GetReward = React.createClass({
         let senior = this.state.senior;
         if (senior.courseId === '8') {
             if(this.state.friendName === '') {
-                let shareTitle = '我觉得你是我身边财商最高的人,我想推荐你一个提高自己潜力的课程',
+                let shareTitle = '7天财商训练营，赠给财商最高的你',
                     link = Util.getShareLink(),
                     desc = '财商最高的人就是你';
                 link = link + '&courseId=' + senior.courseId;
@@ -177,11 +177,13 @@ const GetReward = React.createClass({
             // window.dialogAlertComp.show(upId,myId,myName,()=>{},()=>{},false);
             Material.FreeShareSignUp(upId,myName).always( (result)=>{
                 if (result.whether) {
+                    Util.postCnzzData("毕业-成功领取");
                     window.dialogAlertComp.show('已经成功领取','你已经领取啦','去课堂看看',()=>{
                         location.hash = "/paypage/1"
                     },'待会再看',true);
 
                 } else {
+                    Util.postCnzzData("毕业-也被领取跳转报名");
                     location.hash = "/paypage";
                 }
             });
@@ -208,7 +210,7 @@ const GetReward = React.createClass({
                    <img className="head" src={this.state.senior.headImg}/>
                    <div className="title">
                        <p className="name">{this.state.senior.name}</p>
-                       <p>是第{this.state.senior.rank}名</p>
+                       <p className="rank">第{this.state.senior.rank}名</p>
                        <p>完成财商训练营的学员</p>
                    </div>
                </div>
@@ -248,9 +250,11 @@ const GetReward = React.createClass({
         Util.postCnzzData("成就页面点击分享");
         if(this.state.senior.courseId === '8'){
             if(this.state.friendName.message === '') {
-                window.dialogAlertComp.show('赠送课程给你的朋友','你现在财商水平已经很高啦,这么好的课程怎么能不告诉小伙伴呢?挑选一个财商最高的小伙伴,赠送给他这门课程,让他和你一样学习成长!!!','好哒师兄',()=>{},()=>{},false);
+                Util.postCnzzData("毕业-赠送朋友提示");
+                window.dialogAlertComp.show('赠送课程给你的朋友','你财商水平很高啦，挑选一个财商最高的小伙伴，赠送给他这门课吧！点击右上角三个点点，分享给好友吧。','好哒师兄',()=>{},()=>{},false);
             } else {
-                window.dialogAlertComp.show('告诉更多的朋友吧','你已经顺利毕业啦,鼓励更多的小伙伴被你的正能量带动,一同积极学习吧!','好哒师兄',()=>{},()=>{},false);
+                Util.postCnzzData("毕业-送给更多人提示");
+                window.dialogAlertComp.show('告诉更多的朋友吧','你已经顺利毕业啦，鼓励更多的小伙伴被你的正能量带动，一同积极学习吧！点击右上角三个点点，分享到你的朋友圈吧！','好哒师兄',()=>{},()=>{},false);
             }
         } else {
             window.dialogAlertComp.show('快快分享你的进步吧','点击右上角三个点点，分享到你的朋友圈吧！','好哒师兄',()=>{},()=>{},false);
@@ -272,10 +276,13 @@ const GetReward = React.createClass({
                 //如果还没有朋友领取
                 if(this.state.friendName.message === '') {
                     arr.push((<div key={1} className="graduated-tip">
-                        <p>由于你的优异成绩，你赢的了一次推荐7天给他人学习的机会</p>
-                        <p>如果你觉得有所收获，就大方的送给你身边</p>
-                        <p>最有潜力，财商最高的朋友吧！</p>
-                        <p>机会只有一次哦，快去送给他！</p>
+                        <p>恭喜顺利毕业！</p>
+                        <p>现可免费赠送此课程一份！</p>
+                        <p>快去赠给你财商最高的那位朋友吧</p>
+                        {/*<p>由于你的优异成绩，你赢的了一次推荐7天给他人学习的机会！</p>*/}
+                        {/*<p>如果你觉得有所收获，就大方的送给你身边</p>*/}
+                        {/*<p>最有潜力，财商最高的朋友吧！</p>*/}
+                        {/*<p>机会只有一次哦，快去送给他！</p>*/}
                     </div>));
                     arr.push(<div key={2} className="reward-button-graduated" onClick = {this.goCommand}>
                         <img className="button-img" src={'./assets7Intro/image/course/btnSignin.png'}/>
@@ -283,10 +290,8 @@ const GetReward = React.createClass({
                     </div>)
                 } else {
                     arr.push((<div key={1} className="graduated-tip">
-                        <p>你的课程推荐被{this.state.friendName.message}抢先领走了！</p>
-                        <p>你的行动会改变更多人的人生轨迹哦！</p>
-                        <p>为他们打开新世界的大门吧！</p>
-
+                        <p>你的课程被{this.state.friendName.message}抢先领走了！</p>
+                        <p>你还可以推荐更多的人来学习！</p>
                     </div>));
                     arr.push(<div key={2} className="reward-button-graduated" onClick = {this.goCommand}>
                         <img className="button-img" src={'./assets7Intro/image/course/btnSignin.png'}/>
@@ -309,22 +314,20 @@ const GetReward = React.createClass({
                 //如果还没有朋友领取
                 if(this.state.friendName.message === '') {
                     arr.push((<div key={1} className="graduated-tip">
-                        {this.state.senior.name}觉得你是他身边财商最高的人,
-                        <p>把无比珍贵的课程机会送给了你！</p>
-                        <p>机会只有一个，别被别人抢先啦！</p>
+                        <p>{this.state.senior.name} 认为你的财商突破天际</p>
+                        <p>赠送了一个训练营名额给你。</p>
                     </div>));
                     arr.push((<div key={2} className="reward-button-graduated" onClick = {this.goSignUp.bind(this,true)}>
                         <img className="button-img" src={'./assets7Intro/image/course/btnSignin.png'}/>
-                        <p className="button-p">欣然接受</p>
+                        <p className="button-p">立即参加</p>
                     </div>));
                 } else {
                     arr.push((<div key={1} className="graduated-tip">
-                        <p>被{this.state.friendName.message}领走了，他们都在财商猛涨~</p>
-                        <p>学习是一种时尚，快快加入我们的行列吧！</p>
+                        <p>来晚一步，名额已被 {this.state.friendName.message} 领走了！</p>
                     </div>));
                     arr.push((<div key={2} className="reward-button-graduated" onClick = {this.goSignUp.bind(this,true)}>
                         <img className="button-img" src={'./assets7Intro/image/course/btnSignin.png'}/>
-                        <p className="button-p">火速围观</p>
+                        <p className="button-p">3元抢课</p>
                     </div>));
                 }
                 return arr;
