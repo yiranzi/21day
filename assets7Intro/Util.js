@@ -48,7 +48,7 @@ const END_TIME = [2017,5,20,21,0,0]; // TODO roy 截止时间，需要和后台�
 const USER_NUMBER = 1300; // TODO roy 活动报名总人数
 
 const NORMAL_PRICE = 9;// TODO roy 上线价格，普通用户
-const CHEAP_PRICE = 6;// TODO roy 下线价格，享有的优惠价格
+const CHEAP_PRICE = 3;// TODO roy 下线价格，享有的优惠价格
 
 const SHARE_TITLE = '和我一起提高财商吧！';
 const SHARE_DESC = '邀请你一起参加7天财商训练营';

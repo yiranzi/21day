@@ -374,20 +374,21 @@ var PayPage = React.createClass({
                 {!this.state.hasPaid &&
                 <div>
                    {!this.state.hasSenior && <div>
-                     <div className="top-time-bottom">
-                         <div className="top-time">
-                             <Timeout hasEnded={this.state.time} finalDate={this.state.endTime}/>
-                         </div>
-                     <div className="entered">
-                         <div className="show-entered">
-                             <div className="show-number"> 剩余名额</div>
-                         </div>
-                         {this.state.showint ? <span>{this.state.num}</span>:<span>0</span>}
-                         </div>
-                     </div>
-                   </div>}
+                       <div className="top-time-bottom">
+                           <div className="top-time">
+                               <Timeout hasEnded={this.state.time} finalDate={this.state.endTime}/>
+                           </div>
+                           <div className="entered">
+                               <div className="show-entered">
+                                   <div className="show-number"> 剩余名额</div>
+                               </div>
+                               {this.state.showint ? <span>{this.state.num}</span>:<span>0</span>}
+                           </div>
+                       </div>
+                    </div>}
 
-                    <img src="./assets7Intro/image/bg.png" className="intro-img"/></div> }
+                    <img src="./assets7Intro/image/bg.png" className={this.state.hasSenior ? "intro-img-has-senior" : "intro-img"}/>
+                </div> }
                 {/*如果已经报名，报名链接时展示*/}
                 {this.state.hasPaid && <div>
                     <div className="paid-bg" style={{height:window.innerHeight}}>
