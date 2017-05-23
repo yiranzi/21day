@@ -91,23 +91,32 @@
     z-index: 100;
     text-align: center;
     width: 100%;
-    img{
-      position: absolute;
-      z-index: 100;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%,-50%);
-    }
-    p{
-      color: white;
-      font-size: px2rem(22);
-      position: absolute;
-      z-index: 101;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%,-50%);
-      width: 100%
-    }
+  }
+  .button-img{
+    position: absolute;
+    z-index: 100;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+  }
+  .button-p{
+    color: white;
+    font-size: px2rem(22);
+    position: absolute;
+    z-index: 101;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    width: 100%
+  }
+  .reward-button-graduated{
+    position: absolute;
+    bottom: 30px;
+    left: px2rem(290);
+    transform: translate(-50%,0);
+    z-index: 100;
+    text-align: center;
+    width: 100%;
   }
   .reward-recommand{
     position:fixed;

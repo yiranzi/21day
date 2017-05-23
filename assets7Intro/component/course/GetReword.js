@@ -48,7 +48,9 @@ const GetReward = React.createClass({
                 name: '长投学员',
                 rank: 214,
                 headImg: '',
+                userId: '',
             },
+            friendName: '',
         };
     },
 
@@ -59,6 +61,7 @@ const GetReward = React.createClass({
         this.state.senior.courseId = Util.getUrlPara('courseId');
         if (this.state.senior.courseId) {
             userId = Util.getUrlPara('ictchannel');
+            this.state.senior.userId = userId;
             Material.getOtherHeadImage(userId).always( (img)=>{
                 this.state.senior.headImg = img.responseText;
                 this.setState({senior: this.state.senior});
@@ -66,12 +69,22 @@ const GetReward = React.createClass({
             this.state.senior.name = Util.getUrlPara('name');
             this.state.senior.rank = Util.getUrlPara('rank');
             this.setState({type: 'other'});
+            //TODO 分享的时候如果为8发送请求.获得领取信息
+            if (this.state.senior.courseId === '8') {
+                Material.getShareInfo(userId).always( (name)=>{
+                    this.setState({friendName: name});
+                });
+            }
         } else {
-            //如果毕业证
             let rank = this.props.params.rank;
+            //rank默认是-2 如果是毕业证就不是-2.这里应该用courseId === 8 判定
             if( rank !== '-2' ){
-                console.log('毕业证!!!');
+                //如果毕业证
+                //TODO 获得领取信息
                 userId = User.getUserInfo().userId;
+                Material.getShareInfo(userId).always( (name)=>{
+                    this.setState({friendName: name});
+                });
                 this.setState({type: 'mine'});
                 this.setState({userInfo: User.getUserInfo()});
 
@@ -95,7 +108,6 @@ const GetReward = React.createClass({
                     this.state.senior.courseId = this.props.params.courseId;
                     this.setState({senior: this.state.senior});
                     this.setShareConfig();
-                    //TODO 将参数传入分享url中.
                 })
             }
 
@@ -103,7 +115,6 @@ const GetReward = React.createClass({
     },
 
     componentWillUnmount () {
-        //TODO 冲掉特殊的分享连接
         console.log('didUnMount')
         let senior = this.state.senior;
         let shareTitle = '快和我一起参加财商训练营吧',
@@ -118,17 +129,27 @@ const GetReward = React.createClass({
      * @param title
      */
     setShareConfig() {
-        //TODO 设置好进入参数
         let senior = this.state.senior;
         if (senior.courseId === '8') {
-            let shareTitle = '7天财商训练营毕业证到手!满满的成就感啊!一切都值了!',
-                link = Util.getShareLink(),
-                desc = '快为我鼓掌吧!';
-            link = link + '&courseId=' + senior.courseId;
-            link = link + '&name=' + senior.name;
-            link = link + '&rank=' + senior.rank;
-            link = link + '&headimage=' + senior.headImg;
-            WxConfig.shareConfig(shareTitle,desc,link);
+            if(this.state.friendName === '') {
+                let shareTitle = '我觉得你是我身边财商最高的人,我想推荐你一个提高自己潜力的课程',
+                    link = Util.getShareLink(),
+                    desc = '财商最高的人就是你';
+                link = link + '&courseId=' + senior.courseId;
+                link = link + '&name=' + senior.name;
+                link = link + '&rank=' + senior.rank;
+                link = link + '&headimage=' + senior.headImg;
+                WxConfig.shareConfig(shareTitle,desc,link);
+            } else {
+                let shareTitle = '7天财商训练营毕业证到手!满满的成就感啊!一切都值了!',
+                    link = Util.getShareLink(),
+                    desc = '快看看我的毕业证!';
+                link = link + '&courseId=' + senior.courseId;
+                link = link + '&name=' + senior.name;
+                link = link + '&rank=' + senior.rank;
+                link = link + '&headimage=' + senior.headImg;
+                WxConfig.shareConfig(shareTitle,desc,link);
+            }
         } else {
             let shareTitle = '我是第'+ this.state.senior.rank+'名完成'+this.state.shareTitle[ this.state.senior.courseId - 1] + '课的人，快来看看我的成就卡吧！',
                 link = Util.getShareLink(),
@@ -147,10 +168,31 @@ const GetReward = React.createClass({
     },
 
     // + '&code=' + Util.getUrlPara('code')
-    goSignUp() {
+    goSignUp(isFree) {
         Util.postCnzzData("成就页面报名");
-        let url = Util.getHtmlUrl() + '?ictchannel=' + Util.getUrlPara('ictchannel');
-        location.href = url;
+        if(isFree){
+            //毕业证
+            //TODO 发送报名请求
+            let upId = '上线' + this.state.senior.userId;
+            let myId = '我的' + User.getUserInfo().userId;
+            let myName = '昵称' + User.getUserInfo().nickName;
+            // window.dialogAlertComp.show(upId,myId,myName,()=>{},()=>{},false);
+            Material.FreeShareSignUp(upId,myName).always( (result)=>{
+                if (result) {
+                    window.dialogAlertComp.show('已经成功领取','你已经领取啦','去课堂看看',()=>{
+                        let url = Util.getHtmlUrl() + '?ictchannel=' + Util.getUrlPara('ictchannel') + '&free=' + 1;
+                        location.href = url;
+                    },()=>{},false);
+
+                } else {
+                    window.dialogAlertComp.show('免费机会没啦',result,'去围观吧',()=>{},()=>{},false);
+                }
+            });
+        } else {
+            let url = Util.getHtmlUrl() + '?ictchannel=' + Util.getUrlPara('ictchannel');
+            location.href = url;
+        }
+
     },
     // style = {fullbg}
     render() {
@@ -207,20 +249,83 @@ const GetReward = React.createClass({
 
     goCommand() {
         Util.postCnzzData("成就页面点击分享");
-        window.dialogAlertComp.show('快快分享你的进步吧','点击右上角三个点点，分享到你的朋友圈吧！','好哒师兄',()=>{},()=>{},false);
+        if(this.state.senior.courseId === '8'){
+            if(this.state.friendName.message === '') {
+                window.dialogAlertComp.show('赠送课程给你的朋友','你现在财商水平已经很高啦,这么好的课程怎么能不告诉小伙伴呢?挑选一个财商最高的小伙伴,赠送给他这门课程,让他和你一样学习成长!!!','好哒师兄',()=>{},()=>{},false);
+            } else {
+                window.dialogAlertComp.show('告诉更多的朋友吧','你已经顺利毕业啦,鼓励更多的小伙伴被你的正能量带动,一同积极学习吧!','好哒师兄',()=>{},()=>{},false);
+            }
+        } else {
+            window.dialogAlertComp.show('快快分享你的进步吧','点击右上角三个点点，分享到你的朋友圈吧！','好哒师兄',()=>{},()=>{},false);
+        }
+
+        //毕业证
+        //TODO yiran 送给小伙伴的提示文案
     },
 
     buttonRender() {
         if(this.state.type ==='mine') {
-            return <div className="reward-button" onClick = {this.goCommand}>
-                <img src={'./assets7Intro/image/course/btnSignin.png'}/>
-                <p>我要分享</p>
-            </div>
-        } else {
-            return <div className="reward-button" onClick = {this.goSignUp}>
-                    <img src={'./assets7Intro/image/course/btnSignin.png'}/>
-                    <p>我也要报名</p>
+            let arr = [];;
+            //毕业证
+            //TODO yiran 送给小伙伴
+            //接口返回谁领取了
+            //点击之后 发送分享链接 里面有上线信息.照旧
+            if(this.state.senior.courseId === '8')
+            {
+                //如果还没有朋友领取
+                if(this.state.friendName.message === '') {
+                    arr.push((<div>
+                        你有一次机会赠送
+                    </div>));
+                    arr.push(<div className="reward-button-graduated" onClick = {this.goCommand}>
+                        <img className="button-img" src={'./assets7Intro/image/course/btnSignin.png'}/>
+                        <p className="button-p">送给Ta</p>
+                    </div>)
+                    return arr;
+                } else {
+                    arr.push((<div>
+                        被{this.state.friendName.message}领走了,他很开心你送给他呢.快去督促他学习吧
+                    </div>));
+                    arr.push(<div className="reward-button-graduated" onClick = {this.goCommand}>
+                        <img className="button-img" src={'./assets7Intro/image/course/btnSignin.png'}/>
+                        <p className="button-p">送给更多的人</p>
+                    </div>)
+                    return arr;
+                }
+            } else {
+                return <div className="reward-button" onClick = {this.goCommand}>
+                    <img className="button-img" src={'./assets7Intro/image/course/btnSignin.png'}/>
+                    <p className="button-p">我要分享</p>
                 </div>
+            }
+        } else {
+            //毕业证
+            //TODO yiran 接收小伙伴的礼物
+            //接口返回谁领取了
+            if(this.state.senior.courseId === '8')
+            {
+                //如果还没有朋友领取
+                if(this.state.friendName.message === '') {
+                    return <div className="reward-button-graduated" onClick = {this.goSignUp.bind(this,true)}>
+                        依然觉得你是他身边财商最高的人,把唯一一个免费的机会送给了你
+                        <img className="button-img" src={'./assets7Intro/image/course/btnSignin.png'}/>
+                        <p className="button-p">欣然接受</p>
+                    </div>
+                } else {
+                    return <div className="reward-button-graduated" onClick = {this.goSignUp}>
+                        被{this.state.friendName.message}领走了,他们都在财商猛涨
+                        <img className="button-img" src={'./assets7Intro/image/course/btnSignin.png'}/>
+                        <p className="button-p">快去围观</p>
+                    </div>
+                }
+            } else {
+                return <div className="reward-button" onClick = {this.goSignUp}>
+                    <img className="button-img" src={'./assets7Intro/image/course/btnSignin.png'}/>
+                    <p className="button-p">我也要报名</p>
+                </div>
+            }
+
+
         }
     },
 

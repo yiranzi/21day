@@ -113,6 +113,10 @@ const API_URL_GROUP = {
     'get_graduated_finish_rank': '7day/graduation/ranking',//获得这一课的排名
     'get_other_headinfo': '7day/user-image/{userId}',//获取用户头像
 
+    //毕业分享
+    'get_share_info': '7day/next-level/{userId}',//获取上线是否分享了
+    'put_free_share': '7day/free-signup/{userId}/{username}',//下线报名
+
 
 
 };
@@ -599,7 +603,7 @@ class Util {
         if( courseId = Util.getUrlPara('courseId') ) {
             redirectUri = redirectUri + prefix + 'courseId=' + courseId;
             redirectUri = redirectUri + prefix + 'name=' + Util.getUrlPara('name');
-            // redirectUri = redirectUri + prefix + 'rank=' + Util.getUrlPara('rank');
+            redirectUri = redirectUri + prefix + 'rank=' + Util.getUrlPara('rank');
             prefix = '&';
         }
 
