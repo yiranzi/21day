@@ -9,13 +9,13 @@
     transform: translate(-50%,0);
     margin: 0;
     text-align: center;
-    width: px2rem(300);
-    height: px2rem(500);
+    width: px2rem(270);
+    height: px2rem(450);
     background-size: 100% 100%;
     font-size: 0;
     z-index: 100;
     .head{
-      margin: px2rem(133) auto px2rem(24) auto;
+      margin: px2rem(108) auto px2rem(5) auto;
       border-radius: px2rem(70);
       border:2px solid #1CA6DF;
       width: px2rem(70);
@@ -24,9 +24,13 @@
     .title{
       line-height: px2rem(25);
       color: #1CA6DF;
-      p{
+      name{
         height: px2rem(25);
         font-size: px2rem(18);
+      }
+      p{
+        height: px2rem(20);
+        font-size: px2rem(14);
       }
     }
   }
@@ -112,11 +116,22 @@
   .reward-button-graduated{
     position: absolute;
     bottom: 30px;
-    left: px2rem(290);
+    //left: px2rem(290);
+    left: 50%;
     transform: translate(-50%,0);
     z-index: 100;
     text-align: center;
     width: 100%;
+  }
+  .graduated-tip{
+    position: absolute;
+    bottom: 60px;
+    //left: px2rem(290);
+    left: 50%;
+    transform: translate(-50%,0);
+    z-index: 100;
+    text-align: center;
+    width: 80%;
   }
   .reward-recommand{
     position:fixed;

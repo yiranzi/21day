@@ -180,14 +180,16 @@ const GetReward = React.createClass({
             Material.FreeShareSignUp(upId,myName).always( (result)=>{
                 if (result.whether) {
                     window.dialogAlertComp.show('已经成功领取','你已经领取啦','去课堂看看',()=>{
-                        let url = Util.getHtmlUrl() + '?ictchannel=' + Util.getUrlPara('ictchannel') + '&free=' + 1;
-                        location.href = url;
-                    },()=>{},false);
+                        // let url = Util.getHtmlUrl() + '?ictchannel=' + Util.getUrlPara('ictchannel') + '&free=' + 1;
+                        // location.href = url;
+                        location.hash = "/payPage" + + '?ictchannel=' + Util.getUrlPara('ictchannel') + '&free=' + 1;
+                    },'待会再看',true);
 
                 } else {
                     window.dialogAlertComp.show('免费机会没啦',result.errorMessage,'去围观吧',()=>{
                         let url = Util.getHtmlUrl() + '?ictchannel=' + Util.getUrlPara('ictchannel');
-                        location.href = url;
+                        location.hash = "/payPage" + + '?ictchannel=' + Util.getUrlPara('ictchannel') + '&free=' + 1;
+                        // location.href = url;
                     },'先不看',true);
                 }
             });
@@ -213,7 +215,7 @@ const GetReward = React.createClass({
                <div className="get-graduated" style = {{backgroundImage: 'url("./assets7Intro/image/course/graduated.png")'}}>
                    <img className="head" src={this.state.senior.headImg}/>
                    <div className="title">
-                       <p>{this.state.senior.name}</p>
+                       <p className="name">{this.state.senior.name}</p>
                        <p>是第{this.state.senior.rank}名</p>
                        <p>完成财商训练营的学员</p>
                    </div>
@@ -267,8 +269,8 @@ const GetReward = React.createClass({
     },
 
     buttonRender() {
+        let arr = [];
         if(this.state.type ==='mine') {
-            let arr = [];;
             //毕业证
             //TODO yiran 送给小伙伴
             //接口返回谁领取了
@@ -277,24 +279,29 @@ const GetReward = React.createClass({
             {
                 //如果还没有朋友领取
                 if(this.state.friendName.message === '') {
-                    arr.push((<div>
-                        你有一次机会赠送
+                    arr.push((<div key={1} className="graduated-tip">
+                        <p>由于你的优异成绩，你赢的了一次推荐7天给他人学习的机会</p>
+                        <p>如果你觉得有所收获，就大方的送给你身边</p>
+                        <p>最有潜力，财商最高的朋友吧！</p>
+                        <p>机会只有一次哦，快去送给他！</p>
                     </div>));
-                    arr.push(<div className="reward-button-graduated" onClick = {this.goCommand}>
+                    arr.push(<div key={2} className="reward-button-graduated" onClick = {this.goCommand}>
                         <img className="button-img" src={'./assets7Intro/image/course/btnSignin.png'}/>
                         <p className="button-p">送给Ta</p>
                     </div>)
-                    return arr;
                 } else {
-                    arr.push((<div>
-                        被{this.state.friendName.message}领走了,他很开心你送给他呢.快去督促他学习吧
+                    arr.push((<div key={1} className="graduated-tip">
+                        <p>你的课程推荐被{this.state.friendName.message}抢先领走了！</p>
+                        <p>你的行动会改变更多人的人生轨迹哦！</p>
+                        <p>为他们打开新世界的大门吧！</p>
+
                     </div>));
-                    arr.push(<div className="reward-button-graduated" onClick = {this.goCommand}>
+                    arr.push(<div key={2} className="reward-button-graduated" onClick = {this.goCommand}>
                         <img className="button-img" src={'./assets7Intro/image/course/btnSignin.png'}/>
                         <p className="button-p">送给更多的人</p>
                     </div>)
-                    return arr;
                 }
+                return arr;
             } else {
                 return <div className="reward-button" onClick = {this.goCommand}>
                     <img className="button-img" src={'./assets7Intro/image/course/btnSignin.png'}/>
@@ -309,18 +316,26 @@ const GetReward = React.createClass({
             {
                 //如果还没有朋友领取
                 if(this.state.friendName.message === '') {
-                    return <div className="reward-button-graduated" onClick = {this.goSignUp.bind(this,true)}>
-                        依然觉得你是他身边财商最高的人,把唯一一个免费的机会送给了你
+                    arr.push((<div key={1} className="graduated-tip">
+                        {this.state.senior.name}觉得你是他身边财商最高的人,
+                        <p>把无比珍贵的课程机会送给了你！</p>
+                        <p>机会只有一个，别被别人抢先啦！</p>
+                    </div>));
+                    arr.push((<div key={2} className="reward-button-graduated" onClick = {this.goSignUp.bind(this,true)}>
                         <img className="button-img" src={'./assets7Intro/image/course/btnSignin.png'}/>
                         <p className="button-p">欣然接受</p>
-                    </div>
+                    </div>));
                 } else {
-                    return <div className="reward-button-graduated" onClick = {this.goSignUp}>
-                        被{this.state.friendName.message}领走了,他们都在财商猛涨
+                    arr.push((<div key={1} className="graduated-tip">
+                        <p>被{this.state.friendName.message}领走了，他们都在财商猛涨~</p>
+                        <p>学习是一种时尚，快快加入我们的行列吧！</p>
+                    </div>));
+                    arr.push((<div key={2} className="reward-button-graduated" onClick = {this.goSignUp.bind(this,true)}>
                         <img className="button-img" src={'./assets7Intro/image/course/btnSignin.png'}/>
-                        <p className="button-p">快去围观</p>
-                    </div>
+                        <p className="button-p">火速围观</p>
+                    </div>));
                 }
+                return arr;
             } else {
                 return <div className="reward-button" onClick = {this.goSignUp}>
                     <img className="button-img" src={'./assets7Intro/image/course/btnSignin.png'}/>
