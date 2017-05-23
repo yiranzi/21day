@@ -110,6 +110,8 @@ const API_URL_GROUP = {
 
     //获取进度
     'get_course_finish_rank': '7day/subject-ranking/{userId}/{subjectId}',//获得这一课的排名
+    'get_graduated_finish_rank': '7day/graduation/ranking',//获得这一课的排名
+    'get_other_headinfo': '7day/user-image/{userId}',//获取用户头像
 
 
 
