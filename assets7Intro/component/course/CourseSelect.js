@@ -114,8 +114,8 @@ const CourseSelect = React.createClass({
         })
     },
 
-//TODO 毕业证
-// {this.renderGraduated()}
+//TODO yiran 毕业证
+
 
     render() {
         return(
@@ -124,6 +124,7 @@ const CourseSelect = React.createClass({
                 <div>
                     {this.renderTreasure()}
                     {this.renderCourseList()}
+                    {this.renderGraduated()}
                 </div>
             </div>
         )
@@ -219,11 +220,13 @@ const CourseSelect = React.createClass({
     // },
 
     renderGraduated(){
-        return(
-            <div className="">
-                <p onClick={this.openGraduated}>点击我领取毕业证</p>
-            </div>
-        )
+        if(this.state.treasure.canOpen){
+            return(
+                <div>
+                    <img className="graduatedButton" onClick={this.openGraduated}src={'./assets7Intro/image/course/graduatedButton.png'}/>
+                </div>
+            )
+        }
     },
 
     openGraduated() {

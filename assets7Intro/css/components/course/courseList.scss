@@ -1,10 +1,15 @@
 .course-list{
+  .graduatedButton{
+    margin: 15px 0 -2px 5px;
+    height: px2rem(67);
+  }
+
   .fix-treasure{
     position: fixed;
     right: px2rem(2);
     bottom: px2rem(2);
     z-index: 100;
-    width: 35%;
+    height: px2rem(72);
   }
 
   .fix-treasure-shake{
@@ -12,7 +17,7 @@
     right: px2rem(2);
     bottom: px2rem(2);
     z-index: 100;
-    width: 35%;
+    height: px2rem(72);
     animation: shake_1 4s infinite;
     animation-delay:1s;
   }
