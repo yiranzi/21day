@@ -11,6 +11,7 @@ const Config = require('../../Config');
 const Link = require('react-router').Link;
 const LessonBar = require('./LessonBar');
 const FixedBg = require('./FixedBg');
+var boolOnce = true;
 // const GetReword = require('./GetReword');
 
 const CourseSelect = React.createClass({
@@ -125,6 +126,7 @@ const CourseSelect = React.createClass({
                     {this.renderTreasure()}
                     {this.renderCourseList()}
                     {this.renderGraduated()}
+                    {this.reloadPic()}
                 </div>
             </div>
         )
@@ -159,8 +161,20 @@ const CourseSelect = React.createClass({
     },
 
     componentDidUpdate() {
+        if(boolOnce){
+            if(this.state.treasure.canOpen){
+                scrollTo(0,999);
+                boolOnce = false;
+            }
+        }
+
+    },
+
+    reloadPic() {
         if(this.state.treasure.canOpen){
-            scrollTo(0,999);
+            return(
+                <div className="reload-bg" style = {{backgroundImage: 'url("./assets7Intro/image/course/graduated.png")'}}></div>
+                )
         }
     },
 
