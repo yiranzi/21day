@@ -173,19 +173,22 @@ const GetReward = React.createClass({
         if(isFree){
             //毕业证
             //TODO 发送报名请求
-            let upId = '上线' + this.state.senior.userId;
-            let myId = '我的' + User.getUserInfo().userId;
-            let myName = '昵称' + User.getUserInfo().nickName;
+            let upId = this.state.senior.userId;
+            let myId = User.getUserInfo().userId;
+            let myName = User.getUserInfo().nickName;
             // window.dialogAlertComp.show(upId,myId,myName,()=>{},()=>{},false);
             Material.FreeShareSignUp(upId,myName).always( (result)=>{
-                if (result) {
+                if (result.whether) {
                     window.dialogAlertComp.show('已经成功领取','你已经领取啦','去课堂看看',()=>{
                         let url = Util.getHtmlUrl() + '?ictchannel=' + Util.getUrlPara('ictchannel') + '&free=' + 1;
                         location.href = url;
                     },()=>{},false);
 
                 } else {
-                    window.dialogAlertComp.show('免费机会没啦',result,'去围观吧',()=>{},()=>{},false);
+                    window.dialogAlertComp.show('免费机会没啦',result.errorMessage,'去围观吧',()=>{
+                        let url = Util.getHtmlUrl() + '?ictchannel=' + Util.getUrlPara('ictchannel');
+                        location.href = url;
+                    },'先不看',true);
                 }
             });
         } else {

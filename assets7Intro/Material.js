@@ -548,10 +548,10 @@ class Material {
     /***
      * 下线分享报名
      */
-    static FreeShareSignUp(userId,userName) {
+    static FreeShareSignUp(userId,username) {
         var User = require('./User');
         const Util = require('./Util'),
-            apiUrl = Util.getAPIUrl('put_free_share').replace('{userId}',userId).replace('{userName}',userName);
+            apiUrl = Util.getAPIUrl('put_free_share').replace('{userId}',userId).replace('{username}',username);
         let userInfo = User.getUserInfo();
         return $.ajax(
             {
