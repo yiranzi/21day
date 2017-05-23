@@ -189,8 +189,7 @@ var PayPage = React.createClass({
     setSenior(seniorId, userId) {
         //seniorId则表示该用户拥有上线
         if(seniorId && seniorId != userId) {
-            let free = Util.getUrlPara('free');
-
+            let free = this.props.params.free;
             console.log("是否免费用户", free);
             // TODO test roy
             // free = true;
@@ -242,10 +241,15 @@ var PayPage = React.createClass({
             // alert("是否报名：" + record);
 
             if(record){
-                this.setState({
-                    hasPaid: true, //已报名
-                });
-
+                if (!this.state.isFreeUser) {
+                  this.setState({
+                      hasPaid: true, //已报名
+                  });
+                } else {
+                  this.setState({
+                      hasPaid: false, //未报名
+                  });
+                }
                 // OnFire.on('OAUTH_SUCCESS',(userInfo)=>{
                 //     console.log('OAUTH_SUCCESS-userInfo',userInfo);
                 //     //获取用户是否有报名记录
@@ -348,7 +352,13 @@ var PayPage = React.createClass({
      * 跳转到关卡页面
      */
     gotoSelectPage() {
-      location.hash = "/select";
+      // location.hash = "/select";
+      let ictChannel = Util.getUrlPara("ictchannel");
+      if (ictChannel) {
+        location.href = Util.getHtmlUrl() + "?ictchannel=" + Util.getUrlPara("");
+      } else {
+        location.href = Util.getHtmlUrl();
+      }
     },
 
     /**
@@ -422,7 +432,7 @@ var PayPage = React.createClass({
                 </div> }
                 {/*如果已经报名，报名链接时展示*/}
                 {this.state.hasPaid && <div>
-                    <div className="paid-bg" style={{height:window.innerHeight}}>
+                    <div className="paid-bg" style={{height:window.innerHeight}} onClick={this.gotoSelectPage}>
                         <div className="paid-text-box">
                             <p className="paid-text">报名成功！</p>
                             {/*this.state.showWechatGroup && <div>
