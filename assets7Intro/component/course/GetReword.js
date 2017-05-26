@@ -23,6 +23,15 @@ const GetReward = React.createClass({
                 "./assets7Intro/image/course/card_6.png",
                 "./assets7Intro/image/course/card_7.png",
             ],
+            lockPicHQ: [
+                "./assets7Intro/image/course/card_1_b.png",
+                "./assets7Intro/image/course/card_2_b.png",
+                "./assets7Intro/image/course/card_3_b.png",
+                "./assets7Intro/image/course/card_4_b.png",
+                "./assets7Intro/image/course/card_5_b.png",
+                "./assets7Intro/image/course/card_6_b.png",
+                "./assets7Intro/image/course/card_7_b.png",
+            ],
             title: [
                 '第一课',
                 '第二课',
@@ -198,10 +207,11 @@ const GetReward = React.createClass({
         return(
             <div className="get-reward" style = {{backgroundImage: 'url("./assets7Intro/image/course/bg_1.png")',width: Dimensions.getWindowWidth(), height: Dimensions.getWindowHeight()}}>
                 {this.state.senior.courseId === '8' ? this.renderGraduated(): this.renderFinishCard()}
-                <img className="reward-light" onClick={this.handleClick} src={'./assets7Intro/image/course/bglight.png'}/>
+                <img className="reward-light" onClick={this.handleClick} src={this.state.type ==='mine' ? './assets7Intro/image/course/bglight_b.png' : './assets7Intro/image/course/bglight.png'}/>
             </div>
         )
     },
+
 
     renderGraduated() {
         return(
@@ -224,7 +234,7 @@ const GetReward = React.createClass({
             <div>
                 {this.renderTitle()}
                 {/*<img className="reward-light" onClick={this.handleClick} src={'./assets7Intro/image/course/bglight.png'}/>*/}
-                <img className="reward-pic" onClick={this.handleClick} src={this.state.lockPic[this.state.senior.courseId - 1] }/>
+                <img className="reward-pic" onClick={this.handleClick} src={this.state.type ==='mine' ? this.state.lockPicHQ[this.state.senior.courseId - 1] : this.state.lockPic[this.state.senior.courseId - 1] }/>
                 {this.buttonRender()}
             </div>
         )
