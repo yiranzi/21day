@@ -250,18 +250,7 @@ var PayPage = React.createClass({
                       hasPaid: false, //未报名
                   });
                 }
-                // OnFire.on('OAUTH_SUCCESS',(userInfo)=>{
-                //     console.log('OAUTH_SUCCESS-userInfo',userInfo);
-                //     //获取用户是否有报名记录
-                //     console.log('1')
-                //     this.postRegisterRecord(userInfo);
-                //
-                //     //设置订阅
-                //     this.setSubscribeInfo(userInfo.subscribe);
-                //
-                //     //设置上线
-                //     // this.setSenior(seniorId,userInfo.userId);
-                // });
+
             } else {
                 this.setState({
                     hasPaid: false, //未报名

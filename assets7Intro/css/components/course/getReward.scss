@@ -1,4 +1,5 @@
 .get-reward{
+  font-size: 0px;
   background-size: cover;
   position: relative;
   padding-top: px2rem(5);
@@ -9,8 +10,8 @@
     transform: translate(-50%,0);
     margin: 0;
     text-align: center;
-    width: px2rem(270);
-    height: px2rem(450);
+    width: px2rem(268);
+    height: px2rem(430);
     background-size: 100% 100%;
     font-size: 0;
     z-index: 100;
@@ -110,7 +111,7 @@
   }
   .button-p{
     color: white;
-    font-size: px2rem(22);
+    font-size: 22px;
     position: absolute;
     z-index: 101;
     top: 50%;
@@ -129,6 +130,7 @@
     width: 100%;
   }
   .graduated-tip{
+    font-size: 16px;
     position: absolute;
     bottom: 60px;
     //left: px2rem(290);
@@ -162,16 +164,15 @@
   }
   .reward-light{
     position:fixed;
-    top:50%;
-    left:50%;
-    margin-top: px2rem(-360);
-    margin-left: px2rem(-350);
-    width: px2rem(700);
+    top: 50%;
+    left: 50%;
+    margin-top: px2rem(-560);
+    margin-left: px2rem(-500);
+    height: px2rem(1000);
     z-index: 50;
     animation: rotate 20s infinite;
     animation-timing-function: linear;
   }
-
 
   @keyframes rotate
   {

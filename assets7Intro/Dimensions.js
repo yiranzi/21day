@@ -24,7 +24,19 @@ class Dimensions {
 
 
         html.css({
-            'font-size': 20*widthScale,
+            'font-size': 20*heightScale,
+            'width': W
+        });
+    }
+
+    static outInit(outW,outH) {
+        let html = $('html');
+        widthScale = this.widthScale = outW / IPHONE6_WIDTH;
+        heightScale = this.heightScale = outH / IPHONE6_HEIGHT;
+
+
+        html.css({
+            'font-size': 20*heightScale,
             'width': W
         });
     }
