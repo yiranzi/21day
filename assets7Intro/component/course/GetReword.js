@@ -61,6 +61,7 @@ const GetReward = React.createClass({
                 userId: '',
             },
             friendName: '',
+            myName: ''
         };
     },
 
@@ -77,6 +78,7 @@ const GetReward = React.createClass({
             } else {
                 OnFire.on('OAUTH_SUCCESS',()=>{
                     Material.postData('下线_查看_getReward');
+                    this.setState({myName: User.getUserInfo().nickName})
                 });
             }
             this.state.senior.userId = userId;
@@ -152,9 +154,9 @@ const GetReward = React.createClass({
         let senior = this.state.senior;
         if (senior.courseId === '8') {
             if(this.state.friendName === '') {
-                let shareTitle = '看我的毕业证！第'+ this.state.senior.rank+'个完成7天财商训练营！',
+                let shareTitle = '经过7天的学习，我成为第'+ this.state.senior.rank+'个完成财商训练营的人！',
                     link = Util.getShareLink(),
-                    desc = '为我的努力点赞吧！';
+                    desc = '快来看看我的毕业证！';
                 link = link + '&courseId=' + senior.courseId;
                 link = link + '&name=' + senior.name;
                 link = link + '&rank=' + senior.rank;
@@ -178,7 +180,7 @@ const GetReward = React.createClass({
     },
 
     // + '&code=' + Util.getUrlPara('code')
-    goSignUp(isFree) {
+    goSignUp(type) {
         Util.postCnzzData("成就页面报名");
         if (User.getUserInfo().userId) {
             Material.postData('下线_点击_getReward');
@@ -194,22 +196,29 @@ const GetReward = React.createClass({
             let upId = this.state.senior.userId;
             let myId = User.getUserInfo().userId;
             let myName = User.getUserInfo().nickName;
-            // window.dialogAlertComp.show(upId,myId,myName,()=>{},()=>{},false);
-            OnFire.on('OAUTH_SUCCESS',()=>{
-                Material.FreeShareSignUp(upId,myName).always( (result)=>{
-                    if (result.whether) {
-                        Util.postCnzzData("毕业-成功领取");
-                        window.dialogAlertComp.show('已经成功领取','你已经领取啦','去课堂看看',()=>{
-                            location.hash = "/paypage/1"
-                        },'待会再看',true);
-
-                    } else {
-                        Util.postCnzzData("毕业-也被领取跳转报名");
-                        location.hash = "/paypage";
-                    }
+            if (User.getUserInfo().userId) {
+                this.getCourse(upId,myName);
+            } else {
+                OnFire.on('OAUTH_SUCCESS',()=>{
+                    this.getCourse(upId,myName);
                 });
-            });
+            }
         }
+    },
+
+    getCourse(upId,myName) {
+        Material.FreeShareSignUp(upId,myName).always( (result)=>{
+            if (result.whether) {
+                Util.postCnzzData("毕业-成功领取");
+                window.dialogAlertComp.show('已经成功领取','你已经领取啦','去课堂看看',()=>{
+                    location.hash = "/paypage/1"
+                },'待会再看',true);
+
+            } else {
+                Util.postCnzzData("毕业-也被领取跳转报名");
+                location.hash = "/paypage";
+            }
+        });
     },
 
     // style = {fullbg}
@@ -272,7 +281,7 @@ const GetReward = React.createClass({
         if(this.state.senior.courseId === '8'){
             if(this.state.friendName.message === '') {
                 Util.postCnzzData("毕业-赠送朋友提示");
-                window.dialogAlertComp.show('赠送课程给你的朋友','你财商水平很高啦，挑选一个财商最高的小伙伴，赠送给他这门课吧！点击右上角三个点点，分享给好友吧。','好哒师兄',()=>{},()=>{},false);
+                window.dialogAlertComp.show('赠送课程给你的朋友','点击右上角三个点点，分享免费7天训练营名额给你的好友吧。','好哒师兄',()=>{},()=>{},false);
             } else {
                 Util.postCnzzData("毕业-送给更多人提示");
                 window.dialogAlertComp.show('告诉更多的朋友吧','你已经顺利毕业啦，鼓励更多的小伙伴被你的正能量带动，一同积极学习吧！点击右上角三个点点，分享到你的朋友圈吧！','好哒师兄',()=>{},()=>{},false);
@@ -297,10 +306,11 @@ const GetReward = React.createClass({
                 //如果还没有朋友领取
                 if(this.state.friendName.message === '') {
                     arr.push((<div key={1} className="graduated-tip">
-                        <p>恭喜顺利毕业！</p>
-                        <p>现可免费赠送此课程一份！</p>
-                        <p>快去赠给你财商最高的那位朋友吧</p>
-                        {/*<p>由于你的优异成绩，你赢的了一次推荐7天给他人学习的机会！</p>*/}
+                        {/*<p>恭喜顺利毕业！</p>*/}
+                        {/*<p>获得7天课程<span>免费</span>名额推荐！</p>*/}
+                        <p>由于你的优异成绩，你赢得了一次</p>
+                        <p><span>免费</span>赠送课程给朋友学习的机会！</p>
+                        <p>快去赠给你身边<span>财商最高</span>的朋友吧！</p>
                         {/*<p>如果你觉得有所收获，就大方的送给你身边</p>*/}
                         {/*<p>最有潜力，财商最高的朋友吧！</p>*/}
                         {/*<p>机会只有一次哦，快去送给他！</p>*/}
@@ -311,8 +321,8 @@ const GetReward = React.createClass({
                     </div>)
                 } else {
                     arr.push((<div key={1} className="graduated-tip">
-                        <p>你的课程被{this.state.friendName.message}抢先领走了！</p>
-                        <p>你还可以推荐更多的人来学习！</p>
+                        <p>你的课程赠送被<span> {this.state.friendName.message} </span>领走了！</p>
+                        {/*<p>你还可以推荐更多的人来学习！</p>*/}
                     </div>));
                     arr.push(<div key={2} className="reward-button-graduated" onClick = {this.goCommand}>
                         <img className="button-img" src={'./assets7Intro/image/course/btnSignin.png'}/>
@@ -332,16 +342,22 @@ const GetReward = React.createClass({
             //接口返回谁领取了
             if(this.state.senior.courseId === '8')
             {
+
                 //如果还没有朋友领取
                 if(this.state.friendName.message === '') {
-                    arr.push((<div key={1} className="graduated-tip">
-                        <p><span>{this.state.senior.name} </span>坚持学完受益匪浅！</p>
-                        <p>特别赠送了一个<span>训练营名额</span>给你。</p>
-                    </div>));
-                    arr.push((<div key={2} className="reward-button-graduated" onClick = {this.goSignUp.bind(this,2)}>
-                        <img className="button-img" src={'./assets7Intro/image/course/btnSignin.png'}/>
-                        <p className="button-p">我要参加</p>
-                    </div>));
+                    if(this.state.myName !== ''){
+                        arr.push((<div key={1} className="graduated-tip">
+                            {/*<p><span>{this.state.senior.name} </span>坚持学完7天训练营！</p>*/}
+                            {/*<p>赠送了一个<span>免费学习</span>名额给你。</p>*/}
+                            <p><span>{this.state.myName}，</span>{this.state.senior.name}觉得你的财商战斗力为<span>0</span></p>
+                            <p>把唯一的训练营<span>免费学习</span>名额送送给你！</p>
+                            <p>快来学习新技能吧！</p>
+                        </div>));
+                        arr.push((<div key={2} className="reward-button-graduated" onClick = {this.goSignUp.bind(this,2)}>
+                            <img className="button-img" src={'./assets7Intro/image/course/btnSignin.png'}/>
+                            <p className="button-p">我要学习</p>
+                        </div>));
+                    }
                 } else {
                     arr.push((<div key={1} className="graduated-tip">
                         <p>真可惜，免费名额被<span> {this.state.friendName.message} </span>抢走了！</p>
@@ -349,7 +365,7 @@ const GetReward = React.createClass({
                     </div>));
                     arr.push((<div key={2} className="reward-button-graduated" onClick = {this.goSignUp.bind(this,2)}>
                         <img className="button-img" src={'./assets7Intro/image/course/btnSignin.png'}/>
-                        <p className="button-p">火速围观</p>
+                        <p className="button-p">试试抢课</p>
                     </div>));
                 }
                 return arr;
