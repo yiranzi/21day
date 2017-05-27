@@ -59,7 +59,7 @@ var PayPage = React.createClass({
     componentWillMount(){
 
         Util.postCnzzData("进入报名页面");
-
+        Material.postData('人_进入_payPage');
         console.log("endTime:", this.state.endTime);
 
         OnFire.on('PAID_DONE', ()=>{
@@ -188,6 +188,7 @@ var PayPage = React.createClass({
      */
     setSenior(seniorId, userId) {
         //seniorId则表示该用户拥有上线
+        Material.postData('下线_进入_payPage');
         if(seniorId && seniorId != userId) {
             let free = this.props.params.free;
             console.log("是否免费用户", free);

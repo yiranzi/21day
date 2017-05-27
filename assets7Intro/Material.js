@@ -570,6 +570,34 @@ class Material {
         )
     }
 
+    //数据上报
+    static postData(eventName) {
+        var User = require('./User');
+        const Util = require('./Util'),
+            apiUrl = Util.getAPIUrl('post_statistic_data');
+        let userInfo = User.getUserInfo();
+        let jsonData = JSON.stringify({
+            eventName: eventName,
+            version: 1,
+        });
+        return $.ajax(
+            {
+                url: apiUrl,
+                type: 'post',
+                data: jsonData,
+                cache: false,
+                contentType: 'application/json;charset=utf-8',
+                headers: {
+                    Accept: 'application/json'
+                },
+                beforeSend: (request)=>{
+                    request.setRequestHeader("X-iChangTou-Json-Api-Token", Util.getApiToken());
+                    request.setRequestHeader("X-iChangTou-Json-Api-User", userInfo.userId);
+                }
+            }
+        )
+    }
+
 
 
 

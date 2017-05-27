@@ -117,6 +117,9 @@ const API_URL_GROUP = {
     'get_share_info': '7day/next-level/{userId}',//获取上线是否分享了
     'put_free_share': '7day/free-signup/{userId}/{username}',//下线报名
 
+    //数据上报
+    'post_statistic_data': '7day/data/statistical',//下线报名
+
 
 
 };
@@ -236,7 +239,7 @@ class Util {
 
         channel = channel || '';
         Util.postCnzzData('分享成功');
-
+        Material.postData('上线_分享成功');
         let seniorId = Util.getUrlPara('ictchannel');
         if (seniorId && seniorId != userInfo.userId) {
           Util.postCnzzData('下线分享成功');

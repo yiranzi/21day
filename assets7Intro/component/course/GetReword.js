@@ -68,7 +68,9 @@ const GetReward = React.createClass({
         let userId;
         //判定是否有分享成就卡
         this.state.senior.courseId = Util.getUrlPara('courseId');
+        //查看别人的
         if (this.state.senior.courseId) {
+            Material.postData('上线_进入_getReward');
             userId = Util.getUrlPara('ictchannel');
             this.state.senior.userId = userId;
             Material.getOtherHeadImage(userId).always( (img)=>{
@@ -85,6 +87,8 @@ const GetReward = React.createClass({
                 });
             }
         } else {
+            //查看自己的
+            Material.postData('下线_查看_getReward');
             let rank = this.props.params.rank;
             //rank默认是-2 如果是毕业证就不是-2.这里应该用courseId === 8 判定
             if( rank !== '-2' ){
@@ -177,6 +181,7 @@ const GetReward = React.createClass({
     // + '&code=' + Util.getUrlPara('code')
     goSignUp(isFree) {
         Util.postCnzzData("成就页面报名");
+        Material.postData('下线_点击_getReward');
         if(isFree){
             //毕业证
             //TODO 发送报名请求
