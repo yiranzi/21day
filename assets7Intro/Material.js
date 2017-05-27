@@ -572,6 +572,7 @@ class Material {
 
     //数据上报
     static postData(eventName) {
+
         var User = require('./User');
         const Util = require('./Util'),
             apiUrl = Util.getAPIUrl('post_statistic_data');
@@ -580,6 +581,7 @@ class Material {
             eventName: eventName,
             version: 1,
         });
+        // alert(eventName + '/' + userInfo.userId);
         return $.ajax(
             {
                 url: apiUrl,

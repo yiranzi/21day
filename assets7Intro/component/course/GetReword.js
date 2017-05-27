@@ -8,6 +8,7 @@ const Material = require('../../Material');
 var User = require('../../User');
 const WxConfig = require('../../WxConfig');
 const Util = require('../../Util');
+var OnFire =require('onfire.js');
 
 const GetReward = React.createClass({
     getInitialState: function() {
@@ -70,8 +71,14 @@ const GetReward = React.createClass({
         this.state.senior.courseId = Util.getUrlPara('courseId');
         //查看别人的
         if (this.state.senior.courseId) {
-            Material.postData('上线_进入_getReward');
             userId = Util.getUrlPara('ictchannel');
+            if (User.getUserInfo().userId) {
+                Material.postData('下线_查看_getReward');
+            } else {
+                OnFire.on('OAUTH_SUCCESS',()=>{
+                    Material.postData('下线_查看_getReward');
+                });
+            }
             this.state.senior.userId = userId;
             Material.getOtherHeadImage(userId).always( (img)=>{
                 this.state.senior.headImg = img.responseText;
@@ -84,17 +91,18 @@ const GetReward = React.createClass({
             if (this.state.senior.courseId === '8') {
                 Material.getShareInfo(userId).always( (name)=>{
                     this.setState({friendName: name});
+                    // this.setShareConfig();
                 });
             }
         } else {
             //查看自己的
-            Material.postData('下线_查看_getReward');
             let rank = this.props.params.rank;
             //rank默认是-2 如果是毕业证就不是-2.这里应该用courseId === 8 判定
+            userId = User.getUserInfo().userId;
+            Material.postData('上线_进入_getReward');
             if( rank !== '-2' ){
                 //如果毕业证
                 //TODO 获得领取信息
-                userId = User.getUserInfo().userId;
                 Material.getShareInfo(userId).always( (name)=>{
                     this.setState({friendName: name});
                 });
@@ -110,7 +118,6 @@ const GetReward = React.createClass({
             } else {
                 //获得课程的Id
                 let courseId = this.props.params.courseId;
-                userId = User.getUserInfo().userId;
                 this.setState({type: 'mine'});
                 this.setState({userInfo: User.getUserInfo()});
                 //获得自己的课程排名
@@ -145,17 +152,9 @@ const GetReward = React.createClass({
         let senior = this.state.senior;
         if (senior.courseId === '8') {
             if(this.state.friendName === '') {
-                let shareTitle = '7天财商训练营，赠给财商最高的你',
+                let shareTitle = '看我的毕业证！第'+ this.state.senior.rank+'个完成7天财商训练营！',
                     link = Util.getShareLink(),
-                    desc = '财商最高的人就是你';
-                link = link + '&courseId=' + senior.courseId;
-                link = link + '&name=' + senior.name;
-                link = link + '&rank=' + senior.rank;
-                WxConfig.shareConfig(shareTitle,desc,link);
-            } else {
-                let shareTitle = '7天财商训练营毕业证到手!满满的成就感啊!一切都值了!',
-                    link = Util.getShareLink(),
-                    desc = '快看看我的毕业证!';
+                    desc = '为我的努力点赞吧！';
                 link = link + '&courseId=' + senior.courseId;
                 link = link + '&name=' + senior.name;
                 link = link + '&rank=' + senior.rank;
@@ -181,32 +180,38 @@ const GetReward = React.createClass({
     // + '&code=' + Util.getUrlPara('code')
     goSignUp(isFree) {
         Util.postCnzzData("成就页面报名");
-        Material.postData('下线_点击_getReward');
-        if(isFree){
-            //毕业证
-            //TODO 发送报名请求
+        if (User.getUserInfo().userId) {
+            Material.postData('下线_点击_getReward');
+        } else {
+            OnFire.on('OAUTH_SUCCESS',()=>{
+                Material.postData('下线_点击_getReward');
+            });
+        }
+        if (type === 1){
+            let url = Util.getHtmlUrl() + '?ictchannel=' + Util.getUrlPara('ictchannel');
+            location.href = url;
+        } else {
             let upId = this.state.senior.userId;
             let myId = User.getUserInfo().userId;
             let myName = User.getUserInfo().nickName;
             // window.dialogAlertComp.show(upId,myId,myName,()=>{},()=>{},false);
-            Material.FreeShareSignUp(upId,myName).always( (result)=>{
-                if (result.whether) {
-                    Util.postCnzzData("毕业-成功领取");
-                    window.dialogAlertComp.show('已经成功领取','你已经领取啦','去课堂看看',()=>{
-                        location.hash = "/paypage/1"
-                    },'待会再看',true);
+            OnFire.on('OAUTH_SUCCESS',()=>{
+                Material.FreeShareSignUp(upId,myName).always( (result)=>{
+                    if (result.whether) {
+                        Util.postCnzzData("毕业-成功领取");
+                        window.dialogAlertComp.show('已经成功领取','你已经领取啦','去课堂看看',()=>{
+                            location.hash = "/paypage/1"
+                        },'待会再看',true);
 
-                } else {
-                    Util.postCnzzData("毕业-也被领取跳转报名");
-                    location.hash = "/paypage";
-                }
+                    } else {
+                        Util.postCnzzData("毕业-也被领取跳转报名");
+                        location.hash = "/paypage";
+                    }
+                });
             });
-        } else {
-            let url = Util.getHtmlUrl() + '?ictchannel=' + Util.getUrlPara('ictchannel');
-            location.href = url;
         }
-
     },
+
     // style = {fullbg}
     render() {
         return(
@@ -263,6 +268,7 @@ const GetReward = React.createClass({
 
     goCommand() {
         Util.postCnzzData("成就页面点击分享");
+        Material.postData('上线_点击_getReward');
         if(this.state.senior.courseId === '8'){
             if(this.state.friendName.message === '') {
                 Util.postCnzzData("毕业-赠送朋友提示");
@@ -329,27 +335,28 @@ const GetReward = React.createClass({
                 //如果还没有朋友领取
                 if(this.state.friendName.message === '') {
                     arr.push((<div key={1} className="graduated-tip">
-                        <p>{this.state.senior.name} 认为你的财商突破天际</p>
-                        <p>赠送了一个训练营名额给你。</p>
+                        <p><span>{this.state.senior.name} </span>坚持学完受益匪浅！</p>
+                        <p>特别赠送了一个<span>训练营名额</span>给你。</p>
                     </div>));
-                    arr.push((<div key={2} className="reward-button-graduated" onClick = {this.goSignUp.bind(this,true)}>
+                    arr.push((<div key={2} className="reward-button-graduated" onClick = {this.goSignUp.bind(this,2)}>
                         <img className="button-img" src={'./assets7Intro/image/course/btnSignin.png'}/>
-                        <p className="button-p">立即参加</p>
+                        <p className="button-p">我要参加</p>
                     </div>));
                 } else {
                     arr.push((<div key={1} className="graduated-tip">
-                        <p>来晚一步，名额已被 {this.state.friendName.message} 领走了！</p>
+                        <p>真可惜，免费名额被<span> {this.state.friendName.message} </span>抢走了！</p>
+                        <p>他们正在财商训练营中努力提升呢！</p>
                     </div>));
-                    arr.push((<div key={2} className="reward-button-graduated" onClick = {this.goSignUp.bind(this,true)}>
+                    arr.push((<div key={2} className="reward-button-graduated" onClick = {this.goSignUp.bind(this,2)}>
                         <img className="button-img" src={'./assets7Intro/image/course/btnSignin.png'}/>
-                        <p className="button-p">3元抢课</p>
+                        <p className="button-p">火速围观</p>
                     </div>));
                 }
                 return arr;
             } else {
-                return <div className="reward-button" onClick = {this.goSignUp}>
+                return <div className="reward-button" onClick = {this.goSignUp.bind(this,1)}>
                     <img className="button-img" src={'./assets7Intro/image/course/btnSignin.png'}/>
-                    <p className="button-p">我也要报名</p>
+                    <p className="button-p">我也去看看</p>
                 </div>
             }
 
