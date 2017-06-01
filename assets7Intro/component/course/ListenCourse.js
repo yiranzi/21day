@@ -373,6 +373,7 @@ const ListenCourse = React.createClass({
     },
 
     goReward(type) {
+        console.log(type);
         if (type === 1) {
             this.fixProcess();
             Util.postCnzzData("第一次点击成就卡");

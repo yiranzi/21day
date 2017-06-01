@@ -125,6 +125,7 @@ var PayPage = React.createClass({
             openId = User.getUserInfo().openId;
 
         if(openId) {
+            Material.postData('人_进入_payPage');
             //获取用户是否有报名记录
             this.postRegisterRecord(User.getUserInfo());
 
@@ -137,6 +138,7 @@ var PayPage = React.createClass({
         }
         else{
             OnFire.on('OAUTH_SUCCESS',(userInfo)=>{
+                Material.postData('人_进入_payPage');
                 //获取用户是否有报名记录
                 this.postRegisterRecord(userInfo);
 
@@ -188,6 +190,7 @@ var PayPage = React.createClass({
      */
     setSenior(seniorId, userId) {
         //seniorId则表示该用户拥有上线
+        Material.postData('下线_进入_payPage');
         if(seniorId && seniorId != userId) {
             let free = this.props.params.free;
             console.log("是否免费用户", free);

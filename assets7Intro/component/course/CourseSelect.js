@@ -149,8 +149,8 @@ const CourseSelect = React.createClass({
                 } else {
                     console.log('不能听的')
                     arr.push(
-                        <div className="lesson-bar" onClick={this.renderNotEnter.bind(this,i)}>
-                            <LessonBar key={i} index = {i} content = {courseList[i]}></LessonBar>
+                        <div className="lesson-bar" key={i} onClick={this.renderNotEnter.bind(this,i)}>
+                            <LessonBar  index = {i} content = {courseList[i]}></LessonBar>
                         </div>
                     )
                 }
@@ -243,10 +243,21 @@ const CourseSelect = React.createClass({
         if(this.state.treasure.canOpen){
             return(
                 <div>
-                    <img className="graduatedButton" onClick={this.openGraduated}src={'./assets7Intro/image/course/graduatedButton.png'}/>
+                    <img className="graduatedButton" onClick={this.openGraduated} src={'./assets7Intro/image/course/graduatedButton.png'}/>
+                </div>
+            )
+        } else if(this.state.courseList.length && this.state.courseList.length !== 0){
+            return(
+                <div>
+                    <div className="show-group" onClick={this.showGroup}>点我加入7天学习群</div>
                 </div>
             )
         }
+    },
+
+    showGroup() {
+        window.dialogAlertComp.show('快来加入7天学习群','在群里可以分享到理财干货，更有师兄直播讲课答疑哦！快来吧','点击加群',()=>
+        {location.href = "https://jq.qq.com/?_wv=1027&k=49fUv5j";},'先不要',true)
     },
 
     openGraduated() {
