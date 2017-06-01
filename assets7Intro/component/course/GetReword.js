@@ -75,6 +75,7 @@ const GetReward = React.createClass({
             userId = Util.getUrlPara('ictchannel');
             if (User.getUserInfo().userId) {
                 Material.postData('下线_查看_getReward');
+                this.setState({myName: User.getUserInfo().nickName})
             } else {
                 OnFire.on('OAUTH_SUCCESS',()=>{
                     Material.postData('下线_查看_getReward');
@@ -349,7 +350,7 @@ const GetReward = React.createClass({
                         arr.push((<div key={1} className="graduated-tip">
                             {/*<p><span>{this.state.senior.name} </span>坚持学完7天训练营！</p>*/}
                             {/*<p>赠送了一个<span>免费学习</span>名额给你。</p>*/}
-                            <p><span>{this.state.myName}，</span>{this.state.senior.name}觉得你的财商战斗力为<span>0</span></p>
+                            <p><span>{this.state.myName}！</span>{this.state.senior.name}觉得你的<span>财商战斗力</span>为0！</p>
                             <p>把唯一的训练营<span>免费学习</span>名额送送给你！</p>
                             <p>快来学习新技能吧！</p>
                         </div>));
