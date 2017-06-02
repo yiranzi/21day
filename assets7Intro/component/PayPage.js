@@ -190,8 +190,8 @@ var PayPage = React.createClass({
      */
     setSenior(seniorId, userId) {
         //seniorId则表示该用户拥有上线
-        Material.postData('下线_进入_payPage');
         if(seniorId && seniorId != userId) {
+            Material.postData('下线_进入_payPage');
             let free = this.props.params.free;
             console.log("是否免费用户", free);
             // TODO test roy

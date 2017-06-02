@@ -572,7 +572,6 @@ class Material {
 
     //数据上报
     static postData(eventName) {
-
         var User = require('./User');
         const Util = require('./Util'),
             apiUrl = Util.getAPIUrl('post_statistic_data');
