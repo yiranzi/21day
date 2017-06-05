@@ -30,6 +30,11 @@
       width: px2rem(100);
       margin-left: px2rem(12);
     }
+    .touch-range{
+      position: absolute;
+      z-index: 100;
+
+    }
   }
 
   .column-not-view{

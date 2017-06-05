@@ -27,14 +27,13 @@ const CourseSelect = React.createClass({
                 canOpen: false,
                 canView: false,
             },
-            allFinish: false
+            allFinish: false,//所有课程都完成.
+            allowLesson: 'FREE',//用户听课权限
         };
     },
 
     componentWillMount() {
-      // TODO roy 判断用户当前的购买状态，未购买则直接跳转到支付页面
-      // 购买后留在关卡页面
-        // 测试提交
+        //判断用户当前的购买状态，未购买则直接跳转到支付页面
         let courseId = Util.getUrlPara('courseId');
         if(courseId) {
             if (courseId === '8') {
@@ -48,11 +47,12 @@ const CourseSelect = React.createClass({
             let userId = User.getUserInfo().userId;
             console.log("===userId = " + userId);
             if (userId) {
-
-                this.checkUserPayStatue();
+                // this.checkUserPayStatue();
+                this.init();
             } else {
                 OnFire.on(Config.OAUTH_SUCCESS, ()=>{
                     this.checkUserPayStatue();
+                    this.init();
                 });
             }
         }
@@ -64,17 +64,10 @@ const CourseSelect = React.createClass({
     checkUserPayStatue() {
       Material.getJudgeFromServer().done((result)=>{
           Loading.hideLoading();
-          console.log("关卡页面判断是否购买：", result);
-
-          // TODO test roy
-          // location.hash = "/payPage";
-
           if(result){
-              console.log('显示关卡列表');
-              this.init()
-
-
+              this.state.allowLesson = 'ALL';
           } else{ // 未购买直接跳到购买页面
+              this.state.allowLesson = 'FREE';
               location.hash = "/payPage";
           }
       }).fail(()=>{
@@ -83,19 +76,18 @@ const CourseSelect = React.createClass({
     },
 
     init() {
-        console.log('init');
-        //获取宝箱信息1
+        //0.获取听课列表
+        this.getCourseList();
+        //1.判断听课状态.
+        this.checkUserPayStatue();
+        //2.获取宝箱信息
         Material.getTreasureInfo().always( (data) => {
-            console.log(data)
-            //TODO 测试下这块的逻辑
             //如果未领取.
             if(!data) {
                 this.state.treasure.haveOpen = false;
                 this.setState({treasure: this.state.treasure});
             }
         })
-        //获取听课列表
-        this.getCourseList();
     },
 
 
@@ -107,16 +99,12 @@ const CourseSelect = React.createClass({
                     return;
                 }
             }
+            //如果课程都通过了,并且没有领取宝箱.
             if(!this.state.treasure.haveOpen){
-                console.log('treasure out' + this.state.treasure.haveOpen)
                 this.setState({allFinish: true})
             }
-            console.log('treasure out' + this.state.treasure.haveOpen)
         })
     },
-
-//TODO yiran 毕业证
-
 
     render() {
         return(
@@ -139,27 +127,71 @@ const CourseSelect = React.createClass({
             return null;
         } else {
             for (let i = 0; i < courseList.length; i++) {
-                //TODO 应该是-1表示未解锁11
-                if (courseList[i].status !== -1) {
-                    arr.push(
-                        <Link className="lesson-bar" key={i} to={{pathname:"/course/"+ (i + 1), query:{name: courseList[i].status}}}>
-                            <LessonBar index = {i} content = {courseList[i]} ></LessonBar>
-                        </Link>
-                    )
-                } else {
-                    console.log('不能听的')
-                    arr.push(
-                        <div className="lesson-bar" key={i} onClick={this.renderNotEnter.bind(this,i)}>
-                            <LessonBar  index = {i} content = {courseList[i]}></LessonBar>
-                        </div>
-                    )
+                let status = courseList[i].status;
+                switch (status) {
+                    //没有达到听课时间
+                    case -1:
+                        arr.push(
+                            <div className="lesson-bar" key={i} onClick={this.renderNotEnter.bind(this,i)}>
+                                <LessonBar  index = {i} content = {courseList[i]}></LessonBar>
+                            </div>
+                        );
+                        break;
+                    default:
+                        arr.push(this.renderLesson(i,courseList[i]));
+                        break;
                 }
-
             }
             return arr
         }
     },
 
+    //
+    renderLesson(index,courseList) {
+        let arr = [];
+        courseList.status = 3;
+        switch (courseList.status){
+            case 3:
+                //点击后,显示不能播放,然后显示跳转过去.
+                //第一次完成免费/试听后,会有付费的流程.
+                //这个地方也许要...提示免费课程还有多少
+                arr.push(
+                    <div className="lesson-bar">
+                        <LessonBar  index = {index} content = {courseList} cbf1 = {this.cbfNotAllowLesson} cbf2 = {this.cbfSeeReward}></LessonBar>
+                    </div>
+                    );
+                break;
+            default:
+                arr.push(
+                    <Link className="lesson-bar" key={index} to={{pathname:"/course/"+ (index + 1), query:{name: courseList.status}}}>
+                        <LessonBar index = {index} content = {courseList} ></LessonBar>
+                    </Link>
+                );
+                break;
+        }
+        return arr;
+    },
+
+    //回调函数
+    cbfNotAllowLesson(type) {
+        console.log('cbf' + type);
+        window.dialogAlertComp.show('快来加入7天学习群','在群里可以分享到理财干货，更有师兄直播讲课答疑哦！快来吧','点击加群',()=>
+        {location.hash = '/payPage'},'先不要',true)
+    },
+
+    //点击成就卡回调函数
+    cbfSeeReward(courseId) {
+        //如果已获得成就卡
+        location.hash = '/getReward/' + courseId + '/-2' ;
+        //如果未获得成绩卡
+    },
+
+
+    renderNotEnter(index) {
+        window.dialogAlertComp.show('还没有开放课程哦','每天更新一课哦，耐心等一等吧！','知道啦',()=>{},()=>{},false);
+    },
+
+    //可以领取宝箱,自动滚动
     componentDidUpdate() {
         if(boolOnce){
             if(this.state.treasure.canOpen){
@@ -170,7 +202,9 @@ const CourseSelect = React.createClass({
 
     },
 
+    //预加载毕业证的大图.
     reloadPic() {
+        //如果可以领取
         if(this.state.treasure.canOpen){
             return(
                 <div className="reload-bg" style = {{backgroundImage: 'url("./assets7Intro/image/course/graduated.png")'}}></div>
@@ -178,10 +212,7 @@ const CourseSelect = React.createClass({
         }
     },
 
-    renderNotEnter(index) {
-        console.log('render no enter');
-        window.dialogAlertComp.show('还没有开放课程哦','每天更新一课哦，耐心等一等吧！','知道啦',()=>{},()=>{},false);
-    },
+
 
     renderTreasure() {
         console.log('render treasure');

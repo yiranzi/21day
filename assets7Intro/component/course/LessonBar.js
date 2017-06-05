@@ -63,7 +63,6 @@ const LessonBar = React.createClass({
     // style={{backgroundImage:'url('+content.image+')'}}
     LineRender() {
         let content = this.state.content;
-        //TODO 这里面需要修改
         if(content.status === -1)
         {
             return (<div className="column-container">
@@ -78,9 +77,12 @@ const LessonBar = React.createClass({
 
             </div>)
         } else {
-            return (<div className="column-container">
-                <div className="pic-container">
+            return (<div className="column-container" onClick={this.callBackFunc.bind(this,'all')}>
+                <div className="pic-container" onClick={this.callBackFunc.bind(this,'pic')}>
                     <img className="column-pic" src={content.status === 2 ? this.state.unlockPic[this.state.index]:this.state.lockPic[this.state.index]}/>
+                </div>
+                <div className="touch-range" onClick={this.callBackFunc.bind(this,'all')}>
+
                 </div>
                 <span className="column-container-title">
                 <h1>{this.state.day[this.state.index]}</h1>
@@ -94,6 +96,16 @@ const LessonBar = React.createClass({
 
 // {/*<span>{this.state.type[content.status + 1]}</span>*/}
 // {/*<img className="column-type" src={this.state.typePic[content.status + 1]}/>*/}
+
+    callBackFunc(type) {
+        let content = this.state.content;
+        if(type === 'all'){
+            this.props.cbf1(content.status);
+        } else if(type === 'pic') {
+            this.props.cbf2(this.state.index);
+        }
+
+    },
 
     renderFinish() {
         if( this.state.content.status === 2) {
