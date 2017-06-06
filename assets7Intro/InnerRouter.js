@@ -13,6 +13,7 @@ const CourseSelect = require('./component/course/CourseSelect');
 const PayPage = require('./component/PayPage');
 const ListenCourse = require('./component/course/ListenCourse');
 const GetReward = require('./component/course/GetReword');
+const GetGraduated = require('./component/course/GetGraduated');
 
 let InnerRouter = React.createClass({
 
