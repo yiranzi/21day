@@ -304,7 +304,7 @@ const CourseSelect = React.createClass({
             if ( rank!== -1 ) {
                 let courseId = 8;
                 if (courseId) {
-                    location.hash = '/getReward/' + courseId + '/' + rank;
+                    location.hash = '/getGraduated/';
                 }
             } else {
                 window.dialogAlertComp.show('还不能领取毕业证哦！','你还没有完成全部课程呢，要都通过才行哦。','好的',()=>{},'',false);
