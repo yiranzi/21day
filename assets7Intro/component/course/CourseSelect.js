@@ -33,28 +33,20 @@ const CourseSelect = React.createClass({
     },
 
     componentWillMount() {
+        //判断连接是否需要跳转
+        let goPath = Util.getUrlPara('goPath');
+        if(goPath){
+            location.hash = goPath;
+        }
+        let userId = User.getUserInfo().userId;
+        console.log("===userId = " + userId);
         //判断用户当前的购买状态，未购买则直接跳转到支付页面
-        let courseId = Util.getUrlPara('courseId');
-        if(courseId) {
-            if (courseId === '8') {
-                Util.postCnzzData("分享途径查看毕业证");
-            } else {
-                Util.postCnzzData("分享途径查看成就卡");
-            }
-            Loading.hideLoading();
-            location.hash = '/getReward/' + courseId + '/-2' ;
+        if (userId) {
+            this.init();
         } else {
-            let userId = User.getUserInfo().userId;
-            console.log("===userId = " + userId);
-            if (userId) {
-                // this.checkUserPayStatue();
+            OnFire.on(Config.OAUTH_SUCCESS, ()=>{
                 this.init();
-            } else {
-                OnFire.on(Config.OAUTH_SUCCESS, ()=>{
-                    this.checkUserPayStatue();
-                    this.init();
-                });
-            }
+            });
         }
     },
 
@@ -132,11 +124,12 @@ const CourseSelect = React.createClass({
                     //没有达到听课时间
                     case -1:
                         arr.push(
-                            <div className="lesson-bar" key={i} onClick={this.renderNotEnter.bind(this,i)}>
+                            <div className="lesson-bar" onClick={this.renderNotEnter.bind(this,i)}>
                                 <LessonBar  index = {i} content = {courseList[i]}></LessonBar>
                             </div>
                         );
                         break;
+                    //不为-1
                     default:
                         arr.push(this.renderLesson(i,courseList[i]));
                         break;
@@ -146,11 +139,15 @@ const CourseSelect = React.createClass({
         }
     },
 
-    //
+    //type听课3种课程.
+    //F 免费课.
+    //S 邀请试听课.
+    //P 付费课.
+    //这部分可以在点击后统一处理.一个render不同的绘制点击结果.
     renderLesson(index,courseList) {
         let arr = [];
-        courseList.status = 3;
-        switch (courseList.status){
+        courseList.type = 'P';
+        switch (courseList.type){
             case 3:
                 //点击后,显示不能播放,然后显示跳转过去.
                 //第一次完成免费/试听后,会有付费的流程.
@@ -163,7 +160,7 @@ const CourseSelect = React.createClass({
                 break;
             default:
                 arr.push(
-                    <Link className="lesson-bar" key={index} to={{pathname:"/course/"+ (index + 1)}}>
+                    <Link className="lesson-bar" to={{pathname:"/course/"+ (index + 1)}}>
                         <LessonBar index = {index} content = {courseList} ></LessonBar>
                     </Link>
                 );
@@ -187,7 +184,7 @@ const CourseSelect = React.createClass({
     //点击成就卡回调函数
     cbfSeeReward(courseId) {
         //如果已获得成就卡
-        location.hash = '/getReward/' + courseId + '/-2' ;
+        location.hash = '/getReward/' + (courseId + 1);
         //如果未获得成绩卡
     },
 

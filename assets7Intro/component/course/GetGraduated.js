@@ -10,7 +10,7 @@ const WxConfig = require('../../WxConfig');
 const Util = require('../../Util');
 var OnFire =require('onfire.js');
 
-const GetReward = React.createClass({
+const GetGraduated = React.createClass({
     getInitialState: function() {
 
         return {
@@ -110,6 +110,7 @@ const GetReward = React.createClass({
                 this.state.senior.rank = rank;
                 this.setState({senior: this.state.senior});
                 this.setShareConfig();
+                Loading.hideLoading();
             });
         }
     },
@@ -131,15 +132,13 @@ const GetReward = React.createClass({
      */
     setShareConfig() {
         let senior = this.state.senior;
-        if(this.state.friendName === '') {
-            let shareTitle = '经过7天的学习，我成为第'+ this.state.senior.rank+'个完成财商训练营的人！',
-                link = Util.getShareLink(),
-                desc = '快来看看我的毕业证！';
-            link = link + '&courseId=' + senior.courseId;
-            link = link + '&name=' + senior.name;
-            link = link + '&rank=' + senior.rank;
-            WxConfig.shareConfig(shareTitle,desc,link);
-        }
+        let shareTitle = '经过7天的学习，我成为第'+ this.state.senior.rank+'个完成财商训练营的人！',
+            link = Util.getShareLink(),
+            desc = '快来看看我的毕业证！';
+        link = link + '&goPath=' + '/getGraduated';
+        link = link + '&name=' + senior.name;
+        link = link + '&rank=' + senior.rank;
+        WxConfig.shareConfig(shareTitle,desc,link);
     },
 
 
@@ -148,29 +147,24 @@ const GetReward = React.createClass({
     },
 
     // + '&code=' + Util.getUrlPara('code')
-    goSignUp(type) {
+    goSignUp() {
         Util.postCnzzData("成就页面报名");
         if (User.getUserInfo().userId) {
-            Material.postData('下线_点击_getReward');
+            Material.postData('下线_点击_getGraduated');
         } else {
             OnFire.on('OAUTH_SUCCESS',()=>{
-                Material.postData('下线_点击_getReward');
+                Material.postData('下线_点击_getGraduated');
             });
         }
-        if (type === 1){
-            let url = Util.getHtmlUrl() + '?ictchannel=' + Util.getUrlPara('ictchannel');
-            location.href = url;
+        let upId = this.state.senior.userId;
+        let myId = User.getUserInfo().userId;
+        let myName = User.getUserInfo().nickName;
+        if (User.getUserInfo().userId) {
+            this.getCourse(upId,myName);
         } else {
-            let upId = this.state.senior.userId;
-            let myId = User.getUserInfo().userId;
-            let myName = User.getUserInfo().nickName;
-            if (User.getUserInfo().userId) {
+            OnFire.on('OAUTH_SUCCESS',()=>{
                 this.getCourse(upId,myName);
-            } else {
-                OnFire.on('OAUTH_SUCCESS',()=>{
-                    this.getCourse(upId,myName);
-                });
-            }
+            });
         }
     },
 
@@ -216,36 +210,9 @@ const GetReward = React.createClass({
         )
     },
 
-    renderFinishCard() {
-        return(
-            <div>
-                {this.renderTitle()}
-                {/*<img className="reward-light" onClick={this.handleClick} src={'./assets7Intro/image/course/bglight.png'}/>*/}
-                <img className="reward-pic" onClick={this.handleClick} src={this.state.type ==='mine' ? this.state.lockPicHQ[this.state.senior.courseId - 1] : this.state.lockPic[this.state.senior.courseId - 1] }/>
-                {this.buttonRender()}
-            </div>
-        )
-    },
-
-    renderTitle() {
-        if(this.state.type ==='mine') {
-            return (<div className="card-title">
-                {this.renderFont('恭喜你成为')}
-                {this.renderFont('第' + this.state.senior.rank+'名')}
-                {this.renderFont('完成该课程的学员')}
-            </div>)
-        } else {
-            return (<div className="card-title">
-                {this.renderFont(this.state.senior.name+'是')}
-                {this.renderFont('第' + this.state.senior.rank+'名')}
-                {this.renderFont('完成'+this.state.shareTitle[this.state.senior.courseId - 1] + '课的学员')}
-            </div>)
-        }
-    },
-
     goCommand() {
         Util.postCnzzData("成就页面点击分享");
-        Material.postData('上线_点击_getReward');
+        Material.postData('上线_点击_getGraduated');
         if(this.state.friendName.message === '') {
             Util.postCnzzData("毕业-赠送朋友提示");
             window.dialogAlertComp.show('赠送课程给你的朋友','点击右上角三个点点，分享免费7天训练营名额给你的好友吧。','好哒师兄',()=>{},()=>{},false);
@@ -253,7 +220,6 @@ const GetReward = React.createClass({
             Util.postCnzzData("毕业-送给更多人提示");
             window.dialogAlertComp.show('告诉更多的朋友吧','你已经顺利毕业啦，鼓励更多的小伙伴被你的正能量带动，一同积极学习吧！点击右上角三个点点，分享到你的朋友圈吧！','好哒师兄',()=>{},()=>{},false);
         }
-
     },
 
     buttonRender() {
@@ -295,7 +261,7 @@ const GetReward = React.createClass({
                         <p>把唯一的训练营<span>免费学习</span>名额送送给你！</p>
                         <p>快来学习新技能吧！</p>
                     </div>));
-                    arr.push((<div key={2} className="reward-button-graduated" onClick = {this.goSignUp.bind(this,2)}>
+                    arr.push((<div key={2} className="reward-button-graduated" onClick = {this.goSignUp}>
                         <img className="button-img" src={'./assets7Intro/image/course/btnSignin.png'}/>
                         <p className="button-p">我要学习</p>
                     </div>));
@@ -305,7 +271,7 @@ const GetReward = React.createClass({
                     <p>真可惜，免费名额被<span> {this.state.friendName.message} </span>抢走了！</p>
                     <p>他们正在财商训练营中努力提升呢！</p>
                 </div>));
-                arr.push((<div key={2} className="reward-button-graduated" onClick = {this.goSignUp.bind(this,2)}>
+                arr.push((<div key={2} className="reward-button-graduated" onClick = {this.goSignUp}>
                     <img className="button-img" src={'./assets7Intro/image/course/btnSignin.png'}/>
                     <p className="button-p">试试抢课</p>
                 </div>));
@@ -323,4 +289,4 @@ const GetReward = React.createClass({
     }
 });
 
-module.exports = GetReward;
+module.exports = GetGraduated;
