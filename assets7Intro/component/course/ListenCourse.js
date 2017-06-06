@@ -45,63 +45,12 @@ const ListenCourse = React.createClass({
         return {
             // columnid: this.props.params.columnid,
             // fmid: this.props.fmid || this.props.params.fmid,
-            audioSource: '',
-            commentCount: 0,
-            cover: '',
-            fmList: [],
-            fmTitle: '',
-            userImages: [],
-            showOthers: false, //显示其他小节
-            previousIssue: false, //上一期
-            nextIssue: false, //下一期
             isPlaying: false,
-            showComment: false,
-            todayGoldCoin: 0,
-            showCheckInPanel: false,//显示打卡panel
-            showDidCheckInPanel:false,//显示打卡后panel
-            hasCheckIn: false,
             isPlay: true,
-            showEnterPanel:false,
-            showEnterPaneltest:false,
             currentPlaying: -1,
             currentfmid: -1,
-            defaultAnswer: true,
-            // userChoose: [
-            //     [-1],[-1],[-1],[-1]
-            // ],
-            audiosTest: [],
-            questions: [
-                [
-                    {
-                        content: ['增长最帅','PHP is Best','no bug no game'],
-                        title: '1哪个是正确的?',
-                        answer: 0,
-                        process: false,
-                    },
-                ],
-                [
-                    {
-                        content: ['地球是方的','长投是好的','天是圆的'],
-                        title: '2哪个是正确的?',
-                        answer: 1,
-                        process: false,
-                    },
-                ],
-
-            ],
-            audios: [
-                {
-                    audioSource: '连接1',
-                    title: '第一节',
-                    process: false,
-                },
-                {
-                    audioSource: '连接2',
-                    title: '第二节',
-                    process: false,
-                },
-            ],
             lessons: [],
+            allFinish: false,//全部课程都通过
         }
     },
 
@@ -139,9 +88,13 @@ const ListenCourse = React.createClass({
         });
 
         OnFire.on('Course_AutoMove', ()=>{
-            if  (this.props.location.query.name === '2') {
-                return
+            //如果所有的课程都通过了
+            if (this.state.allFinish) {
+                return;
             }
+            // if  (this.props.location.query.name === '2') {
+            //
+            // }
             let divHeight = document.getElementById("fmView").offsetHeight;
             if(isMoving === 0) {
                 isMoving = 1
@@ -165,17 +118,17 @@ const ListenCourse = React.createClass({
         let courseId = this.props.params.courseId;
 
         Material.getCourseProgress(courseId).always((progressData) => {
-
-          Loading.hideLoading();
+            Loading.hideLoading();
+            this.state.lessons = progressData;
+            this.fixProcess();
             if (progressData) {
-                if  (this.props.location.query.name === '0') {
-                    Material.haveStartLesson(progressData[0].fmid);
-                }
+                // if  (this.props.location.query.name === '0') {
+                //     Material.haveStartLesson(progressData[0].fmid);
+                // }
                 this.setState({
                     lessons: progressData
                 });
             }
-            this.fixProcess();
         });
     },
 
@@ -185,6 +138,7 @@ const ListenCourse = React.createClass({
         let lastLesson = allLesson[allLesson.length - 1].subs;
         //1完成全部选择题后
         if(lastLesson[lastLesson.length - 1].process === true) {
+            this.state.allFinish = true;
             for (let lesson of allLesson) {
                 if(lesson.process!==true){
 
@@ -204,48 +158,6 @@ const ListenCourse = React.createClass({
         }
     },
 
-    /**
-     * 购买后点击评论
-     */
-    clickCommentHandler() {
-        console.log('clickCommentHandler');
-
-        this.setState({
-            showComment: true
-        });
-
-        Util.postCnzzData('点击评论');
-    },
-    /***
-     * 未购买时点击评论
-     */
-    not_clickCommentHandler(){
-        Util.postCnzzData('未购买点击评论键');
-        console.log('未买课，点评论');
-        this.setState({
-            showEnterPanel: true,
-        });
-    },
-
-
-    modalClickHandler() {
-        this.setState({
-            showEnterPanel: false,
-        })
-    },
-    /***
-     * 未购买时点击播放键
-     */
-    not_controlHandler(){
-        Util.postCnzzData('未购买点击播放键');
-        console.log('未购买过11111111111');
-        this.setState({
-            showEnterPanel: true,
-
-        });
-
-        console.log('showEnterPaneltest',this.state.showEnterPanel);
-    },
 
 
     /**
@@ -259,16 +171,6 @@ const ListenCourse = React.createClass({
                 "?fmid="+fmid;
 
         WxConfig.shareConfig(shareTitle,'',fmid,link);
-    },
-
-    /**
-     * 设置hash
-     * @param fmid
-     */
-    setNewHash(fmid) {
-        let newHash = "#/columnlist/"+this.state.columnid+"/"+fmid;
-        history.replaceState(location.href, "", location.origin+location.pathname+newHash);
-
     },
 
     /**
@@ -332,13 +234,6 @@ const ListenCourse = React.createClass({
             <div id="fmView" className="fm-view">
                 <FixedBg />
                 <div className="fix-bg-space"></div>
-                {this.state.showEnterPanel && <div onClick={this.modalClickHandler}>
-                    <Modal  hideOnTap={false}>
-
-                        <EnterPanel/>
-
-                    </Modal></div>
-                }
                 {/*<span>当前点击的index{this.state.currentPlaying}</span>*/}
                 {/*<span>当前播放的fmid{this.state.currentfmid}</span>*/}
                 {/*<div>进入时,这门课程的状态时{this.props.location.query.name}</div>*/}
@@ -363,7 +258,15 @@ const ListenCourse = React.createClass({
         //1完成全部选择题后
         if(lesson[lesson.length - 1].process === true) {
             //1如果第一次通过 ,会有提示.
-            if(this.props.location.query.name !== '2') {
+            // return (<div className = "get-reward-command" onClick={this.goReward.bind(this,1)}>祝贺！完成本节！点击我领取成就卡！</div>);
+            // if(this.props.location.query.name !== '2') {
+            //     return (<div className = "get-reward-command" onClick={this.goReward.bind(this,1)}>祝贺！完成本节！点击我领取成就卡！</div>);
+            // } else {
+            //     //1如果已经通过 ,会有提示.
+            //     return (<div className = "get-reward-command" onClick={this.goReward.bind(this,2)}>查看我的成就卡！</div>);
+            // }
+            if(!this.state.allFinish) {
+                this.state.allFinish = true;
                 return (<div className = "get-reward-command" onClick={this.goReward.bind(this,1)}>祝贺！完成本节！点击我领取成就卡！</div>);
             } else {
                 //1如果已经通过 ,会有提示.

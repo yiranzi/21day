@@ -77,7 +77,7 @@ const LessonBar = React.createClass({
 
             </div>)
         } else {
-            return (<div className="column-container" onClick={this.callBackFunc.bind(this,'all')}>
+            return (<div className="column-container">
                 <div className="pic-container" onClick={this.callBackFunc.bind(this,'pic')}>
                     <img className="column-pic" src={content.status === 2 ? this.state.unlockPic[this.state.index]:this.state.lockPic[this.state.index]}/>
                 </div>
@@ -100,9 +100,10 @@ const LessonBar = React.createClass({
     callBackFunc(type) {
         let content = this.state.content;
         if(type === 'all'){
-            this.props.cbf1(content.status);
+            // this.props.cbfNotAllowLesson(content.status);
+            this.props.cbfGoLesson(this.state.index);
         } else if(type === 'pic') {
-            this.props.cbf2(this.state.index);
+            this.props.cbfSeeReward(this.state.index);
         }
 
     },

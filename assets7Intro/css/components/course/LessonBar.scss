@@ -27,13 +27,17 @@
       display: inline-block;
       line-height: px2rem(140);
       height: px2rem(140);
-      width: px2rem(100);
+      //width: px2rem(100);居中目的
       margin-left: px2rem(12);
     }
     .touch-range{
       position: absolute;
       z-index: 100;
-
+      top: 0;
+      right: 0;
+      z-index: 1;
+      width: px2rem(258);
+      height: 100%;
     }
   }
 

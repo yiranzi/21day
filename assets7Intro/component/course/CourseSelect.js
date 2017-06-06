@@ -157,13 +157,13 @@ const CourseSelect = React.createClass({
                 //这个地方也许要...提示免费课程还有多少
                 arr.push(
                     <div className="lesson-bar">
-                        <LessonBar  index = {index} content = {courseList} cbf1 = {this.cbfNotAllowLesson} cbf2 = {this.cbfSeeReward}></LessonBar>
+                        <LessonBar  index = {index} content = {courseList} cbfGoLesson = {this.cbfGoLesson} cbfSeeReward = {this.cbfSeeReward}></LessonBar>
                     </div>
                     );
                 break;
             default:
                 arr.push(
-                    <Link className="lesson-bar" key={index} to={{pathname:"/course/"+ (index + 1), query:{name: courseList.status}}}>
+                    <Link className="lesson-bar" key={index} to={{pathname:"/course/"+ (index + 1)}}>
                         <LessonBar index = {index} content = {courseList} ></LessonBar>
                     </Link>
                 );
@@ -172,10 +172,15 @@ const CourseSelect = React.createClass({
         return arr;
     },
 
-    //回调函数
+    //跳转到听课界面
+    cbfGoLesson(courseId) {
+        location.hash = '/course/' + (courseId + 1);
+    },
+
+    //不能继续收听.付钱
     cbfNotAllowLesson(type) {
         console.log('cbf' + type);
-        window.dialogAlertComp.show('快来加入7天学习群','在群里可以分享到理财干货，更有师兄直播讲课答疑哦！快来吧','点击加群',()=>
+        window.dialogAlertComp.show('不能试听','付钱！快来吧','付钱',()=>
         {location.hash = '/payPage'},'先不要',true)
     },
 

@@ -69,9 +69,9 @@ const GetReward = React.createClass({
         console.log('get reward');
         let userId;
         //判定是否有分享成就卡
-        this.state.senior.courseId = Util.getUrlPara('courseId');
+        this.state.senior.rank = Util.getUrlPara('rank');
         //下线查看别人的成就卡
-        if (this.state.senior.courseId) {
+        if (this.state.senior.rank) {
             userId = Util.getUrlPara('ictchannel');
             if (User.getUserInfo().userId) {
                 Material.postData('下线_查看_getReward');
@@ -90,13 +90,12 @@ const GetReward = React.createClass({
             this.state.senior.name = Util.getUrlPara('name');
             this.state.senior.rank = Util.getUrlPara('rank');
             this.setState({type: 'other'});
-            //TODO 分享的时候如果为8发送请求.获得领取信息
-            if (this.state.senior.courseId === '8') {
-                Material.getShareInfo(userId).always( (name)=>{
-                    this.setState({friendName: name});
-                    // this.setShareConfig();
-                });
-            }
+            //yiran 获得下线名字
+            Material.getShareInfo(userId).always( (name)=>{
+                this.setState({friendName: name});
+                // this.setShareConfig();
+            });
+
         } else {//查看自己的
             let rank = this.props.params.rank;
             //rank默认是-2 如果是毕业证就不是-2.这里应该用courseId === 8 判定
@@ -136,6 +135,7 @@ const GetReward = React.createClass({
         }
     },
 
+    //重置分享链接
     componentWillUnmount () {
         console.log('didUnMount')
         let senior = this.state.senior;
@@ -235,14 +235,14 @@ const GetReward = React.createClass({
     renderGraduated() {
         return(
             <div>
-               <div className="get-graduated" style = {{backgroundImage: 'url("./assets7Intro/image/course/graduated.png")'}}>
-                   <img className="head" src={this.state.senior.headImg}/>
-                   <div className="title">
-                       <p className="name">{this.state.senior.name}</p>
-                       <p className="rank">第{this.state.senior.rank}名</p>
-                       <p>完成财商训练营的学员</p>
-                   </div>
-               </div>
+                <div className="get-graduated" style = {{backgroundImage: 'url("./assets7Intro/image/course/graduated.png")'}}>
+                    <img className="head" src={this.state.senior.headImg}/>
+                    <div className="title">
+                        <p className="name">{this.state.senior.name}</p>
+                        <p className="rank">第{this.state.senior.rank}名</p>
+                        <p>完成财商训练营的学员</p>
+                    </div>
+                </div>
                 {this.buttonRender()}
             </div>
         )
