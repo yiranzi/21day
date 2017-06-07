@@ -126,7 +126,7 @@ const GetGraduated = React.createClass({
     },
 
     /**
-     * 设置分享内容
+     * 设置分享内容1
      * @param fmid
      * @param title
      */
@@ -273,7 +273,7 @@ const GetGraduated = React.createClass({
                 </div>));
                 arr.push((<div key={2} className="reward-button-graduated" onClick = {this.goSignUp}>
                     <img className="button-img" src={'./assets7Intro/image/course/btnSignin.png'}/>
-                    <p className="button-p">试试抢课</p>
+                    <p className="button-p">去听听看</p>
                 </div>));
             }
             return arr;

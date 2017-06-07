@@ -278,7 +278,7 @@ const ListenCourse = React.createClass({
             Material.getJudgeFromServer().done((result)=>{
                 Loading.hideLoading();
                 if(!result){
-                    Material.postData('免费_完成课程' + this.props.params.courseId +'_ListenCourse');
+                    Material.postData('免费_完成课程' + this.props.params.courseId +'_Listy');
                 }
             }).fail(()=>{
 

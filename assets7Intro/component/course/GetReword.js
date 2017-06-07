@@ -157,6 +157,11 @@ const GetReward = React.createClass({
         }
         let url = Util.getHtmlUrl() + '?ictchannel=' + Util.getUrlPara('ictchannel');
         location.href = url;
+        // let url = Util.getHtmlUrl() + '?ictchannel=' + Util.getUrlPara('ictchannel');
+        // let url = Util.getHtmlUrl() + '?ictchannel=' + Util.getUrlPara('ictchannel') + '&goPath=' + '/course/' + (this.state.senior.courseId);
+        // console.log(url);
+        // location.href = url;
+        // location.href = '/course/' + (this.state.senior.courseId + 1);
     },
 
     render() {

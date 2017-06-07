@@ -623,6 +623,8 @@ class Util {
                     redirectUri = redirectUri + prefix + 'rank=' + Util.getUrlPara('rank');
                     prefix = '&';
             }
+            // redirectUri = redirectUri + prefix + 'mylast';
+            // console.log('addddd' + redirectUri);
         }
 
         if( isUserInfo ) {
