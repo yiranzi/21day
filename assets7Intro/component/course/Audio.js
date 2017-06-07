@@ -4,7 +4,7 @@
 const $ = window.$ = require('jquery');
 const React = require('react');
 const OnFire = require('onfire.js');
-const project = require('../../Project')
+const Project = require('../../Project')
 
 const AudioBar = React.createClass({
 
@@ -50,11 +50,11 @@ const AudioBar = React.createClass({
     },
 
     PPTComponent(content) {
-        if (project === '7days') {
+        if (Project === '7days') {
             return(
                 <p className={this.state.isPlaying ? 'title-bottom':'title-top'}>{content.title}</p>
             )
-        } else if (project === 'fundLesson') {
+        } else if (Project === 'fundLesson') {
             return(
                 <p className={this.state.isPlaying ? 'title-bottom－fund':'title-top-fund'}><img src={content.title} /></p>
             )

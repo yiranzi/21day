@@ -33,46 +33,39 @@ const CourseSelect = React.createClass({
     },
 
     componentWillMount() {
+        //判断连接是否需要跳转
+        let goPath = Util.getUrlPara('goPath');
+        if(goPath){
+            location.hash = goPath;
+        }
+        let userId = User.getUserInfo().userId;
+        console.log("===userId = " + userId);
         //判断用户当前的购买状态，未购买则直接跳转到支付页面
-        let courseId = Util.getUrlPara('courseId');
-        if(courseId) {
-            if (courseId === '8') {
-                Util.postCnzzData("分享途径查看毕业证");
-            } else {
-                Util.postCnzzData("分享途径查看成就卡");
-            }
-            Loading.hideLoading();
-            location.hash = '/getReward/' + courseId + '/-2' ;
+        if (userId) {
+            this.init();
         } else {
-            let userId = User.getUserInfo().userId;
-            console.log("===userId = " + userId);
-            if (userId) {
-                // this.checkUserPayStatue();
+            OnFire.on(Config.OAUTH_SUCCESS, ()=>{
                 this.init();
-            } else {
-                OnFire.on(Config.OAUTH_SUCCESS, ()=>{
-                    this.checkUserPayStatue();
-                    this.init();
-                });
-            }
+            });
         }
     },
 
     /**
-    * 检查用户购买状态
-    */
+     * 检查用户购买状态
+     */
     checkUserPayStatue() {
-      Material.getJudgeFromServer().done((result)=>{
-          Loading.hideLoading();
-          if(result){
-              this.state.allowLesson = 'ALL';
-          } else{ // 未购买直接跳到购买页面
-              this.state.allowLesson = 'FREE';
-              location.hash = "/payPage";
-          }
-      }).fail(()=>{
+        Material.getJudgeFromServer().done((result)=>{
+            Loading.hideLoading();
+            if(result){
+                this.state.allowLesson = 'PAY';
+            } else{ // 未购买直接跳到购买页面
+                this.state.allowLesson = 'FREE';
+                // location.hash = "/payPage";
+            }
+            this.setState({allowLesson: this.state.allowLesson});
+        }).fail(()=>{
 
-      });
+        });
     },
 
     init() {
@@ -127,74 +120,231 @@ const CourseSelect = React.createClass({
             return null;
         } else {
             for (let i = 0; i < courseList.length; i++) {
-                let status = courseList[i].status;
-                switch (status) {
-                    //没有达到听课时间
-                    case -1:
-                        arr.push(
-                            <div className="lesson-bar" key={i} onClick={this.renderNotEnter.bind(this,i)}>
-                                <LessonBar  index = {i} content = {courseList[i]}></LessonBar>
-                            </div>
-                        );
-                        break;
-                    default:
-                        arr.push(this.renderLesson(i,courseList[i]));
-                        break;
-                }
+                //计算出来状态,并赋值.
+                this.calcCourseStatus(courseList[i], i);
+                console.log(this.state.courseList[i].courseStatus);
+                arr.push(
+                    <div className="lesson-bar">
+                        <LessonBar  index = {i} content = {this.state.courseList[i]} cbfGoLesson = {this.cbfGoLesson} cbfSeeReward = {this.cbfSeeReward}></LessonBar>
+                    </div>
+                );
+                // switch (courseStatus) {
+                //     //没有达到听课时间
+                //     case -1:
+                //         //TODO 后台上线后 先获得列表 获得报名结果 修改课程类型 判定能否上的时间 再根据免付费用户,结合课程的后台类型进行判定.
+                //         if (this.state.allowLesson === 'FREE') {
+                //             arr.push(this.renderLesson(i,courseList[i]));
+                //         } else {
+                //             arr.push(
+                //                 <div className="lesson-bar" onClick={this.renderNotEnter.bind(this,i)}>
+                //                     <LessonBar  index = {i} content = {courseList[i]}></LessonBar>
+                //                 </div>
+                //             );
+                //         }
+                //         break;
+                //     //不为-1
+                //     default:
+                //         arr.push(this.renderLesson(i,courseList[i]));
+                //         break;
+                // }
             }
             return arr
         }
     },
 
-    //
-    renderLesson(index,courseList) {
-        let arr = [];
-        courseList.status = 3;
-        switch (courseList.status){
-            case 3:
-                //点击后,显示不能播放,然后显示跳转过去.
-                //第一次完成免费/试听后,会有付费的流程.
-                //这个地方也许要...提示免费课程还有多少
-                arr.push(
-                    <div className="lesson-bar">
-                        <LessonBar  index = {index} content = {courseList} cbfGoLesson = {this.cbfGoLesson} cbfSeeReward = {this.cbfSeeReward}></LessonBar>
-                    </div>
-                    );
+    calcCourseStatus(course, index) {
+        let courseStatus = {
+            see: false,
+            enter: '',
+            allFinish: false,
+            reward: 'not-get',
+        };
+        switch (this.state.allowLesson) {
+            //如果是免费用户
+            case 'FREE':
+                courseStatus.reward = 'free-not-get';
+                //TODO 服务器的课程标签 如果是免费课
+                if (index === 0) {
+                    courseStatus.see = true;//可以看到
+                    courseStatus.enter = 'free-enter';
+                    switch (course.status) {
+                        case -1:
+                            break;
+                        case 0:
+                            break;
+                        case 1:
+                            break;
+                        case 2:
+                            courseStatus.allFinish = true;
+                            courseStatus.reward = 'free-not-get';
+                            break;
+                        default:
+                            console.log('error' + course.status);
+                    }
+                } else {
+                    courseStatus.see = false;
+                    courseStatus.enter = 'free-no-pay';
+                }
                 break;
-            default:
-                arr.push(
-                    <Link className="lesson-bar" key={index} to={{pathname:"/course/"+ (index + 1)}}>
-                        <LessonBar index = {index} content = {courseList} ></LessonBar>
-                    </Link>
-                );
+            //如果是付费用户
+            case 'PAY':
+                //先判定是否可以收听.
+                switch (course.status) {
+                    case -1:
+                        courseStatus.enter = 'no-time';
+                        break;
+                    case 0:
+                        courseStatus.see = true;//可见
+                        courseStatus.enter = 'pay';
+                        break;
+                    case 1:
+                        courseStatus.see = true;//可见
+                        courseStatus.enter = 'pay';
+                        break;
+                    case 2:
+                        courseStatus.see = true;//可见
+                        courseStatus.enter = 'pay';
+                        courseStatus.allFinish = true;
+                        courseStatus.reward = 'get';
+                        break;
+                    default:
+                        console.log('error' + course.status);
+                }
                 break;
         }
-        return arr;
+        this.state.courseList[index].courseStatus = courseStatus;//赋值.
     },
+
+    //type听课3种课程.
+    //F 免费课.
+    //S 邀请试听课.
+    //P 付费课.
+    //这部分可以在点击后统一处理.一个render不同的绘制点击结果.
+    // renderLesson(index,courseList) {
+    //     let arr = [];
+    //     //TODO type表示课程类型.
+    //     if (index === 0) {
+    //         courseList.type = 'F';
+    //     } else {
+    //         courseList.type = 'P';
+    //     }
+    //     arr.push(
+    //         <div className="lesson-bar">
+    //             <LessonBar  index = {index} content = {courseList} cbfGoLesson = {this.cbfGoLesson} cbfSeeReward = {this.cbfSeeReward}></LessonBar>
+    //         </div>
+    //     );
+    //     // switch (courseList.type){
+    //     //     case 3:
+    //     //         //点击后,显示不能播放,然后显示跳转过去.
+    //     //         //第一次完成免费/试听后,会有付费的流程.
+    //     //         //这个地方也许要...提示免费课程还有多少
+    //     //         arr.push(
+    //     //             <div className="lesson-bar">
+    //     //                 <LessonBar  index = {index} content = {courseList} cbfGoLesson = {this.cbfGoLesson} cbfSeeReward = {this.cbfSeeReward}></LessonBar>
+    //     //             </div>
+    //     //         );
+    //     //         break;
+    //     //     default:
+    //     //         arr.push(
+    //     //             <Link className="lesson-bar" to={{pathname:"/course/"+ (index + 1)}}>
+    //     //                 <LessonBar index = {index} content = {courseList} ></LessonBar>
+    //     //             </Link>
+    //     //         );
+    //     //         break;
+    //     // }
+    //     return arr;
+    // },
 
     //跳转到听课界面
-    cbfGoLesson(courseId) {
-        location.hash = '/course/' + (courseId + 1);
+    cbfGoLesson(course, courseId) {
+        let status = course.courseStatus
+        switch (status.enter) {
+            case 'free-enter':
+                location.hash = '/course/' + (courseId + 1);
+                break;
+            case 'free-no-pay':
+                window.dialogAlertComp.show('7天财商训练营','每天更新一课，为你量身定做的理财指南课程，只需要7天，带着你财商涨涨涨！','去看看',()=>
+                {location.hash = '/payPage'},'先不要',true);
+                break;
+            case 'pay':
+                location.hash = '/course/' + (courseId + 1);
+                break;
+            case 'no-time':
+                window.dialogAlertComp.show('还没有开放课程哦','每天更新一课哦，耐心等一等吧！','知道啦',()=>{},()=>{},false);
+                break;
+            default:
+                console.log('error' + status.enter);
+                break;
+        }
+
+        // if (this.state.allowLesson === 'PAY') {
+        //     location.hash = '/course/' + (courseId + 1);
+        // } else {
+        //     switch (course.type) {
+        //         case 'F':
+        //             location.hash = '/course/' + (courseId + 1);
+        //             break;
+        //         case 'P':
+        //             //如果免费用户收听付费课程
+        //             if (this.state.allowLesson === 'FREE') {
+        //                 window.dialogAlertComp.show('不能试听','付钱！快来吧','付钱',()=>
+        //                 {location.hash = '/payPage'},'先不要',true)
+        //             }
+        //             break;
+        //     }
+        // }
     },
 
-    //不能继续收听.付钱
-    cbfNotAllowLesson(type) {
-        console.log('cbf' + type);
-        window.dialogAlertComp.show('不能试听','付钱！快来吧','付钱',()=>
-        {location.hash = '/payPage'},'先不要',true)
-    },
 
     //点击成就卡回调函数
-    cbfSeeReward(courseId) {
-        //如果已获得成就卡
-        location.hash = '/getReward/' + courseId + '/-2' ;
-        //如果未获得成绩卡
+    cbfSeeReward(course, courseId) {
+        let status = course.courseStatus;
+        switch (status.reward) {
+            case 'free-not-get':
+                location.hash = '/course/' + (courseId + 1);
+                break;
+                // window.dialogAlertComp.show('你未完成课程,不能查看成就卡','快去完成吧','完成',()=>
+                // {location.hash = '/course/' + (courseId + 1);},'先不去',false);
+                break;
+            case 'free-get':
+                //如果已获得成就卡
+                location.hash = '/getReward/' + (courseId + 1);
+                break;
+            case 'not-get':
+                window.dialogAlertComp.show('你未完成课程,不能查看成就卡','快去完成吧','完成',()=>
+                {location.hash = '/course/' + (courseId + 1);},'先不去',true);
+                break;
+            case 'get':
+                //如果已获得成就卡
+                location.hash = '/getReward/' + (courseId + 1);
+                break;
+            default:
+                console.log('error' + status.reward);
+                break;
+        }
+        // let status = course.status;
+        // switch (status) {
+        //     case 2:
+                //如果已获得成就卡
+                // location.hash = '/getReward/' + (courseId + 1);
+                // break;
+        //     default:
+        //         window.dialogAlertComp.show('你未完成课程,不能查看成就卡','付钱！快来吧','付钱',()=>
+        //         {},'先不要',false)
+        // }
     },
 
+    // //不能继续收听.付钱
+    // cbfNotAllowLesson(type) {
+    //     console.log('cbf' + type);
+    //     window.dialogAlertComp.show('不能试听','付钱！快来吧','付钱',()=>
+    //     {location.hash = '/payPage'},'先不要',true)
+    // },
 
-    renderNotEnter(index) {
-        window.dialogAlertComp.show('还没有开放课程哦','每天更新一课哦，耐心等一等吧！','知道啦',()=>{},()=>{},false);
-    },
+
+    // renderNotEnter(index) {
+    //     window.dialogAlertComp.show('还没有开放课程哦','每天更新一课哦，耐心等一等吧！','知道啦',()=>{},()=>{},false);
+    // },
 
     //可以领取宝箱,自动滚动
     componentDidUpdate() {
@@ -213,7 +363,7 @@ const CourseSelect = React.createClass({
         if(this.state.treasure.canOpen){
             return(
                 <div className="reload-bg" style = {{backgroundImage: 'url("./assets7Intro/image/course/graduated.png")'}}></div>
-                )
+            )
         }
     },
 
@@ -246,9 +396,9 @@ const CourseSelect = React.createClass({
         }
         // this.calcTreasureInfo();
 
-            // return(<div className="lesson-bar" onClick={this.openTreasure}>
-            //         <TreasureBar treasure = {this.state.treasure}></TreasureBar>
-            //         </div>)
+        // return(<div className="lesson-bar" onClick={this.openTreasure}>
+        //         <TreasureBar treasure = {this.state.treasure}></TreasureBar>
+        //         </div>)
         return <img onClick={this.openTreasure} className={this.state.allFinish ? 'fix-treasure-shake' : 'fix-treasure'} src={'./assets7Intro/image/course/treasure.png'}/>
 
 
@@ -304,7 +454,7 @@ const CourseSelect = React.createClass({
             if ( rank!== -1 ) {
                 let courseId = 8;
                 if (courseId) {
-                    location.hash = '/getReward/' + courseId + '/' + rank;
+                    location.hash = '/getGraduated/';
                 }
             } else {
                 window.dialogAlertComp.show('还不能领取毕业证哦！','你还没有完成全部课程呢，要都通过才行哦。','好的',()=>{},'',false);

@@ -3,4 +3,4 @@ const project = '7days'
 
 //const project = 'fundLesson'
 
-module.exports = project
+module.exports = Project

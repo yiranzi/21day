@@ -10,6 +10,7 @@ const LessonBar = React.createClass({
         return {
             content: this.props.content,
             index: this.props.index,
+            courseStatus: this.props.content.courseStatus,
             day: [
                 '第一天',
                 '第二天',
@@ -63,9 +64,10 @@ const LessonBar = React.createClass({
     // style={{backgroundImage:'url('+content.image+')'}}
     LineRender() {
         let content = this.state.content;
-        if(content.status === -1)
+        //看不到
+        if(!this.state.courseStatus.see)
         {
-            return (<div className="column-container">
+            return (<div className="column-container" onClick={this.callBackFunc.bind(this,'goCourse')}>
                 <div className="column-not-view">
                     <h1>
                         {this.state.day[this.state.index]}
@@ -73,15 +75,15 @@ const LessonBar = React.createClass({
                     <h2>
                         {content.title}
                     </h2>
+                    {this.renderFreeNextDay()}
                 </div>
-
             </div>)
         } else {
             return (<div className="column-container">
-                <div className="pic-container" onClick={this.callBackFunc.bind(this,'pic')}>
-                    <img className="column-pic" src={content.status === 2 ? this.state.unlockPic[this.state.index]:this.state.lockPic[this.state.index]}/>
+                <div className="pic-container" onClick={this.callBackFunc.bind(this,'goReward')}>
+                    {this.renderReward()}
                 </div>
-                <div className="touch-range" onClick={this.callBackFunc.bind(this,'all')}>
+                <div className="touch-range" onClick={this.callBackFunc.bind(this,'goCourse')}>
 
                 </div>
                 <span className="column-container-title">
@@ -99,20 +101,75 @@ const LessonBar = React.createClass({
 
     callBackFunc(type) {
         let content = this.state.content;
-        if(type === 'all'){
-            // this.props.cbfNotAllowLesson(content.status);
-            this.props.cbfGoLesson(this.state.index);
-        } else if(type === 'pic') {
-            this.props.cbfSeeReward(this.state.index);
+        switch (type) {
+            case 'goCourse':
+                this.props.cbfGoLesson(content, this.state.index);
+                break;
+            case 'goReward':
+                this.props.cbfSeeReward(content, this.state.index);
+                break;
+            case 'all':
+                this.props.cbfGoLesson(content, this.state.index);
+                break;
+            case 'pic':
+                this.props.cbfSeeReward(content, this.state.index);
+                break;
+            case 'no-time':
+                this.props.cbfSeeReward(content, this.state.index);
+                break;
+            default:
+                console.log('error' + type);
+                break;
         }
 
     },
+    //渲染明日的免费课.
+    renderFreeNextDay() {
+        if (this.state.courseStatus.enter === 'free-no-pay') {
+            if (this.state.index === 1) {
+                return(<p style={{textAlign:"right"}}>付费收听</p>)
+            }
+        }
+    },
 
+    //渲染免费听课
+    // renderFree() {
+    //     if (this.state.courseStatus.enter === 'free-enter') {
+    //         return(<p>免费试听</p>)
+    //     }
+    // },
+
+    //渲染成就卡
+    renderReward(){
+        let arr = [];
+        switch (this.state.courseStatus.reward) {
+            case 'free-not-get':
+                arr.push(<img className="column-pic" src={this.state.unlockPic[this.state.index]}/>);
+                break;
+                break;
+            case 'not-get':
+                arr.push(<img className="column-pic" src={this.state.lockPic[this.state.index]}/>);
+                break;
+            case 'get':
+                //如果已获得成就卡
+                arr.push(<img className="column-pic" src={this.state.unlockPic[this.state.index]}/>);
+                break;
+            default:
+                console.log('error' + this.state.courseStatus.reward);
+                break;
+        }
+        return arr;
+    },
+
+    //渲染finish
     renderFinish() {
-        if( this.state.content.status === 2) {
+        if( this.state.courseStatus.allFinish) {
             return <img className="column-type" src={'./assets7Intro/image/course/indFinished.png'}/>
         } else {
-            return <div className="space-pic"></div>
+            if (this.state.courseStatus.enter === 'free-enter') {
+                return(<p className = "free-lesson">免费收听</p>)
+            }
+            // return <div className="space-pic"></div>
         }
     }
 });

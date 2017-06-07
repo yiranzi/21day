@@ -601,15 +601,29 @@ class Util {
             prefix = '&';
         }
 
-        //courseId
-        let courseId;
-        if( courseId = Util.getUrlPara('courseId') ) {
-            redirectUri = redirectUri + prefix + 'courseId=' + courseId;
-            redirectUri = redirectUri + prefix + 'name=' + Util.getUrlPara('name');
-            redirectUri = redirectUri + prefix + 'rank=' + Util.getUrlPara('rank');
-            prefix = '&';
+        //分享卡
+        let shareType;
+        if( Util.getUrlPara('courseId') ) {
+            shareType = 'finish';
+        } else if (Util.getUrlPara('rank') ) {
+            shareType = 'graduated';
         }
 
+        if(shareType){
+            redirectUri = redirectUri + prefix + 'goPath=' + Util.getUrlPara('goPath');
+            switch (shareType) {
+                case 'finish':
+                    redirectUri = redirectUri + prefix + 'courseId=' + Util.getUrlPara('courseId');
+                    redirectUri = redirectUri + prefix + 'name=' + Util.getUrlPara('name');
+                    redirectUri = redirectUri + prefix + 'rank=' + Util.getUrlPara('rank');
+                    prefix = '&';
+                    break;
+                case 'graduated':
+                    redirectUri = redirectUri + prefix + 'name=' + Util.getUrlPara('name');
+                    redirectUri = redirectUri + prefix + 'rank=' + Util.getUrlPara('rank');
+                    prefix = '&';
+            }
+        }
 
         if( isUserInfo ) {
             //区分baseInfo和userInfo
