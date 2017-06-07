@@ -123,6 +123,7 @@ const CourseSelect = React.createClass({
                 //计算出来状态,并赋值.
                 this.calcCourseStatus(courseList[i], i);
                 console.log(this.state.courseList[i].courseStatus);
+                // arr.push(<div>{this.state.allowLesson}</div>);
                 arr.push(
                     <div className="lesson-bar">
                         <LessonBar  index = {i} content = {this.state.courseList[i]} cbfGoLesson = {this.cbfGoLesson} cbfSeeReward = {this.cbfSeeReward}></LessonBar>
@@ -308,7 +309,8 @@ const CourseSelect = React.createClass({
                 break;
             case 'free-get':
                 //如果已获得成就卡
-                location.hash = '/getReward/' + (courseId + 1);
+                location.hash = '/course/' + (courseId + 1);
+                // location.hash = '/getReward/' + (courseId + 1);
                 break;
             case 'not-get':
                 window.dialogAlertComp.show('你未完成课程,不能查看成就卡','快去完成吧','完成',()=>

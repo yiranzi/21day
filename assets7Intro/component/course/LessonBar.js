@@ -10,7 +10,6 @@ const LessonBar = React.createClass({
         return {
             content: this.props.content,
             index: this.props.index,
-            courseStatus: this.props.content.courseStatus,
             day: [
                 '第一天',
                 '第二天',
@@ -65,7 +64,7 @@ const LessonBar = React.createClass({
     LineRender() {
         let content = this.state.content;
         //看不到
-        if(!this.state.courseStatus.see)
+        if(!this.props.content.courseStatus.see)
         {
             return (<div className="column-container" onClick={this.callBackFunc.bind(this,'goCourse')}>
                 <div className="column-not-view">
@@ -125,7 +124,7 @@ const LessonBar = React.createClass({
     },
     //渲染明日的免费课.
     renderFreeNextDay() {
-        if (this.state.courseStatus.enter === 'free-no-pay') {
+        if (this.props.content.courseStatus.enter === 'free-no-pay') {
             if (this.state.index === 1) {
                 return(<p style={{textAlign:"right"}}>付费收听</p>)
             }
@@ -142,7 +141,7 @@ const LessonBar = React.createClass({
     //渲染成就卡
     renderReward(){
         let arr = [];
-        switch (this.state.courseStatus.reward) {
+        switch (this.props.content.courseStatus.reward) {
             case 'free-not-get':
                 arr.push(<img className="column-pic" src={this.state.unlockPic[this.state.index]}/>);
                 break;
@@ -155,7 +154,7 @@ const LessonBar = React.createClass({
                 arr.push(<img className="column-pic" src={this.state.unlockPic[this.state.index]}/>);
                 break;
             default:
-                console.log('error' + this.state.courseStatus.reward);
+                console.log('error' + this.props.content.courseStatus.reward);
                 break;
         }
         return arr;
@@ -163,10 +162,10 @@ const LessonBar = React.createClass({
 
     //渲染finish
     renderFinish() {
-        if( this.state.courseStatus.allFinish) {
+        if( this.props.content.courseStatus.allFinish) {
             return <img className="column-type" src={'./assets7Intro/image/course/indFinished.png'}/>
         } else {
-            if (this.state.courseStatus.enter === 'free-enter') {
+            if (this.props.content.courseStatus.enter === 'free-enter') {
                 return(<p className = "free-lesson">免费收听</p>)
             }
             // return <div className="space-pic"></div>
