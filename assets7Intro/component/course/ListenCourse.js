@@ -275,6 +275,14 @@ const ListenCourse = React.createClass({
         if (type === 1) {
             this.fixProcess();
             Util.postCnzzData("第一次点击成就卡");
+            Material.getJudgeFromServer().done((result)=>{
+                Loading.hideLoading();
+                if(!result){
+                    Material.postData('免费_完成课程' + this.props.params.courseId +'_ListenCourse');
+                }
+            }).fail(()=>{
+
+            });
         } else {
             Util.postCnzzData("再次点击成就卡");
         }

@@ -59,6 +59,7 @@ const CourseSelect = React.createClass({
             if(result){
                 this.state.allowLesson = 'PAY';
             } else{ // 未购买直接跳到购买页面
+                Material.postData('免费_进入_CourseSelect');
                 this.state.allowLesson = 'FREE';
                 // location.hash = "/payPage";
             }
@@ -261,11 +262,13 @@ const CourseSelect = React.createClass({
         let status = course.courseStatus
         switch (status.enter) {
             case 'free-enter':
+                Material.postData('免费_试听_CourseSelect');
                 location.hash = '/course/' + (courseId + 1);
                 break;
             case 'free-no-pay':
+                Material.postData('免费_禁止_CourseSelect');
                 window.dialogAlertComp.show('7天财商训练营','每天更新一课，为你量身定做的理财指南课程，只需要7天，带着你财商涨涨涨！','去看看',()=>
-                {location.hash = '/payPage'},'先不要',true);
+                {location.hash = '/payPage';Material.postData('免费_跳转购买_CourseSelect');},'先不要',true);
                 break;
             case 'pay':
                 location.hash = '/course/' + (courseId + 1);
