@@ -37,15 +37,18 @@ const CourseSelect = React.createClass({
         let goPath = Util.getUrlPara('goPath');
         if(goPath){
             location.hash = goPath;
+            return;
         }
         let userId = User.getUserInfo().userId;
         console.log("===userId = " + userId);
         //判断用户当前的购买状态，未购买则直接跳转到支付页面
         if (userId) {
-            this.init();
+            //1.判断听课状态.
+            this.checkUserPayStatue();
         } else {
             OnFire.on(Config.OAUTH_SUCCESS, ()=>{
-                this.init();
+                //1.判断听课状态.
+                this.checkUserPayStatue();
             });
         }
     },
@@ -58,10 +61,11 @@ const CourseSelect = React.createClass({
             Loading.hideLoading();
             if(result){
                 this.state.allowLesson = 'PAY';
+                this.init();
             } else{ // 未购买直接跳到购买页面
                 Material.postData('免费_进入_CourseSelect');
                 this.state.allowLesson = 'FREE';
-                // location.hash = "/payPage";
+                location.hash = "/payPage";
             }
             this.setState({allowLesson: this.state.allowLesson});
         }).fail(()=>{
@@ -70,10 +74,12 @@ const CourseSelect = React.createClass({
     },
 
     init() {
+        //支付页首页-判定支付状态 || 课程页首页-渲染列表
+
+
         //0.获取听课列表
         this.getCourseList();
-        //1.判断听课状态.
-        this.checkUserPayStatue();
+
         //2.获取宝箱信息
         Material.getTreasureInfo().always( (data) => {
             //如果未领取.
@@ -459,7 +465,7 @@ const CourseSelect = React.createClass({
             if ( rank!== -1 ) {
                 let courseId = 8;
                 if (courseId) {
-                    location.hash = '/getGraduated/';
+                    location.hash = '/getGraduated/mine';
                 }
             } else {
                 window.dialogAlertComp.show('还不能领取毕业证哦！','你还没有完成全部课程呢，要都通过才行哦。','好的',()=>{},'',false);

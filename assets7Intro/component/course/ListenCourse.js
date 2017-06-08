@@ -51,6 +51,8 @@ const ListenCourse = React.createClass({
             currentfmid: -1,
             lessons: [],
             allFinish: false,//全部课程都通过
+            isFree: '',
+            isPay: false,
         }
     },
 
@@ -97,17 +99,14 @@ const ListenCourse = React.createClass({
             // }
             let divHeight = document.getElementById("fmView").offsetHeight;
             if(isMoving === 0) {
-                isMoving = 1
+                isMoving = 1;
                 // this.state.isMoving = true;
                 autoMove.startMove(divHeight).then(() => {
                     // this.state.isMoving = false;
                     isMoving = 0;
                 })
             }
-        })
-
-        Material.getCourseList().always( (data) => {
-        })
+        });
     },
 
     /**
@@ -119,6 +118,17 @@ const ListenCourse = React.createClass({
 
         Material.getCourseProgress(courseId).always((progressData) => {
             Loading.hideLoading();
+            //链接是否是免费听课(首页.分享出去的课程)
+            this.state.isFree = this.props.params.free;
+            //判断是不是付费用户.付费用户不会显示报名按钮.
+            Material.getJudgeFromServer().done((result)=>{
+                Loading.hideLoading();
+                if(result){
+                    this.setState({
+                        isPay: true,
+                    });
+                }
+            });
             this.state.lessons = progressData;
             this.fixProcess();
             if (progressData) {
@@ -126,10 +136,15 @@ const ListenCourse = React.createClass({
                 //     Material.haveStartLesson(progressData[0].fmid);
                 // }
                 this.setState({
-                    lessons: progressData
+                    lessons: this.state.lessons,
+                    isFree: this.state.isFree,
                 });
             }
         });
+    },
+
+    renderInit() {
+
     },
 
     fixProcess() {
@@ -234,9 +249,20 @@ const ListenCourse = React.createClass({
                 {/*<div>进入时,这门课程的状态时{this.props.location.query.name}</div>*/}
                 {this.renderLesson()}
                 {this.passLessonRender()}
+                {this.renderSignUp()}
                 {this.preLoadPic()}
             </div>
         )
+    },
+
+    renderSignUp() {
+        if (this.state.isFree === 'free' && !this.state.isPay) {
+            return (<div className = "sign-up-button" onClick={this.goSign}>点击播放按钮听课！喜欢的话点击这里报名！</div>);
+        }
+    },
+
+    goSign() {
+        location.hash = '/payPage';
     },
 
     preLoadPic() {
@@ -275,18 +301,13 @@ const ListenCourse = React.createClass({
         if (type === 1) {
             this.fixProcess();
             Util.postCnzzData("第一次点击成就卡");
-            Material.getJudgeFromServer().done((result)=>{
-                Loading.hideLoading();
-                if(!result){
-                    Material.postData('免费_完成课程' + this.props.params.courseId +'_Listy');
-                }
-            }).fail(()=>{
-
-            });
+            if (this.state.isPay) {
+                Material.postData('免费_完成课程' + this.props.params.courseId +'_Listy');
+            }
         } else {
             Util.postCnzzData("再次点击成就卡");
         }
-        location.hash = '/getReward/' + this.props.params.courseId;
+        location.hash = '/getReward/' + this.props.params.courseId + '/mine';
     },
 
     /**

@@ -24,10 +24,13 @@ let InnerRouter = React.createClass({
                     {/*<IndexRedirect to="/FMView"/>*/}
                     <IndexRedirect to="/select"/>
                     <Route path="/select" component={CourseSelect}/>
+                    {/*用于免费报名*/}
                     <Route path="/payPage(/:free)" component={PayPage}/>
-                    <Route path="/course/:courseId" component={ListenCourse}/>
-                    <Route path="/getReward/:courseId" component={GetReward}/>
-                    <Route path="/getGraduated/" component={GetGraduated}/>
+                    {/*用于免费听课*/}
+                    <Route path="/course/:courseId(/:free)" component={ListenCourse}/>
+                    {/*用于标识是自己在听课*/}
+                    <Route path="/getReward/:courseId(/:mine)" component={GetReward}/>
+                    <Route path="/getGraduated(/:mine)" component={GetGraduated}/>
                     {/*<Route path="/FMView" component={FMView}/>*/}
                 </Route>
             </Router>

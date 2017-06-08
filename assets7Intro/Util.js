@@ -610,15 +610,25 @@ class Util {
         }
 
         if(shareType){
-            redirectUri = redirectUri + prefix + 'goPath=' + Util.getUrlPara('goPath');
+
             switch (shareType) {
                 case 'finish':
+                    if(Util.getUrlPara('goPath') !== null) {
+                        redirectUri = redirectUri + prefix + 'goPath=' + Util.getUrlPara('goPath');
+                    } else {
+                        redirectUri = redirectUri + prefix + 'goPath=' + '/getReward/' + Util.getUrlPara('courseId');
+                    }
                     redirectUri = redirectUri + prefix + 'courseId=' + Util.getUrlPara('courseId');
                     redirectUri = redirectUri + prefix + 'name=' + Util.getUrlPara('name');
                     redirectUri = redirectUri + prefix + 'rank=' + Util.getUrlPara('rank');
                     prefix = '&';
                     break;
                 case 'graduated':
+                    if(Util.getUrlPara('goPath') !== null) {
+                        redirectUri = redirectUri + prefix + 'goPath=' + Util.getUrlPara('goPath');
+                    } else {
+                        redirectUri = redirectUri + prefix + 'goPath=' + '/getGraduated';
+                    }
                     redirectUri = redirectUri + prefix + 'name=' + Util.getUrlPara('name');
                     redirectUri = redirectUri + prefix + 'rank=' + Util.getUrlPara('rank');
                     prefix = '&';

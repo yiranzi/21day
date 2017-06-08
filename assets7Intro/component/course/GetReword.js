@@ -70,8 +70,9 @@ const GetReward = React.createClass({
         let userId;
         //判定是否有分享成就卡
         this.state.senior.courseId = Util.getUrlPara('courseId');
+        let isMine = this.props.params.mine;
         //下线查看别人的成就卡
-        if (this.state.senior.courseId) {
+        if (this.state.senior.courseId && !isMine) {
             userId = Util.getUrlPara('ictchannel');
             if (User.getUserInfo().userId) {
                 Material.postData('下线_查看_getReward');
@@ -156,7 +157,10 @@ const GetReward = React.createClass({
             });
         }
         let url = Util.getHtmlUrl() + '?ictchannel=' + Util.getUrlPara('ictchannel');
-        location.href = url;
+        // location.href = url;
+        location.hash = '/course/' + this.state.senior.courseId + '/free';
+
+
         // let url = Util.getHtmlUrl() + '?ictchannel=' + Util.getUrlPara('ictchannel');
         // let url = Util.getHtmlUrl() + '?ictchannel=' + Util.getUrlPara('ictchannel') + '&goPath=' + '/course/' + (this.state.senior.courseId);
         // console.log(url);
