@@ -15,7 +15,7 @@
   box-shadow: 0px px2rem(2) px2rem(4) rgba(0, 0, 0, 0.3);
 }
 
-.audio-title{
+.audio-title,.audio-title-fund{
   border-radius: px2rem(4) px2rem(4) 0 0 ;
   position: relative;
   background-color: #ffffff;
@@ -101,4 +101,7 @@
     height: 100%;
     border-radius: px2rem(4) px2rem(4) 0 0 ;
   }
+}
+.audio-title-fund{
+  height: 12rem;
 }

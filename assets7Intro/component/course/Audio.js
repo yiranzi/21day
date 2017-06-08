@@ -56,7 +56,7 @@ const AudioBar = React.createClass({
             )
         } else if (Project === 'fundLesson') {
             return(
-                <p className={this.state.isPlaying ? 'title-bottom－fund':'title-top-fund'}><img src={content.title} /></p>
+                <p className={this.state.isPlaying ? 'title-bottom－fund':'title-top-fund'}><img src='http://source.ichangtou.com/file/ppt/lesson/d9a3e3f2/30/0/1/1.png' /></p>
             )
         }
         
@@ -64,8 +64,9 @@ const AudioBar = React.createClass({
 
     render() {
         let content = this.props.content
+        let audioTitleStyle = Project === '7days' ? 'audio-title' : 'audio-title-fund'
         return(
-            <div onClick={this.controlHandler} className="audio-title">
+            <div onClick={this.controlHandler} className={audioTitleStyle}>
                 <img className="click-button" src={this.state.isPlaying ? './assets7Intro/image/course/btnPressed.png':'./assets7Intro/image/course/btnPlay.png'}
                 />
                 {this.PPTComponent(content)}
