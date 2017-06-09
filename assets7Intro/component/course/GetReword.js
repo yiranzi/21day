@@ -9,6 +9,7 @@ var User = require('../../User');
 const WxConfig = require('../../WxConfig');
 const Util = require('../../Util');
 var OnFire =require('onfire.js');
+const convertHtmlToBase64 = require('../../ImageShare')
 
 const GetReward = React.createClass({
     getInitialState: function() {
@@ -61,7 +62,8 @@ const GetReward = React.createClass({
                 userId: '',
             },
             friendName: '',
-            myName: ''
+            myName: '',
+            shareImgUrl: ''
         };
     },
 
@@ -114,7 +116,18 @@ const GetReward = React.createClass({
             })
         }
     },
-
+    componentDidMount () {
+        const element = document.getElementsByClassName('reward-pic')[0]
+        const width = element.offsetWidth
+        const height = element.offsetHeight
+        convertHtmlToBase64(element, height, width).then(
+            base64 => {
+                this.setState({
+                    shareImgUrl: base64
+                })
+            }
+        )
+    },
     componentWillUnmount () {
         console.log('didUnMount')
         let senior = this.state.senior;
@@ -182,12 +195,22 @@ const GetReward = React.createClass({
             <div>
                 {this.renderTitle()}
                 {/*<img className="reward-light" onClick={this.handleClick} src={'./assets7Intro/image/course/bglight.png'}/>*/}
-                <img className="reward-pic" onClick={this.handleClick} src={this.state.type ==='mine' ? this.state.lockPicHQ[this.state.senior.courseId - 1] : this.state.lockPic[this.state.senior.courseId - 1] }/>
+                {/*<img className="reward-pic" onClick={this.handleClick} src={this.state.type ==='mine' ? this.state.lockPicHQ[this.state.senior.courseId - 1] : this.state.lockPic[this.state.senior.courseId - 1] }/>*/}
+                <img src={this.state.shareImgUrl}/>
+                {this.renderShareCard()}
                 {this.buttonRender()}
             </div>
         )
     },
-
+    renderShareCard () {
+        return (
+            <div className="reward-pic" ref="shareImg">
+                <p>name</p>
+                <p>course</p>
+                <img className="card-qrcode" src='' alt=""/>
+            </div>
+        )
+    },
     renderTitle() {
         if(this.state.type ==='mine') {
             return (<div className="card-title">
