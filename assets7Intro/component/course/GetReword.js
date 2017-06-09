@@ -217,6 +217,10 @@ const GetReward = React.createClass({
     render() {
         return(
             <div className="get-reward" style = {{backgroundImage: 'url("./assets7Intro/image/course/bg_1.png")',width: Dimensions.getWindowWidth(), height: Dimensions.getWindowHeight()}}>
+                <p>是否可以分享{this.state.freeChance ? 'true' : 'false'}</p>
+                <p>是否是付费用户{this.state.isPay ? 'true' : 'false'}</p>
+                <p>是否是免费链接{this.state.freeRewardLink ? 'true' : 'false'}</p>
+                {/*<div>进入时,这门课程的状态时{this.props.location.query.name}</div>*/}
                 {this.renderFinishCard()}
                 <img className="reward-light" onClick={this.handleClick} src={this.state.type ==='mine' ? './assets7Intro/image/course/bglight_b.png' : './assets7Intro/image/course/bglight.png'}/>
             </div>
