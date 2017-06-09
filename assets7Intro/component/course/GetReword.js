@@ -60,13 +60,18 @@ const GetReward = React.createClass({
                 headImg: '',
                 userId: '',
             },
-            friendName: '',
-            myName: ''
+            friendInfo: {
+                headImg: '',
+                name: '',
+            },
+            myName: '',
+            freeChance: false,//是否可以分享
+            isPay: false,
+            freeRewardLink: false,//是否是试听链接
         };
     },
 
     componentWillMount() {
-        console.log('get reward');
         let userId;
         //判定是否有分享成就卡
         this.state.senior.courseId = Util.getUrlPara('courseId');
@@ -91,11 +96,38 @@ const GetReward = React.createClass({
             this.state.senior.name = Util.getUrlPara('name');
             this.state.senior.rank = Util.getUrlPara('rank');
             this.setState({type: 'other'});
-            Material.getShareInfo(userId).always( (name)=>{
-                this.setState({friendName: name});
-                // this.setShareConfig();
-            });
+            //todo 如果是试听分享链接
+            if (Util.getUrlPara('freeLesson')) {
+                //todo sta 下线_进入_GetReword
+                this.setState({freeRewardLink: true});
+                //todo 获得所有绑定的名字,并保存这些名字
+                Material.getShareInfo(userId).always( (name)=>{
+                    //todo 获得下线的头像和名字
+                    this.state.friendInfo.name = name;
+                    this.setState({friendInfo: this.state.friendInfo});
+                    // this.setShareConfig();
+                });
+            }
         } else {//查看自己的
+            //判定用户类型
+            Material.getJudgeFromServer().done((result)=>{
+                Loading.hideLoading();
+                if(result){
+                    this.setState({
+                        isPay: true,
+                    });
+                    //是否是当天完成的?
+                    //todo
+                    //设置分享权限
+                    this.setState({
+                        freeChance: true,
+                    });
+                    //设置分享内容
+                    this.setShareConfig('freeChance');
+                }
+            });
+            //1是否是付费用户?
+                //2是否是当天完成?
             userId = User.getUserInfo().userId;
             Material.postData('上线_进入_getReward');
             //获得课程的Id
@@ -129,7 +161,21 @@ const GetReward = React.createClass({
      * @param fmid
      * @param title
      */
-    setShareConfig() {
+    setShareConfig(type) {
+        switch (type) {
+            //分享当日免费课
+            case 'freeChance':
+                let senior = this.state.senior;
+                let shareTitle = '我是第'+ this.state.senior.rank+'名完成'+this.state.shareTitle[ this.state.senior.courseId - 1] + '课的人，dialog按时完成课程的奖励',
+                    link = Util.getShareLink(),
+                    desc = 'dialog这是赠送的免费课';
+                link = link + '&goPath=' + '/getReward/' + senior.courseId;
+                link = link + '&courseId=' + senior.courseId;
+                link = link + '&name=' + senior.name;
+                link = link + '&rank=' + senior.rank;
+                link = link + '&freeLesson=true';
+                WxConfig.shareConfig(shareTitle,desc,link);
+        }
         let senior = this.state.senior;
         let shareTitle = '我是第'+ this.state.senior.rank+'名完成'+this.state.shareTitle[ this.state.senior.courseId - 1] + '课的人，快来看看我的成就卡吧！',
             link = Util.getShareLink(),

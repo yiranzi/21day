@@ -120,6 +120,12 @@ const API_URL_GROUP = {
     //数据上报
     'post_statistic_data': '7day/data/statistical',//下线报名
 
+    //基金课
+    'get_shares_info': 'ctplus/lower-names/{userId}/{dayId}',//获取上线的连接分享的人数
+
+
+
+
 
 
 };
@@ -608,27 +614,34 @@ class Util {
         } else if (Util.getUrlPara('rank') ) {
             shareType = 'graduated';
         }
+        let linkParamsTypes = ['freeLesson','courseId','rank'];
+        let shareTypes = ['freeLesson','finish','graduated'];
+        for(let i = 0 ;i < linkParamsTypes.length; i++) {
+            if(Util.getUrlPara(linkParamsTypes[i])) {
+                shareType = shareTypes[i];
+                break;
+            }
+        }
 
         if(shareType){
-
             switch (shareType) {
+                case 'freeLesson':
+                    redirectUri = redirectUri + prefix + 'goPath=' + Util.getUrlPara('goPath');
+                    redirectUri = redirectUri + prefix + 'freeLesson=' + Util.getUrlPara('freeLesson');
+                    redirectUri = redirectUri + prefix + 'courseId=' + Util.getUrlPara('courseId');
+                    redirectUri = redirectUri + prefix + 'name=' + Util.getUrlPara('name');
+                    redirectUri = redirectUri + prefix + 'rank=' + Util.getUrlPara('rank');
+                    prefix = '&';
+                    break;
                 case 'finish':
-                    if(Util.getUrlPara('goPath') !== null) {
-                        redirectUri = redirectUri + prefix + 'goPath=' + Util.getUrlPara('goPath');
-                    } else {
-                        redirectUri = redirectUri + prefix + 'goPath=' + '/getReward/' + Util.getUrlPara('courseId');
-                    }
+                    redirectUri = redirectUri + prefix + 'goPath=' + Util.getUrlPara('goPath');
                     redirectUri = redirectUri + prefix + 'courseId=' + Util.getUrlPara('courseId');
                     redirectUri = redirectUri + prefix + 'name=' + Util.getUrlPara('name');
                     redirectUri = redirectUri + prefix + 'rank=' + Util.getUrlPara('rank');
                     prefix = '&';
                     break;
                 case 'graduated':
-                    if(Util.getUrlPara('goPath') !== null) {
-                        redirectUri = redirectUri + prefix + 'goPath=' + Util.getUrlPara('goPath');
-                    } else {
-                        redirectUri = redirectUri + prefix + 'goPath=' + '/getGraduated';
-                    }
+                    redirectUri = redirectUri + prefix + 'goPath=' + Util.getUrlPara('goPath');
                     redirectUri = redirectUri + prefix + 'name=' + Util.getUrlPara('name');
                     redirectUri = redirectUri + prefix + 'rank=' + Util.getUrlPara('rank');
                     prefix = '&';
