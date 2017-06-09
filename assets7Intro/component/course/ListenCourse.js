@@ -127,6 +127,8 @@ const ListenCourse = React.createClass({
                     this.setState({
                         isPay: true,
                     });
+                } else {
+
                 }
             });
             this.state.lessons = progressData;
@@ -301,7 +303,7 @@ const ListenCourse = React.createClass({
         if (type === 1) {
             this.fixProcess();
             Util.postCnzzData("第一次点击成就卡");
-            if (this.state.isPay) {
+            if (!this.state.isPay) {
                 Material.postData('免费_完成课程' + this.props.params.courseId +'_Listy');
             }
         } else {

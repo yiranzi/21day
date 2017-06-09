@@ -398,16 +398,15 @@ var PayPage = React.createClass({
 
                 {/*。。。。从上线发的链接打开时展示*/}
                 {/*{this.state.hasSenior && <SeniorInfo/>}*/}
-                {/*TODO 删除掉无用的逻辑*/}
+                {/*删除掉无用的逻辑*/}
                 {/*点击报名但没有查到用户信息时提示加群*/}
                 {/*{this.state.showBackup && <a className="backup-text" href="http://jq.qq.com/?_wv=1027&k=41976jN">QQ群号：*/}
                     {/*<span className="red-text">429827363</span>*/}
                     {/*<p className="red-text  tada animated infinite">暗号：7天</p></a>}*/}
                 {/*如果未报名，并且不是下线，则显示报名时间和人数*/}
-                {/*TODO yiran测试屏蔽*/}
                 {!this.state.hasPaid &&
                 <div>
-                   {/*!this.state.hasSenior && <div>
+                   {!this.state.hasSenior && <div>
                        <div className="top-time-bottom">
                            <div className="top-time">
                                <Timeout hasEnded={this.state.time} finalDate={this.state.endTime}/>
@@ -419,7 +418,7 @@ var PayPage = React.createClass({
                                {this.state.showint ? <span>{this.state.num}</span>:<span>0</span>}
                            </div>
                        </div>
-                    </div>*/}
+                    </div>}
 
                     <img src="./assets7Intro/image/bg.png" className={this.state.hasSenior ? "intro-img-has-senior" : "intro-img"}/>
                 </div> }
@@ -464,11 +463,11 @@ var PayPage = React.createClass({
                 {/*}*/}
 
                 {/*普通用户底部购买按钮*/}
-                {/*TODO yiran 测试屏蔽*/}
+                {/*TODO 测试屏蔽掉邀请好友*/}
                 {(!this.state.hasPaid && !this.state.isFreeUser) &&
                     <div className="bottom-button">
-                        {/*{((this.state.time || !this.state.showint ) && !this.state.hasSenior) ? <span onClick={this.didClickHandler}  className="join-button">还想报名？点我！</span> : <span onClick={this.clickHandler}  className={!this.state.hasSenior ?"join-button":"whole-join-button"}>立即参加（{this.state.buttonPrice}元）</span>}*/}
-                        {<span onClick={this.clickHandler}  className={!this.state.hasSenior ?"join-button":"whole-join-button"}>立即参加（{this.state.buttonPrice}元）</span>}
+                        {((this.state.time || !this.state.showint ) && !this.state.hasSenior) ? <span onClick={this.didClickHandler}  className="join-button">还想报名？点我！</span> : <span onClick={this.clickHandler}  className={!this.state.hasSenior ?"join-button":"whole-join-button"}>立即参加（{this.state.buttonPrice}元）</span>}
+                        {/*{<span onClick={this.clickHandler}  className={!this.state.hasSenior ?"join-button":"whole-join-button"}>立即参加（{this.state.buttonPrice}元）</span>}*/}
                         {/*<span className="share-button" onClick={this.shareModalHandler}>邀请好友</span>*/}
                         <span className="free-lesson-button" onClick={this.freeLesson}>免费试听</span>
                     </div>
