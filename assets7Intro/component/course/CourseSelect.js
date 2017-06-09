@@ -36,6 +36,11 @@ const CourseSelect = React.createClass({
         //判断连接是否需要跳转
         let goPath = Util.getUrlPara('goPath');
         if(goPath){
+            let getWhere = Util.getUrlPara('getWhere');
+            if (getWhere) {
+                Material.postData('网页人' + getWhere +'_进入_CourseSelect');
+                console.log(getWhere);
+            }
             location.hash = goPath;
             return;
         }
