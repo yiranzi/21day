@@ -492,6 +492,7 @@ var PayPage = React.createClass({
 
     freeLesson() {
         // location.hash = '/select';
+        Material.postData('免费_试听_PayPage');
         location.hash = 'course/1/free'
     }
 

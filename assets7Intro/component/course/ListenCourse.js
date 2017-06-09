@@ -86,7 +86,9 @@ const ListenCourse = React.createClass({
             });
 
             Util.postCnzzData("听完", this.state.lessons[this.state.currentPlaying].fmid);
-
+            if (!this.state.isPay && this.props.params.courseId === 1) {
+                Material.postData('免费_完成音频' + this.state.lessons[this.state.currentPlaying].fmid);
+            }
         });
 
         OnFire.on('Course_AutoMove', ()=>{
@@ -264,6 +266,7 @@ const ListenCourse = React.createClass({
     },
 
     goSign() {
+        Material.postData('免费_跳转报名_ListenCourse');
         location.hash = '/payPage';
     },
 

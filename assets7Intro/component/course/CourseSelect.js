@@ -63,7 +63,6 @@ const CourseSelect = React.createClass({
                 this.state.allowLesson = 'PAY';
                 this.init();
             } else{ // 未购买直接跳到购买页面
-                Material.postData('免费_进入_CourseSelect');
                 this.state.allowLesson = 'FREE';
                 location.hash = "/payPage";
             }
