@@ -51,11 +51,35 @@ class Material {
         return res;
     }
 
-    /***
-     * 判断是否报名
-     * @param albumId
-     * @returns {*}
-     */
+
+    static getJudgeFromServerPromise() {
+        var User = require('./User');
+        const Util = require('./Util'),
+            apiUrl = Util.getAPIUrl('get_judge_signup');
+        let userInfo = User.getUserInfo();
+        return new Promise((resolve, reject) => {
+            $.ajax(
+                {
+                    url: apiUrl,
+                    type: 'put',
+                    cache: false,
+                    contentType: 'application/json;charset=utf-8',
+                    headers: {
+                        Accept: 'application/json'
+                    },
+                    beforeSend: (request)=>{
+                        request.setRequestHeader("X-iChangTou-Json-Api-Token", Util.getApiToken());
+                        request.setRequestHeader("X-iChangTou-Json-Api-User", userInfo.userId);
+                    }
+                }
+            )
+        }).then(data => {
+            resolve(data)
+        }, err => {
+            reject(err)
+        })
+    }
+
     static getJudgeFromServer() {
         var User = require('./User');
         const Util = require('./Util'),
@@ -76,6 +100,56 @@ class Material {
                 }
             }
         )
+    }
+
+    static getCanUserShareFreeSub (userId) {
+        const User = require('./User');
+        const Util = require('./Util'),
+            apiUrl = Util.getAPIUrl('get_judge_signup');
+        const userid = userId || User.getUserInfo().userId;
+        return $.ajax(
+            {
+                url: apiUrl,
+                type: 'get',
+                cache: false,
+                contentType: 'application/json;charset=utf-8',
+                headers: {
+                    Accept: 'application/json'
+                },
+                beforeSend: (request)=>{
+                    request.setRequestHeader("X-iChangTou-Json-Api-Token", Util.getApiToken());
+                    request.setRequestHeader("X-iChangTou-Json-Api-User", userId);
+                }
+            }
+        )
+    }
+
+    static getCanUserShareFreeSubPromise (userId) {
+        const User = require('./User');
+        const Util = require('./Util'),
+            apiUrl = Util.getAPIUrl('get_judge_signup');
+        const userid = userId || User.getUserInfo().userId;
+        return new Promise((resolve, reject) => {
+            $.ajax(
+                {
+                    url: apiUrl,
+                    type: 'get',
+                    cache: false,
+                    contentType: 'application/json;charset=utf-8',
+                    headers: {
+                        Accept: 'application/json'
+                    },
+                    beforeSend: (request)=>{
+                        request.setRequestHeader("X-iChangTou-Json-Api-Token", Util.getApiToken());
+                        request.setRequestHeader("X-iChangTou-Json-Api-User", userId);
+                    }
+                }
+            )
+        }).then(data => {
+            resolve(data)
+        }, err => {
+            reject(err)
+        })
     }
 
     /**

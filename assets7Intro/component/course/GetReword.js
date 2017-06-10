@@ -53,6 +53,14 @@ const GetReward = React.createClass({
                 });
             }
             this.state.senior.userId = userId;
+            Material.getJudgeFromServer().done(
+                data => {
+                    this.setState({
+                        isSeniorShare: data
+                    })
+
+                }
+            )
             Material.getOtherHeadImage(userId).always( (img)=>{
                 this.state.senior.headImg = img.responseText;
                 this.setState({senior: this.state.senior});
