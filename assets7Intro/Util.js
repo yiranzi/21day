@@ -88,29 +88,10 @@ const API_URL_GROUP = {
     'get_pay_openid': 'wx/h5/base/pay/openId',
     'get_first_share': '21enter/first-share',
 
-    //7day
-    'get_registered': '7day/signUpNumber/' + CURRENT_BATCH,//获取报名人数
-
     //音频
     'get_fmid_info': 'fm/broadcast/{fmId}',
-    'get_judge_signup': '7eval/judgeusersignup/{albumId}', //判断用户是否购买
-
-    'finish_work': '7day/complete/{type}/{id}', //判断用户关卡进度
-    'have_start_lesson': '7day/firstlisten/{fmid}', //判断用户关卡进度
-    //用户是否已报名
-    'get_judge_signup': '7day/judgeusersignup/' + CURRENT_BATCH, //判断用户是否购买
-
-    //宝箱
-    'get_treasure_info': '7day/whetheropengift', //判断用户领了哪些宝箱
-    'open_treasure': '7day/opengift', //领取宝箱
-
-    //
     'post_audio_time': 'fm/learn-audio-record', //学习时间和排名
 
-
-    //获取进度
-    'get_course_finish_rank': '7day/subject-ranking/{userId}/{subjectId}',//获得这一课的排名
-    'get_graduated_finish_rank': '7day/graduation/ranking',//获得这一课的排名
     'get_other_headinfo': '7day/user-image/{userId}',//获取用户头像
 
     //毕业分享
@@ -134,12 +115,32 @@ const API_URL_GROUP = {
     'get_free_lesson': 'ctplus/free-share',//下线免费领取当日课程
     'get_upstream_share': 'ctplus/share/{dayId}',//上线当天按时完成课程
 
+    'get_registered': 'ctplus/signUpNumber/{courseId}',//获取报名人数和是否已到截止日期
 
+    //用户是否已报名
+    'get_judge_signup': '/ctplus/WhetherSignUp/{courseId}', //判断用户是否购买
+
+    //音频
+    'have_start_lesson': 'ctplus/firstlisten/{fmid}', //判断用户关卡进度
+
+    'finish_work': 'ctplus/complete/{type}/{id}', //判断用户关卡进度
+
+    //获取进度
+    'get_course_finish_rank': 'ctplus/subject-ranking/{userId}/{dayId}',//获得这一课的排名
+    'get_graduated_finish_rank': 'ctplus/graduation-ranking/{courseId}',//获得这一课的排名
+
+    //宝箱
+    'get_treasure_info': 'ctplus/whetheropengift/{courseId}', //判断用户领了哪些宝箱
+    'open_treasure': 'ctplus/opengift/{courseId}', //领取宝箱
+
+    //笔记卡
+    'get_notes': 'ctplus/notes/{dayId}', //获取笔记卡内容
 
 };
 
 class Util {
 
+    /**
     /**
      * 获取API token
      * @returns {string}

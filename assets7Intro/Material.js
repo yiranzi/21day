@@ -61,7 +61,7 @@ class Material {
     static getJudgeFromServer() {
         var User = require('./User');
         const Util = require('./Util'),
-            apiUrl = Util.getAPIUrl('get_judge_signup');
+            apiUrl = Util.getAPIUrl('get_judge_signup').replace('{courseId}',COURSE_ID);
         let userInfo = User.getUserInfo();
         return $.ajax(
             {
@@ -279,7 +279,7 @@ class Material {
         const Util = require('./Util');
         const User = require('./User');
 
-        let apiUrl = Util.getAPIUrl('get_registered');
+        let apiUrl = Util.getAPIUrl('get_registered').replace('{courseId}',COURSE_ID);
 
         return $.ajax({
             url: apiUrl,
@@ -402,7 +402,7 @@ class Material {
     static getTreasureInfo() {
         var User = require('./User');
         const Util = require('./Util'),
-            apiUrl = Util.getAPIUrl('get_treasure_info');
+            apiUrl = Util.getAPIUrl('get_treasure_info').replace('{courseId}',COURSE_ID);
         let userInfo = User.getUserInfo();
         return $.ajax(
             {
@@ -427,7 +427,7 @@ class Material {
     static openTreasure() {
         var User = require('./User');
         const Util = require('./Util'),
-            apiUrl = Util.getAPIUrl('open_treasure');
+            apiUrl = Util.getAPIUrl('open_treasure').replace('{courseId}',COURSE_ID);
         let userInfo = User.getUserInfo();
         return $.ajax(
             {
@@ -449,10 +449,10 @@ class Material {
     /***
      * 获取排名
      */
-    static courseFinishRank(subjectId,userId) {
+    static courseFinishRank(dayId,userId) {
         var User = require('./User');
         const Util = require('./Util'),
-            apiUrl = Util.getAPIUrl('get_course_finish_rank').replace('{userId}',userId).replace('{subjectId}',subjectId);
+            apiUrl = Util.getAPIUrl('get_course_finish_rank').replace('{userId}',userId).replace('{dayId}',dayId);
         return $.ajax(
             {
                 url: apiUrl,
@@ -476,7 +476,7 @@ class Material {
     static getGraduatedRank() {
         var User = require('./User');
         const Util = require('./Util'),
-            apiUrl = Util.getAPIUrl('get_graduated_finish_rank');
+            apiUrl = Util.getAPIUrl('get_graduated_finish_rank').replace('{courseId}',COURSE_ID);
         let userInfo = User.getUserInfo();
         return $.ajax(
             {
