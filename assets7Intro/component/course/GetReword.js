@@ -109,28 +109,8 @@ const GetReward = React.createClass({
                 });
             }
         } else {//查看自己的
-            //判定用户类型
-            Material.getJudgeFromServer().done((result)=>{
-                Loading.hideLoading();
-                if(result){
-                    this.setState({
-                        isPay: true,
-                    });
-                    //是否是当天完成的?
-                    //todo
-                    //设置分享权限
-                    this.setState({
-                        freeChance: true,
-                    });
-                    //设置分享内容
-                    this.setShareConfig('freeChance');
-                }
-            });
-            //1是否是付费用户?
-                //2是否是当天完成?
             userId = User.getUserInfo().userId;
             Material.postData('上线_进入_getReward');
-            //获得课程的Id
             let courseId = this.props.params.courseId;
             this.setState({type: 'mine'});
             this.setState({userInfo: User.getUserInfo()});
@@ -141,7 +121,30 @@ const GetReward = React.createClass({
                 this.state.senior.rank = data;
                 this.state.senior.courseId = this.props.params.courseId;
                 this.setState({senior: this.state.senior});
-                this.setShareConfig();
+
+                //1是否是付费用户?
+                Material.getJudgeFromServer().done((result)=>{
+                    Loading.hideLoading();
+                    //付费用户分享
+                    if(result){
+                        this.setState({
+                            isPay: true,
+                        });
+                        //2是否是当天完成?
+                        //todo
+                        //设置分享权限
+                        this.setState({
+                            freeChance: true,
+                        });
+                        //设置分享内容
+                        this.setShareConfig('freeChance');
+                    }
+                    //免费用户分享分享的
+                    else
+                    {
+                        this.setShareConfig('share');
+                    }
+                });
                 Loading.hideLoading();
             })
         }
@@ -162,38 +165,52 @@ const GetReward = React.createClass({
      * @param title
      */
     setShareConfig(type) {
+        let senior = this.state.senior;
+        let shareTitle;
+        let link = Util.getShareLink();
+        let desc;
         switch (type) {
-            //分享当日免费课
+            //分享当日免费课(高级分享)
             case 'freeChance':
-                let senior = this.state.senior;
-                let shareTitle = '我是第'+ this.state.senior.rank+'名完成'+this.state.shareTitle[ this.state.senior.courseId - 1] + '课的人，dialog按时完成课程的奖励',
-                    link = Util.getShareLink(),
-                    desc = 'dialog这是赠送的免费课';
+                shareTitle = '我是第'+ this.state.senior.rank+'名完成'+this.state.shareTitle[ this.state.senior.courseId - 1] + '课的人，dialog按时完成课程的奖励';
+                desc = 'dialog这是赠送的免费课';
                 link = link + '&goPath=' + '/getReward/' + senior.courseId;
                 link = link + '&courseId=' + senior.courseId;
                 link = link + '&name=' + senior.name;
                 link = link + '&rank=' + senior.rank;
                 link = link + '&freeLesson=true';
                 WxConfig.shareConfig(shareTitle,desc,link);
+                break;
+            //普通分享
+            case 'share':
+                senior = this.state.senior;
+                shareTitle = '我是第'+ this.state.senior.rank+'名完成'+this.state.shareTitle[ this.state.senior.courseId - 1] + '课的人，快来看看我的成就卡吧！';
+                desc = '快比比谁的财商更高吧?';
+                link = link + '&goPath=' + '/getReward/' + senior.courseId;
+                link = link + '&courseId=' + senior.courseId;
+                link = link + '&name=' + senior.name;
+                link = link + '&rank=' + senior.rank;
+                WxConfig.shareConfig(shareTitle,desc,link);
+                break;
+            default:
+                console.log('error')
         }
-        let senior = this.state.senior;
-        let shareTitle = '我是第'+ this.state.senior.rank+'名完成'+this.state.shareTitle[ this.state.senior.courseId - 1] + '课的人，快来看看我的成就卡吧！',
-            link = Util.getShareLink(),
-            desc = '快比比谁的财商更高吧?';
-        link = link + '&goPath=' + '/getReward/' + senior.courseId;
-        link = link + '&courseId=' + senior.courseId;
-        link = link + '&name=' + senior.name;
-        link = link + '&rank=' + senior.rank;
-        WxConfig.shareConfig(shareTitle,desc,link);
     },
-
 
     handleClick() {
         location.hash = "/select";
     },
 
-    // + '&code=' + Util.getUrlPara('code')
+    //上线点击
+    goCommand() {
+        Util.postCnzzData("成就页面点击分享");
+        Material.postData('上线_点击_getReward');
+        window.dialogAlertComp.show('快快分享你的进步吧','点击右上角三个点点，分享到你的朋友圈吧！','好哒师兄',()=>{},()=>{},false);
+    },
+
+    //下线点击
     goSignUp() {
+        //todo 数据统计 下线点击
         Util.postCnzzData("成就页面报名");
         if (User.getUserInfo().userId) {
             Material.postData('下线_点击_getReward');
@@ -202,9 +219,30 @@ const GetReward = React.createClass({
                 Material.postData('下线_点击_getReward');
             });
         }
-        let url = Util.getHtmlUrl() + '?ictchannel=' + Util.getUrlPara('ictchannel');
+
+        //如果是高级链接
+        if (this.state.freeRewardLink) {
+            Material.GetFreeShareLesson('下线_点击_getReward');
+            //如果还有名额
+            if (true) {
+                //如果不是付费用户.就能领取.上线id,课程id
+                if(!this.state.isPay){
+                    Material.GetFreeShareLesson(userId,dayId);
+                }
+                location.hash = '/course/' + this.state.senior.courseId + '/free';
+            } else {
+                location.hash = '/select';
+            }
+        }
+        //如果是普通链接
+        else
+        {
+
+        }
+
+        // let url = Util.getHtmlUrl() + '?ictchannel=' + Util.getUrlPara('ictchannel');
         // location.href = url;
-        location.hash = '/course/' + this.state.senior.courseId + '/free';
+
 
 
         // let url = Util.getHtmlUrl() + '?ictchannel=' + Util.getUrlPara('ictchannel');
@@ -213,6 +251,8 @@ const GetReward = React.createClass({
         // location.href = url;
         // location.href = '/course/' + (this.state.senior.courseId + 1);
     },
+
+
 
     render() {
         return(
@@ -249,16 +289,12 @@ const GetReward = React.createClass({
             return (<div className="card-title">
                 {this.renderFont(this.state.senior.name+'是')}
                 {this.renderFont('第' + this.state.senior.rank+'名')}
-                {this.renderFont('完成'+this.state.shareTitle[this.state.senior.courseId - 1] + '课的学员')}
+                {this.renderFont('完成'+this.state.shareTitle[this.state.senior.courseId - 1] + '课的学员哦哦')}
             </div>)
         }
     },
 
-    goCommand() {
-        Util.postCnzzData("成就页面点击分享");
-        Material.postData('上线_点击_getReward');
-        window.dialogAlertComp.show('快快分享你的进步吧','点击右上角三个点点，分享到你的朋友圈吧！','好哒师兄',()=>{},()=>{},false);
-    },
+
 
     buttonRender() {
         let arr = [];
@@ -268,7 +304,7 @@ const GetReward = React.createClass({
                 <p className="button-p">我要分享</p>
             </div>
         } else {
-            return <div className="reward-button" onClick = {this.goSignUp.bind(this,1)}>
+            return <div className="reward-button" onClick = {this.goSignUp}>
                 <img className="button-img" src={'./assets7Intro/image/course/btnSignin.png'}/>
                 <p className="button-p">我也去看看</p>
             </div>

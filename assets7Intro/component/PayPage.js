@@ -466,8 +466,8 @@ var PayPage = React.createClass({
                 {/*TODO 测试屏蔽掉邀请好友*/}
                 {(!this.state.hasPaid && !this.state.isFreeUser) &&
                     <div className="bottom-button">
-                        {((this.state.time || !this.state.showint ) && !this.state.hasSenior) ? <span onClick={this.didClickHandler}  className="join-button">还想报名？点我！</span> : <span onClick={this.clickHandler}  className={!this.state.hasSenior ?"join-button":"whole-join-button"}>立即参加（{this.state.buttonPrice}元）</span>}
-                        {/*{<span onClick={this.clickHandler}  className={!this.state.hasSenior ?"join-button":"whole-join-button"}>立即参加（{this.state.buttonPrice}元）</span>}*/}
+                        {/*{((this.state.time || !this.state.showint ) && !this.state.hasSenior) ? <span onClick={this.didClickHandler}  className="join-button">还想报名？点我！</span> : <span onClick={this.clickHandler}  className={!this.state.hasSenior ?"join-button":"whole-join-button"}>立即参加（{this.state.buttonPrice}元）</span>}*/}
+                        {<span onClick={this.clickHandler}  className={!this.state.hasSenior ?"join-button":"whole-join-button"}>立即参加（{this.state.buttonPrice}元）</span>}
                         {/*<span className="share-button" onClick={this.shareModalHandler}>邀请好友</span>*/}
                         <span className="free-lesson-button" onClick={this.freeLesson}>免费试听</span>
                     </div>

@@ -603,6 +603,35 @@ class Material {
         )
     }
 
+    //数据上报
+    static GetFreeShareLesson(userId,dayId) {
+        var User = require('./User');
+        const Util = require('./Util'),
+            apiUrl = Util.getAPIUrl('get_free_lesson');
+        let userInfo = User.getUserInfo();
+        let jsonData = JSON.stringify({
+            userId: userId,
+            dayId: dayId,
+        });
+        // alert(eventName + '/' + userInfo.userId);
+        return $.ajax(
+            {
+                url: apiUrl,
+                type: 'post',
+                data: jsonData,
+                cache: false,
+                contentType: 'application/json;charset=utf-8',
+                headers: {
+                    Accept: 'application/json'
+                },
+                beforeSend: (request)=>{
+                    request.setRequestHeader("X-iChangTou-Json-Api-Token", Util.getApiToken());
+                    request.setRequestHeader("X-iChangTou-Json-Api-User", userInfo.userId);
+                }
+            }
+        )
+    }
+
 
 
 
