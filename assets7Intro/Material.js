@@ -15,6 +15,8 @@ var PRIZE_INFO = [];
 //兑换奖品记录
 var PRIZE_RECORD = [];
 
+var COURSE_ID = 1;//基金课
+
 const BACKUP_QQ = [
     {
         QQNum: 'Max后备群1', //QQ群号
@@ -376,7 +378,7 @@ class Material {
         const User = require('./User');
 
         // let userInfo = User.getUserInfo();
-        let apiUrl = Util.getAPIUrl('get_course_list');
+        let apiUrl = Util.getAPIUrl('get_course_list').replace('{courseId}',COURSE_ID);
 
         return $.ajax({
             url: apiUrl,
@@ -396,10 +398,10 @@ class Material {
     /***
      * 获得课程进度和内容
      */
-    static getCourseProgress(checkpointid){
+    static getCourseProgress(dayId){
         var User = require('./User');
         const Util = require('./Util'),
-            apiUrl = Util.getAPIUrl('get_course_progress').replace('{checkpointid}',checkpointid);
+            apiUrl = Util.getAPIUrl('get_course_progress').replace('{dayId}',dayId);
         let userInfo = User.getUserInfo();
         return $.ajax(
             {
@@ -593,30 +595,6 @@ class Material {
     }
 
 
-    /***
-     * 获得上线免费报名的名额信息
-     */
-    static getShareInfo(userId) {
-        var User = require('./User');
-        const Util = require('./Util'),
-            apiUrl = Util.getAPIUrl('get_share_info').replace('{userId}',userId);
-        let userInfo = User.getUserInfo();
-        return $.ajax(
-            {
-                url: apiUrl,
-                type: 'get',
-                cache: false,
-                contentType: 'application/json;charset=utf-8',
-                headers: {
-                    Accept: 'application/json'
-                },
-                beforeSend: (request)=>{
-                    request.setRequestHeader("X-iChangTou-Json-Api-Token", Util.getApiToken());
-                    request.setRequestHeader("X-iChangTou-Json-Api-User", userInfo.userId);
-                }
-            }
-        )
-    }
 
 
     /***
@@ -673,7 +651,83 @@ class Material {
         )
     }
 
+    //基金课
+    /***
+     * 获得上线免费报名的名额信息
+     */
+    static getShareInfo(userId,dayId) {
+        var User = require('./User');
+        const Util = require('./Util'),
+            apiUrl = Util.getAPIUrl('get_shares_info').replace('{userId}',userId).replace('{dayId}',dayId);
+        let userInfo = User.getUserInfo();
+        return $.ajax(
+            {
+                url: apiUrl,
+                type: 'get',
+                cache: false,
+                contentType: 'application/json;charset=utf-8',
+                headers: {
+                    Accept: 'application/json'
+                },
+                beforeSend: (request)=>{
+                    request.setRequestHeader("X-iChangTou-Json-Api-Token", Util.getApiToken());
+                    request.setRequestHeader("X-iChangTou-Json-Api-User", userInfo.userId);
+                }
+            }
+        )
+    }
 
+    //获取免费课程
+    static GetFreeShareLesson(userId,dayId) {
+        var User = require('./User');
+        const Util = require('./Util'),
+            apiUrl = Util.getAPIUrl('get_free_lesson');
+        let userInfo = User.getUserInfo();
+        let jsonData = JSON.stringify({
+            userId: userId,
+            dayId: dayId,
+        });
+        // alert(eventName + '/' + userInfo.userId);
+        return $.ajax(
+            {
+                url: apiUrl,
+                type: 'post',
+                data: jsonData,
+                cache: false,
+                contentType: 'application/json;charset=utf-8',
+                headers: {
+                    Accept: 'application/json'
+                },
+                beforeSend: (request)=>{
+                    request.setRequestHeader("X-iChangTou-Json-Api-Token", Util.getApiToken());
+                    request.setRequestHeader("X-iChangTou-Json-Api-User", userInfo.userId);
+                }
+            }
+        )
+    }
+
+    //查询上线当天课程按时完成,获得对应的分享权限.
+    static getUpstreamShare(dayId) {
+        var User = require('./User');
+        const Util = require('./Util'),
+            apiUrl = Util.getAPIUrl('get_upstream_share').replace('{dayId}',dayId);
+        let userInfo = User.getUserInfo();
+        return $.ajax(
+            {
+                url: apiUrl,
+                type: 'put',
+                cache: false,
+                contentType: 'application/json;charset=utf-8',
+                headers: {
+                    Accept: 'application/json'
+                },
+                beforeSend: (request)=>{
+                    request.setRequestHeader("X-iChangTou-Json-Api-Token", Util.getApiToken());
+                    request.setRequestHeader("X-iChangTou-Json-Api-User", userInfo.userId);
+                }
+            }
+        )
+    }
 
 
 

@@ -94,7 +94,7 @@ const API_URL_GROUP = {
     //音频
     'get_fmid_info': 'fm/broadcast/{fmId}',
     'get_judge_signup': '7eval/judgeusersignup/{albumId}', //判断用户是否购买
-    'get_course_progress': '7day/checkpoint-progress/{checkpointid}', //判断用户关卡进度
+
     'finish_work': '7day/complete/{type}/{id}', //判断用户关卡进度
     'have_start_lesson': '7day/firstlisten/{fmid}', //判断用户关卡进度
     //用户是否已报名
@@ -106,7 +106,7 @@ const API_URL_GROUP = {
 
     //
     'post_audio_time': 'fm/learn-audio-record', //学习时间和排名
-    'get_course_list': '7day/course-list', //学习时间和排名
+
 
     //获取进度
     'get_course_finish_rank': '7day/subject-ranking/{userId}/{subjectId}',//获得这一课的排名
@@ -115,10 +115,24 @@ const API_URL_GROUP = {
 
     //毕业分享
     'get_share_info': '7day/next-level/{userId}',//获取上线是否分享了
-    'put_free_share': '7day/free-signup/{userId}/{username}',//下线报名
+
 
     //数据上报
-    'post_statistic_data': '7day/data/statistical',//下线报名
+    'post_statistic_data': '7day/data/statistical',
+
+    //基金课
+    //支付
+
+    //关卡
+    'get_course_list': 'ctplus/course-list/{courseId}', //3获取用户关卡列表
+    //课程
+    'get_course_progress': 'ctplus/checkpoint-progress/{dayId}', //4获取课程进度
+    //成就卡(分享)
+    'get_shares_info': 'ctplus/lower-names/{userId}/{dayId}',//13查询当前领取名称(上线id)
+
+    //分享
+    'get_free_lesson': 'ctplus/free-share',//下线免费领取当日课程
+    'get_upstream_share': 'ctplus/share/{dayId}',//上线当天按时完成课程
 
 
 
@@ -153,13 +167,19 @@ class Util {
      */
     static getUrlPara( key ) {
         var res = window.location.href.split( key + '=' );
+        let getRes;
         if( res[1] ) {
-            res = decodeURIComponent(res[1].split('&')[0]);
+            getRes = decodeURIComponent(res[1].split('&')[0]);
+            if (getRes === res[1]) {
+                getRes = decodeURIComponent(res[1].split('#')[0]);
+            }
         }else {
-            res = null;
+            getRes = null;
         }
-
-        return res;
+        console.log('------------------------------------');
+        console.log('key' + key);
+        console.log('getRes' + getRes);
+        return getRes;
     }
 
     /**
@@ -601,53 +621,68 @@ class Util {
             prefix = '&';
         }
 
-        //分享卡
-        let shareType;
-        if( Util.getUrlPara('courseId') ) {
-            shareType = 'finish';
-        } else if (Util.getUrlPara('rank') ) {
-            shareType = 'graduated';
-        }
-        let linkParamsTypes = ['getWhere','freeLesson','courseId','rank'];
-        let shareTypes = ['getWhere','freeLesson','finish','graduated'];
-        for(let i = 0 ;i < linkParamsTypes.length; i++) {
-            if(Util.getUrlPara(linkParamsTypes[i])) {
-                shareType = shareTypes[i];
-                break;
-            }
-        }
 
-        if(shareType){
-            switch (shareType) {
-                case 'getWhere':
-                    redirectUri = redirectUri + prefix + 'goPath=' + Util.getUrlPara('goPath');
-                    redirectUri = redirectUri + prefix + 'getWhere=' + Util.getUrlPara('getWhere');
-                    prefix = '&';
-                    break;
-                case 'freeLesson':
-                    redirectUri = redirectUri + prefix + 'goPath=' + Util.getUrlPara('goPath');
-                    redirectUri = redirectUri + prefix + 'freeLesson=' + Util.getUrlPara('freeLesson');
-                    redirectUri = redirectUri + prefix + 'courseId=' + Util.getUrlPara('courseId');
-                    redirectUri = redirectUri + prefix + 'name=' + Util.getUrlPara('name');
-                    redirectUri = redirectUri + prefix + 'rank=' + Util.getUrlPara('rank');
-                    prefix = '&';
-                    break;
-                case 'finish':
-                    redirectUri = redirectUri + prefix + 'goPath=' + Util.getUrlPara('goPath');
-                    redirectUri = redirectUri + prefix + 'courseId=' + Util.getUrlPara('courseId');
-                    redirectUri = redirectUri + prefix + 'name=' + Util.getUrlPara('name');
-                    redirectUri = redirectUri + prefix + 'rank=' + Util.getUrlPara('rank');
-                    prefix = '&';
-                    break;
-                case 'graduated':
-                    redirectUri = redirectUri + prefix + 'goPath=' + Util.getUrlPara('goPath');
-                    redirectUri = redirectUri + prefix + 'name=' + Util.getUrlPara('name');
-                    redirectUri = redirectUri + prefix + 'rank=' + Util.getUrlPara('rank');
-                    prefix = '&';
+        // //分享卡
+        // let shareType;
+        // if( Util.getUrlPara('courseId') ) {
+        //     shareType = 'finish';
+        // } else if (Util.getUrlPara('rank') ) {
+        //     shareType = 'graduated';
+        // }
+        // let linkParamsTypes = ['getWhere','freeLesson','courseId','rank'];
+        // let shareTypes = ['getWhere','freeLesson','finish','graduated'];
+        // for(let i = 0 ;i < linkParamsTypes.length; i++) {
+        //     if(Util.getUrlPara(linkParamsTypes[i])) {
+        //         shareType = shareTypes[i];
+        //         break;
+        //     }
+        // }
+        //
+        // if(shareType){
+        //     switch (shareType) {
+        //         case 'getWhere':
+        //             redirectUri = redirectUri + prefix + 'goPath=' + Util.getUrlPara('goPath');
+        //             redirectUri = redirectUri + prefix + 'getWhere=' + Util.getUrlPara('getWhere');
+        //             prefix = '&';
+        //             break;
+        //         case 'freeLesson':
+        //             redirectUri = redirectUri + prefix + 'goPath=' + Util.getUrlPara('goPath');
+        //             redirectUri = redirectUri + prefix + 'freeLesson=' + Util.getUrlPara('freeLesson');
+        //             redirectUri = redirectUri + prefix + 'courseId=' + Util.getUrlPara('courseId');
+        //             redirectUri = redirectUri + prefix + 'name=' + Util.getUrlPara('name');
+        //             redirectUri = redirectUri + prefix + 'rank=' + Util.getUrlPara('rank');
+        //             prefix = '&';
+        //             break;
+        //         case 'finish':
+        //             redirectUri = redirectUri + prefix + 'goPath=' + Util.getUrlPara('goPath');
+        //             redirectUri = redirectUri + prefix + 'courseId=' + Util.getUrlPara('courseId');
+        //             redirectUri = redirectUri + prefix + 'name=' + Util.getUrlPara('name');
+        //             redirectUri = redirectUri + prefix + 'rank=' + Util.getUrlPara('rank');
+        //             prefix = '&';
+        //             break;
+        //         case 'graduated':
+        //             redirectUri = redirectUri + prefix + 'goPath=' + Util.getUrlPara('goPath');
+        //             redirectUri = redirectUri + prefix + 'name=' + Util.getUrlPara('name');
+        //             redirectUri = redirectUri + prefix + 'rank=' + Util.getUrlPara('rank');
+        //             prefix = '&';
+        //     }
+        //     // redirectUri = redirectUri + prefix + 'mylast';
+        //     // console.log('addddd' + redirectUri);
+        // }
+
+
+        //将基金课需要的参数回补
+        let linkParamsTypes = ['goPath','getWhere','freeLesson','courseId','name','rank'];
+        prefix = '&';
+        // let shareTypes = ['getWhere','freeLesson','finish','graduated'];
+        for(let i = 0 ;i < linkParamsTypes.length; i++) {
+            let getParams = Util.getUrlPara(linkParamsTypes[i]);
+            if(getParams) {
+                redirectUri = redirectUri + prefix + linkParamsTypes[i] + '=' + getParams;
             }
-            // redirectUri = redirectUri + prefix + 'mylast';
-            // console.log('addddd' + redirectUri);
         }
+        // redirectUri = redirectUri + prefix + 'mylast';
+        // console.log('addddd' + redirectUri);
 
         if( isUserInfo ) {
             //区分baseInfo和userInfo
