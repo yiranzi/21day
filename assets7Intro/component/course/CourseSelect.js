@@ -36,6 +36,11 @@ const CourseSelect = React.createClass({
         //判断连接是否需要跳转
         let goPath = Util.getUrlPara('goPath');
         if(goPath){
+            let getWhere = Util.getUrlPara('getWhere');
+            if (getWhere) {
+                Material.postData('网页人' + getWhere +'_进入_CourseSelect');
+                console.log(getWhere);
+            }
             location.hash = goPath;
             return;
         }
@@ -63,7 +68,6 @@ const CourseSelect = React.createClass({
                 this.state.allowLesson = 'PAY';
                 this.init();
             } else{ // 未购买直接跳到购买页面
-                Material.postData('免费_进入_CourseSelect');
                 this.state.allowLesson = 'FREE';
                 location.hash = "/payPage";
             }
@@ -129,8 +133,6 @@ const CourseSelect = React.createClass({
             for (let i = 0; i < courseList.length; i++) {
                 //计算出来状态,并赋值.
                 this.calcCourseStatus(courseList[i], i);
-                console.log(this.state.courseList[i].courseStatus);
-                // arr.push(<div>{this.state.allowLesson}</div>);
                 arr.push(
                     <div className="lesson-bar">
                         <LessonBar  index = {i} content = {this.state.courseList[i]} cbfGoLesson = {this.cbfGoLesson} cbfSeeReward = {this.cbfSeeReward}></LessonBar>
@@ -264,12 +266,13 @@ const CourseSelect = React.createClass({
     // },
 
     //跳转到听课界面
-    cbfGoLesson(course, courseId) {
-        let status = course.courseStatus
+    cbfGoLesson(course, index) {
+        let status = course.courseStatus;
+        let courseId = this.state.courseList[index].id;
         switch (status.enter) {
             case 'free-enter':
                 Material.postData('免费_试听_CourseSelect');
-                location.hash = '/course/' + (courseId + 1);
+                location.hash = '/course/' + courseId;
                 break;
             case 'free-no-pay':
                 Material.postData('免费_禁止_CourseSelect');
@@ -277,7 +280,7 @@ const CourseSelect = React.createClass({
                 {location.hash = '/payPage';Material.postData('免费_跳转购买_CourseSelect');},'先不要',true);
                 break;
             case 'pay':
-                location.hash = '/course/' + (courseId + 1);
+                location.hash = '/course/' + courseId;
                 break;
             case 'no-time':
                 window.dialogAlertComp.show('还没有开放课程哦','每天更新一课哦，耐心等一等吧！','知道啦',()=>{},()=>{},false);
@@ -288,11 +291,11 @@ const CourseSelect = React.createClass({
         }
 
         // if (this.state.allowLesson === 'PAY') {
-        //     location.hash = '/course/' + (courseId + 1);
+        //     location.hash = '/course/' + courseId;
         // } else {
         //     switch (course.type) {
         //         case 'F':
-        //             location.hash = '/course/' + (courseId + 1);
+        //             location.hash = '/course/' + courseId;
         //             break;
         //         case 'P':
         //             //如果免费用户收听付费课程
