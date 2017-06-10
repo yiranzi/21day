@@ -616,8 +616,8 @@ class Util {
         } else if (Util.getUrlPara('rank') ) {
             shareType = 'graduated';
         }
-        let linkParamsTypes = ['freeLesson','courseId','rank'];
-        let shareTypes = ['freeLesson','finish','graduated'];
+        let linkParamsTypes = ['getWhere','freeLesson','courseId','rank'];
+        let shareTypes = ['getWhere','freeLesson','finish','graduated'];
         for(let i = 0 ;i < linkParamsTypes.length; i++) {
             if(Util.getUrlPara(linkParamsTypes[i])) {
                 shareType = shareTypes[i];
@@ -627,6 +627,11 @@ class Util {
 
         if(shareType){
             switch (shareType) {
+                case 'getWhere':
+                    redirectUri = redirectUri + prefix + 'goPath=' + Util.getUrlPara('goPath');
+                    redirectUri = redirectUri + prefix + 'getWhere=' + Util.getUrlPara('getWhere');
+                    prefix = '&';
+                    break;
                 case 'freeLesson':
                     redirectUri = redirectUri + prefix + 'goPath=' + Util.getUrlPara('goPath');
                     redirectUri = redirectUri + prefix + 'freeLesson=' + Util.getUrlPara('freeLesson');
