@@ -10,48 +10,13 @@ const WxConfig = require('../../WxConfig');
 const Util = require('../../Util');
 var OnFire =require('onfire.js');
 const convertHtmlToBase64 = require('../../ImageShare')
+const QRcode = require('../../Qrcode')
 
 const GetReward = React.createClass({
     getInitialState: function() {
 
         return {
             content: this.props.content,
-            lockPic: [
-                "./assets7Intro/image/course/card_1.png",
-                "./assets7Intro/image/course/card_2.png",
-                "./assets7Intro/image/course/card_3.png",
-                "./assets7Intro/image/course/card_4.png",
-                "./assets7Intro/image/course/card_5.png",
-                "./assets7Intro/image/course/card_6.png",
-                "./assets7Intro/image/course/card_7.png",
-            ],
-            lockPicHQ: [
-                "./assets7Intro/image/course/card_1_b.png",
-                "./assets7Intro/image/course/card_2_b.png",
-                "./assets7Intro/image/course/card_3_b.png",
-                "./assets7Intro/image/course/card_4_b.png",
-                "./assets7Intro/image/course/card_5_b.png",
-                "./assets7Intro/image/course/card_6_b.png",
-                "./assets7Intro/image/course/card_7_b.png",
-            ],
-            title: [
-                '第一课',
-                '第二课',
-                '第三课',
-                '第四课',
-                '第五课',
-                '第六课',
-                '第七课',
-            ],
-            shareTitle: [
-                '储蓄',
-                '货币基金',
-                '保险',
-                '债券',
-                '指数基金',
-                '股票',
-                '资产配置',
-            ],
             type: '',
             userInfo: {},
             senior: {
@@ -63,7 +28,9 @@ const GetReward = React.createClass({
             },
             friendName: '',
             myName: '',
-            shareImgUrl: ''
+            shareImgUrl: '',
+            isNoteCardDomShow: true,
+            isSeniorShare: false
         };
     },
 
@@ -117,13 +84,23 @@ const GetReward = React.createClass({
         }
     },
     componentDidMount () {
+        const rewardQrcode = document.getElementById('reward-qrcode')
+        new QRcode(document.getElementById('reward-qrcode'), {
+            text: window.location.href,
+            width: rewardQrcode.offsetWidth,
+            height: rewardQrcode.offsetHeight,
+            colorDark: '#000',
+            colorLight: '#fff',
+            correctLevel: QRcode.CorrectLevel.H
+        })
         const element = document.getElementsByClassName('reward-pic')[0]
         const width = element.offsetWidth
         const height = element.offsetHeight
         convertHtmlToBase64(element, height, width).then(
             base64 => {
                 this.setState({
-                    shareImgUrl: base64
+                    shareImgUrl: base64,
+                    isNoteCardDomShow: false
                 })
             }
         )
@@ -191,23 +168,26 @@ const GetReward = React.createClass({
     },
 
     renderFinishCard() {
+        const isNoteCardDomShow = this.state.isNoteCardDomShow
         return(
             <div>
                 {this.renderTitle()}
                 {/*<img className="reward-light" onClick={this.handleClick} src={'./assets7Intro/image/course/bglight.png'}/>*/}
                 {/*<img className="reward-pic" onClick={this.handleClick} src={this.state.type ==='mine' ? this.state.lockPicHQ[this.state.senior.courseId - 1] : this.state.lockPic[this.state.senior.courseId - 1] }/>*/}
-                <img src={this.state.shareImgUrl}/>
-                {this.renderShareCard()}
+                <img className="reward-pic-img" src={this.state.shareImgUrl}/>
+                {isNoteCardDomShow && this.renderShareCard()}
                 {this.buttonRender()}
             </div>
         )
     },
     renderShareCard () {
         return (
-            <div className="reward-pic" ref="shareImg">
-                <p>name</p>
-                <p>course</p>
-                <img className="card-qrcode" src='' alt=""/>
+            <div className="reward-pic">
+                <p>课程名称</p>
+                <p>基金定投课基金定投课</p>
+                <p>基金定投课基金定投课</p>
+                <p>基金定投课基金定投课</p>
+                <div id="reward-qrcode" className="reward-qrcode-img"></div>
             </div>
         )
     },
@@ -254,7 +234,25 @@ const GetReward = React.createClass({
                 <p className="text-stroke-out">{text}</p>
                 <p className="text-stroke-inner">{text}</p>
             </div>)
+    },
+
+    shareUserList() {
+        return (
+            <div className="share-user-list">
+                {this.shareUser()}
+            </div>
+        )
+    },
+    shareUser() {
+        const userArr = [1, 2, 3];
+        const userList = userArr.map(user =>
+            <div className="share-user-logo" key={user}>
+                <img src={this.state.recivedUserList[user].imgUrl} alt=""/>
+            </div>
+        )
+        return ({userList})
     }
+
 });
 
 module.exports = GetReward;

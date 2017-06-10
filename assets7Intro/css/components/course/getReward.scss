@@ -85,7 +85,7 @@
     z-index: 51;
   }
 
-  .reward-pic{
+  .reward-pic, .reward-pic-img{
     position:absolute;
     top:50%;
     left:50%;
@@ -95,6 +95,20 @@
     width: px2rem(218);
     height: px2rem(364);
     font-size: 13px;
+  }
+  .reward-pic{
+    width: px2rem(350);
+    height: px2rem(500);
+    font-size: 26px;
+    background: #0BB20C;
+  }
+  .reward-qrcode-img{
+    width: 130px;
+    height: 130px;
+  }
+
+  .share-user-logo{
+
   }
   .reward-button{
     position: absolute;

@@ -1,6 +1,7 @@
 
 
 const html2canvas = require('html2canvas')
+
 //import {API_TOKEN, SEVER_URL} from './frame/serverConfig'
 
 
@@ -10,25 +11,25 @@ const html2canvas = require('html2canvas')
      * @returns {Promise}
        */
     function convertHtmlToBase64 (element, height, width) {
-      return new Promise(
-        (resolve, reject) => {
-          html2canvas(element, {
-            height,
-            width,
-            useCORS: true
-          }).then(
-            (originCanvas) => {
-              originCanvas.style.height = height + 'px'
-              originCanvas.style.width = width + 'px'
-              originCanvas.style.display = 'none'
+        return new Promise(
+            (resolve, reject) => {
+                html2canvas(element, {
+                    height,
+                    width,
+                    useCORS: true
+                }).then(
+                    (originCanvas) => {
+                        originCanvas.style.height = height + 'px'
+                        originCanvas.style.width = width + 'px'
+                        originCanvas.style.display = 'none'
 
-              let base64 = convertCanvasToBase64(originCanvas)
-              // window.document.body.removeChild(element)
-              resolve(base64)
+                        let base64 = convertCanvasToBase64(originCanvas)
+                        // window.document.body.removeChild(element)
+                        resolve(base64)
+                    }
+                )
             }
-          )
-        }
-      )
+        )
     }
 
 
