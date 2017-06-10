@@ -290,76 +290,38 @@ const CourseSelect = React.createClass({
                 console.log('error' + status.enter);
                 break;
         }
-
-        // if (this.state.allowLesson === 'PAY') {
-        //     location.hash = '/course/' + courseId;
-        // } else {
-        //     switch (course.type) {
-        //         case 'F':
-        //             location.hash = '/course/' + courseId;
-        //             break;
-        //         case 'P':
-        //             //如果免费用户收听付费课程
-        //             if (this.state.allowLesson === 'FREE') {
-        //                 window.dialogAlertComp.show('不能试听','付钱！快来吧','付钱',()=>
-        //                 {location.hash = '/payPage'},'先不要',true)
-        //             }
-        //             break;
-        //     }
-        // }
     },
 
 
     //点击成就卡回调函数
-    cbfSeeReward(course, courseId) {
+    cbfSeeReward(course, index) {
         let status = course.courseStatus;
+        let courseId = this.state.courseList[index].id;
         switch (status.reward) {
             case 'free-not-get':
-                location.hash = '/course/' + (courseId + 1);
+                location.hash = '/course/' + courseId;
                 break;
                 // window.dialogAlertComp.show('你未完成课程,不能查看成就卡','快去完成吧','完成',()=>
-                // {location.hash = '/course/' + (courseId + 1);},'先不去',false);
+                // {location.hash = '/course/' + courseId;},'先不去',false);
                 break;
             case 'free-get':
                 //如果已获得成就卡
-                location.hash = '/course/' + (courseId + 1);
-                // location.hash = '/getReward/' + (courseId + 1);
+                location.hash = '/course/' + courseId;
+                // location.hash = '/getReward/' + courseId;
                 break;
             case 'not-get':
                 window.dialogAlertComp.show('你未完成课程,不能查看成就卡','快去完成吧','完成',()=>
-                {location.hash = '/course/' + (courseId + 1);},'先不去',true);
+                {location.hash = '/course/' + courseId;},'先不去',true);
                 break;
             case 'get':
                 //如果已获得成就卡
-                location.hash = '/getReward/' + (courseId + 1);
+                location.hash = '/getReward/' + courseId;
                 break;
             default:
                 console.log('error' + status.reward);
                 break;
         }
-        // let status = course.status;
-        // switch (status) {
-        //     case 2:
-                //如果已获得成就卡
-                // location.hash = '/getReward/' + (courseId + 1);
-                // break;
-        //     default:
-        //         window.dialogAlertComp.show('你未完成课程,不能查看成就卡','付钱！快来吧','付钱',()=>
-        //         {},'先不要',false)
-        // }
     },
-
-    // //不能继续收听.付钱
-    // cbfNotAllowLesson(type) {
-    //     console.log('cbf' + type);
-    //     window.dialogAlertComp.show('不能试听','付钱！快来吧','付钱',()=>
-    //     {location.hash = '/payPage'},'先不要',true)
-    // },
-
-
-    // renderNotEnter(index) {
-    //     window.dialogAlertComp.show('还没有开放课程哦','每天更新一课哦，耐心等一等吧！','知道啦',()=>{},()=>{},false);
-    // },
 
     //可以领取宝箱,自动滚动
     componentDidUpdate() {

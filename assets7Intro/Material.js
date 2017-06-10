@@ -603,7 +603,7 @@ class Material {
         )
     }
 
-    //数据上报
+    //获取免费课程
     static GetFreeShareLesson(userId,dayId) {
         var User = require('./User');
         const Util = require('./Util'),
@@ -632,7 +632,28 @@ class Material {
         )
     }
 
-
+    //查询上线当天课程按时完成,获得对应的分享权限.
+    static getUpstreamShare(dayId) {
+        var User = require('./User');
+        const Util = require('./Util'),
+            apiUrl = Util.getAPIUrl('get_upstream_share').replace('{dayId}',dayId);
+        let userInfo = User.getUserInfo();
+        return $.ajax(
+            {
+                url: apiUrl,
+                type: 'put',
+                cache: false,
+                contentType: 'application/json;charset=utf-8',
+                headers: {
+                    Accept: 'application/json'
+                },
+                beforeSend: (request)=>{
+                    request.setRequestHeader("X-iChangTou-Json-Api-Token", Util.getApiToken());
+                    request.setRequestHeader("X-iChangTou-Json-Api-User", userInfo.userId);
+                }
+            }
+        )
+    }
 
 
 

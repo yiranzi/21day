@@ -130,8 +130,10 @@ const API_URL_GROUP = {
     //成就卡(分享)
     'get_shares_info': 'ctplus/lower-names/{userId}/{dayId}',//13查询当前领取名称(上线id)
 
-    //报名
-    'get_free_lesson': 'ctplus/free-share/{userId}/{dayId}',//下线免费领取当日课程
+    //分享
+    'get_free_lesson': 'ctplus/free-share',//下线免费领取当日课程
+    'get_upstream_share': 'ctplus/share/{dayId}',//上线当天按时完成课程
+
 
 
 };
@@ -174,6 +176,7 @@ class Util {
         }else {
             getRes = null;
         }
+        console.log('------------------------------------');
         console.log('key' + key);
         console.log('getRes' + getRes);
         return getRes;

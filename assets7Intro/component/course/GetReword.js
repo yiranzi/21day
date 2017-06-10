@@ -101,12 +101,7 @@ const GetReward = React.createClass({
                 //todo sta 下线_进入_GetReword
                 this.setState({freeRewardLink: true});
                 //todo 获得所有绑定的名字,并保存这些名字
-                Material.getShareInfo(userId).always( (name)=>{
-                    //todo 获得下线的头像和名字
-                    this.state.friendInfo.name = name;
-                    this.setState({friendInfo: this.state.friendInfo});
-                    // this.setShareConfig();
-                });
+                this.setShareInfo();
             }
         } else {//查看自己的
             userId = User.getUserInfo().userId;
@@ -124,20 +119,23 @@ const GetReward = React.createClass({
 
                 //1是否是付费用户?
                 Material.getJudgeFromServer().done((result)=>{
-                    Loading.hideLoading();
                     //付费用户分享
                     if(result){
                         this.setState({
                             isPay: true,
                         });
                         //2是否是当天完成?
-                        //todo
-                        //设置分享权限
-                        this.setState({
-                            freeChance: true,
+                        Material.getUpstreamShare(this.state.senior.courseId).done( (result)=>{
+                            if (result) {
+                                //设置分享权限
+                                this.setState({
+                                    freeChance: true,
+                                });
+                                this.setShareInfo();
+                                //设置分享内容
+                                this.setShareConfig('freeChance');
+                            }
                         });
-                        //设置分享内容
-                        this.setShareConfig('freeChance');
                     }
                     //免费用户分享分享的
                     else
@@ -145,9 +143,18 @@ const GetReward = React.createClass({
                         this.setShareConfig('share');
                     }
                 });
-                Loading.hideLoading();
             })
         }
+        Loading.hideLoading();
+    },
+
+    setShareInfo() {
+        //获取当前的分享情况
+        Material.getShareInfo(userId,this.state.senior.courseId).always( (info)=>{
+            //todo 获得下线的头像和名字
+            this.state.friendInfo.name = info;
+            this.setState({friendInfo: this.state.friendInfo});
+        });
     },
 
     componentWillUnmount () {
@@ -195,6 +202,7 @@ const GetReward = React.createClass({
             default:
                 console.log('error')
         }
+        console.log('share is' + link);
     },
 
     handleClick() {
@@ -222,12 +230,17 @@ const GetReward = React.createClass({
 
         //如果是高级链接
         if (this.state.freeRewardLink) {
-            Material.GetFreeShareLesson('下线_点击_getReward');
             //如果还有名额
-            if (true) {
+            if (this.state.friendInfo.length <= 3) {
                 //如果不是付费用户.就能领取.上线id,课程id
                 if(!this.state.isPay){
-                    Material.GetFreeShareLesson(userId,dayId);
+                    if (User.getUserInfo().userId) {
+                        Material.GetFreeShareLesson(this.state.senior.userId,this.state.senior.courseId);
+                    } else {
+                        OnFire.on('OAUTH_SUCCESS',()=>{
+                            Material.GetFreeShareLesson(this.state.senior.userId,this.state.senior.courseId);
+                        });
+                    }
                 }
                 location.hash = '/course/' + this.state.senior.courseId + '/free';
             } else {
@@ -237,22 +250,9 @@ const GetReward = React.createClass({
         //如果是普通链接
         else
         {
-
+            location.hash = '/select';
         }
-
-        // let url = Util.getHtmlUrl() + '?ictchannel=' + Util.getUrlPara('ictchannel');
-        // location.href = url;
-
-
-
-        // let url = Util.getHtmlUrl() + '?ictchannel=' + Util.getUrlPara('ictchannel');
-        // let url = Util.getHtmlUrl() + '?ictchannel=' + Util.getUrlPara('ictchannel') + '&goPath=' + '/course/' + (this.state.senior.courseId);
-        // console.log(url);
-        // location.href = url;
-        // location.href = '/course/' + (this.state.senior.courseId + 1);
     },
-
-
 
     render() {
         return(
