@@ -53,8 +53,6 @@ const CHEAP_PRICE = 3;// TODO roy 下线价格，享有的优惠价格
 const SHARE_TITLE = '和我一起提高财商吧！';
 const SHARE_DESC = '邀请你一起参加7天财商训练营';
 
-var COURSE_ID = 1;//基金课
-
 //是否是debug
 const IS_DEBUG = location.href.indexOf('localhost') > 0;
 
@@ -119,7 +117,7 @@ const API_URL_GROUP = {
     'get_registered': 'ctplus/signUpNumber/{courseId}',//获取报名人数和是否已到截止日期
 
     //用户是否已报名
-    'get_judge_signup': '/ctplus/WhetherSignUp/{courseId}', //判断用户是否购买
+    'get_judge_signup': 'ctplus/WhetherSignUp/{courseId}', //判断用户是否购买
 
     //音频
     'have_start_lesson': 'ctplus/firstlisten/{fmid}', //判断用户关卡进度

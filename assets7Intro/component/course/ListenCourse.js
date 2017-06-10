@@ -23,6 +23,7 @@ const EnterPanel = require('../EnterPanel');
 const ChooseBar = require('./Choose');
 const AudioBar = require('./Audio');
 const FixedBg = require('./FixedBg');
+const CourseProcessBar = require('./CourseProcessBar');
 
 
 
@@ -249,6 +250,7 @@ const ListenCourse = React.createClass({
                 {/*<span>当前点击的index{this.state.currentPlaying}</span>*/}
                 {/*<span>当前播放的fmid{this.state.currentfmid}</span>*/}
                 {/*<div>进入时,这门课程的状态时{this.props.location.query.name}</div>*/}
+                <div></div>
                 {this.renderLesson()}
                 {this.passLessonRender()}
                 {this.renderSignUp()}
