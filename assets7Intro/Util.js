@@ -53,6 +53,8 @@ const CHEAP_PRICE = 3;// TODO roy 下线价格，享有的优惠价格
 const SHARE_TITLE = '和我一起提高财商吧！';
 const SHARE_DESC = '邀请你一起参加7天财商训练营';
 
+var COURSE_ID = 1;//基金课
+
 //是否是debug
 const IS_DEBUG = location.href.indexOf('localhost') > 0;
 
@@ -93,12 +95,10 @@ const API_URL_GROUP = {
 
     //音频
     'get_fmid_info': 'fm/broadcast/{fmId}',
-    'get_judge_signup': '7eval/judgeusersignup/{albumId}', //判断用户是否购买
 
     'finish_work': '7day/complete/{type}/{id}', //判断用户关卡进度
     'have_start_lesson': '7day/firstlisten/{fmid}', //判断用户关卡进度
-    //用户是否已报名
-    'get_judge_signup': '7day/judgeusersignup/' + CURRENT_BATCH, //判断用户是否购买
+
 
     //宝箱
     'get_treasure_info': '7day/whetheropengift', //判断用户领了哪些宝箱
@@ -129,10 +129,11 @@ const API_URL_GROUP = {
     'get_course_progress': 'ctplus/checkpoint-progress/{dayId}', //4获取课程进度
     //成就卡(分享)
     'get_shares_info': 'ctplus/lower-names/{userId}/{dayId}',//13查询当前领取名称(上线id)
-
     //分享
     'get_free_lesson': 'ctplus/free-share',//下线免费领取当日课程
     'get_upstream_share': 'ctplus/share/{dayId}',//上线当天按时完成课程
+    //报名
+    'get_judge_signup': 'ctplus/WhetherSignUp/{courseId}', //判断用户是否购买
 
 
 
