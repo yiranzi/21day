@@ -72,19 +72,38 @@ const ChooseBar = React.createClass({
         //通过情况下.绘制正确答案
         if(this.state.process) {
             if(question.trueindex[0] === index) {
-                this.state.nowClick = index
-                return <img className= "choose-options-img" src={'./assets7Intro/image/course/indRight.png'}></img>
+                this.state.nowClick = index;
+                return <div style = {{backgroundColor: 'green'}} className='choose-options-on'></div>
             } else {
                 return null;
             }
         } else if(this.state.nowClick === index){
             if(this.state.results[index] === 1) {
-                return <img className= "choose-options-img" src={'./assets7Intro/image/course/indRight.png'}></img>
+                return <div style = {{backgroundColor: 'green'}} className='choose-options-on'></div>
             } else if(this.state.results[index] === 0){
-                return <img className= "choose-options-img" src={'./assets7Intro/image/course/indWrong.png'}></img>
+                return <div style = {{backgroundColor: 'red'}} className='choose-options-on'></div>
             }
         }
     },
+
+    // resultRender(index) {
+    //     let question = this.props.question;
+    //     //通过情况下.绘制正确答案
+    //     if(this.state.process) {
+    //         if(question.trueindex[0] === index) {
+    //             this.state.nowClick = index
+    //             return <img className= "choose-options-img" src={'./assets7Intro/image/course/indRight.png'}></img>
+    //         } else {
+    //             return null;
+    //         }
+    //     } else if(this.state.nowClick === index){
+    //         if(this.state.results[index] === 1) {
+    //             return <img className= "choose-options-img" src={'./assets7Intro/image/course/indRight.png'}></img>
+    //         } else if(this.state.results[index] === 0){
+    //             return <img className= "choose-options-img" src={'./assets7Intro/image/course/indWrong.png'}></img>
+    //         }
+    //     }
+    // },
 
     tipsRender () {
         if(this.state.answer !== -1 || this.props.question.process)
