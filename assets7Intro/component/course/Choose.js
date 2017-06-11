@@ -61,7 +61,7 @@ const ChooseBar = React.createClass({
             arr.push( <div className={(this.state.nowClick === i || (this.state.nowClick === -1 && question.process && question.trueindex[0] === i) ) ? 'choose-options-on' : 'choose-options-off'}key={i}>
                 {this.resultRender(i)}
                 <div className="choose-options-click" onClick={this.props.question.process ? null : this.handleClick.bind(this, i)}></div>
-                <p>{question.answerList[i].detail}</p>
+                <p className="choose-answer-word">{question.answerList[i].detail}</p>
                 </div>)
         }
         return arr;
