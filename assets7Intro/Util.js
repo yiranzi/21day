@@ -110,7 +110,6 @@ const API_URL_GROUP = {
     'get_course_progress': 'ctplus/checkpoint-progress/{dayId}', //4获取课程进度
     //成就卡(分享)
     'get_shares_info': 'ctplus/lower-names/{userId}/{dayId}',//13查询当前领取名称(上线id)
-
     //分享
     'get_free_lesson': 'ctplus/free-share',//下线免费领取当日课程
     'get_upstream_share': 'ctplus/share/{dayId}',//上线当天按时完成课程
@@ -118,7 +117,7 @@ const API_URL_GROUP = {
     'get_registered': 'ctplus/signUpNumber/{courseId}',//获取报名人数和是否已到截止日期
 
     //用户是否已报名
-    'get_judge_signup': '/ctplus/WhetherSignUp/{courseId}', //判断用户是否购买
+    'get_judge_signup': 'ctplus/WhetherSignUp/{courseId}', //判断用户是否购买
 
     //音频
     'have_start_lesson': 'ctplus/firstlisten/{fmid}', //判断用户关卡进度
