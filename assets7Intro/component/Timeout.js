@@ -80,20 +80,20 @@ var Timeout = React.createClass({
 
     render() {
         return (
-            <div className="Timeout">
-                <div className="container">
-                    {this.props.hasEnded || (this.state.days <= 0 && this.state.hours <= 0 && this.state.minutes <= 0 && this.state.seconds <= 0) ?
-                        (<p>报名时间已过</p>) : (<div><p>报名时间还剩</p>
-                            <div className="show-time">
-                                {this.state.days > 0 ? (<span>{this.state.days}天</span>) : (null)}
-                                {this.state.hours > 0 ? (<span>{this.state.hours}小时</span>) : (null)}
-                                {(this.state.hours <= 0 && this.state.minutes <= 0)? (null) : (<span>{this.state.minutes}分</span>)}
-                                <span>{this.state.seconds}秒</span>
-                            </div>
+            <span>
+                {(this.props.hasEnded || (this.state.days <= 0 && this.state.hours <= 0 && this.state.minutes <= 0 && this.state.seconds <= 0)) &&
+                    '报名时间已过'
+                }
+                {this.props.hasEnded || (this.state.days <= 0 && this.state.hours <= 0 && this.state.minutes <= 0 && this.state.seconds <= 0) &&
+                    '倒计时：' +
+                    (this.state.days > 0 ? this.state.days : 0 )+'天' +
+                    (this.state.hours > 0 ? this.state.hours : 0 )+'小时' +
+                    (this.state.minutes > 0 ? this.state.minutes : 0)+'分'+
+                    (this.state.seconds ? this.state.seconds : 0)+'秒'
 
-                        </div>)}
-                </div>
-            </div>);
+                }
+            </span>
+        )
     }
 
 });

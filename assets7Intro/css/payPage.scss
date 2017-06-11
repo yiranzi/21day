@@ -2,7 +2,6 @@
 .pay_page{
   width:100%;
   height:100%;
-  background-color: #FEFCEA;
   font-family: "Microsoft YaHei";
 
   .top-time-bottom{
@@ -404,4 +403,74 @@
   width: 70%;
   margin: 0 auto;
   display: block;
+}
+
+
+//new paypage
+.pay_page {
+  text-align: center;
+  .fund-join-page {
+    width: 100%;
+    height: 100%;
+    font-size: 0;
+  }
+  .fund-join-bg {
+    width: 100%;
+    height: 61.6rem;
+    position: absolute;
+    left: 0;
+    top: 0;
+    z-index: -1;
+  }
+  .fund-join-title {
+    height: 100%;
+    width: 100%;
+    margin-top: .5rem;
+  }
+  .fund-join-content {
+    width: px2rem(339);
+    margin-top: .5rem;
+    background: #fff;
+    opacity: 0.9;
+    border-radius: 4px 4px 0 0;
+  }
+  .fund-status{
+    position: relative;
+    top: -1px;// 中间有条线
+    width: px2rem(339);
+    margin: 0 auto;
+    background: #575757;
+    font-size: .7rem;
+    line-height: 2rem;
+    border-radius: 0 0 4px 4px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.5);
+  }
+
+  .fund-status-sell{
+    width: 50%;
+    display: inline-block;
+    text-align: center;
+  }
+
+  .fund-join-btns{
+    width: 90%;
+    margin: .5rem auto 0;
+    font-size: .8rem;
+    height: 2.8rem;
+    line-height: 2.8rem;
+    padding-bottom: .5rem;
+    .btn{
+      display: inline-block;
+      background: #fff;
+      border-radius: 4px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.5);
+    }
+    .try{
+      width: px2rem(127);
+      margin-right: .5rem;
+    }
+    .join{
+      width: px2rem(203);
+    }
+  }
 }
