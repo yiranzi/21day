@@ -3,7 +3,9 @@
   font-size: 0px;
   background-size: cover;
   position: relative;
+  height: 100%;
   padding-top: px2rem(5);
+  padding-bottom: px2rem(20);
   .get-graduated{
     position: absolute;
     top: px2rem(10);
@@ -107,6 +109,7 @@
   .share-user-list{
     margin: 0 auto;
     width: px2rem(237);
+    overflow: hidden;
   }
   .share-user-title{
     font-size: px2rem(14);
@@ -130,6 +133,7 @@
         height: px2rem(40);
         border-radius: 50%;
         border: px2rem(2) solid #fff;
+        margin: px2rem(2) 0;
       }
     }
     .share-user-headimage-noborder{

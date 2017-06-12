@@ -10,7 +10,6 @@ const WxConfig = require('../../WxConfig');
 const Util = require('../../Util');
 var OnFire =require('onfire.js');
 const convertHtmlToBase64 = require('../../ImageShare')
-const QRcode = require('../../Qrcode')
 
 const GetReward = React.createClass({
     getInitialState: function() {
@@ -33,11 +32,12 @@ const GetReward = React.createClass({
             isNoteCardDomShow: true,
             freeChance: false,//是否可以分享
             isPay: false,
-            freeRewardLink: false,//是否是试听链接
+            freeRewardLink: false//是否是试听链接
         };
     },
 
     componentWillMount() {
+        Loading.showLoading();
         document.body.scrollTop = document.documentElement.scrollTop = 0
         let userId;
         //判定是否有分享成就卡
@@ -66,7 +66,7 @@ const GetReward = React.createClass({
             this.state.senior.name = Util.getUrlPara('name');
             this.state.senior.rank = Util.getUrlPara('rank');
             this.setState({type: 'other'});
-
+            Loading.hideLoading();
         } else {//查看自己的
             userId = User.getUserInfo().userId;
             Material.postData('上线_进入_getReward');
@@ -92,23 +92,25 @@ const GetReward = React.createClass({
                             if (result) {
                                 //设置分享权限
                                 this.setState({
-                                    freeChance: true,
+                                    freeChance: true
                                 });
-                                this.setShareInfo();
+                                this.setShareInfo(userId);
                                 //设置分享内容
                                 this.setShareConfig('freeChance');
                             }
+                            Loading.hideLoading();
                         });
                     }
                     //免费用户分享分享的
                     else
                     {
                         this.setShareConfig('share');
+                        Loading.hideLoading();
+
                     }
                 });
             })
         }
-        Loading.hideLoading();
     },
 
     setShareInfo(userId) {
@@ -239,7 +241,7 @@ const GetReward = React.createClass({
 
     render() {
         return(
-            <div className="get-reward" style = {{backgroundImage: 'url("./assets7Intro/image/course/bg_share.jpg")',width: Dimensions.getWindowWidth(), height: Dimensions.getWindowHeight()}}>
+            <div className="get-reward" style = {{backgroundImage: 'url("./assets7Intro/image/course/bg_share.jpg")',width: Dimensions.getWindowWidth(),minHeight: Dimensions.getWindowHeight()}}>
                 {this.renderFinishCard()}
             </div>
         )
@@ -249,9 +251,15 @@ const GetReward = React.createClass({
         const isNoteCardDomShow = this.state.isNoteCardDomShow
         const freeRewardLink = this.state.freeRewardLink
         const freeChance = this.state.freeChance
+        const cardStyleNormal = {
+            marginTop:'3.7rem'
+        }
+        const cardStyleSenior = {
+            marginTop:'0'
+        }
         return(
             <div>
-                <div className="note-card-title">笔记卡</div>
+                <div className="note-card-title" style={cardStyleSenior}>笔记卡</div>
                 {/*<img className="reward-light" onClick={this.handleClick} src={'./assets7Intro/image/course/bglight.png'}/>*/}
                 {/*<img className="reward-pic" onClick={this.handleClick} src={this.state.type ==='mine' ? this.state.lockPicHQ[this.state.senior.courseId - 1] : this.state.lockPic[this.state.senior.courseId - 1] }/>*/}
                 <img className="reward-pic-img" src={this.state.shareImgUrl}/>
@@ -277,9 +285,13 @@ const GetReward = React.createClass({
     buttonRender() {
         const freeRewardLink = this.state.freeRewardLink
         const isPay = this.state.isPay
+        const type = this.state.type
+        const friendInfo = this.state.friendInfo
+        const isGetLesson = freeRewardLink && !isPay && type === 'other' && friendInfo.length < 3
+        const isGetFree = freeRewardLink && !isPay && type === 'other' && friendInfo.length >= 3
         return (
-            <div><div className="reward-share-button" onClick={this.goCommand}>
-            我要分享
+            <div><div className="reward-share-button" onClick={isGetLesson ? this.goSignUp : this.goCommand}>
+                {isGetLesson ? '获取免费试听' : isGetFree ? '名额满了，去看看免费课吧' : '我要分享'}
         </div></div>)
     },
 
@@ -296,7 +308,7 @@ const GetReward = React.createClass({
         const friendInfo = this.state.friendInfo
         const userList = userArr.map(user =>
             <div className="share-user-logo" key={user}>
-                <div className={!friendInfo[user-1] ? 'share-user-headimage-noborder' : 'share-user-headimage'}><img src={friendInfo[user-1] ? friendInfo[user-1].img : './assets7Intro/image/course/add.png'} /></div>
+                <div className={!friendInfo[user-1] ? 'share-user-headimage-noborder' : 'share-user-headimage'}><img src={friendInfo[user-1] ? friendInfo[user-1].headImg : './assets7Intro/image/course/add.png'} /></div>
                 <div className="share-user-name">{friendInfo[user-1] && friendInfo[user-1].name || '用户'+user}</div>
             </div>
         )
