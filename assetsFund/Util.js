@@ -619,20 +619,19 @@ class Util {
             redirectUri = redirectUri  + prefix + 'teacherid=' + teacherid;
             prefix = '&';
         }
-        
+
         //将基金课需要的参数回补
         let linkParamsTypes = ['goPath','getWhere','freeLesson','courseId','name','rank'];
-        prefix = '&';
         // let shareTypes = ['getWhere','freeLesson','finish','graduated'];
         for(let i = 0 ;i < linkParamsTypes.length; i++) {
             let getParams = Util.getUrlPara(linkParamsTypes[i]);
             if(getParams) {
                 redirectUri = redirectUri + prefix + linkParamsTypes[i] + '=' + getParams;
+                prefix = '&';
             }
         }
         // redirectUri = redirectUri + prefix + 'mylast';
         // console.log('addddd' + redirectUri);
-
         if( isUserInfo ) {
             //区分baseInfo和userInfo
             redirectUri = redirectUri  + prefix + 'isuserinfo=1';
