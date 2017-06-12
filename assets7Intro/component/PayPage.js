@@ -413,11 +413,11 @@ var PayPage = React.createClass({
                         {
                             !this.state.hasSenior &&
                             <span className="btn join" onClick={this.clickHandler}>
-                                    <span>报名</span><span>(￥{this.state.buttonPrice})</span>
+                                    <span>还想报名？点我</span>
                                 </span>
                         }
                         {
-                            this.state.hasSenior &&
+                            this.state.hasSenior || (!this.state.time && (this.state.remain-this.state.num > 0)) &&
                             <span className="btn join" onClick={this.clickHandler}>
                                     <span>报名</span><span>(￥{this.state.buttonPrice})</span>
                                 </span>
