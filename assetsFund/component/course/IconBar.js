@@ -15,19 +15,25 @@ const IconBar = React.createClass({
 
     render() {
         return(
-            <div className="icon-bar">
-                {this.renderImg}
-                {this.renderTitle}
+            <div style={this.props.index === 1 ? {marginLeft: '5',marginRight: '5'} : {}}
+                 className={ this.props.isView ? 'icon-bar-on' : 'icon-bar-off'}
+                onClick={this.cbfCheckBar}>
+                {this.renderImg()}
+                {this.renderTitle()}
             </div>
         )
+    },
+
+    cbfCheckBar() {
+        this.props.cbfCheckBar(this.props.index);
     },
 
     renderImg() {
         let type = 0;
       if (this.props.isView) {
-          type = 0;
-      }  else {
           type = 1;
+      }  else {
+          type = 0;
       }
         return(<img className="icon-img" src={this.props.iconImg[type]}/>)
     },

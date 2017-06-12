@@ -10,39 +10,22 @@ const LessonBar = React.createClass({
         return {
             content: this.props.content,
             index: this.props.index,
-            day: [
-                '第一天',
-                '第二天',
-                '第三天',
-                '第四天',
-                '第五天',
-                '第六天',
-                '第七天',
-            ],
+            // day: [
+            //     '第一天',
+            //     '第二天',
+            //     '第三天',
+            //     '第四天',
+            //     '第五天',
+            //     '第六天',
+            //     '第七天',
+            // ],
             type: [
                 '未解锁!',
                 '新的!未听!',
                 '没听完',
                 '已完成'
             ],
-            lockPic: [
-                "./assetsFund/image/course/card_1_b.png",
-                "./assetsFund/image/course/card_2_b.png",
-                "./assetsFund/image/course/card_3_b.png",
-                "./assetsFund/image/course/card_4_b.png",
-                "./assetsFund/image/course/card_5_b.png",
-                "./assetsFund/image/course/card_6_b.png",
-                "./assetsFund/image/course/card_7_b.png",
-            ],
-            unlockPic: [
-                "./assetsFund/image/course/card_1_b.png",
-                "./assetsFund/image/course/card_2_b.png",
-                "./assetsFund/image/course/card_3_b.png",
-                "./assetsFund/image/course/card_4_b.png",
-                "./assetsFund/image/course/card_5_b.png",
-                "./assetsFund/image/course/card_6_b.png",
-                "./assetsFund/image/course/card_7_b.png",
-            ],
+            rewardPic: "./assetsFund/image/course/intNote.png",
             typePic: [
                 "./assetsFund/image/course/indWrong.png",
                 "./assetsFund/image/course/indRight.png",
@@ -64,8 +47,22 @@ const LessonBar = React.createClass({
     LineRender() {
         let content = this.state.content;
         //看不到
-        if(!this.props.content.courseStatus.see)
+        if(this.props.content.courseStatus.see)
         {
+            return (<div className="column-container">
+                <div className="pic-container" onClick={this.callBackFunc.bind(this,'goReward')}>
+                    {this.renderReward()}
+                </div>
+                <div className="touch-range" onClick={this.callBackFunc.bind(this,'goCourse')}>
+
+                </div>
+                <span className="column-container-title">
+                <h1>{this.state.day[this.state.index]}</h1>
+                    {this.renderFinish()}
+                    <h2>{content.title}</h2>
+            </span>
+            </div>)
+        } else {
             return (<div className="column-container" onClick={this.callBackFunc.bind(this,'goCourse')}>
                 <div className="column-not-view">
                     <h1>
@@ -76,20 +73,6 @@ const LessonBar = React.createClass({
                     </h2>
                     {this.renderFreeNextDay()}
                 </div>
-            </div>)
-        } else {
-            return (<div className="column-container">
-                <div className="pic-container" onClick={this.callBackFunc.bind(this,'goReward')}>
-                    {this.renderReward()}
-                </div>
-                <div className="touch-range" onClick={this.callBackFunc.bind(this,'goCourse')}>
-
-                </div>
-                <span className="column-container-title">
-                <h1>{this.state.day[this.state.index]}</h1>
-                {this.renderFinish()}
-                <h2>{content.title}</h2>
-            </span>
             </div>)
         }
 
@@ -143,15 +126,15 @@ const LessonBar = React.createClass({
         let arr = [];
         switch (this.props.content.courseStatus.reward) {
             case 'free-not-get':
-                arr.push(<img className="column-pic" src={this.state.unlockPic[this.state.index]}/>);
+                arr.push(<img  className="column-pic" src={this.state.rewardPic}/>);
                 break;
                 break;
             case 'not-get':
-                arr.push(<img className="column-pic" src={this.state.lockPic[this.state.index]}/>);
+                arr.push(<img style={{opacity: '0.5'}} className="column-pic" src={this.state.rewardPic}/>);
                 break;
             case 'get':
                 //如果已获得成就卡
-                arr.push(<img className="column-pic" src={this.state.unlockPic[this.state.index]}/>);
+                arr.push(<img className="column-pic" src={this.state.rewardPic}/>);
                 break;
             default:
                 console.log('error' + this.props.content.courseStatus.reward);

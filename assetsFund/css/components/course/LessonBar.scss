@@ -6,13 +6,14 @@
   margin: 0 auto px2rem(18) auto;
   display: block;
   .bar-background{
-    border-radius: px2rem(4);
+    border-radius: px2rem(10);
     background-color: #FFFFFF;
-    opacity: 0.5;
+    //opacity: 0.5;
     position: absolute;
     width: px2rem(359);
     //z-index: -500;
     height: px2rem(140);
+    box-shadow: 0px px2rem(2) px2rem(4) rgba(0, 0, 0, 0.3);
   }
   .column-container{
     //background-color: #FFFFFF;
@@ -32,7 +33,6 @@
     }
     .touch-range{
       position: absolute;
-      z-index: 100;
       top: 0;
       right: 0;
       z-index: 1;
@@ -57,11 +57,13 @@
   }
 
   .column-container-title{
-    color: #FFFFFF;
+    //color: #FFFFFF;
     text-align: right;
     margin: px2rem(10) px2rem(16) 0 0;
     display: inline-block;
-    float: right;
+    //float: right;
+    position: absolute;
+    right: 0;
     h1{
       font-size: px2rem(42);
       line-height: px2rem(59);
@@ -73,11 +75,9 @@
       //line-height: px2rem(22);
     }
   }
-
   .column-pic{
     vertical-align: middle;
-    width:  px2rem(72);
-    height: px2rem(121);
+    height: px2rem(54);
   }
   .column-type{
     width:  px2rem(77);
