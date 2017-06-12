@@ -31,7 +31,7 @@ const EnterPanel = React.createClass({
             <p className="share-desc">只需4￥</p >
             <p className="share-desc">理财课程抱回家</p >
             <p className="share-title">抓住时机，下一个百万富翁就是你</p>
-            <a href="https://h5.ichangtou.com/minic/index7Intro.html" onClick={this.clickHandler}> <div className="share-confirm-button" >现在就报名</div></a>
+            <a href="https://h5.ichangtou.com/minic/index7Fund.html" onClick={this.clickHandler}> <div className="share-confirm-button" >现在就报名</div></a>
         </div>)
     }
 
