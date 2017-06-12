@@ -77,7 +77,7 @@ const AudioProgressBar = React.createClass({
             // }
 
             this.setState({
-                playbarWidth : currentTime / audio.duration * 90 + '%'
+                playbarWidth : currentTime / audio.duration * 85 + '%'
             })
         }
     },
