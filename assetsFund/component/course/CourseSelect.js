@@ -11,6 +11,7 @@ const Config = require('../../Config');
 const Link = require('react-router').Link;
 const LessonBar = require('./LessonBar');
 const FixedBg = require('./FixedBg');
+const IconBar = require('./IconBar');
 var boolOnce = true;
 
 
@@ -32,6 +33,25 @@ const CourseSelect = React.createClass({
             },
             allFinish: false,//所有课程都完成.
             allowLesson: 'FREE',//用户听课权限
+            topBarStatus: [
+                false,true,false
+            ],
+            iconImg:{
+                graduated: [
+                    "./assetsFund/image/course/indDiplomaDisabled.png",
+                    "./assetsFund/image/course/indDiplomaNormal.png",
+
+                ],
+                group: [
+                    "./assetsFund/image/course/indQQDisabled.png",
+                    "./assetsFund/image/course/indQQNormal.png",
+                ],
+                treasure: [
+                    "./assetsFund/image/course/indGiftDisabled.png",
+                    "./assetsFund/image/course/indGiftNormal.png",
+                ]
+            },
+            rewardImg: "./assetsFund/image/course/indNote.png",
         };
     },
 
@@ -125,6 +145,24 @@ const CourseSelect = React.createClass({
                 </div>
             </div>
         )
+    },
+
+    renderTopBar(){
+        return(<div className="top-bar">
+            {this.renderIcon}
+        </div>)
+    },
+
+    renderIcon(){
+        let title=[
+            '毕业证书', '课程指导', '毕业礼物'];
+        let arr = [];
+        for (let i = 0; i<this.state.iconImg.length;i++) {
+            arr.push(
+                <IconBar isView = {this.state.topBarStatus[i]} iconImg = {this.state.iconImg[i]} iconTitle={title[i]}/>
+            )
+        }
+        return arr;
     },
 
     renderCourseList() {
