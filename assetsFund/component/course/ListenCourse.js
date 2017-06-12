@@ -54,6 +54,8 @@ const ListenCourse = React.createClass({
             allFinish: false,//全部课程都通过
             isFree: '',
             isPay: false,
+            finishElement: 0,
+            totalElement: 0,
         }
     },
 
@@ -134,6 +136,7 @@ const ListenCourse = React.createClass({
             });
             this.state.lessons = progressData;
             this.fixProcess();
+            this.calcProcess();
             if (progressData) {
                 // if  (this.props.location.query.name === '0') {
                 //     Material.haveStartLesson(progressData[0].fmid);
@@ -148,6 +151,26 @@ const ListenCourse = React.createClass({
 
     renderInit() {
 
+    },
+
+    //计算进度
+    calcProcess() {
+        let allLesson = this.state.lessons;
+        for(let i = 0; i<allLesson.length; i++){
+            this.state.totalElement++;
+            if (i === 0) {
+                // this.state.finishElement++;
+            } else {
+                if(allLesson[i-1].subs[allLesson[i-1].subs.length - 1].process === true) {
+                    this.state.finishElement++;
+                }
+
+            }
+        }
+        this.setState({
+            totalElement:this.state.totalElement,
+            finishElement: this.state.finishElement
+        })
     },
 
     fixProcess() {
@@ -203,6 +226,8 @@ const ListenCourse = React.createClass({
         //发送修改1
         Material.finishWork(1, this.state.lessons[lessonIndex].subs[index].subjectid).always( (data) => {
         });
+        this.state.finishElement++;
+        this.setState({finishElement: this.state.finishElement});
     },
 
     /**
@@ -247,6 +272,7 @@ const ListenCourse = React.createClass({
             <div id="fmView" className="fm-view">
                 <FixedBg />
                 <div className="fix-bg-space"></div>
+                {/*<CourseProcessBar finishElement = {this.state.finishElement} totalElement = {this.state.totalElement}/>*/}
                 {/*<span>当前点击的index{this.state.currentPlaying}</span>*/}
                 {/*<span>当前播放的fmid{this.state.currentfmid}</span>*/}
                 {/*<div>进入时,这门课程的状态时{this.props.location.query.name}</div>*/}

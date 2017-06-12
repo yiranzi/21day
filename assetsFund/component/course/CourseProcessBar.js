@@ -7,8 +7,8 @@ const CourseProcessBar = React.createClass({
 
     getInitialState: function() {
         return {
-            finishElement: [],
-            totalElement: []
+            // finishElement: this.props.finishElement,
+            // totalElement: this.props.totalElement
         };
     },
 
@@ -16,8 +16,8 @@ const CourseProcessBar = React.createClass({
     render() {
         return(
             <div className="course-process-bar">
-                <p>{this.state.finishElement}</p>
-                <p>{this.state.totalElement}</p>
+                <p>{this.props.finishElement}</p>
+                <p>{this.props.totalElement}</p>
                 {this.renderTotalElement()}
             </div>
         )
@@ -25,9 +25,9 @@ const CourseProcessBar = React.createClass({
 
     renderTotalElement() {
         let arr = [];
-        for (let i = 0; i < this.state.finishElement.length; i++) {
+        for (let i = 0; i < this.state.totalElement; i++) {
             //如果当前渲染的
-            if ( i < finishElement) {
+            if ( i < this.props.finishElement) {
                 arr.push(<div className="process-bar-have" index = {i}>111</div>)
             } else {
                 arr.push(<div className="process-bar" index = {i}>222</div>)

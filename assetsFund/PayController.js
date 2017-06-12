@@ -178,8 +178,9 @@ class PayController {
                             // mchantType: 5, //商品类型 21days
                             // misc: Util.getUrlPara('dingyuehao')||'0'+'@'+seniorId+'@'+teacherId,
                             // price: sum,
-                            dealType: 102, //交易类型
-                            itemId: Util.getCurrentBatch(),
+                            dealType: 103, //交易类型
+                            // itemId: Util.getCurrentBatch(),
+                            itemId: 1,//基金课,应该改成全局
                             mchantType: 11, //商品类型 21days
                             misc: '',
                             price: sum
