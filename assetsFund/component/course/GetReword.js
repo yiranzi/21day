@@ -241,7 +241,7 @@ const GetReward = React.createClass({
 
     render() {
         return(
-            <div className="get-reward" style = {{backgroundImage: 'url("./assets7Intro/image/course/bg_share.jpg")',width: Dimensions.getWindowWidth(),minHeight: Dimensions.getWindowHeight()}}>
+            <div className="get-reward" style = {{backgroundImage: 'url("./assets7Fund/image/course/bg_share.jpg")',width: Dimensions.getWindowWidth(),minHeight: Dimensions.getWindowHeight()}}>
                 {this.renderFinishCard()}
             </div>
         )
@@ -260,7 +260,7 @@ const GetReward = React.createClass({
         return(
             <div>
                 <div className="note-card-title" style={cardStyleSenior}>笔记卡</div>
-                {/*<img className="reward-light" onClick={this.handleClick} src={'./assets7Intro/image/course/bglight.png'}/>*/}
+                {/*<img className="reward-light" onClick={this.handleClick} src={'./assets7Fund/image/course/bglight.png'}/>*/}
                 {/*<img className="reward-pic" onClick={this.handleClick} src={this.state.type ==='mine' ? this.state.lockPicHQ[this.state.senior.courseId - 1] : this.state.lockPic[this.state.senior.courseId - 1] }/>*/}
                 <img className="reward-pic-img" src={this.state.shareImgUrl}/>
                 {isNoteCardDomShow && this.renderShareCard()}
@@ -271,7 +271,7 @@ const GetReward = React.createClass({
     },
     renderShareCard () {
         return (
-            <div className="reward-pic" style={{backgroundImage:"url('./assets7Intro/image/course/noteCard.png')"}}>
+            <div className="reward-pic" style={{backgroundImage:"url('./assets7Fund/image/course/noteCard.png')"}}>
                 <p>课程名称</p>
                 <p>基金定投课基金定投课</p>
                 <p>基金定投课基金定投课</p>
@@ -308,7 +308,7 @@ const GetReward = React.createClass({
         const friendInfo = this.state.friendInfo
         const userList = userArr.map(user =>
             <div className="share-user-logo" key={user}>
-                <div className={!friendInfo[user-1] ? 'share-user-headimage-noborder' : 'share-user-headimage'}><img src={friendInfo[user-1] ? friendInfo[user-1].headImg : './assets7Intro/image/course/add.png'} /></div>
+                <div className={!friendInfo[user-1] ? 'share-user-headimage-noborder' : 'share-user-headimage'}><img src={friendInfo[user-1] ? friendInfo[user-1].headImg : './assets7Fund/image/course/add.png'} /></div>
                 <div className="share-user-name">{friendInfo[user-1] && friendInfo[user-1].name || '用户'+user}</div>
             </div>
         )
