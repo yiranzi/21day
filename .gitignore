@@ -1,4 +1,5 @@
 .idea
 .DS_Store
-build7Intro/
+buildFund/
 node_modules/
+indexFund.html
