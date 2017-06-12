@@ -16,22 +16,22 @@ const GetGraduated = React.createClass({
         return {
             content: this.props.content,
             lockPic: [
-                "./assets7Intro/image/course/card_1.png",
-                "./assets7Intro/image/course/card_2.png",
-                "./assets7Intro/image/course/card_3.png",
-                "./assets7Intro/image/course/card_4.png",
-                "./assets7Intro/image/course/card_5.png",
-                "./assets7Intro/image/course/card_6.png",
-                "./assets7Intro/image/course/card_7.png",
+                "./assetsFund/image/course/card_1.png",
+                "./assetsFund/image/course/card_2.png",
+                "./assetsFund/image/course/card_3.png",
+                "./assetsFund/image/course/card_4.png",
+                "./assetsFund/image/course/card_5.png",
+                "./assetsFund/image/course/card_6.png",
+                "./assetsFund/image/course/card_7.png",
             ],
             lockPicHQ: [
-                "./assets7Intro/image/course/card_1_b.png",
-                "./assets7Intro/image/course/card_2_b.png",
-                "./assets7Intro/image/course/card_3_b.png",
-                "./assets7Intro/image/course/card_4_b.png",
-                "./assets7Intro/image/course/card_5_b.png",
-                "./assets7Intro/image/course/card_6_b.png",
-                "./assets7Intro/image/course/card_7_b.png",
+                "./assetsFund/image/course/card_1_b.png",
+                "./assetsFund/image/course/card_2_b.png",
+                "./assetsFund/image/course/card_3_b.png",
+                "./assetsFund/image/course/card_4_b.png",
+                "./assetsFund/image/course/card_5_b.png",
+                "./assetsFund/image/course/card_6_b.png",
+                "./assetsFund/image/course/card_7_b.png",
             ],
             title: [
                 '第一课',
@@ -186,9 +186,9 @@ const GetGraduated = React.createClass({
     // style = {fullbg}
     render() {
         return(
-            <div className="get-reward" style = {{backgroundImage: 'url("./assets7Intro/image/course/bg_1.png")',width: Dimensions.getWindowWidth(), height: Dimensions.getWindowHeight()}}>
+            <div className="get-reward" style = {{backgroundImage: 'url("./assetsFund/image/course/bg_1.png")',width: Dimensions.getWindowWidth(), height: Dimensions.getWindowHeight()}}>
                 {this.renderGraduated()}
-                <img className="reward-light" onClick={this.handleClick} src={this.state.type ==='mine' ? './assets7Intro/image/course/bglight_b.png' : './assets7Intro/image/course/bglight.png'}/>
+                <img className="reward-light" onClick={this.handleClick} src={this.state.type ==='mine' ? './assetsFund/image/course/bglight_b.png' : './assetsFund/image/course/bglight.png'}/>
             </div>
         )
     },
@@ -197,7 +197,7 @@ const GetGraduated = React.createClass({
     renderGraduated() {
         return(
             <div>
-                <div className="get-graduated" style = {{backgroundImage: 'url("./assets7Intro/image/course/graduated.png")'}}>
+                <div className="get-graduated" style = {{backgroundImage: 'url("./assetsFund/image/course/graduated.png")'}}>
                     <img className="head" src={this.state.senior.headImg}/>
                     <div className="title">
                         <p className="name">{this.state.senior.name}</p>
@@ -237,7 +237,7 @@ const GetGraduated = React.createClass({
                     {/*<p>机会只有一次哦，快去送给他！</p>*/}
                 </div>));
                 arr.push(<div key={2} className="reward-button-graduated" onClick = {this.goCommand}>
-                    <img className="button-img" src={'./assets7Intro/image/course/btnSignin.png'}/>
+                    <img className="button-img" src={'./assetsFund/image/course/btnSignin.png'}/>
                     <p className="button-p">送给Ta</p>
                 </div>)
             } else {
@@ -246,7 +246,7 @@ const GetGraduated = React.createClass({
                     {/*<p>你还可以推荐更多的人来学习！</p>*/}
                 </div>));
                 arr.push(<div key={2} className="reward-button-graduated" onClick = {this.goCommand}>
-                    <img className="button-img" src={'./assets7Intro/image/course/btnSignin.png'}/>
+                    <img className="button-img" src={'./assetsFund/image/course/btnSignin.png'}/>
                     <p className="button-p">送给更多的人</p>
                 </div>)
             }
@@ -262,7 +262,7 @@ const GetGraduated = React.createClass({
                         <p>快来学习新技能吧！</p>
                     </div>));
                     arr.push((<div key={2} className="reward-button-graduated" onClick = {this.goSignUp}>
-                        <img className="button-img" src={'./assets7Intro/image/course/btnSignin.png'}/>
+                        <img className="button-img" src={'./assetsFund/image/course/btnSignin.png'}/>
                         <p className="button-p">我要学习</p>
                     </div>));
                 }
@@ -272,7 +272,7 @@ const GetGraduated = React.createClass({
                     <p>他们正在财商训练营中努力提升呢！</p>
                 </div>));
                 arr.push((<div key={2} className="reward-button-graduated" onClick = {this.goSignUp}>
-                    <img className="button-img" src={'./assets7Intro/image/course/btnSignin.png'}/>
+                    <img className="button-img" src={'./assetsFund/image/course/btnSignin.png'}/>
                     <p className="button-p">去听听看</p>
                 </div>));
             }

@@ -16,22 +16,22 @@ const GetReward = React.createClass({
         return {
             content: this.props.content,
             lockPic: [
-                "./assets7Intro/image/course/card_1.png",
-                "./assets7Intro/image/course/card_2.png",
-                "./assets7Intro/image/course/card_3.png",
-                "./assets7Intro/image/course/card_4.png",
-                "./assets7Intro/image/course/card_5.png",
-                "./assets7Intro/image/course/card_6.png",
-                "./assets7Intro/image/course/card_7.png",
+                "./assetsFund/image/course/card_1.png",
+                "./assetsFund/image/course/card_2.png",
+                "./assetsFund/image/course/card_3.png",
+                "./assetsFund/image/course/card_4.png",
+                "./assetsFund/image/course/card_5.png",
+                "./assetsFund/image/course/card_6.png",
+                "./assetsFund/image/course/card_7.png",
             ],
             lockPicHQ: [
-                "./assets7Intro/image/course/card_1_b.png",
-                "./assets7Intro/image/course/card_2_b.png",
-                "./assets7Intro/image/course/card_3_b.png",
-                "./assets7Intro/image/course/card_4_b.png",
-                "./assets7Intro/image/course/card_5_b.png",
-                "./assets7Intro/image/course/card_6_b.png",
-                "./assets7Intro/image/course/card_7_b.png",
+                "./assetsFund/image/course/card_1_b.png",
+                "./assetsFund/image/course/card_2_b.png",
+                "./assetsFund/image/course/card_3_b.png",
+                "./assetsFund/image/course/card_4_b.png",
+                "./assetsFund/image/course/card_5_b.png",
+                "./assetsFund/image/course/card_6_b.png",
+                "./assetsFund/image/course/card_7_b.png",
             ],
             title: [
                 '第一课',
@@ -256,13 +256,13 @@ const GetReward = React.createClass({
 
     render() {
         return(
-            <div className="get-reward" style = {{backgroundImage: 'url("./assets7Intro/image/course/bg_1.png")',width: Dimensions.getWindowWidth(), height: Dimensions.getWindowHeight()}}>
+            <div className="get-reward" style = {{backgroundImage: 'url("./assetsFund/image/course/bg_1.png")',width: Dimensions.getWindowWidth(), height: Dimensions.getWindowHeight()}}>
                 <p>是否可以分享{this.state.freeChance ? 'true' : 'false'}</p>
                 <p>是否是付费用户{this.state.isPay ? 'true' : 'false'}</p>
                 <p>是否是免费链接{this.state.freeRewardLink ? 'true' : 'false'}</p>
                 {/*<div>进入时,这门课程的状态时{this.props.location.query.name}</div>*/}
                 {this.renderFinishCard()}
-                <img className="reward-light" onClick={this.handleClick} src={this.state.type ==='mine' ? './assets7Intro/image/course/bglight_b.png' : './assets7Intro/image/course/bglight.png'}/>
+                <img className="reward-light" onClick={this.handleClick} src={this.state.type ==='mine' ? './assetsFund/image/course/bglight_b.png' : './assetsFund/image/course/bglight.png'}/>
             </div>
         )
     },
@@ -271,7 +271,7 @@ const GetReward = React.createClass({
         return(
             <div>
                 {this.renderTitle()}
-                {/*<img className="reward-light" onClick={this.handleClick} src={'./assets7Intro/image/course/bglight.png'}/>*/}
+                {/*<img className="reward-light" onClick={this.handleClick} src={'./assetsFund/image/course/bglight.png'}/>*/}
                 <img className="reward-pic" onClick={this.handleClick} src={this.state.type ==='mine' ? this.state.lockPicHQ[this.state.senior.courseId - 1] : this.state.lockPic[this.state.senior.courseId - 1] }/>
                 {this.buttonRender()}
             </div>
@@ -300,12 +300,12 @@ const GetReward = React.createClass({
         let arr = [];
         if(this.state.type ==='mine') {
             return <div className="reward-button" onClick = {this.goCommand}>
-                <img className="button-img" src={'./assets7Intro/image/course/btnSignin.png'}/>
+                <img className="button-img" src={'./assetsFund/image/course/btnSignin.png'}/>
                 <p className="button-p">我要分享</p>
             </div>
         } else {
             return <div className="reward-button" onClick = {this.goSignUp}>
-                <img className="button-img" src={'./assets7Intro/image/course/btnSignin.png'}/>
+                <img className="button-img" src={'./assetsFund/image/course/btnSignin.png'}/>
                 <p className="button-p">我也去看看</p>
             </div>
         }

@@ -398,9 +398,9 @@ var PayPage = React.createClass({
         return (
             <div className="pay_page">
                 <div className="fund-join-page">
-                    <img src="./assets7Intro/image/fundJoin/join-bg.jpg " alt="" className="fund-join-bg"/>
-                    <img src="./assets7Intro/image/fundJoin/join-title.png" alt="" className="fund-join-title"/>
-                    <img src="./assets7Intro/image/fundJoin/join-content.png" alt="" className="fund-join-content"/>
+                    <img src="./assetsFund/image/fundJoin/join-bg.jpg " alt="" className="fund-join-bg"/>
+                    <img src="./assetsFund/image/fundJoin/join-title.png" alt="" className="fund-join-title"/>
+                    <img src="./assetsFund/image/fundJoin/join-content.png" alt="" className="fund-join-content"/>
                     {
                         <div className="fund-status">
                             {/*<span className="fund-status-sell">倒计时：{this.state.endTime}</span>*/}

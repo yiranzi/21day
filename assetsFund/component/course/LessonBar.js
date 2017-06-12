@@ -26,28 +26,28 @@ const LessonBar = React.createClass({
                 '已完成'
             ],
             lockPic: [
-                "./assets7Intro/image/course/card_1_b.png",
-                "./assets7Intro/image/course/card_2_b.png",
-                "./assets7Intro/image/course/card_3_b.png",
-                "./assets7Intro/image/course/card_4_b.png",
-                "./assets7Intro/image/course/card_5_b.png",
-                "./assets7Intro/image/course/card_6_b.png",
-                "./assets7Intro/image/course/card_7_b.png",
+                "./assetsFund/image/course/card_1_b.png",
+                "./assetsFund/image/course/card_2_b.png",
+                "./assetsFund/image/course/card_3_b.png",
+                "./assetsFund/image/course/card_4_b.png",
+                "./assetsFund/image/course/card_5_b.png",
+                "./assetsFund/image/course/card_6_b.png",
+                "./assetsFund/image/course/card_7_b.png",
             ],
             unlockPic: [
-                "./assets7Intro/image/course/card_1_b.png",
-                "./assets7Intro/image/course/card_2_b.png",
-                "./assets7Intro/image/course/card_3_b.png",
-                "./assets7Intro/image/course/card_4_b.png",
-                "./assets7Intro/image/course/card_5_b.png",
-                "./assets7Intro/image/course/card_6_b.png",
-                "./assets7Intro/image/course/card_7_b.png",
+                "./assetsFund/image/course/card_1_b.png",
+                "./assetsFund/image/course/card_2_b.png",
+                "./assetsFund/image/course/card_3_b.png",
+                "./assetsFund/image/course/card_4_b.png",
+                "./assetsFund/image/course/card_5_b.png",
+                "./assetsFund/image/course/card_6_b.png",
+                "./assetsFund/image/course/card_7_b.png",
             ],
             typePic: [
-                "./assets7Intro/image/course/indWrong.png",
-                "./assets7Intro/image/course/indRight.png",
-                "./assets7Intro/image/course/indRight.png",
-                "./assets7Intro/image/course/indRight.png",
+                "./assetsFund/image/course/indWrong.png",
+                "./assetsFund/image/course/indRight.png",
+                "./assetsFund/image/course/indRight.png",
+                "./assetsFund/image/course/indRight.png",
             ],
         };
     },
@@ -163,7 +163,7 @@ const LessonBar = React.createClass({
     //渲染finish
     renderFinish() {
         if( this.props.content.courseStatus.allFinish) {
-            return <img className="column-type" src={'./assets7Intro/image/course/indFinished.png'}/>
+            return <img className="column-type" src={'./assetsFund/image/course/indFinished.png'}/>
         } else {
             if (this.props.content.courseStatus.enter === 'free-enter') {
                 return(<p className = "free-lesson">免费收听</p>)

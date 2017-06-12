@@ -91,7 +91,7 @@ class WxConfig {
         title = title || Util.getShareTitle();
 
         if( !imgUrl ) {
-          imgUrl = 'https://h5test.ichangtou.com/minic/assets7Intro/image/logo.png';
+          imgUrl = 'https://h5test.ichangtou.com/minic/assetsFund/image/logo.png';
         }
 
         let type = "img";

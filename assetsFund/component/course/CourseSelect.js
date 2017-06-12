@@ -342,7 +342,7 @@ const CourseSelect = React.createClass({
         //如果可以领取
         if(this.state.treasure.canOpen){
             return(
-                <div className="reload-bg" style = {{backgroundImage: 'url("./assets7Intro/image/course/graduated.png")'}}></div>
+                <div className="reload-bg" style = {{backgroundImage: 'url("./assetsFund/image/course/graduated.png")'}}></div>
             )
         }
     },
@@ -379,7 +379,7 @@ const CourseSelect = React.createClass({
         // return(<div className="lesson-bar" onClick={this.openTreasure}>
         //         <TreasureBar treasure = {this.state.treasure}></TreasureBar>
         //         </div>)
-        return <img onClick={this.openTreasure} className={this.state.allFinish ? 'fix-treasure-shake' : 'fix-treasure'} src={'./assets7Intro/image/course/treasure.png'}/>
+        return <img onClick={this.openTreasure} className={this.state.allFinish ? 'fix-treasure-shake' : 'fix-treasure'} src={'./assetsFund/image/course/treasure.png'}/>
 
 
     },
@@ -409,7 +409,7 @@ const CourseSelect = React.createClass({
         if(this.state.treasure.canOpen){
             return(
                 <div>
-                    <img className="graduatedButton" onClick={this.openGraduated} src={'./assets7Intro/image/course/graduatedButton.png'}/>
+                    <img className="graduatedButton" onClick={this.openGraduated} src={'./assetsFund/image/course/graduatedButton.png'}/>
                 </div>
             )
         } else if(this.state.courseList.length && this.state.courseList.length !== 0){

@@ -67,7 +67,7 @@ const AudioBar = React.createClass({
         let audioTitleStyle = Project === '7days' ? 'audio-title' : 'audio-title-fund'
         return(
             <div onClick={this.controlHandler} className={audioTitleStyle}>
-                <img className="click-button" src={this.state.isPlaying ? './assets7Intro/image/course/btnPressed.png':'./assets7Intro/image/course/btnPlay.png'}
+                <img className="click-button" src={this.state.isPlaying ? './assetsFund/image/course/btnPressed.png':'./assetsFund/image/course/btnPlay.png'}
                 />
                 {this.PPTComponent(content)}
             </div>

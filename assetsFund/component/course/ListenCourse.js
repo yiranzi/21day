@@ -297,7 +297,7 @@ const ListenCourse = React.createClass({
 
     preLoadPic() {
         return(<div className="pre-load">
-            <img src={'./assets7Intro/image/course/bglight_b.png'}/>
+            <img src={'./assetsFund/image/course/bglight_b.png'}/>
         </div>)
     },
 
