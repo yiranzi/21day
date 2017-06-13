@@ -193,7 +193,7 @@ const GetReward = React.createClass({
             //分享当日免费课(高级分享)
             case 'freeChance':
                 shareTitle = '我是第'+ this.state.senior.rank+'名完成'+ course.title + '课的人，dialog按时完成课程的奖励';
-                desc = 'dialog这是赠送的免费课';
+                desc = '这是赠送的免费课';
                 link = link + '&goPath=' + '/getReward/' + senior.courseId;
                 link = link + '&courseId=' + senior.courseId;
                 link = link + '&name=' + senior.name;
@@ -257,6 +257,7 @@ const GetReward = React.createClass({
                 }
                 location.hash = '/course/' + this.state.senior.courseId + '/free';
             } else {
+                
                 location.hash = '/select';
             }
         }
@@ -303,9 +304,10 @@ const GetReward = React.createClass({
         const content = textArr ? textArr[1].replace(/\r\n/g, '<br>') : ''
         let course = courseInfo.find(
             course => {
-                return course.id === parseInt(senior.courseId)
+                return course.id === parseInt(Util.getUrlPara('courseId') || this.props.params.courseId)
             }
         )
+        console.log(course)
         return (
             <div className="reward-pic" style={{backgroundImage:"url('./assetsFund/image/course/noteCard.png')"}}>
                 <p className="note-card-rank">恭喜你是第{this.state.senior.rank}位完成课程的学员</p>
