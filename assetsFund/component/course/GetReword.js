@@ -145,7 +145,7 @@ const GetReward = React.createClass({
         const width = element.offsetWidth
         const height = element.offsetHeight
         const courseId = Util.getUrlPara('courseId') || this.props.params.courseId
-        const userId = Util.getUrlPara('ictchannel') || this.props.params.userId
+        const userId = Util.getUrlPara('ictchannel') || this.props.params.userId || User.getUserInfo().userId
         Material.getNoteCardText(courseId).done((data) => {
             this.setState({
                 noteText: data.message
@@ -257,7 +257,7 @@ const GetReward = React.createClass({
                 }
                 location.hash = '/course/' + this.state.senior.courseId + '/free';
             } else {
-                
+
                 location.hash = '/select';
             }
         }
