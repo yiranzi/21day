@@ -4,6 +4,18 @@
     height: 0;
     display: none;
   }
+  .bg-title{
+    text-align: center;
+    background-image: url('../image/course/courseTitle.png');
+    background-size: cover;
+    //background-image: url('../image/course/tomorrowSmall.png');
+    h1{
+      color: black;
+    }
+    p{
+      color: black;
+    }
+  }
   .sign-up-button{
     text-align: center;
     width: px2rem(359);
