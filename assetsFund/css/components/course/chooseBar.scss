@@ -1,6 +1,6 @@
 .choose-bar{
   text-align: center;
-  width: px2rem(359);
+  width: px2rem(330);
   margin: 0 auto px2rem(18) auto;
   //color: #ffffff;
   .choose-part{
@@ -31,6 +31,7 @@
     p{
       font-size: px2rem(18);
       margin: px2rem(15) px2rem(15) px2rem(15) px2rem(15);
+      text-align: left;
     }
   }
 
@@ -42,7 +43,6 @@
     border-radius: px2rem(40);
     height: px2rem(40);
     line-height: px2rem(40);
-    border: solid 1px #5AB1CF;
     left: -1px;
     top: -1px;
   }
@@ -55,7 +55,6 @@
     height: px2rem(40);
     line-height: px2rem(40);
     margin: px2rem(8) auto px2rem(8) auto;
-    border: solid 1px #5AB1CF;
   }
   .choose-options-off{
     width: px2rem(290);
@@ -107,11 +106,14 @@
     }
     .tips-bg{
       background-color: white;
-      border-radius: px2rem(4);
+      border-radius: 0 0 px2rem(4) px2rem(4);
       p{
         font-size: px2rem(20);
         margin-bottom: px2rem(5);
         color: black;
+        margin: 0 px2rem(15) 0 px2rem(15);
+        opacity: 1;
+        text-align: left;
       }
     }
     .tips-font{

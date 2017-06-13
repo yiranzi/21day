@@ -54,7 +54,7 @@ const AudioProgressBar = React.createClass({
 
         }else{
             if(position){
-                return '05:00'
+                return '00:00'
             }else{
                 return '00:00'
             }
@@ -151,9 +151,9 @@ const AudioProgressBar = React.createClass({
                 <div className={this.state.isPlaying ? 'is-playing' : 'is-paused'}>
                     <div className="process-panel" onClick={this.progressClickHandler}>
                         <div className="time-bar">
-                            <span className="time player_position">{this.state.isPlaying && audio && this.formatTime(audio.currentTime,0)}</span>
-                            <span className="time">{this.state.isPlaying && audio ? ' / ' : ''}</span>
-                            <span className="time duration">{this.state.isPlaying && audio && this.formatTime(audio.duration,1)}</span>
+                            <span className="time player_position">{this.state.isPlaying && audio && audio.currentTime ? this.formatTime(audio.currentTime,0) : '00:00'}</span>
+                            <span className="time">{' / '}</span>
+                            <span className="time duration">{this.state.isPlaying && audio && audio.duration ? this.formatTime(audio.duration,1) : '00:00'}</span>
                         </div>
                         {this.renderMovingBar()}
                     </div>

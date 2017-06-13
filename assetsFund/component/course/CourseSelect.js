@@ -312,7 +312,7 @@ const CourseSelect = React.createClass({
         return courseStatus.see;
     },
 
-    //type听课3种课程.
+    //type听课3种课程
     //F 免费课.
     //S 邀请试听课.
     //P 付费课.
