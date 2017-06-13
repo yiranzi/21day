@@ -1,11 +1,14 @@
 .course-process-bar{
   position: fixed;
-  left: px2rem(30);
-  top: px2rem(500);
+  left: px2rem(5);
+  top: px2rem(200);
   z-index: 1000;
+  font-size: 0;
+  width: px2rem(12);
   .process-bar{
     display: inline-block;
-    margin-bottom: px2rem(10);
+    margin-bottom: px2rem(5);
+    height: px2rem(40);
   }
   .process-bar-have{
     color: green;

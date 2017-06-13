@@ -275,6 +275,7 @@ const ListenCourse = React.createClass({
             <div id="fmView" className="fm-view">
                 <FixedBg />
                 <div className="fix-bg-space"></div>
+                {/*{this.test()}*/}
                 <CourseProcessBar finishElement = {this.state.finishElement} totalElement = {this.state.totalElement}/>
                 {/*<span>当前点击的index{this.state.currentPlaying}</span>*/}
                 {/*<span>当前播放的fmid{this.state.currentfmid}</span>*/}
@@ -286,6 +287,11 @@ const ListenCourse = React.createClass({
                 {this.preLoadPic()}
             </div>
         )
+    },
+
+    test(){
+        console.log(this.state.finishElement);
+        return(<CourseProcessBar finishElement = {this.state.finishElement} totalElement = {this.state.totalElement}/>)
     },
 
     renderSignUp() {

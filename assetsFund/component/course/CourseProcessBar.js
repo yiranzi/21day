@@ -25,12 +25,12 @@ const CourseProcessBar = React.createClass({
 
     renderTotalElement() {
         let arr = [];
-        for (let i = 0; i < this.state.totalElement; i++) {
+        for (let i = 0; i < this.props.totalElement; i++) {
             //如果当前渲染的
             if ( i < this.props.finishElement) {
-                arr.push(<img className="process-bar" index = {i} style={{backgroundImage: "./assetsFund/image/course/processBar_On.png"}}></img>)
+                arr.push(<img className="process-bar" index = {i} src={"./assetsFund/image/course/processBar_On.png"}/>)
             } else {
-                arr.push(<img className="process-bar" index = {i} style={{backgroundImage: "./assetsFund/image/course/processBar_Off.png"}}></img>)
+                arr.push(<img className="process-bar" index = {i} src={"./assetsFund/image/course/processBar_Off.png"}/>)
             }
         }
         return arr;
