@@ -291,7 +291,7 @@ var PayPage = React.createClass({
     },
 
     onWantJoinTap () {
-        window.dialogAlertComp.show('告诉你个小秘','请好友分享给你后，你可以无视截止时间的限制，想报名就报名~','快去试试吧',()=>{},()=>{},false);
+        window.dialogAlertComp.show('告诉你个小秘密','请好友分享给你后，你可以无视截止时间的限制，想报名就报名~','快去试试吧',()=>{},()=>{},false);
     },
 
     /**
@@ -401,7 +401,7 @@ var PayPage = React.createClass({
         return (
             <div className="pay_page">
                 <div className="fund-join-page">
-                    <img src="./assetsFund/image/fundJoin/join-bg.jpg " alt="" className="fund-join-bg"/>
+                    <img src="./assetsFund/image/fundJoin/join-bg.jpg" alt="" className="fund-join-bg"/>
                     <img src="./assetsFund/image/fundJoin/join-title.png" alt="" className="fund-join-title"/>
                     <img src="./assetsFund/image/fundJoin/join-content.png" alt="" className="fund-join-content"/>
                     {
