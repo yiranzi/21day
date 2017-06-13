@@ -76,7 +76,6 @@ const GetReward = React.createClass({
             } else {
                 this.setShareConfig('share');
             }
-            Loading.hideLoading();
         } else {//查看自己的
             userId = User.getUserInfo().userId;
             Material.postData('上线_进入_getReward');
