@@ -299,7 +299,7 @@ const ListenCourse = React.createClass({
             <div id="fmView" className="fm-view">
                 <FixedBg />
                 <div className="fix-bg-space"></div>
-                {this.preFetch()}
+                {/*{this.preFetch()}*/}
                 {this.renderTitle()}
                 <CourseProcessBar finishElement = {this.state.finishElement} totalElement = {this.state.totalElement}/>
                 {/*<span>当前点击的index{this.state.currentPlaying}</span>*/}
