@@ -213,6 +213,9 @@
       height: px2rem(30);
       font-size: px2rem(14);
       color: #fff;
+      overflow: hidden;
+      text-overflow:ellipsis;
+      white-space: nowrap;
     }
   }
   .reward-share-button{
