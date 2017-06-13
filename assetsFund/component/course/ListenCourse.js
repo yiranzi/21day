@@ -38,7 +38,8 @@ const ListenCourse = React.createClass({
 
     getPropsType() {
         return {
-            fmid: React.PropTypes.string
+            fmid: React.PropTypes.string,
+            // preFetchBool: true,
         }
     },
 
@@ -267,11 +268,20 @@ const ListenCourse = React.createClass({
         if (isPlaying) {
             GlobalAudio.pause();
         } else {
-            let lesson = this.state.lessons[index]
+            let lesson = this.state.lessons[index];
             //保存当前正在播放的音频
-            this.setState({currentfmid: lesson.fmid})
+            this.setState({currentfmid: lesson.fmid});
+            console.log(this);
             GlobalAudio.play(lesson.audio, lesson.fmid);
-
+            // setTimeout(function(){
+            //     console.log('start reFetch');
+            //     console.log(this);
+            //     this.setState({preFetchBool: true});
+            //     setTimeout(function(){
+            //         console.log('stop reFetch');
+            //         this.setState({preFetchBool: false})
+            //     }, 3000);
+            // }, 3000);
             Util.postCnzzData("播放", lesson.fmid);
         }
     },
@@ -289,12 +299,12 @@ const ListenCourse = React.createClass({
             <div id="fmView" className="fm-view">
                 <FixedBg />
                 <div className="fix-bg-space"></div>
+                {this.preFetch()}
                 {this.renderTitle()}
                 <CourseProcessBar finishElement = {this.state.finishElement} totalElement = {this.state.totalElement}/>
                 {/*<span>当前点击的index{this.state.currentPlaying}</span>*/}
                 {/*<span>当前播放的fmid{this.state.currentfmid}</span>*/}
                 {/*<div>进入时,这门课程的状态时{this.props.location.query.name}</div>*/}
-                <div></div>
                 {this.renderLesson()}
                 {this.passLessonRender()}
                 {this.renderSignUp()}
@@ -303,8 +313,30 @@ const ListenCourse = React.createClass({
         )
     },
 
+    preFetch() {
+        if(this.state.lessons.length <= 0) {
+            if(!this.state.lessons)
+            {
+                console.log('lier')
+            }
+            return;
+        }
+        let index= this.state.currentPlaying;
+        // if (index<0) {
+        //     index = -1;
+        // }
+        //往后播放一课
+        index = index + 1;
+        let audio = this.state.lessons[index];
+        console.log('start' + audio.pptUrl);
+        return(<div>
+            <link rel="prefetch" href = {audio.pptUrl}/>
+            <link rel="prefetch" href = {audio.audio}/>
+        </div>)
+    },
+
     renderTitle(){
-        return(<div className="bg-title">
+        return(<div className="bg-title" style={{backgroundImage:"url('./assetsFund/image/course/courseTitle.png')"}}>
             <h1>{this.state.courseTitle.title}</h1>
             <p>{this.state.courseTitle.subTitle}</p>
         </div>)
@@ -312,7 +344,7 @@ const ListenCourse = React.createClass({
 
     renderSignUp() {
         if (this.state.isFree === 'free' && !this.state.isPay) {
-            return (<div className = "sign-up-button" onClick={this.goSign}>点击播放按钮听课！喜欢的话点击这里报名！</div>);
+            return (<div className = "sign-up-button" onClick={this.goSign}>立即报名！</div>);
         }
     },
 

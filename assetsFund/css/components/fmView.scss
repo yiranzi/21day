@@ -6,13 +6,15 @@
   }
   .bg-title{
     text-align: center;
-    background-image: url('../image/course/courseTitle.png');
-    background-size: cover;
+    //background-image: url('../image/course/courseTitle.png');
+    background-size: 100% 100%;
     //background-image: url('../image/course/tomorrowSmall.png');
     h1{
+      padding-top: px2rem(10);
       color: black;
     }
     p{
+      padding-bottom: px2rem(20);
       color: black;
     }
   }
