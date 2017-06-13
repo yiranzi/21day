@@ -185,7 +185,6 @@ const GetReward = React.createClass({
      * @param title
      */
     setShareConfig(type) {
-        alert(type)
         let senior = this.state.senior;
         let shareTitle;
         let link = Util.getShareLink();
@@ -198,7 +197,6 @@ const GetReward = React.createClass({
         switch (type) {
             //分享当日免费课(高级分享)
             case 'freeChance':
-                alert('free')
                 shareTitle = '我是第'+ this.state.senior.rank+'名完成'+ course.title + '课的人，按时完成课程的奖励';
                 desc = '这是赠送的免费课';
                 link = link + '&goPath=' + '/getReward/' + senior.courseId;
@@ -210,7 +208,6 @@ const GetReward = React.createClass({
                 break;
             //普通分享
             case 'share':
-                alert('share')
                 senior = this.state.senior;
                 shareTitle = '我是第'+ this.state.senior.rank+'名完成'+ course.title + '课的人，快来看看我的成就卡吧！';
                 desc = '快比比谁的财商更高吧?';
