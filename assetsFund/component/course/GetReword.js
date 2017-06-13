@@ -303,9 +303,10 @@ const GetReward = React.createClass({
         const content = textArr ? textArr[1].replace(/\r\n/g, '<br>') : ''
         let course = courseInfo.find(
             course => {
-                return course.id === parseInt(senior.courseId)
+                return course.id === parseInt(Util.getUrlPara('courseId') || this.props.params.courseId)
             }
         )
+        console.log(course)
         return (
             <div className="reward-pic" style={{backgroundImage:"url('./assetsFund/image/course/noteCard.png')"}}>
                 <p className="note-card-rank">恭喜你是第{this.state.senior.rank}位完成课程的学员</p>
