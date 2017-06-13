@@ -65,6 +65,7 @@ const GetReward = React.createClass({
             this.state.senior.name = Util.getUrlPara('name');
             this.state.senior.rank = Util.getUrlPara('rank');
             this.setState({type: 'other'});
+            this.state.type = 'other'
             //todo 如果是试听分享链接
             if (Util.getUrlPara('freeLesson')) {
                 //todo sta 下线_进入_GetReword
@@ -86,6 +87,7 @@ const GetReward = React.createClass({
                 })
             })
             this.setState({type: 'mine', userInfo: User.getUserInfo()});
+            this.state.type = 'mine'
             //获得自己的课程排名
             Material.courseFinishRank(courseId,userId).done((data) =>{
                 this.state.senior.name = User.getUserInfo().nickName;
@@ -148,7 +150,7 @@ const GetReward = React.createClass({
         const width = element.offsetWidth
         const height = element.offsetHeight
         const courseId = Util.getUrlPara('courseId') || this.props.params.courseId
-        const userId = Util.getUrlPara('ictchannel') || this.props.params.userId || User.getUserInfo().userId
+        const userId = this.state.type === 'mine' ? User.getUserInfo().userId : Util.getUrlPara('ictchannel') || this.props.params.userId
         Material.getNoteCardText(courseId).done((data) => {
             this.setState({
                 noteText: data.message
@@ -253,9 +255,11 @@ const GetReward = React.createClass({
                 if(!this.state.isPay){
                     if (User.getUserInfo().userId) {
                         Material.GetFreeShareLesson(this.state.senior.userId,this.state.senior.courseId);
+                        Material.postData('下线_领取免费课_getReward');
                     } else {
                         OnFire.on('OAUTH_SUCCESS',()=>{
                             Material.GetFreeShareLesson(this.state.senior.userId,this.state.senior.courseId);
+                            Material.postData('下线_领取免费课_getReward');
                         });
                     }
                 }
