@@ -38,7 +38,7 @@ const GetReward = React.createClass({
     },
 
     componentWillMount() {
-        Loading.showLoading();
+        Loading.showLoading('正在生成笔记卡');
         document.body.scrollTop = document.documentElement.scrollTop = 0
         let userId;
         //判定是否有分享成就卡
@@ -172,9 +172,9 @@ const GetReward = React.createClass({
     },
     componentWillUnmount () {
         let senior = this.state.senior;
-        let shareTitle = '快和我一起参加财商训练营吧',
+        let shareTitle = '14天基金定投训练营，手把手带你从0学习基金投资',
             link = Util.getShareLink(),
-            desc = '点击链接报名只需3元哦,按时毕业还有奖学金!';
+            desc = '';
         WxConfig.shareConfig(shareTitle,desc,link);
     },
 
@@ -196,8 +196,8 @@ const GetReward = React.createClass({
         switch (type) {
             //分享当日免费课(高级分享)
             case 'freeChance':
-                shareTitle = '我是第'+ this.state.senior.rank+'名完成'+ course.title + '课的人，按时完成课程的奖励';
-                desc = '这是赠送的免费课';
+                shareTitle = '我是第'+ this.state.senior.rank+'名准时完成基金定投训练营('+ course.dayTitle + ')的人，3个免费听课名额，请你来听';
+                desc = '';
                 link = link + '&goPath=' + '/getReward/' + senior.courseId;
                 link = link + '&courseId=' + senior.courseId;
                 link = link + '&name=' + senior.name;
@@ -208,8 +208,8 @@ const GetReward = React.createClass({
             //普通分享
             case 'share':
                 senior = this.state.senior;
-                shareTitle = '我是第'+ this.state.senior.rank+'名完成'+ course.title + '课的人，快来看看我的成就卡吧！';
-                desc = '快比比谁的财商更高吧?';
+                shareTitle = '我是第'+ this.state.senior.rank+'名完成基金定投训练营('+ course.dayTitle + ')的人';
+                desc = '';
                 link = link + '&goPath=' + '/getReward/' + senior.courseId;
                 link = link + '&courseId=' + senior.courseId;
                 link = link + '&name=' + senior.name;
@@ -262,13 +262,10 @@ const GetReward = React.createClass({
                 location.hash = '/course/' + this.state.senior.courseId + '/free';
             } else {
 
-                location.hash = '/select';
+                location.hash = '/course/10';
             }
-        }
-        //如果是普通链接
-        else
-        {
-            location.hash = '/select';
+        } else {      //如果是普通链接
+            location.hash = '/course/10';
         }
     },
 
@@ -292,11 +289,18 @@ const GetReward = React.createClass({
         }
         return(
             <div>
-                <div className="note-card-title" style={cardStyleSenior}>笔记卡</div>
+                <div className="note-card-title" style={cardStyleSenior}>恭喜，你是第{this.state.senior.rank}位按时完成的学员</div>
                 {/*<img className="reward-light" onClick={this.handleClick} src={'./assetsFund/image/course/bglight.png'}/>*/}
                 {/*<img className="reward-pic" onClick={this.handleClick} src={this.state.type ==='mine' ? this.state.lockPicHQ[this.state.senior.courseId - 1] : this.state.lockPic[this.state.senior.courseId - 1] }/>*/}
                 <img className="reward-pic-img" src={this.state.shareImgUrl}/>
                 {isNoteCardDomShow && this.renderShareCard()}
+                {(freeRewardLink || freeChance) && <p className="note-card-tips">
+                    <img src="./assetsFund/image/course/indDown.png" alt="" />
+                    <p>
+                        你可以分享这个页面<br/>邀请三位朋友免费听今天的课程
+                    </p>
+                    <img src="./assetsFund/image/course/indDown.png" alt="" />
+                </p>}
                 {(freeRewardLink || freeChance) && this.shareUserList()}
                 {this.buttonRender()}
             </div>
@@ -314,7 +318,7 @@ const GetReward = React.createClass({
         console.log(course)
         return (
             <div className="reward-pic" style={{backgroundImage:"url('./assetsFund/image/course/noteCard.png')"}}>
-                <p className="note-card-rank">恭喜你是第{this.state.senior.rank}位完成课程的学员</p>
+                <p className="note-card-project-title">14天基金定投训练营</p>
                 <p className="note-card-header">-{course.cardTitle}-</p>
                 <p className="note-card-content-title">{textArr && textArr[0]}</p>
                 <div className="note-card-text" dangerouslySetInnerHTML={{__html:content || ''}}></div>
@@ -340,7 +344,7 @@ const GetReward = React.createClass({
     shareUserList() {
         return (
             <div className="share-user-list">
-                <div className="share-user-title">免费邀请名额</div>
+                <div className="share-user-title">已经获得免费听课资格的好友</div>
                 {this.shareUser()}
             </div>
         )
@@ -350,7 +354,7 @@ const GetReward = React.createClass({
         const friendInfo = this.state.friendInfo
         const userList = userArr.map(user =>
             <div className="share-user-logo" key={user}>
-                <div className={!friendInfo[user-1] ? 'share-user-headimage-noborder' : 'share-user-headimage'}><img src={friendInfo[user-1] ? friendInfo[user-1].headImg : './assetsFund/image/course/add.png'} /></div>
+                <div className={!friendInfo[user-1] ? 'share-user-headimage-noborder' : 'share-user-headimage'}><div>{friendInfo[user-1] && <img src={friendInfo[user-1].headImg} />}</div></div>
                 <div className="share-user-name">{friendInfo[user-1] && friendInfo[user-1].name || '用户'+user}</div>
             </div>
         )
