@@ -50,8 +50,8 @@ const USER_NUMBER = 500; // TODO roy 活动报名总人数
 const NORMAL_PRICE = 1;// TODO roy 上线价格，普通用户
 const CHEAP_PRICE = 1;// TODO roy 下线价格，享有的优惠价格
 
-const SHARE_TITLE = '和我一起提高财商吧！';
-const SHARE_DESC = '邀请你一起参加7天财商训练营';
+const SHARE_TITLE = '14天基金定投训练营，手把手带你从0学习基金投资';
+const SHARE_DESC = '';
 
 //是否是debug
 const IS_DEBUG = location.href.indexOf('localhost') > 0;
