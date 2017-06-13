@@ -103,9 +103,7 @@ const ListenCourse = React.createClass({
 
         OnFire.on('Course_AutoMove', ()=>{
             //如果所有的课程都通过了
-            if (this.state.allFinish) {
-                return;
-            }
+
             // if  (this.props.location.query.name === '2') {
             //
             // }
@@ -153,7 +151,6 @@ const ListenCourse = React.createClass({
                 }
             });
             this.state.lessons = progressData;
-            this.calcInit();
             this.fixProcess();
             this.calcProcess();
             if (progressData) {
@@ -174,6 +171,7 @@ const ListenCourse = React.createClass({
         //1完成全部选择题后
         if(lastLesson[lastLesson.length - 1].process === true) {
             this.state.allFinish = true;
+            this.setState({allFinish: this.state.allFinish});
         }
     },
 
@@ -182,13 +180,8 @@ const ListenCourse = React.createClass({
         let allLesson = this.state.lessons;
         for(let i = 0; i<allLesson.length; i++){
             this.state.totalElement++;
-            if (i === 0) {
-                // this.state.finishElement++;
-            } else {
-                if(allLesson[i-1].subs[allLesson[i-1].subs.length - 1].process === true) {
-                    this.state.finishElement++;
-                }
-
+            if(allLesson[i].subs[allLesson[i-1].subs.length - 1].process === true) {
+                this.state.finishElement++;
             }
         }
         this.setState({
