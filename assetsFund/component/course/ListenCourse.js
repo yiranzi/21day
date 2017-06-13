@@ -153,6 +153,7 @@ const ListenCourse = React.createClass({
                 }
             });
             this.state.lessons = progressData;
+            this.calcInit();
             this.fixProcess();
             this.calcProcess();
             if (progressData) {
@@ -167,8 +168,13 @@ const ListenCourse = React.createClass({
         });
     },
 
-    renderInit() {
-
+    calcInit() {
+        let allLesson = this.state.lessons;
+        let lastLesson = allLesson[allLesson.length - 1].subs;
+        //1完成全部选择题后
+        if(lastLesson[lastLesson.length - 1].process === true) {
+            this.state.allFinish = true;
+        }
     },
 
     //计算进度
@@ -197,7 +203,6 @@ const ListenCourse = React.createClass({
         let lastLesson = allLesson[allLesson.length - 1].subs;
         //1完成全部选择题后
         if(lastLesson[lastLesson.length - 1].process === true) {
-            this.state.allFinish = true;
             for (let lesson of allLesson) {
                 if(lesson.process!==true){
 

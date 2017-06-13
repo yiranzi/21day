@@ -346,7 +346,7 @@ var PayPage = React.createClass({
      * 跳转到关卡页面
      */
     gotoSelectPage() {
-      // location.hash = "/select";
+      location.hash = "/select";
       let ictChannel = Util.getUrlPara("ictchannel");
       if (ictChannel) {
         location.href = Util.getHtmlUrl() + "?ictchannel=" + Util.getUrlPara("");
