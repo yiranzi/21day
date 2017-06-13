@@ -8,11 +8,12 @@ const OnFire = require('onfire.js');
 const User = require('../../User');
 
 const Config = require('../../Config');
+const DoneToast = require('../DoneToast');
 const Link = require('react-router').Link;
 const LessonBar = require('./LessonBar');
 const FixedBg = require('./FixedBg');
 const IconBar = require('./IconBar');
-var boolOnce = true;
+let boolOnce = true;
 
 
 
@@ -102,7 +103,11 @@ const CourseSelect = React.createClass({
 
     init() {
         //支付页首页-判定支付状态 || 课程页首页-渲染列表
+        let isSubscribed = User.getUserInfo().subscribe;
 
+        if (!isSubscribed) {
+            DoneToast.show('赶紧关注公众号"长投"，"长投"，"长投"，每天陪你一起学习哟~');
+        }
 
         //0.获取听课列表
         this.getCourseList();
@@ -505,8 +510,8 @@ const CourseSelect = React.createClass({
     },
 
     showGroup() {
-        window.dialogAlertComp.show('快来加入7天学习群','在群里可以分享到理财干货，更有师兄直播讲课答疑哦！快来吧','点击加群',()=>
-        {location.href = "https://jq.qq.com/?_wv=1027&k=49fUv5j";},'先不要',true)
+        window.dialogAlertComp.show('加入QQ社群，班主任手把手带你投资，更有干货答疑。（如果无法自动跳转，手动搜索群号：641855074）','点击加入',()=>
+        {location.href = "https://jq.qq.com/?_wv=1027&k=49fUv5j";},'我加过了',true)
     },
 
     openGraduated() {

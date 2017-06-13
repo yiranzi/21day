@@ -373,8 +373,7 @@ var PayPage = React.createClass({
             hasPaid: true,
         });
         this.scrollToTop();
-        DoneToast.show('报名成功，记得关注长投公号哦！');
-
+        window.dialogAlertComp.show('报名成功','赶紧关注公众号"长投"，"长投"，"长投"，每天陪你一起学习哟~','好勒，知道了！',this.gotoSelectPage,()=>{},false);
         Util.postCnzzData("报名成功未关注公号");
       }
     },
@@ -404,7 +403,7 @@ var PayPage = React.createClass({
                     <img src="./assetsFund/image/fundJoin/join-title.png" alt="" className="fund-join-title"/>
                     <div className="fund-join-content-box">
                         <img src="./assetsFund/image/fundJoin/join-content.png" alt="" className="fund-join-content"/>
-                        {
+                        {!this.state.hasSenior &&
                             <div className="fund-status">
                                 {/*<span className="fund-status-sell">倒计时：{this.state.endTime}</span>*/}
                                 <Timeout hasEnded={this.state.time} finalDate={this.state.endTime}/>
