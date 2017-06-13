@@ -102,7 +102,7 @@ var PayPage = React.createClass({
         });
         //已付费
         OnFire.on('PAID_SUCCESS',(payWay)=>{
-          alert("报名成功");
+          // alert("报名成功");
 
           // 下线支付成功后上报
           let seniorId = Util.getUrlPara('ictchannel');
@@ -164,7 +164,6 @@ var PayPage = React.createClass({
             // result.time = false;
 
             let restNum = Util.getUserNumber() - result.number;
-
             if (restNum <= 0){
                 this.setState({
                     num: 0,
@@ -403,18 +402,20 @@ var PayPage = React.createClass({
                 <div className="fund-join-page">
                     <img src="./assetsFund/image/fundJoin/join-bg.jpg" alt="" className="fund-join-bg"/>
                     <img src="./assetsFund/image/fundJoin/join-title.png" alt="" className="fund-join-title"/>
-                    <img src="./assetsFund/image/fundJoin/join-content.png" alt="" className="fund-join-content"/>
-                    {
-                        <div className="fund-status">
-                            {/*<span className="fund-status-sell">倒计时：{this.state.endTime}</span>*/}
-                            <Timeout hasEnded={this.state.time} finalDate={this.state.endTime}/>
-                            <span className="fund-status-number">剩余名额：{this.state.showint ? this.state.remain-this.state.num : 0}</span>
-                        </div>
-                    }
+                    <div className="fund-join-content-box">
+                        <img src="./assetsFund/image/fundJoin/join-content.png" alt="" className="fund-join-content"/>
+                        {
+                            <div className="fund-status">
+                                {/*<span className="fund-status-sell">倒计时：{this.state.endTime}</span>*/}
+                                <Timeout hasEnded={this.state.time} finalDate={this.state.endTime}/>
+                                <span className="fund-status-number">剩余名额：{this.state.showint ? this.state.num : 0}</span>
+                            </div>
+                        }
+                    </div>
                     <div className="fund-join-btns">
                         <span className="btn try" onClick={this.freeLesson}>试听</span>
                         {
-                            (this.state.hasSenior || (!this.state.time && (this.state.remain-this.state.num > 0))) ?
+                            (this.state.hasSenior || (!this.state.time && (this.state.num > 0))) ?
                                 <span className="btn join" onClick={this.clickHandler}><span>报名</span><span>(￥{this.state.buttonPrice})</span></span> :
                                 <span className="btn join" onClick={this.onWantJoinTap}><span>还想报名？点我</span></span>
 
