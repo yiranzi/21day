@@ -61,17 +61,21 @@ const GetReward = React.createClass({
                     this.setState({myName: User.getUserInfo().nickName})
                 });
             }
-            //todo 如果是试听分享链接
-            if (Util.getUrlPara('freeLesson')) {
-                //todo sta 下线_进入_GetReword
-                this.setState({freeRewardLink: true});
-                //todo 获得所有绑定的名字,并保存这些名字
-                this.setShareInfo(userId);
-            }
             this.state.senior.userId = userId;
             this.state.senior.name = Util.getUrlPara('name');
             this.state.senior.rank = Util.getUrlPara('rank');
             this.setState({type: 'other'});
+            //todo 如果是试听分享链接
+            if (Util.getUrlPara('freeLesson')) {
+                //todo sta 下线_进入_GetReword
+                this.setState({freeRewardLink: true}, () => {
+                    this.setShareConfig('freeChance');
+                });
+                //todo 获得所有绑定的名字,并保存这些名字
+                this.setShareInfo(userId);
+            } else {
+                this.setShareConfig('share');
+            }
             Loading.hideLoading();
         } else {//查看自己的
             userId = User.getUserInfo().userId;
@@ -109,14 +113,14 @@ const GetReward = React.createClass({
                                 //设置分享内容
                                 this.setShareConfig('freeChance');
                             }
-                            Loading.hideLoading();
+                            // Loading.hideLoading();
                         });
                     }
                     //免费用户分享分享的
                     else
                     {
                         this.setShareConfig('share');
-                        Loading.hideLoading();
+                        // Loading.hideLoading();
 
                     }
                 });
@@ -158,6 +162,7 @@ const GetReward = React.createClass({
                                 shareImgUrl: base64,
                                 isNoteCardDomShow: false
                             })
+                            Loading.hideLoading()
                         }
                     )
                 })
@@ -180,6 +185,7 @@ const GetReward = React.createClass({
      * @param title
      */
     setShareConfig(type) {
+        alert(type)
         let senior = this.state.senior;
         let shareTitle;
         let link = Util.getShareLink();
@@ -192,7 +198,8 @@ const GetReward = React.createClass({
         switch (type) {
             //分享当日免费课(高级分享)
             case 'freeChance':
-                shareTitle = '我是第'+ this.state.senior.rank+'名完成'+ course.title + '课的人，dialog按时完成课程的奖励';
+                alert('free')
+                shareTitle = '我是第'+ this.state.senior.rank+'名完成'+ course.title + '课的人，按时完成课程的奖励';
                 desc = '这是赠送的免费课';
                 link = link + '&goPath=' + '/getReward/' + senior.courseId;
                 link = link + '&courseId=' + senior.courseId;
@@ -203,6 +210,7 @@ const GetReward = React.createClass({
                 break;
             //普通分享
             case 'share':
+                alert('share')
                 senior = this.state.senior;
                 shareTitle = '我是第'+ this.state.senior.rank+'名完成'+ course.title + '课的人，快来看看我的成就卡吧！';
                 desc = '快比比谁的财商更高吧?';
