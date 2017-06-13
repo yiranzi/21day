@@ -102,7 +102,7 @@ var PayPage = React.createClass({
         });
         //已付费
         OnFire.on('PAID_SUCCESS',(payWay)=>{
-          // alert("报名成功");
+          alert("报名成功");
 
           // 下线支付成功后上报
           let seniorId = Util.getUrlPara('ictchannel');
@@ -290,6 +290,9 @@ var PayPage = React.createClass({
         this.payHandler();
     },
 
+    onWantJoinTap () {
+        window.dialogAlertComp.show('告诉你个小秘密','请好友分享给你后，你可以无视截止时间的限制，想报名就报名~','快去试试吧',()=>{},()=>{},false);
+    },
 
     /**
      * 支付动作
@@ -398,7 +401,7 @@ var PayPage = React.createClass({
         return (
             <div className="pay_page">
                 <div className="fund-join-page">
-                    <img src="./assetsFund/image/fundJoin/join-bg.jpg " alt="" className="fund-join-bg"/>
+                    <img src="./assetsFund/image/fundJoin/join-bg.jpg" alt="" className="fund-join-bg"/>
                     <img src="./assetsFund/image/fundJoin/join-title.png" alt="" className="fund-join-title"/>
                     <img src="./assetsFund/image/fundJoin/join-content.png" alt="" className="fund-join-content"/>
                     {
@@ -413,7 +416,7 @@ var PayPage = React.createClass({
                         {
                             (this.state.hasSenior || (!this.state.time && (this.state.remain-this.state.num > 0))) ?
                                 <span className="btn join" onClick={this.clickHandler}><span>报名</span><span>(￥{this.state.buttonPrice})</span></span> :
-                                <span className="btn join" onClick={this.clickHandler}><span>还想报名？点我</span></span>
+                                <span className="btn join" onClick={this.onWantJoinTap}><span>还想报名？点我</span></span>
 
                         }
                     </div>

@@ -81,7 +81,7 @@ var Timeout = React.createClass({
     render() {
         return (
             <span className="fund-status-time">
-                {(this.props.hasEnded || (this.state.days <= 0 && this.state.hours <= 0 && this.state.minutes <= 0 && this.state.seconds <= 0)) ?
+                {(this.props.hasEnded) ?
                     '报名时间已过' : '倒计时：' +
                     (this.state.days > 0 ? this.state.days : 0 )+'天' +
                     (this.state.hours > 0 ? this.state.hours : 0 )+'小时' +
