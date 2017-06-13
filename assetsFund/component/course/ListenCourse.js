@@ -180,7 +180,7 @@ const ListenCourse = React.createClass({
         let allLesson = this.state.lessons;
         for(let i = 0; i<allLesson.length; i++){
             this.state.totalElement++;
-            if(allLesson[i].subs[allLesson[i-1].subs.length - 1].process === true) {
+            if(allLesson[i].subs[allLesson[i].subs.length - 1].process === true) {
                 this.state.finishElement++;
             }
         }
@@ -429,7 +429,8 @@ const ListenCourse = React.createClass({
                     }
                     //如果选择题都完成了1
                     if(lessonQuestions[lessonQuestions.length - 1].process && i !== lessons.length - 1) {
-                        arr.push(<div className="lesson-column-line"></div>)
+                        arr.push(<div style = {{backgroundImage: 'url("./assetsFund/image/course/DividingLine.png")'}} className="lesson-column-line"></div>);
+                        //background-image: url("../image/course/DividingLine.png");
                         count++;
                     }
                 } else break OUT;
