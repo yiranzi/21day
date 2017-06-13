@@ -25,7 +25,7 @@ const LessonBar = React.createClass({
                 '没听完',
                 '已完成'
             ],
-            rewardPic: "./assetsFund/image/course/intNote.png",
+            rewardPic: "./assetsFund/image/course/indNote.png",
             typePic: [
                 "./assetsFund/image/course/indWrong.png",
                 "./assetsFund/image/course/indRight.png",
@@ -38,11 +38,18 @@ const LessonBar = React.createClass({
     render() {
         return(
             <div>
-                <div className="bar-background"></div>
+                {this.renderBg()}
                 {this.LineRender()}
             </div>
         )
     },
+    renderBg() {
+        if(this.props.content.courseStatus.see){
+            return(<div className="bar-background"></div>)
+        }
+
+    },
+
     // style={{backgroundImage:'url('+content.image+')'}}
     LineRender() {
         let content = this.state.content;
@@ -50,30 +57,22 @@ const LessonBar = React.createClass({
         if(this.props.content.courseStatus.see)
         {
             return (<div className="column-container">
-                <div className="pic-container" onClick={this.callBackFunc.bind(this,'goReward')}>
-                    {this.renderReward()}
-                </div>
-                <div className="touch-range" onClick={this.callBackFunc.bind(this,'goCourse')}>
-
-                </div>
-                <span className="column-container-title">
-                <h1>{this.state.day[this.state.index]}</h1>
-                    {this.renderFinish()}
-                    <h2>{content.title}</h2>
-            </span>
+                <div className="bg-number"><h1>{this.props.index}</h1></div>
+                <div className="pic-container" onClick={this.callBackFunc.bind(this,'goReward')}>{this.renderReward()}</div>
+                <div className="touch-range" onClick={this.callBackFunc.bind(this,'goCourse')}></div>
+                {this.renderFinish()}
+                <span className="column-container-title"><h2>{content.title}</h2></span>
             </div>)
         } else {
-            return (<div className="column-container" onClick={this.callBackFunc.bind(this,'goCourse')}>
-                <div className="column-not-view">
-                    <h1>
-                        {this.state.day[this.state.index]}
-                    </h1>
-                    <h2>
-                        {content.title}
-                    </h2>
-                    {this.renderFreeNextDay()}
-                </div>
-            </div>)
+            return(<img onClick={this.callBackFunc.bind(this,'goCourse')} className="bg-not-see" src = "./assetsFund/image/course/tomorrow.png"/>)
+            // return (<div className="column-container" onClick={this.callBackFunc.bind(this,'goCourse')}>
+            //     <div className="column-not-view">
+            //         <h2>
+            //             {content.title}
+            //         </h2>
+            //         {this.renderFreeNextDay()}
+            //     </div>
+            // </div>)
         }
 
     },
@@ -130,7 +129,7 @@ const LessonBar = React.createClass({
                 break;
                 break;
             case 'not-get':
-                arr.push(<img style={{opacity: '0.5'}} className="column-pic" src={this.state.rewardPic}/>);
+                arr.push(<img style={{opacity: '0.2'}} className="column-pic" src={this.state.rewardPic}/>);
                 break;
             case 'get':
                 //如果已获得成就卡

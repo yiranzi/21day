@@ -139,9 +139,9 @@ const CourseSelect = React.createClass({
                 <FixedBg/>
                 <div>
                     {this.renderTopBar()}
-                    {this.renderTreasure()}
+                    {/*{this.renderTreasure()}*/}
                     {this.renderCourseList()}
-                    {this.renderGraduated()}
+                    {/*{this.renderGraduated()}*/}
                     {this.reloadPic()}
                 </div>
             </div>
@@ -189,13 +189,27 @@ const CourseSelect = React.createClass({
         } else {
             for (let i = 0; i < courseList.length; i++) {
                 //计算出来状态,并赋值.
-                this.calcCourseStatus(courseList[i], i)
+                let result = this.calcCourseStatus(courseList[i], i);
                 if ( i === 0 || this.state.courseList[i-1].courseStatus.see === true){
-                    arr.push(
-                        <div className="lesson-bar">
-                            <LessonBar  index = {i} content = {this.state.courseList[i]} cbfGoLesson = {this.cbfGoLesson} cbfSeeReward = {this.cbfSeeReward}></LessonBar>
-                        </div>
-                    );
+                    // if (result) {
+                    //     arr.push(
+                    //         <div className="lesson-bar">
+                    //             <LessonBar  index = {i} content = {this.state.courseList[i]} cbfGoLesson = {this.cbfGoLesson} cbfSeeReward = {this.cbfSeeReward}></LessonBar>
+                    //         </div>
+                    //     );
+                    // } else {
+                    //     arr.push(
+                    //         <div className="lesson-bar">
+                    //             <img className="bg-not-see" src = "./assetsFund/image/course/tomorrow.png"/>
+                    //         </div>
+                    //     );
+                    // }
+                        arr.push(
+                            <div className="lesson-bar">
+                                <LessonBar  index = {i} content = {this.state.courseList[i]} cbfGoLesson = {this.cbfGoLesson} cbfSeeReward = {this.cbfSeeReward}></LessonBar>
+                            </div>
+                        );
+
                 } else break;
                 // switch (courseStatus) {
                 //     //没有达到听课时间
