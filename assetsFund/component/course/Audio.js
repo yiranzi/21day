@@ -58,7 +58,7 @@ const AudioBar = React.createClass({
                     </p>}
                     {!this.state.isPlaying && <p className={this.state.isPlaying ? 'title-bottom-fund':'title-top-fund'} style={{background: '#545454'}}>
                         <p className="title-play-logo">
-                            <img src="./assetsFund/image/course/btnPlay.png" alt=""/>
+                            <img src="./assetsFund/image/course/btnPlayer.png" alt=""/>
                         </p>
                         <p className="title-play-text">
                             <p>
