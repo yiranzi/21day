@@ -424,7 +424,7 @@ var PayPage = React.createClass({
 
     freeLesson() {
         // location.hash = '/select';
-        location.hash = 'course/1/free'
+        location.hash = 'course/10/free'
     }
 
 });

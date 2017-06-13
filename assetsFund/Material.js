@@ -154,6 +154,28 @@ class Material {
         })
     }
 
+    /*获取笔记卡内容*/
+    static getNoteCardText (courseId) {
+        const User = require('./User')
+        const Util = require('./Util'),
+            apiUrl = Util.getAPIUrl('get_notes').replace('{dayId}', courseId);
+        return $.ajax(
+            {
+                url: apiUrl,
+                type: 'get',
+                cache: false,
+                contentType: 'application/json;charset=utf-8',
+                headers: {
+                    Accept: 'application/json'
+                },
+                beforeSend: (request)=>{
+                    request.setRequestHeader("X-iChangTou-Json-Api-Token", Util.getApiToken());
+                    request.setRequestHeader("X-iChangTou-Json-Api-User", User.getUserInfo().userId);
+                }
+            }
+        )
+    }
+
     /**
      * 获取fm信息
      * @param fmid

@@ -24,6 +24,7 @@ const ChooseBar = require('./Choose');
 const AudioBar = require('./Audio');
 const FixedBg = require('./FixedBg');
 const CourseProcessBar = require('./CourseProcessBar');
+const courseInfo = require('../../CourseInfo');
 
 
 
@@ -56,6 +57,10 @@ const ListenCourse = React.createClass({
             isPay: false,
             finishElement: 0,
             totalElement: 0,
+            courseTitle: {
+                title: '',
+                subTitle: '',
+            }
         }
     },
 
@@ -121,6 +126,15 @@ const ListenCourse = React.createClass({
     getFmInfo() {
         Loading.showLoading('获取信息...');
         let courseId = this.props.params.courseId;
+        //获取标题
+        let courseTitle = courseInfo.find(
+            courseTitle => {
+                return courseTitle.id === parseInt(courseId)
+            }
+        );
+        this.state.courseTitle.subTitle = courseTitle.title;
+        this.state.courseTitle.title = courseTitle.cardTitle;
+        this.setState({courseTitle: this.state.courseTitle});
 
         Material.getCourseProgress(courseId).always((progressData) => {
             Loading.hideLoading();
@@ -275,7 +289,8 @@ const ListenCourse = React.createClass({
             <div id="fmView" className="fm-view">
                 <FixedBg />
                 <div className="fix-bg-space"></div>
-                {/*<CourseProcessBar finishElement = {this.state.finishElement} totalElement = {this.state.totalElement}/>*/}
+                {this.renderTitle()}
+                <CourseProcessBar finishElement = {this.state.finishElement} totalElement = {this.state.totalElement}/>
                 {/*<span>当前点击的index{this.state.currentPlaying}</span>*/}
                 {/*<span>当前播放的fmid{this.state.currentfmid}</span>*/}
                 {/*<div>进入时,这门课程的状态时{this.props.location.query.name}</div>*/}
@@ -286,6 +301,13 @@ const ListenCourse = React.createClass({
                 {this.preLoadPic()}
             </div>
         )
+    },
+
+    renderTitle(){
+        return(<div className="bg-title">
+            <h1>{this.state.courseTitle.title}</h1>
+            <p>{this.state.courseTitle.subTitle}</p>
+        </div>)
     },
 
     renderSignUp() {
