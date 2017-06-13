@@ -1,6 +1,12 @@
 .course-process-bar{
   position: fixed;
-  color: red;
+  left: px2rem(30);
+  top: px2rem(500);
+  z-index: 1000;
+  .process-bar{
+    display: inline-block;
+    margin-bottom: px2rem(10);
+  }
   .process-bar-have{
     color: green;
   }
