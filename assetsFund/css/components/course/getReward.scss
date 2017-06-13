@@ -90,7 +90,7 @@
 
   .reward-pic, .reward-pic-img{
     width: px2rem(237);
-    height: px2rem(368);
+    height: px2rem(385);
     font-size: 13px;
     margin-bottom: px2rem(15);
   }
@@ -101,10 +101,46 @@
     top: 0;
     text-align: center;
     width: px2rem(474);
-    height: px2rem(736);
+    height: px2rem(770);
     font-size: 26px;
     background-size: cover;
     background-position: top center;
+    .share-qrcode{
+      text-align: center;
+      font-size: 0;
+      padding-top: px2rem(20);
+      img{
+        width: px2rem(70);
+        height: px2rem(70);
+      }
+    }
+    .note-card-rank{
+      line-height: px2rem(24);
+      font-size: px2rem(16);
+      color: #575757;
+      text-align: center;
+    }
+    .note-card-header{
+      font-size: px2rem(28);
+      line-height: px2rem(30);
+      color: #575757;
+      margin-top: px2rem(84);
+      text-align: center;
+    }
+    .note-card-content-title{
+      font-size: px2rem(20);
+      color: #575757;
+      line-height: px2rem(30);
+      text-align: center;
+    }
+    .note-card-text{
+      width: px2rem(364);
+      color: #575757;
+      text-align: left;
+      font-size: px2rem(18);
+      line-height: px2rem(23);
+      margin: px2rem(115) auto 0;
+    }
   }
   .share-user-list{
     margin: 0 auto;
@@ -116,11 +152,9 @@
     width: px2rem(237);
     height: px2rem(20);
     line-height: px2rem(20);
-    border-radius: px2rem(4);
     margin: 0 auto;
     margin-bottom: px2rem(15);
-    color: #575757;
-    background: #fff;
+    color: #fff;
   }
   .share-user-logo{
     float: left;
