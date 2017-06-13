@@ -257,6 +257,7 @@ const GetReward = React.createClass({
                 }
                 location.hash = '/course/' + this.state.senior.courseId + '/free';
             } else {
+                
                 location.hash = '/select';
             }
         }
@@ -327,7 +328,7 @@ const GetReward = React.createClass({
         const isGetLesson = freeRewardLink && !isPay && type === 'other' && friendInfo.length < 3
         const isGetFree = freeRewardLink && !isPay && type === 'other' && friendInfo.length >= 3
         return (
-            <div><div className="reward-share-button" onClick={type === 'mine' ? this.goCommand : this.goSignUp()}>
+            <div><div className="reward-share-button" onClick={type === 'mine' ? this.goCommand : this.goSignUp}>
                 {type === 'mine' ? '我要分享' : isGetLesson ? '获取免费试听' : '去听听免费课吧'}
         </div></div>)
     },
