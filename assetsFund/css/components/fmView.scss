@@ -9,6 +9,7 @@
     //background-image: url('../image/course/courseTitle.png');
     background-size: 100% 100%;
     //background-image: url('../image/course/tomorrowSmall.png');
+    margin-bottom: px2rem(10);
     h1{
       padding-top: px2rem(10);
       color: black;
@@ -45,15 +46,15 @@
   height: auto;
   color: black;
   .fix-bg-space{
-    height: px2rem(18);
+    height: px2rem(10);
     width: 100%;
   }
   .lesson-column-line{
-    background-image: url("../image/course/DividingLine.png");
+    //background-image: url("../image/course/DividingLine.png");
     background-size:cover;
-    height: px2rem(18);
+    height: px2rem(39);
     margin: 0 auto px2rem(18) auto;
-    width: px2rem(359);
+    //width: px2rem(359);
   }
 
   .fm-title{

@@ -32,7 +32,7 @@ const CourseSelect = React.createClass({
                 canView: false,
             },
             allFinish: false,//所有课程都完成.
-            allowLesson: 'FREE',//用户听课权限
+            allowLesson: '',//用户听课权限
             topBarStatus: [
                 false,true,false
             ],
@@ -134,18 +134,30 @@ const CourseSelect = React.createClass({
     },
 
     render() {
-        return(
-            <div className="course-list">
-                <FixedBg/>
-                <div>
-                    {this.renderTopBar()}
-                    {/*{this.renderTreasure()}*/}
-                    {this.renderCourseList()}
-                    {/*{this.renderGraduated()}*/}
-                    {this.reloadPic()}
+        // test1
+        if(this.state.allowLesson === ''){
+            this.renderEmpty();
+            return(<div>
+            </div>)
+        } else {
+            return(
+                <div className="course-list">
+                    <FixedBg/>
+                    <div>
+                        {this.renderTopBar()}
+                        {/*{this.renderTreasure()}*/}
+                        {this.renderCourseList()}
+                        {/*{this.renderGraduated()}*/}
+                        {this.reloadPic()}
+                    </div>
                 </div>
-            </div>
-        )
+            )
+        }
+    },
+
+    renderEmpty() {
+        console.log('empty');
+
     },
 
     renderTopBar(){
@@ -295,6 +307,7 @@ const CourseSelect = React.createClass({
                 }
                 break;
         }
+        // courseStatus.see = true;
         this.state.courseList[index].courseStatus = courseStatus;//赋值.
         return courseStatus.see;
     },

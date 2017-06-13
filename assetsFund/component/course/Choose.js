@@ -47,7 +47,7 @@ const ChooseBar = React.createClass({
             <div className="choose-part">
                 <div className="choose-question">
                     <h1>问题</h1>
-                    {question.introduce}
+                    <p>{question.introduce}</p>
                 </div>
                 <div className="choose-answer-bg">
                     {this.optionRender()}
@@ -114,7 +114,9 @@ const ChooseBar = React.createClass({
         {
             return (<div className="choose-tips">
                 <h1 className="tips-font">Tips</h1>
-                <p className="tips-font">{this.props.question.tips}</p>
+                <div className="tips-bg">
+                    <p className="tips-font">{this.props.question.tips}</p>
+                </div>
             </div>);
         }
 

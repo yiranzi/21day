@@ -30,7 +30,7 @@
     }
     p{
       font-size: px2rem(18);
-      margin: px2rem(15) 0 px2rem(15) 0;
+      margin: px2rem(15) px2rem(15) px2rem(15) px2rem(15);
     }
   }
 
@@ -95,18 +95,24 @@
   }
 
   .choose-tips{
-    background-color: #595959;
+    background-color: #5ab1cf;
+    color: white;
     border-radius: px2rem(4);
     padding-top: px2rem(15);
-    padding-bottom: px2rem(10);
+    //padding-bottom: px2rem(10);
     margin-top: px2rem(18);
     h1{
-      font-size: px2rem(20);
+      font-size: px2rem(36);
       margin-bottom: px2rem(15);
     }
-    p{
-      font-size: px2rem(20);
-      margin-bottom: px2rem(5);
+    .tips-bg{
+      background-color: white;
+      border-radius: px2rem(4);
+      p{
+        font-size: px2rem(20);
+        margin-bottom: px2rem(5);
+        color: black;
+      }
     }
     .tips-font{
       opacity: 0.4;

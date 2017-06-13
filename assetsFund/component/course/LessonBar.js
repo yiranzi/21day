@@ -10,15 +10,23 @@ const LessonBar = React.createClass({
         return {
             content: this.props.content,
             index: this.props.index,
-            // day: [
-            //     '第一天',
-            //     '第二天',
-            //     '第三天',
-            //     '第四天',
-            //     '第五天',
-            //     '第六天',
-            //     '第七天',
-            // ],
+            day: [
+                '零',
+                '壹',
+                '贰',
+                '叁',
+                '肆',
+                '伍',
+                '陆',
+                '柒',
+                '捌',
+                '玖',
+                '拾',
+                '拾壹',
+                '拾贰',
+                '拾叁',
+                '拾肆',
+            ],
             type: [
                 '未解锁!',
                 '新的!未听!',
@@ -57,8 +65,8 @@ const LessonBar = React.createClass({
         if(this.props.content.courseStatus.see)
         {
             return (<div className="column-container">
-                <div className="bg-number"><h1>{this.props.index}</h1></div>
-                <div className="pic-container" onClick={this.callBackFunc.bind(this,'goReward')}>{this.renderReward()}</div>
+                <div className="bg-number"><h1>{this.state.day[this.props.index]}</h1></div>
+                {/*<div className="pic-container" onClick={this.callBackFunc.bind(this,'goReward')}>{this.renderReward()}</div>*/}
                 <div className="touch-range" onClick={this.callBackFunc.bind(this,'goCourse')}></div>
                 {this.renderFinish()}
                 <span className="column-container-title"><h2>{content.title}</h2></span>
@@ -144,8 +152,9 @@ const LessonBar = React.createClass({
 
     //渲染finish
     renderFinish() {
+        // return <img onClick={this.callBackFunc.bind(this,'goReward')} className="column-type" src={'./assetsFund/image/course/indFinished.png'}/>
         if( this.props.content.courseStatus.allFinish) {
-            return <img className="column-type" src={'./assetsFund/image/course/indFinished.png'}/>
+            return <img onClick={this.callBackFunc.bind(this,'goReward')} className="column-type" src={'./assetsFund/image/course/indFinished.png'}/>
         } else {
             if (this.props.content.courseStatus.enter === 'free-enter') {
                 return(<p className = "free-lesson">免费收听</p>)

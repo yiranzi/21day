@@ -103,9 +103,7 @@ const ListenCourse = React.createClass({
 
         OnFire.on('Course_AutoMove', ()=>{
             //如果所有的课程都通过了
-            if (this.state.allFinish) {
-                return;
-            }
+
             // if  (this.props.location.query.name === '2') {
             //
             // }
@@ -167,8 +165,14 @@ const ListenCourse = React.createClass({
         });
     },
 
-    renderInit() {
-
+    calcInit() {
+        let allLesson = this.state.lessons;
+        let lastLesson = allLesson[allLesson.length - 1].subs;
+        //1完成全部选择题后
+        if(lastLesson[lastLesson.length - 1].process === true) {
+            this.state.allFinish = true;
+            this.setState({allFinish: this.state.allFinish});
+        }
     },
 
     //计算进度
@@ -176,13 +180,8 @@ const ListenCourse = React.createClass({
         let allLesson = this.state.lessons;
         for(let i = 0; i<allLesson.length; i++){
             this.state.totalElement++;
-            if (i === 0) {
-                // this.state.finishElement++;
-            } else {
-                if(allLesson[i-1].subs[allLesson[i-1].subs.length - 1].process === true) {
-                    this.state.finishElement++;
-                }
-
+            if(allLesson[i].subs[allLesson[i].subs.length - 1].process === true) {
+                this.state.finishElement++;
             }
         }
         this.setState({
@@ -197,7 +196,6 @@ const ListenCourse = React.createClass({
         let lastLesson = allLesson[allLesson.length - 1].subs;
         //1完成全部选择题后
         if(lastLesson[lastLesson.length - 1].process === true) {
-            this.state.allFinish = true;
             for (let lesson of allLesson) {
                 if(lesson.process!==true){
 
@@ -431,7 +429,8 @@ const ListenCourse = React.createClass({
                     }
                     //如果选择题都完成了1
                     if(lessonQuestions[lessonQuestions.length - 1].process && i !== lessons.length - 1) {
-                        arr.push(<div className="lesson-column-line"></div>)
+                        arr.push(<div style = {{backgroundImage: 'url("./assetsFund/image/course/DividingLine.png")'}} className="lesson-column-line"></div>);
+                        //background-image: url("../image/course/DividingLine.png");
                         count++;
                     }
                 } else break OUT;
