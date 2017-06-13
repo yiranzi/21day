@@ -405,22 +405,16 @@ var PayPage = React.createClass({
                         <div className="fund-status">
                             {/*<span className="fund-status-sell">倒计时：{this.state.endTime}</span>*/}
                             <Timeout hasEnded={this.state.time} finalDate={this.state.endTime}/>
-                            <span className="fund-status-sell">剩余名额：{this.state.showint ? this.state.remain-this.state.num : 0}</span>
+                            <span className="fund-status-number">剩余名额：{this.state.showint ? this.state.remain-this.state.num : 0}</span>
                         </div>
                     }
                     <div className="fund-join-btns">
                         <span className="btn try" onClick={this.freeLesson}>试听</span>
                         {
-                            !this.state.hasSenior &&
-                            <span className="btn join" onClick={this.clickHandler}>
-                                    <span>还想报名？点我</span>
-                                </span>
-                        }
-                        {
-                            this.state.hasSenior || (!this.state.time && (this.state.remain-this.state.num > 0)) &&
-                            <span className="btn join" onClick={this.clickHandler}>
-                                    <span>报名</span><span>(￥{this.state.buttonPrice})</span>
-                                </span>
+                            (this.state.hasSenior || (!this.state.time && (this.state.remain-this.state.num > 0))) ?
+                                <span className="btn join" onClick={this.clickHandler}><span>报名</span><span>(￥{this.state.buttonPrice})</span></span> :
+                                <span className="btn join" onClick={this.clickHandler}><span>还想报名？点我</span></span>
+
                         }
                     </div>
                 </div>
