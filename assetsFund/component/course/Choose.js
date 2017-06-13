@@ -41,14 +41,18 @@ const ChooseBar = React.createClass({
     },
 
     render() {
-        var question = this.props.question
+        var question = this.props.question;
         return(
         <div className="choose-bar">
-            <div className="choose-question">
-                <h1>问题</h1>
-                {question.introduce}
+            <div className="choose-part">
+                <div className="choose-question">
+                    <h1>问题</h1>
+                    {question.introduce}
+                </div>
+                <div className="choose-answer-bg">
+                    {this.optionRender()}
+                </div>
             </div>
-            {this.optionRender()}
             {this.tipsRender()}
         </div>
         )
@@ -73,15 +77,15 @@ const ChooseBar = React.createClass({
         if(this.state.process) {
             if(question.trueindex[0] === index) {
                 this.state.nowClick = index;
-                return <div style = {{backgroundColor: 'green'}} className='choose-options-on'></div>
+                return <div style = {{backgroundColor: '#5FCF5A'}} className='choose-options-bg'></div>
             } else {
                 return null;
             }
         } else if(this.state.nowClick === index){
             if(this.state.results[index] === 1) {
-                return <div style = {{backgroundColor: 'green'}} className='choose-options-on'></div>
+                return <div style = {{backgroundColor: '#5FCF5A'}} className='choose-options-bg'></div>
             } else if(this.state.results[index] === 0){
-                return <div style = {{backgroundColor: 'red'}} className='choose-options-on'></div>
+                return <div style = {{backgroundColor: '#CF5959'}} className='choose-options-bg'></div>
             }
         }
     },

@@ -3,37 +3,70 @@
   width: px2rem(359);
   margin: 0 auto px2rem(18) auto;
   //color: #ffffff;
-  .choose-question{
-    background-color: #ffffff;
-    border-radius: px2rem(4);
-    padding: px2rem(15) 0 px2rem(15) 0;
+  .choose-part{
     box-shadow: 0px px2rem(2) px2rem(4) rgba(0, 0, 0, 0.3);
+    border-radius: 0 0 px2rem(4) px2rem(4);
+    .choose-answer-bg{
+      background-color: white;
+      border: white 1px solid;
+      padding: px2rem(5) 0 px2rem(5) 0;
+      border-radius: 0 0 px2rem(4) px2rem(4);
+    }
+  }
+  .choose-part-true{
+    box-shadow: 0px px2rem(2) px2rem(4) rgba(0, 0, 0, 0.3);
+  }
+  .choose-part-false {
+    box-shadow: 0px px2rem(2) px2rem(4) rgba(0, 0, 0, 0.3);
+  }
+  .choose-question{
+    background-color: #5ab1cf;
+    border-radius: px2rem(4) px2rem(4) 0 0;
+    padding: px2rem(15) 0 px2rem(15) 0;
+    color: white;
     h1{
-      font-size: px2rem(20);
+      font-size: px2rem(36);
       margin-bottom: px2rem(15);
     }
     p{
-      font-size: px2rem(16);
+      font-size: px2rem(18);
       margin: px2rem(15) 0 px2rem(15) 0;
     }
   }
-  .choose-options-on{
+
+  .choose-options-bg{
+    width: px2rem(290);
     position: relative;
-    background-color: black;
+    //background-color: black;
     color: #FFFFFF;
-    border-radius: px2rem(4);
+    border-radius: px2rem(40);
     height: px2rem(40);
     line-height: px2rem(40);
-    margin: px2rem(8) 0 px2rem(8) 0;
+    border: solid 1px #5AB1CF;
+    left: -1px;
+    top: -1px;
+  }
+  .choose-options-on{
+    width: px2rem(290);
+    position: relative;
+    //background-color: black;
+    color: #FFFFFF;
+    border-radius: px2rem(40);
+    height: px2rem(40);
+    line-height: px2rem(40);
+    margin: px2rem(8) auto px2rem(8) auto;
+    border: solid 1px #5AB1CF;
   }
   .choose-options-off{
+    width: px2rem(290);
     position: relative;
     background-color: #ffffff;
-    box-shadow: 0px px2rem(2) px2rem(4) rgba(0, 0, 0, 0.3);
-    border-radius: px2rem(4);
+    color: #5AB1CF;
+    border: solid 1px #5AB1CF;
+    border-radius: px2rem(40);
     height: px2rem(40);
     line-height: px2rem(40);
-    margin: px2rem(8) 0 px2rem(8) 0;
+    margin: px2rem(8) auto px2rem(8) auto;
   }
 
   .choose-options-img{

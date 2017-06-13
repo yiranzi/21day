@@ -79,4 +79,4 @@ const courseInfo = [
     },
 ]
 
-module.exports = courseInfo
+module.exports = courseInfo;

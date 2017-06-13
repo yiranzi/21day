@@ -27,7 +27,7 @@ const GetReward = React.createClass({
     // style = {fullbg}
     render() {
         return(
-            <div className="bg-ground" style = {{backgroundImage: 'url("./assetsFund/image/course/bg_1.png")', width:Dimensions.getWindowWidth(), height: Dimensions.getWindowHeight()}}></div>
+            <div className="bg-ground" style = {{backgroundImage: 'url("./assetsFund/image/fundJoin/join-bg.jpg")', width:Dimensions.getWindowWidth(), height: Dimensions.getWindowHeight()}}></div>
         )
     }
 });
