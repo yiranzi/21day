@@ -652,7 +652,7 @@ class Material {
         let userInfo = User.getUserInfo();
         let jsonData = JSON.stringify({
             eventName: eventName,
-            version: 2,
+            version: 11,
         });
         // alert(eventName + '/' + userInfo.userId);
         return $.ajax(

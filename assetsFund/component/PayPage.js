@@ -428,6 +428,13 @@ var PayPage = React.createClass({
 
     freeLesson() {
         // location.hash = '/select';
+        if (this.state.hasSenior) {
+            Util.postCnzzData('下线_点击试听_payPage');
+            Material.postData('下线_点击试听_payPage');
+        } else {
+            Util.postCnzzData('人_点击试听_payPage');
+            Material.postData('人_点击试听_payPage');
+        }
         location.hash = 'course/10/free'
     }
 

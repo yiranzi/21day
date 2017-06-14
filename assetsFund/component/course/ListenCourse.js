@@ -97,7 +97,8 @@ const ListenCourse = React.createClass({
             Util.postCnzzData("听完", this.state.lessons[this.state.currentPlaying].fmid);
             //统计免费完成课程1的进度情况
             if (!this.state.isPay && this.props.params.courseId === '1') {
-                Material.postData('免费_完成音频' + this.state.lessons[this.state.currentPlaying].fmid);
+                Material.postData('免费_跳转报名_ListenCourse');
+                // Material.postData('免费_完成音频' + this.state.lessons[this.state.currentPlaying].fmid);
             }
         });
 
@@ -244,6 +245,7 @@ const ListenCourse = React.createClass({
         });
         this.state.finishElement++;
         this.setState({finishElement: this.state.finishElement});
+        Material.postData('免费_完成选择题_ListenCourse');
     },
 
     /**
@@ -353,7 +355,7 @@ const ListenCourse = React.createClass({
 
     preLoadPic() {
         return(<div className="pre-load">
-            <img src={'./assetsFund/image/course/bglight_b.png'}/>
+            {/*<img src={'./assetsFund/image/course/bglight_b.png'}/>*/}
         </div>)
     },
 
@@ -388,7 +390,7 @@ const ListenCourse = React.createClass({
             this.fixProcess();
             Util.postCnzzData("第一次点击成就卡");
             if (!this.state.isPay) {
-                Material.postData('免费_完成课程' + this.props.params.courseId +'_Listy');
+                Material.postData('免费_完成课程_ListenCourse');
             }
         } else {
             Util.postCnzzData("再次点击成就卡");
