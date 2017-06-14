@@ -406,7 +406,6 @@ var PayPage = React.createClass({
                         <img src="./assetsFund/image/fundJoin/join-content.png" alt="" className="fund-join-content"/>
                         {!this.state.hasSenior &&
                             <div className="fund-status">
-                                {/*<span className="fund-status-sell">倒计时：{this.state.endTime}</span>*/}
                                 <Timeout hasEnded={this.state.time} finalDate={this.state.endTime}/>
                                 <span className="fund-status-number">剩余名额：{this.state.showint ? this.state.num : 0}</span>
                             </div>
