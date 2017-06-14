@@ -286,6 +286,13 @@ var PayPage = React.createClass({
      * 按钮点击
      */
     clickHandler() {
+        if (this.state.hasSenior) {
+            Util.postCnzzData('下线_点击报名_payPage');
+            Material.postData('下线_点击报名_payPage');
+        } else {
+            Util.postCnzzData('人_点击报名_payPage');
+            Material.postData('人_点击报名_payPage');
+        }
         this.payHandler();
     },
 
@@ -297,10 +304,6 @@ var PayPage = React.createClass({
      * 支付动作
      */
     payHandler() {
-        console.log('支付动作')
-        Util.postCnzzData('点击报名');
-
-
         if(User.getUserInfo().userId){
             this.setState({
                 showBackup: false,
@@ -362,8 +365,6 @@ var PayPage = React.createClass({
      */
     checkSubscribe () {
       let isSubscribed = User.getUserInfo().subscribe;
-      console.log("支付完判断是否关注公号", isSubscribed);
-
       // 已关注公号的用户直接跳转关卡页面学习
       if (isSubscribed) {
         DoneToast.show('报名成功，开始学习第一课吧！');
