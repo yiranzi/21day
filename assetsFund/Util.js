@@ -43,12 +43,12 @@ const MINIC_NAME = '基金课'; // 项目名称
 const VERSION = '1.1.0'; // TODO roy 项目版本
 const CHARGE_INDEX = 0; //收费部分下标（0~N）
 
-const CURRENT_BATCH = 2; //当前期数
-const END_TIME = [2017,6,17,0,0,0]; // TODO roy 截止时间，需要和后台同步
+const CURRENT_BATCH = 1; //当前期数
+const END_TIME = [2017,6,16,9,0,0]; // TODO roy 截止时间，需要和后台同步
 const USER_NUMBER = 500; // TODO roy 活动报名总人数
 
-const NORMAL_PRICE = 1;// TODO roy 上线价格，普通用户
-const CHEAP_PRICE = 1;// TODO roy 下线价格，享有的优惠价格
+const NORMAL_PRICE = 580;// TODO roy 上线价格，普通用户
+const CHEAP_PRICE = 580;// TODO roy 下线价格，享有的优惠价格
 
 const SHARE_TITLE = '14天基金定投训练营，手把手带你从0学习基金投资';
 const SHARE_DESC = '';
