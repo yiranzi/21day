@@ -187,7 +187,7 @@ const CourseSelect = React.createClass({
         switch (type) {
             //毕业
             case 0:
-                this.cbfCheckBar();
+                this.openGraduated();
                 break;
             case 1:
                 this.showGroup();
@@ -503,31 +503,32 @@ const CourseSelect = React.createClass({
         } else if(this.state.courseList.length && this.state.courseList.length !== 0){
             return(
                 <div>
-                    <div className="show-group" onClick={this.showGroup}>点我加入7天学习群</div>
+                    <div className="show-group" onClick={this.showGroup}>点我加群</div>
                 </div>
             )
         }
     },
 
     showGroup() {
-        window.dialogAlertComp.show('加入QQ社群，班主任手把手带你投资，更有干货答疑。（如果无法自动跳转，手动搜索群号：641855074）','点击加入',()=>
+        window.dialogAlertComp.show('加入QQ社群，班主任手把手带你投资，更有干货答疑。（如果无法自动跳转，手动搜索群号：XXX）','点击加入',()=>
         {location.href = "https://jq.qq.com/?_wv=1027&k=49fUv5j";},'我加过了',true)
     },
 
     openGraduated() {
-        Util.postCnzzData("点击毕业证");
-        Material.getGraduatedRank().always( (rank) => {
-            //2如果请求道有效值
-            // rank !== -1
-            if ( rank!== -1 ) {
-                let courseId = 8;
-                if (courseId) {
-                    location.hash = '/getGraduated/mine';
-                }
-            } else {
-                window.dialogAlertComp.show('还不能领取毕业证哦！','你还没有完成全部课程呢，要都通过才行哦。','好的',()=>{},'',false);
-            }
-        });
+        // Util.postCnzzData("点击毕业证");
+        window.dialogAlertComp.show('还不能领取毕业证哦！','按时完成14天的训练之后，就可以顺利领取毕业证啦。','我会加油的',()=>{},'',false);
+        // Material.getGraduatedRank().always( (rank) => {
+        //     //2如果请求道有效值
+        //     // rank !== -1
+        //     if ( rank!== -1 ) {
+        //         let courseId = 8;
+        //         if (courseId) {
+        //             location.hash = '/getGraduated/mine';
+        //         }
+        //     } else {
+        //         window.dialogAlertComp.show('还不能领取毕业证哦！','你还没有完成全部课程呢，要都通过才行哦。','好的',()=>{},'',false);
+        //     }
+        // });
     },
 
     openTreasure() {
@@ -558,11 +559,11 @@ const CourseSelect = React.createClass({
                 }
             } else {
                 ////到了第七天,还没听完课
-                window.dialogAlertComp.show('毕业宝箱等着你！','完成了7天所有的训练才能获得毕业宝箱！希望就在前方！','我没问题的',()=>{},()=>{},false);
+                window.dialogAlertComp.show('毕业宝箱等着你！','按时完成14天的训练之后，才可以领取毕业宝箱噢。','我没问题的',()=>{},()=>{},false);
             }
         } else {
             //还没有到第七天
-            window.dialogAlertComp.show('毕业宝箱等着你！','完成7天的训练后，才可以领取毕业证和宝箱噢。加油！','我会加油的',()=>{},()=>{},false);
+            window.dialogAlertComp.show('毕业宝箱等着你！','按时完成14天的训练之后，才可以领取毕业宝箱噢。','我会加油的',()=>{},()=>{},false);
         }
     }
 });

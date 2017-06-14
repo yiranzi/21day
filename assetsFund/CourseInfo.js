@@ -4,8 +4,8 @@
 const courseInfo = [
     {
         id: 10,
-        title: '基金课0',
-        cardTitle: '学前班',
+        title: '基金是什么？',
+        cardTitle: '试听课',
         dayTitle: '第零天'
     },
     {

@@ -48,13 +48,13 @@ var SeniorInfo = React.createClass({
 
             {this.state.test && <div className="test-box">
                 <p className="test-text">你的好友{this.state.seniorName}邀请你来</p>
-                <p className="test-text">7天理财小白训练营一起学习</p>
+                <p className="test-text">训练营一起学习</p>
             </div>}
 
             {!this.state.test && <div className="coupon-box">
                 <div className="coupon-info">
                     <p className="coupon-text">你的好友{this.state.seniorName}邀请你来</p>
-                    <p className="coupon-text">7天理财小白训练营一起学习</p>
+                    <p className="coupon-text">训练营一起学习</p>
                 </div>
             </div>}
 

@@ -15,7 +15,6 @@ const EnterPanel = React.createClass({
     },
 
     clickHandler() {
-        Util.postCnzzData('从FM进入7天报名页');
     },
 
     /**
