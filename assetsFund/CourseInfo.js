@@ -6,7 +6,7 @@ const courseInfo = [
         id: 10,
         title: '基金是什么？',
         cardTitle: '试听课',
-        dayTitle: '第零天'
+        dayTitle: '试听课'
     },
     {
         id: 11,

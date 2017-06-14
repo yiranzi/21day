@@ -88,14 +88,16 @@ const GetReward = React.createClass({
             })
             this.setState({type: 'mine', userInfo: User.getUserInfo()});
             this.state.type = 'mine'
+            this.state.senior.name = User.getUserInfo().nickName;
+            this.state.senior.headImg = User.getUserInfo().headImage;
+            this.state.senior.courseId = this.props.params.courseId;
+
             //获得自己的课程排名
             Material.courseFinishRank(courseId,userId).done((data) =>{
-                this.state.senior.name = User.getUserInfo().nickName;
-                this.state.senior.headImg = User.getUserInfo().headImage;
-                this.state.senior.rank = data;
-                this.state.senior.courseId = this.props.params.courseId;
-                this.setState({senior: this.state.senior});
 
+                this.state.senior.rank = data;
+                this.setState({senior: this.state.senior});
+                this.setShareConfig('share');
                 //1是否是付费用户?
                 Material.getJudgeFromServer().done((result)=>{
                     //付费用户分享
@@ -204,7 +206,7 @@ const GetReward = React.createClass({
                 link = link + '&name=' + senior.name;
                 link = link + '&rank=' + senior.rank;
                 link = link + '&freeLesson=true';
-                WxConfig.shareConfig(shareTitle,desc,link);
+                WxConfig.shareConfig(shareTitle,desc,link,'笔记卡高级分享');
                 break;
             //普通分享
             case 'share':
@@ -215,7 +217,7 @@ const GetReward = React.createClass({
                 link = link + '&courseId=' + senior.courseId;
                 link = link + '&name=' + senior.name;
                 link = link + '&rank=' + senior.rank;
-                WxConfig.shareConfig(shareTitle,desc,link);
+                WxConfig.shareConfig(shareTitle,desc,link,'笔记卡普通分享');
                 break;
             default:
                 console.log('error')
@@ -273,10 +275,10 @@ const GetReward = React.createClass({
                 location.hash = '/course/' + this.state.senior.courseId + '/free';
             } else {
 
-                location.hash = '/course/10';
+                location.hash = '/course/10/free';
             }
         } else {      //如果是普通链接
-            location.hash = '/course/10';
+            location.hash = '/course/10/free';
         }
     },
 

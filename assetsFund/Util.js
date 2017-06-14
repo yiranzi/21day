@@ -245,7 +245,7 @@ class Util {
      * 分享成功
      * @param channel
      */
-    static onShareSuccess(channel) {
+    static onShareSuccess(channel, from) {
         let User = require('./User');
         let userInfo = User.getUserInfo();
         // TODO 检测用户nickName是否为空并上报
@@ -257,6 +257,13 @@ class Util {
         Util.shareCommonHandler();
 
         channel = channel || '';
+        if (from === '笔记卡高级分享') {
+            Material.postData('笔记卡_高级分享_getReward')
+        } else if (from === '笔记卡普通分享') {
+            Material.postData('笔记卡_普通分享_getReward')
+        } else if (!from) {
+            Material.postData('一般分享')
+        }
         Util.postCnzzData('分享成功');
         Material.postData('上线_分享成功');
         let seniorId = Util.getUrlPara('ictchannel');

@@ -70,7 +70,7 @@ class WxConfig {
     /**
      * 分享配置
      */
-    static shareConfig(title, desc,link) {
+    static shareConfig(title, desc,link,channel) {
         console.log('初始化为微信的普通API');
 
         //console.log('分享配置',title, desc,fmid,link);
@@ -103,10 +103,10 @@ class WxConfig {
             imgUrl,
             type,
             success: ()=>{
-                Util.onShareSuccess('朋友圈');
+                Util.onShareSuccess('朋友圈',channel || '');
             },
             cancel: ()=>{
-                Util.onShareFailure('朋友圈');
+                Util.onShareFailure('朋友圈',channel || '');
             }
         }, messageOpt = {
             title,
@@ -115,10 +115,10 @@ class WxConfig {
             imgUrl,
             type,
             success: ()=>{
-                Util.onShareSuccess('消息');
+                Util.onShareSuccess('消息',channel || '');
             },
             cancel: ()=>{
-                Util.onShareFailure('消息');
+                Util.onShareFailure('消息',channel || '');
             }
         }, QQOpt = {
             title,
@@ -126,10 +126,10 @@ class WxConfig {
             link,
             imgUrl,
             success: ()=>{
-                Util.onShareSuccess('QQ');
+                Util.onShareSuccess('QQ',channel || '');
             },
             cancel: ()=>{
-                Util.onShareFailure('QQ');
+                Util.onShareFailure('QQ',channel || '');
             }
         }, weiboOpt = {
             title,
@@ -137,10 +137,10 @@ class WxConfig {
             link,
             imgUrl,
             success: ()=>{
-                Util.onShareSuccess('weibo');
+                Util.onShareSuccess('weibo',channel || '');
             },
             cancel: ()=>{
-                Util.onShareFailure('weibo');
+                Util.onShareFailure('weibo',channel || '');
             }
         };
 
