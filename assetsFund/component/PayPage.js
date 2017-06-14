@@ -399,8 +399,13 @@ var PayPage = React.createClass({
     render(){
         return (
             <div className="pay_page">
+                {
+                    <div className="fund-join-bg"
+                         style = {{backgroundImage: 'url("./assetsFund/image/fundJoin/join-bg.jpg")', width:Dimensions.getWindowWidth(), height: Dimensions.getWindowHeight()}}>
+
+                    </div>
+                }
                 <div className="fund-join-page">
-                    <img src="./assetsFund/image/fundJoin/join-bg.jpg" alt="" className="fund-join-bg"/>
                     <img src="./assetsFund/image/fundJoin/join-title.png" alt="" className="fund-join-title"/>
                     <div className="fund-join-content-box">
                         <img src="./assetsFund/image/fundJoin/join-content.png" alt="" className="fund-join-content"/>

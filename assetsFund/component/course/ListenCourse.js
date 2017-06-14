@@ -96,8 +96,8 @@ const ListenCourse = React.createClass({
 
             Util.postCnzzData("听完", this.state.lessons[this.state.currentPlaying].fmid);
             //统计免费完成课程1的进度情况
-            if (!this.state.isPay && this.props.params.courseId === '1') {
-                Material.postData('免费_跳转报名_ListenCourse');
+            if (!this.state.isPay && this.props.params.courseId === '10') {
+                Material.postData('免费_完成音频1_ListenCourse');
                 // Material.postData('免费_完成音频' + this.state.lessons[this.state.currentPlaying].fmid);
             }
         });
@@ -376,10 +376,10 @@ const ListenCourse = React.createClass({
             // }
             if(!this.state.allFinish) {
                 this.state.allFinish = true;
-                return (<div className = "get-reward-command" onClick={this.goReward.bind(this,1)}>祝贺！完成本节！点击我领取成就卡！</div>);
+                return (<div className = "get-reward-command" onClick={this.goReward.bind(this,1)}>祝贺！完成本节！点击我领取笔记卡！</div>);
             } else {
                 //1如果已经通过 ,会有提示.
-                return (<div className = "get-reward-command" onClick={this.goReward.bind(this,2)}>查看我的成就卡！</div>);
+                return (<div className = "get-reward-command" onClick={this.goReward.bind(this,2)}>查看我的笔记卡！</div>);
             }
         }
     },
