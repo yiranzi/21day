@@ -197,7 +197,7 @@ const GetReward = React.createClass({
         switch (type) {
             //分享当日免费课(高级分享)
             case 'freeChance':
-                shareTitle = '我是第'+ this.state.senior.rank+'名准时完成基金定投训练营('+ course.dayTitle + ')的人，3个免费听课名额，请你来听';
+                shareTitle = '我是第'+ this.state.senior.rank+'名完成基金训练营('+ course.dayTitle + ')的人，3个免费听课名额，请你来听';
                 desc = '';
                 link = link + '&goPath=' + '/getReward/' + senior.courseId;
                 link = link + '&courseId=' + senior.courseId;
@@ -209,7 +209,7 @@ const GetReward = React.createClass({
             //普通分享
             case 'share':
                 senior = this.state.senior;
-                shareTitle = '我是第'+ this.state.senior.rank+'名完成基金定投训练营('+ course.dayTitle + ')的人';
+                shareTitle = '我是第'+ this.state.senior.rank+'名完成基金训练营('+ course.dayTitle + ')的人';
                 desc = '';
                 link = link + '&goPath=' + '/getReward/' + senior.courseId;
                 link = link + '&courseId=' + senior.courseId;
