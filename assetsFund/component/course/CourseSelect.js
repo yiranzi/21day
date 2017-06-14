@@ -511,7 +511,7 @@ const CourseSelect = React.createClass({
 
     showGroup() {
         window.dialogAlertComp.show('加入学习社群','基金课教学QQ群，手把手带你投资实战基金课。群暗号：棉花（QQ群：113052958）','点击加入',()=>
-        {location.href = "shang.qq.com/wpa/qunwpa?idkey=1d870b74d516b5cb438f90e94412af8be22200de4a7824eff4aab62ea65330e2";},'我加过了',true)
+        {location.href = "https://jq.qq.com/?_wv=1027&k=4APqRNR";},'我加过了',true)
     },
 
     openGraduated() {
