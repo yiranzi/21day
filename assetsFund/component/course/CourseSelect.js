@@ -406,7 +406,7 @@ const CourseSelect = React.createClass({
                 break;
             case 'get':
                 //如果已获得成就卡
-                location.hash = '/getReward/' + courseId;
+                location.hash = '/getReward/' + courseId + '/mine';
                 break;
             default:
                 console.log('error' + status.reward);

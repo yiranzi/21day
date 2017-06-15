@@ -31,7 +31,8 @@ const courseInfo = require('../../CourseInfo');
 const User = require('../../User');
 
 const autoMove = require('../../AutoMove');
-const PreFetch = require('../GlobalFunc/PreFetch');
+const PreFetch = require('../../GlobalFunc/PreFetch');
+const LoadingProgress = require('../GlobalComponent/LoadingProgress');
 
 var isMoving = 0;
 
@@ -62,12 +63,12 @@ const ListenCourse = React.createClass({
             courseTitle: {
                 title: '',
                 subTitle: '',
-            }
+            },
+            resPic: '',
         }
     },
 
     componentWillMount() {
-
         Util.postCnzzData("进入听课页面");
         if (User.getUserInfo().userId) {
 
@@ -302,7 +303,10 @@ const ListenCourse = React.createClass({
             <div id="fmView" className="fm-view">
                 <FixedBg />
                 <div className="fix-bg-space"></div>
+                <LoadingProgress/>
                 {/*{this.preFetch()}*/}
+                <img style={{width: '100px', position:'fixed'}} src={this.state.resPic}/>
+                {/*<audio onload={this.finishLoading()} style={{width: '100px', position:'fixed'}} src={this.state.resPic}/>*/}
                 {this.renderTitle()}
                 <CourseProcessBar finishElement = {this.state.finishElement} totalElement = {this.state.totalElement}/>
                 {/*<span>当前点击的index{this.state.currentPlaying}</span>*/}
@@ -336,14 +340,34 @@ const ListenCourse = React.createClass({
         if (audio) {
             console.log('start' + audio.pptUrl);
             console.log('start' + audio.audio);
-            let ppt = PreFetch.fetchRes(audio.pptUrl,1000);
-            let mp3 = PreFetch.fetchRes(audio.audio,1000);
-            Promise.all([ppt,mp3]).then(
-                () => {
-                    console.log('finish');
-                }
-            );
+            // let audio = PreFetch.fetchRes(audio.audio,1000);
+            // audio.then( (url)=> {
+            //     console.log('get url');
+            //     this.setState({resPic: url})
+            // });
+            let res = PreFetch.fetchRes(audio.pptUrl,0);
+            res.then( (info)=> {
+                console.log(info);
+                this.setState({resPic: info.url})
+            });
+            let res2 = PreFetch.fetchRes(audio.audio,0);
+            res2.then( (info)=> {
+                console.log(info);
+                // info.process = (event)=> {
+                //     console.log(event)
+                // }
+            });
+            // let mp3 = PreFetch.fetchRes(audio.audio,1000);
+            // Promise.all([ppt,mp3]).then(
+            //     () => {
+            //         console.log('finish');
+            //     }
+            // );
         }
+    },
+
+    lodingProcess(event) {
+        console.log(event)
     },
 
     renderTitle(){

@@ -2,18 +2,26 @@
  * Created by ichangtou on 2017/5/13.1
  */
 // const Dimensions = require('./Dimensions');
-// var preMove = 0;
+var preMove = 0;
+const OnFire = require('onfire.js');
 
 class PreFetch {
     static fetchRes(url,time) {
         //根据url,time来设置加载
+        let info = {};
         return new Promise((resolve, reject) => {
             setTimeout(() => {
                 console.log('start done' + url);
                 var xhr = new XMLHttpRequest();
                 xhr.open('GET', url);
                 xhr.send();
-                resolve(true);
+                xhr.onprogress =(event)=> {
+                    if(event.lengthComputable){
+                        OnFire.fire('LOADING',event);
+                    }
+                };
+                info.url = url;
+                resolve(info);
             }, time);
         });
     }
