@@ -15,11 +15,11 @@ class PreFetch {
                 var xhr = new XMLHttpRequest();
                 xhr.open('GET', url);
                 xhr.send();
-                xhr.onprogress =(event)=> {
-                    if(event.lengthComputable){
-                        OnFire.fire('LOADING',event);
-                    }
-                };
+                // xhr.onprogress =(event)=> {
+                //     if(event.lengthComputable){
+                //         OnFire.fire('LOADING',event);
+                //     }
+                // };
                 info.url = url;
                 resolve(info);
             }, time);

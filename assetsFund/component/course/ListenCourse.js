@@ -303,19 +303,13 @@ const ListenCourse = React.createClass({
             <div id="fmView" className="fm-view">
                 <FixedBg />
                 <div className="fix-bg-space"></div>
-                <LoadingProgress/>
-                {/*{this.preFetch()}*/}
-                <img style={{width: '100px', position:'fixed'}} src={this.state.resPic}/>
-                {/*<audio onload={this.finishLoading()} style={{width: '100px', position:'fixed'}} src={this.state.resPic}/>*/}
                 {this.renderTitle()}
-                <CourseProcessBar finishElement = {this.state.finishElement} totalElement = {this.state.totalElement}/>
                 {/*<span>当前点击的index{this.state.currentPlaying}</span>*/}
                 {/*<span>当前播放的fmid{this.state.currentfmid}</span>*/}
                 {/*<div>进入时,这门课程的状态时{this.props.location.query.name}</div>*/}
                 {this.renderLesson()}
                 {this.passLessonRender()}
                 {this.renderSignUp()}
-                {this.preLoadPic()}
             </div>
         )
     },
@@ -338,31 +332,9 @@ const ListenCourse = React.createClass({
         index = index + 1;
         let audio = this.state.lessons[index];
         if (audio) {
-            console.log('start' + audio.pptUrl);
-            console.log('start' + audio.audio);
-            // let audio = PreFetch.fetchRes(audio.audio,1000);
-            // audio.then( (url)=> {
-            //     console.log('get url');
-            //     this.setState({resPic: url})
-            // });
             let res = PreFetch.fetchRes(audio.pptUrl,0);
-            res.then( (info)=> {
-                console.log(info);
-                this.setState({resPic: info.url})
-            });
             let res2 = PreFetch.fetchRes(audio.audio,0);
-            res2.then( (info)=> {
-                console.log(info);
-                // info.process = (event)=> {
-                //     console.log(event)
-                // }
-            });
-            // let mp3 = PreFetch.fetchRes(audio.audio,1000);
-            // Promise.all([ppt,mp3]).then(
-            //     () => {
-            //         console.log('finish');
-            //     }
-            // );
+            res.then(res2);
         }
     },
 
