@@ -31,6 +31,7 @@ const courseInfo = require('../../CourseInfo');
 const User = require('../../User');
 
 const autoMove = require('../../AutoMove');
+const PreFetch = require('../GlobalFunc/PreFetch');
 
 var isMoving = 0;
 
@@ -68,7 +69,6 @@ const ListenCourse = React.createClass({
     componentWillMount() {
 
         Util.postCnzzData("进入听课页面");
-
         if (User.getUserInfo().userId) {
 
             this.getFmInfo();
@@ -152,6 +152,7 @@ const ListenCourse = React.createClass({
                 }
             });
             this.state.lessons = progressData;
+            this.preFetch();
             this.fixProcess();
             this.calcProcess();
             if (progressData) {
@@ -256,6 +257,7 @@ const ListenCourse = React.createClass({
         if (isPlaying) {
             this.setState({currentPlaying: -1});
         } else {
+            this.state.currentPlaying = index;
             this.setState({currentPlaying: index});
         }
         this.controlHandler(index, isPlaying)
@@ -273,6 +275,7 @@ const ListenCourse = React.createClass({
             this.setState({currentfmid: lesson.fmid});
             console.log(this);
             GlobalAudio.play(lesson.audio, lesson.fmid);
+            this.preFetch();
             // setTimeout(function(){
             //     console.log('start reFetch');
             //     console.log(this);
@@ -313,7 +316,9 @@ const ListenCourse = React.createClass({
         )
     },
 
+    //预加载资源
     preFetch() {
+        console.log('try' + this.state.currentPlaying);
         if(this.state.lessons.length <= 0) {
             if(!this.state.lessons)
             {
@@ -328,11 +333,17 @@ const ListenCourse = React.createClass({
         //往后播放一课
         index = index + 1;
         let audio = this.state.lessons[index];
-        console.log('start' + audio.pptUrl);
-        return(<div>
-            <link rel="prefetch" href = {audio.pptUrl}/>
-            <link rel="prefetch" href = {audio.audio}/>
-        </div>)
+        if (audio) {
+            console.log('start' + audio.pptUrl);
+            console.log('start' + audio.audio);
+            let ppt = PreFetch.fetchRes(audio.pptUrl,1000);
+            let mp3 = PreFetch.fetchRes(audio.audio,1000);
+            Promise.all([ppt,mp3]).then(
+                () => {
+                    console.log('finish');
+                }
+            );
+        }
     },
 
     renderTitle(){
