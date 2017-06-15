@@ -304,6 +304,7 @@ const ListenCourse = React.createClass({
                 <FixedBg />
                 <div className="fix-bg-space"></div>
                 {this.renderTitle()}
+                <CourseProcessBar finishElement = {this.state.finishElement} totalElement = {this.state.totalElement}/>
                 {/*<span>当前点击的index{this.state.currentPlaying}</span>*/}
                 {/*<span>当前播放的fmid{this.state.currentfmid}</span>*/}
                 {/*<div>进入时,这门课程的状态时{this.props.location.query.name}</div>*/}
