@@ -302,7 +302,7 @@ const GetReward = React.createClass({
         const imgClassName = course.id === 10 ? 'reward-pic-img-big' : 'reward-pic-img'
         return(
             <div>
-                {!(course.id === 10) && <div className="note-card-title" style={cardStyleSenior}>干得好，你是第{this.state.senior.rank}名</div>}
+                {!(course.id === 10) && <div className="note-card-title" style={cardStyleSenior}>恭喜，你是第{this.state.senior.rank}名完成当天课程的人</div>}
                 {/*<img className="reward-light" onClick={this.handleClick} src={'./assetsFund/image/course/bglight.png'}/>*/}
                 {/*<img className="reward-pic" onClick={this.handleClick} src={this.state.type ==='mine' ? this.state.lockPicHQ[this.state.senior.courseId - 1] : this.state.lockPic[this.state.senior.courseId - 1] }/>*/}
                 <img className={imgClassName} src={course.noteCardUrl}/>
