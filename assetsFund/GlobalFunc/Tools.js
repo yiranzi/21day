@@ -3,6 +3,8 @@
  */
 var Material = require('../Material');
 const MyStorage = require('../GlobalFunc/MyStorage');
+const $ = window.$ = require('jquery');
+const React = require('react');
 
 class Tools {
     static postData(eventName){
@@ -25,13 +27,13 @@ class Tools {
 
     static LocationHash(pathTo,path) {
         //将跳转改成当前页面
-        let pathFrom = MyStorage.getItem('S',pathNow);
+        let pathFrom = MyStorage.getItem('S','pathNow');
         if(!pathFrom){
             pathFrom = 'ListenCourse';
         }
         MyStorage.setItem('S','pathFrom',pathFrom);
         MyStorage.setItem('S','pathNow',pathTo);
-        location.hash(path);
+        location.hash = path;
     }
 }
 

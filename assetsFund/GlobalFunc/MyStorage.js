@@ -9,14 +9,21 @@ class MyStorage {
     static setItem(type,key,value){
         switch(type) {
             case 'S':
-                sessionStorage.setItem(key,value)
+                sessionStorage.setItem(key,value);
+                // if(!getItem(type,key)){
+                //     sessionStorage.setItem(key,value);
+                // } else {
+                //     console.log('已经有数值');
+                // }
+                break;
         }
     }
 
-    static getItem(type,key,value){
+    static getItem(type,key){
         switch(type) {
             case 'S':
-                sessionStorage.getItem(key)
+                return sessionStorage.getItem(key);
+                break;
         }
     }
 }

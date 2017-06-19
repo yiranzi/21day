@@ -15,6 +15,8 @@ const FixedBg = require('./FixedBg');
 const IconBar = require('./IconBar');
 let boolOnce = true;
 
+const MyStorage = require('../../GlobalFunc/MyStorage');
+
 
 
 // const GetReword = require('./GetReword');
@@ -57,6 +59,7 @@ const CourseSelect = React.createClass({
     },
 
     componentWillMount() {
+        MyStorage.setItem('S','');
         //判断连接是否需要跳转
         let goPath = Util.getUrlPara('goPath');
         if(goPath){
