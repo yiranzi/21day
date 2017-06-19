@@ -56,6 +56,9 @@ const SHARE_DESC = '';
 //是否是debug
 const IS_DEBUG = location.href.indexOf('localhost') > 0;
 
+//缓存数据
+const MyStorage = require('./GlobalFunc/MyStorage');
+
 //API请求url
 const API_URL_GROUP = {
     'get_order': 'payment/wx/jsapi/order',  //获取统一订单
@@ -617,6 +620,9 @@ class Util {
             //把上线ID拼接到地址栏中
             redirectUri = redirectUri  + prefix + 'ictchannel=' + ictchannel;
             prefix = '&';
+            MyStorage.setItem('S','entry','shareLink');
+        } else {
+            MyStorage.setItem('S','entry','payPageEntry');
         }
 
         //teacherid班主任ID

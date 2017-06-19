@@ -21,6 +21,9 @@ const Timeout = require('./Timeout');
 const Modal = require('./Modal');
 const FirstSharePanel = require('./FirstSharePanel');
 
+//之后做成全局的.
+const MyStorage = require('../GlobalFunc/MyStorage');
+
 var PayPage = React.createClass({
 
     getInitialState(){
@@ -191,10 +194,9 @@ var PayPage = React.createClass({
      */
     setSenior(seniorId, userId) {
         //seniorId则表示该用户拥有上线
-        if(seniorId && seniorId != userId) {
+        if(seniorId || MyStorage.getItem('S','pathFrom') === 'ListenCourse') {
             Material.postData('下线_进入_payPage');
             let free = this.props.params.free;
-            console.log("是否免费用户", free);
             // TODO test roy
             // free = true;
 
@@ -203,9 +205,6 @@ var PayPage = React.createClass({
                   hasSenior: true,
                   isFreeUser: true
               });
-
-              console.log("免费用户进入报名页");
-              Util.postCnzzData("免费用户进入报名页");
             } else {
               this.setState({
                   hasSenior: true,

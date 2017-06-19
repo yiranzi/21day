@@ -19,6 +19,7 @@ var OrderConfirmation = require('./component/OrderConfirmation');
 var DoneToast = require('./component/DoneToast');
 
 var OnFire =require('onfire.js');
+const Tools = require('./GlobalFunc/Tools');
 
 const GET_ORDER_API = Util.getAPIUrl('get_order');//获取统一下单API
 const COURSE_PRICE = 4;//课程价格，和长投数据库对应的数据，价格(元)
@@ -296,6 +297,7 @@ class PayController {
                 //标记请求支付完成
                 payPullingFlag = false;
                 // alert("支付完了:" + res.err_msg);
+                Tools.postData('支付成功');
 
                 // 微信支付返回值不靠谱，详情查看：
                 // https://pay.weixin.qq.com/wiki/doc/api/jsapi.php?chapter=7_7&index=6

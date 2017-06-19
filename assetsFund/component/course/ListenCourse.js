@@ -34,6 +34,8 @@ const autoMove = require('../../AutoMove');
 const PreFetch = require('../../GlobalFunc/PreFetch');
 const LoadingProgress = require('../GlobalComponent/LoadingProgress');
 
+const Tools = require('../../GlobalFunc/Tools');
+
 var isMoving = 0;
 
 const ListenCourse = React.createClass({
@@ -358,7 +360,7 @@ const ListenCourse = React.createClass({
 
     goSign() {
         Material.postData('免费_跳转报名_ListenCourse');
-        location.hash = '/payPage';
+        Tools.LocationHash('payPage','/payPage');
     },
 
     preLoadPic() {
