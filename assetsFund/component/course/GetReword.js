@@ -42,7 +42,7 @@ const GetReward = React.createClass({
         document.body.scrollTop = document.documentElement.scrollTop = 0
         let userId;
         //判定是否有分享成就卡
-        this.state.senior.courseId = Util.getUrlPara('courseId');
+        this.state.senior.courseId = Util.getUrlPara('courseId') || this.props.params.courseId;
         let isMine = this.props.params.mine;
         //下线查看别人的成就卡
         if (this.state.senior.courseId && !isMine) {
@@ -77,15 +77,11 @@ const GetReward = React.createClass({
             } else {
                 this.setShareConfig('share');
             }
-        } else {//查看自己的
+            Loading.hideLoading()
+        } else {    //查看自己的
             userId = User.getUserInfo().userId;
             Material.postData('上线_进入笔记卡_getReward');
             let courseId = this.props.params.courseId;
-            Material.getNoteCardText(courseId).done((data) => {
-                this.setState({
-                    noteText: data.message
-                })
-            })
             this.setState({type: 'mine', userInfo: User.getUserInfo()});
             this.state.type = 'mine'
             this.state.senior.name = User.getUserInfo().nickName;
@@ -115,16 +111,14 @@ const GetReward = React.createClass({
                                 this.setShareInfo(userId);
                                 //设置分享内容
                                 this.setShareConfig('freeChance');
+                            } else {
+                                this.setShareConfig('share')
                             }
-                            // Loading.hideLoading();
+                            Loading.hideLoading();
                         });
-                    }
-                    //免费用户分享分享的
-                    else
-                    {
+                    } else {
                         this.setShareConfig('share');
-                        // Loading.hideLoading();
-
+                        Loading.hideLoading();
                     }
                 });
             })
@@ -147,30 +141,30 @@ const GetReward = React.createClass({
         //     colorLight: '#fff',
         //     correctLevel: QRcode.CorrectLevel.H
         // })
-        const element = document.getElementsByClassName('reward-pic')[0]
-        const width = element.offsetWidth
-        const height = element.offsetHeight
-        const courseId = Util.getUrlPara('courseId') || this.props.params.courseId
-        const userId = this.state.type === 'mine' ? User.getUserInfo().userId : Util.getUrlPara('ictchannel') || this.props.params.userId
-        Material.getNoteCardText(courseId).done((data) => {
-            this.setState({
-                noteText: data.message
-            }, () => {
-                Material.courseFinishRank(courseId,userId).done(data => {
-                    this.state.senior.rank = data
-                    convertHtmlToBase64(element, height, width).then(
-                        base64 => {
-                            this.setState({
-                                shareImgUrl: base64,
-                                isNoteCardDomShow: false
-                            })
-                            Loading.hideLoading()
-                        }
-                    )
-                })
-
-            })
-        })
+        // const element = document.getElementsByClassName('reward-pic')[0]
+        // const width = element.offsetWidth
+        // const height = element.offsetHeight
+        // const courseId = Util.getUrlPara('courseId') || this.props.params.courseId
+        // const userId = this.state.type === 'mine' ? User.getUserInfo().userId : Util.getUrlPara('ictchannel')
+        // Material.getNoteCardText(courseId).done((data) => {
+        //     this.setState({
+        //         noteText: data.message
+        //     }, () => {
+        //         Material.courseFinishRank(courseId,userId).done(data => {
+        //             this.state.senior.rank = data
+        //             convertHtmlToBase64(element, height, width).then(
+        //                 base64 => {
+        //                     this.setState({
+        //                         shareImgUrl: base64,
+        //                         isNoteCardDomShow: false
+        //                     })
+        //                     Loading.hideLoading()
+        //                 }
+        //             )
+        //         })
+        //
+        //     })
+        // })
 
     },
     componentWillUnmount () {
@@ -284,7 +278,7 @@ const GetReward = React.createClass({
 
     render() {
         return(
-            <div className="get-reward" style = {{backgroundImage: 'url("./assetsFund/image/course/bg_share.jpg")',width: Dimensions.getWindowWidth(),minHeight: Dimensions.getWindowHeight()}}>
+            <div className="get-reward" style = {{backgroundImage: 'url("./assetsFund/image/fundJoin/join-bg.jpg")',width: Dimensions.getWindowWidth(),minHeight: Dimensions.getWindowHeight()}}>
                 {this.renderFinishCard()}
             </div>
         )
@@ -300,13 +294,19 @@ const GetReward = React.createClass({
         const cardStyleSenior = {
             marginTop:'0'
         }
+        let course = courseInfo.find(
+            course => {
+                return course.id === parseInt(Util.getUrlPara('courseId') || this.props.params.courseId)
+            }
+        )
+        const imgClassName = course.id === 10 ? 'reward-pic-img-big' : 'reward-pic-img'
         return(
             <div>
-                <div className="note-card-title" style={cardStyleSenior}>恭喜，你是第{this.state.senior.rank}位按时完成的学员</div>
+                {!(course.id === 10) && <div className="note-card-title" style={cardStyleSenior}>恭喜，你是第{this.state.senior.rank}名完成当天学习任务的人</div>}
                 {/*<img className="reward-light" onClick={this.handleClick} src={'./assetsFund/image/course/bglight.png'}/>*/}
                 {/*<img className="reward-pic" onClick={this.handleClick} src={this.state.type ==='mine' ? this.state.lockPicHQ[this.state.senior.courseId - 1] : this.state.lockPic[this.state.senior.courseId - 1] }/>*/}
-                <img className="reward-pic-img" src={this.state.shareImgUrl}/>
-                {isNoteCardDomShow && this.renderShareCard()}
+                <img className={imgClassName} src={course.noteCardUrl}/>
+                {/*isNoteCardDomShow && this.renderShareCard()*/}
                 {(freeRewardLink || freeChance) && <p className="note-card-tips">
                     <img src="./assetsFund/image/course/indDown.png" alt="" />
                     <p>
