@@ -510,8 +510,8 @@ const CourseSelect = React.createClass({
     },
 
     showGroup() {
-        window.dialogAlertComp.show('加入学习社群','基金课教学QQ群，手把手带你投资实战基金课。群暗号：棉花（QQ群：113052958）','点击加入',()=>
-        {location.href = "https://jq.qq.com/?_wv=1027&k=4APqRNR";},'我加过了',true)
+        window.dialogAlertComp.show('加入学习社群','基金课教学QQ群，手把手带你投资实战基金课。群暗号：棉花（QQ群：188416619）','点击加入',()=>
+        {location.href = "https://jq.qq.com/?_wv=1027&k=4AdZhRM";},'我加过了',true)
     },
 
     openGraduated() {
