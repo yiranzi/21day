@@ -1,5 +1,5 @@
 /**
- * Created by ichangtou on 2017/5/13.1
+ * Created by ichangtou on 2017/5/13
  */
 var Material = require('../Material');
 const MyStorage = require('../GlobalFunc/MyStorage');
@@ -18,11 +18,12 @@ class Tools {
         strings[2] = 'PayPage';
         for(let i = 0; i<strings.length; i++){
             if(i!==strings.length - 1){
-                result = result + '_';
+                result = result + strings[i] + '_';
+            } else {
+                result = result + strings[i]
             }
         }
-        Material.postData(strings);
-        console.log('data have post' + strings);
+        Material.postData(result);
     }
 
     static LocationHash(pathTo,path) {

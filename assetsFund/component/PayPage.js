@@ -24,6 +24,8 @@ const FirstSharePanel = require('./FirstSharePanel');
 //之后做成全局的.
 const MyStorage = require('../GlobalFunc/MyStorage');
 
+const Tools = require('../GlobalFunc/Tools');
+
 var PayPage = React.createClass({
 
     getInitialState(){
@@ -105,28 +107,11 @@ var PayPage = React.createClass({
         });
         //已付费
         OnFire.on('PAID_SUCCESS',(payWay)=>{
-          // alert("报名成功");
-
+          Tools.postData('支付成功');
           // 下线支付成功后上报
           let seniorId = Util.getUrlPara('ictchannel');
-
-          if(seniorId && seniorId != User.getUserInfo().userId) {
-              Util.postCnzzData("下线报名成功");
-
-              // alert("下线报名成功");
-          }
-
-          Util.postCnzzData('报名成功');
-
           this.checkSubscribe();
-            //统计班主任信息
-            // let teacherId = Util.getUrlPara('teacherid');
-            // teacherId && Util.postCnzzData('班主任'+teacherId);
-
-            //todo
-            // window.dialogAlertComp.show('报名成功','点击“立即加群”进入QQ群。也可以复制页面上的QQ群号，手动进群。请注意页面上的加群【暗号】哟~','知道啦',()=>{},()=>{},false);
         });
-        console.log('openid')
         let seniorId = Util.getUrlPara('ictchannel'),
             openId = User.getUserInfo().openId;
 
@@ -194,8 +179,7 @@ var PayPage = React.createClass({
      */
     setSenior(seniorId, userId) {
         //seniorId则表示该用户拥有上线
-        if(seniorId || MyStorage.getItem('S','pathFrom') === 'ListenCourse') {
-            Material.postData('下线_进入_payPage');
+        if((seniorId && seniorId != userId)|| MyStorage.getItem('S','pathFrom') === 'ListenCourse') {
             let free = this.props.params.free;
             // TODO test roy
             // free = true;
