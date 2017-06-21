@@ -50,7 +50,7 @@ class User {
 
         //初始化微信通用接口
         // User.signWxApi();
-        WxConfig.initWxConfig();
+
         //sharefix
 
         //蓝号进行授权后的
@@ -145,16 +145,8 @@ class User {
 
         userInfo.unionId = data.unionId;
 
-        // TODO 检测用户nickName是否为空并上报
-        console.log('userInfo.nickName = '+ userInfo.nickName);
-        if(!userInfo.nickName) {
-            Util.postCnzzData('获取用户名为空', 'nickName=' + userInfo.nickName + ';' + 'userId=' + userInfo.userId);
-        }
 
-        //配置分享内容
-        WxConfig.shareConfig();
 
-        console.log('unionId'+userInfo.unionId);
 
 
         //查询是否有支付的openId，没有就去做支付账号的登录，
@@ -165,9 +157,9 @@ class User {
             //设置用户信息缓存 此处缓存是为了第二次蓝号授权后，可以使用用户的其他信息
             localStorage.setItem('user-info',JSON.stringify(userInfo));
 
-            Util.postCnzzData("用户登录");
 
             //触发登录成功事件
+            WxConfig.initWxConfig();
             OnFire.fire('OAUTH_SUCCESS',data);
 
             Loading.hideLoading();
@@ -229,8 +221,7 @@ class User {
 
                 userInfo.payOpenId = data.openId;
 
-                Util.postCnzzData("用户登录");
-
+                WxConfig.initWxConfig();
                 OnFire.fire('OAUTH_SUCCESS',userInfo);
 
                 Loading.hideLoading();

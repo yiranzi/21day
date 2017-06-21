@@ -22,22 +22,16 @@ var Tabbar = require('./component/Tabbar');
 var style = require('./css/style.scss');
 
 var InnerRouter = require('./InnerRouter');
+// alert(Util.getUrlPara('code'));
+// if( !Util.getUrlPara('code') ) {
+//     alert("2.5");
+//     User.redirectToBaseInfo();
+// }
 
-if( !Util.getUrlPara('code') ) {
-    User.redirectToBaseInfo();
-}
+////初始化用户信息
+User.initAccessInfo();
 
 $(document).ready(() => {
-
-    // alert("3");
-
-    Util.postCnzzData('进入页面');
-
-    //尺寸初始化
-    new Dimensions().init();
-
-    Loading.showLoading('获取信息...');
-
     if(!Util.isWeixin()){
         Loading.hideLoading();
         window.dialogAlertComp.show('提示','请复制地址并在微信中打开','知道啦',()=>{
@@ -45,8 +39,13 @@ $(document).ready(() => {
         },()=>{},false);
     }
 
-    ////初始化用户信息
-    User.initAccessInfo();
 
-    ReactDom.render(<InnerRouter/>, $('#root')[0]);
+    if( Util.getUrlPara('code') ) {
+        new Dimensions().init();
+        Loading.showLoading('获取信息...');
+        //尺寸初始化
+
+        ReactDom.render(<InnerRouter/>, $('#root')[0]);
+    }
+
 });
