@@ -14,7 +14,6 @@ const LessonBar = require('./LessonBar');
 const FixedBg = require('./FixedBg');
 const IconBar = require('./IconBar');
 let boolOnce = true;
-let db;
 
 const MyStorage = require('../../GlobalFunc/MyStorage');
 
@@ -59,33 +58,7 @@ const CourseSelect = React.createClass({
         };
     },
 
-    test() {
-        const customerData = [
-            { ssn: "444-44-4444", name: "Bill", age: 35, email: "bill@company.com" },
-            { ssn: "555-55-5555", name: "Donna", age: 32, email: "donna@home.org" }
-        ];
-        console.log('enter db');
-        let request = window.indexedDB.open('test',1);
-        request.onsuccess = function (evt) {
-            db = request.result;
-
-        }
-
-        request.onupgradeneeded = function(event) {
-            db2 = event.target.result;
-            let objectStore = db2.createObjectStore("userInfo",{ keyPath: 'key'});
-            objectStore.createIndex("value","value",{unique: false});
-        }
-
-
-    },
-
     componentWillMount() {
-        MyStorage.setItem('S','');
-        this.test();
-        if(db) {
-            window.indexedDB.open('test',2);
-        }
         //判断连接是否需要跳转
         let goPath = Util.getUrlPara('goPath');
         if(goPath){
