@@ -11,7 +11,6 @@ const WxConfig = require('../WxConfig');
 const User = require('../User');
 const Util = require('../Util');
 
-const GHGuider = require('./GHGuider');
 
 var audioInstance = null;
 var learningTime = 0;

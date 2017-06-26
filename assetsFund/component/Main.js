@@ -4,12 +4,8 @@
  */
 
 var React = require('react');
-var ReactDom = require('react-dom');
-var Util =require('../Util');
-var OnFire = require('onfire.js');
 
 var PayPage = require('./PayPage');
-var ScoreExchange =require('./ScoreExchange');
 
 var Main = React.createClass({
     getInitialState() {

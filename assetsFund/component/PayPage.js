@@ -2,10 +2,8 @@
  * Created by Administrator on 16-8-2.
  */
 var React = require('react');
-var ReactDom = require('react-dom');
 var $ = require('jquery');
 var OnFire =require('onfire.js');
-var GHGuider = require('./GHGuider');
 
 var User = require('../User');
 var Dimensions = require('../Dimensions');
@@ -13,13 +11,7 @@ var PayController = require('../PayController');
 var Util = require('../Util');
 var Material = require('../Material');
 var Loading = require('../Loading');
-var DialogAlert = require('./DialogAlert');
-var DoneToast = require('./DoneToast');
-var SeniorInfo = require('./SeniorInfo');
-const SharePanel = require('./SharePanel');
 const Timeout = require('./Timeout');
-const Modal = require('./Modal');
-const FirstSharePanel = require('./FirstSharePanel');
 
 //之后做成全局的.
 const MyStorage = require('../GlobalFunc/MyStorage');
@@ -50,7 +42,6 @@ var PayPage = React.createClass({
 
             //wechat
             showWechatGroup: false, //显示微信联系方式
-            firstSharePanel:false, //首次分享提示
 
             showint:true,//初始剩余人数
 
@@ -350,7 +341,6 @@ var PayPage = React.createClass({
       let isSubscribed = User.getUserInfo().subscribe;
       // 已关注公号的用户直接跳转关卡页面学习
       if (isSubscribed) {
-        DoneToast.show('报名成功，开始学习第一课吧！');
         this.gotoSelectPage();
       } else { // 未关注引导关注公号
         this.setState({

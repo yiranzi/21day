@@ -6,7 +6,6 @@ var User = require('./User');
 var Toast = require('./component/DoneToast');
 var PayPage = require('./component/PayPage');
 var React = require('react');
-const DialogAlert = require('./component/DialogAlert');
 
 
 //奖品信息

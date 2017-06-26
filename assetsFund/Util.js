@@ -5,11 +5,8 @@
 var Group = require('./Group');
 var $ = require('jquery');
 var React = require('react');
-var ReactDom = require('react-dom');
 
 var Config = require('./Config');
-var Modal = require('./component/Modal');
-var GHGuider = require('./component/GHGuider');
 const OnFire = require('onfire.js');
 
 

@@ -9,15 +9,8 @@ var Util = require('./Util');
 var Config = require('./Config');
 var OnFire =require('onfire.js');
 var PayController = require('./PayController');
-var RankingList = require('./RankingList');
-var GHGuider = require('./component/GHGuider');
-var DoneToast = require('./component/DoneToast');
 var Loading = require('./Loading');
 var WxConfig = require('./WxConfig');
-
-const ACCESS_TOKEN_API = Util.getAPIUrl('authorization');
-const USER_LEVEL_GENERAL = 0; //普通用户
-const USER_LEVEL_VIP = 1;   //VIP用户（已付费）
 
 //用户信息
 var userInfo = null;

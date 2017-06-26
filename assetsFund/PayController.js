@@ -4,19 +4,15 @@
 var $ = require('jquery');
 var Hammer = require('hammerjs');
 var React = require('react');
-var ReactDom = require('react-dom');
 
 var User = require('./User');
 var Util = require('./Util');
 var Group = require('./Group');
 var Loading = require('./Loading');
-var GHGuider = require('./component/GHGuider');
 var Dimensions = require('./Dimensions');
 var Config = require('./Config');
 var QRCodePay = require('./component/QRCodePay');
 
-var OrderConfirmation = require('./component/OrderConfirmation');
-var DoneToast = require('./component/DoneToast');
 
 var OnFire =require('onfire.js');
 

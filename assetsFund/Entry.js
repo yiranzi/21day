@@ -5,19 +5,11 @@ var $ = window.$ = require('jquery');
 var React = require('react');
 var ReactDom = require('react-dom');
 
-
-var Config = require('./Config');
-var Main = require('./component/Main');
-
 var Dimensions = require('./Dimensions');
 var Util = require('./Util');
-var AudioMessage = require('./AudioMessage');
 var User = require('./User');
-var Group = require('./Group');
 var Loading = require('./Loading');
 
-var GHGuider = require('./component/GHGuider');
-var Tabbar = require('./component/Tabbar');
 
 var style = require('./css/style.scss');
 
