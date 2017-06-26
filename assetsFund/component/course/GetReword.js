@@ -1,7 +1,6 @@
 /**
  * Created by yiran1 on 2017/5/5.
  */
-const $ = window.$ = require('jquery');
 const React = require('react');
 const Dimensions = require('../../Dimensions');
 const Material = require('../../Material');
@@ -9,7 +8,7 @@ var User = require('../../User');
 const WxConfig = require('../../WxConfig');
 const Util = require('../../Util');
 var OnFire =require('onfire.js');
-const convertHtmlToBase64 = require('../../ImageShare')
+const convertHtmlToBase64 = require('../../ImageShare');
 const courseInfo = require('../../CourseInfo')
 const GetReward = React.createClass({
     getInitialState: function() {

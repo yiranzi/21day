@@ -1,7 +1,6 @@
 /**
  * Created by yiran1 on 2017/5/5.
  */
-const $ = window.$ = require('jquery');
 const React = require('react');
 const Dimensions = require('../../Dimensions');
 const Material = require('../../Material');

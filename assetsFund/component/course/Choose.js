@@ -1,7 +1,6 @@
 /**
  * Created by yiran on 2017/5/5.
  */
-const $ = window.$ = require('jquery');
 const React = require('react');
 const OnFire = require('onfire.js');
 

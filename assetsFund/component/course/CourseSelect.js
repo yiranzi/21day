@@ -1,15 +1,11 @@
 /**
  * Created by yiran on 2017/5/5.
  */
-const $ = window.$ = require('jquery');
 const React = require('react');
-const ReactDom = require('react-dom');
 const OnFire = require('onfire.js');
 const User = require('../../User');
 
-const Config = require('../../Config');
 const DoneToast = require('../DoneToast');
-const Link = require('react-router').Link;
 const LessonBar = require('./LessonBar');
 const FixedBg = require('./FixedBg');
 const IconBar = require('./IconBar');
@@ -78,7 +74,7 @@ const CourseSelect = React.createClass({
             //1.判断听课状态.
             this.checkUserPayStatue();
         } else {
-            OnFire.on(Config.OAUTH_SUCCESS, ()=>{
+            OnFire.on("OAUTH_SUCCESS", ()=>{
                 //1.判断听课状态.
                 this.checkUserPayStatue();
             });

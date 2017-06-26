@@ -1,24 +1,14 @@
 /**
  * Created by Administrator on 17-2-23.
  */
-const $ = window.$ = require('jquery');
 const React = require('react');
-const ReactDom = require('react-dom');
-// const Player = require('./Player');
-const Link = require('react-router').Link;
 const Material = require('../../Material');
-// const TitleBar = require('./TitleBar');
 const Loading = require('../../Loading');
 const GlobalAudio = require('../GlobalAudio');
 const AudioProgressBar = require('../Audio/AudioProgressBar');
 const OnFire = require('onfire.js');
 const WxConfig = require('../../WxConfig');
-const Modal = require('./../Modal');
-const Toast = require('./../Toast');
 const Util = require('../../Util');
-const CheckinPanel = require('../CheckinPanel');
-const DidCheckinPanel = require('../DidCheckinPanel');
-const EnterPanel = require('../EnterPanel');
 
 const ChooseBar = require('./Choose');
 const AudioBar = require('./Audio');

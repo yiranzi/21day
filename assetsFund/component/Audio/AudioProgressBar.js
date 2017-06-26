@@ -3,7 +3,6 @@
  */
 const $ = window.$ = require('jquery');
 const React = require('react');
-const ReactDom = require('react-dom');
 const OnFire = require('onfire.js');
 const Draggable = require('react-draggable');
 
