@@ -8,7 +8,6 @@ var React = require('react');
 var ReactDom = require('react-dom');
 var Hammer = require('hammerjs');
 
-var Group = require('../Group');
 var Modal = require('./Modal');
 
 /**

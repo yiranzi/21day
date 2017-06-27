@@ -2,7 +2,6 @@
  * 工具类
  * Created by Robot on 2016/7/26
  */
-var Group = require('./Group');
 var $ = require('jquery');
 var React = require('react');
 

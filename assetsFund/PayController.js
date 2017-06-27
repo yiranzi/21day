@@ -7,7 +7,6 @@ var React = require('react');
 
 var User = require('./User');
 var Util = require('./Util');
-var Group = require('./Group');
 var Loading = require('./Loading');
 var Dimensions = require('./Dimensions');
 var Config = require('./Config');

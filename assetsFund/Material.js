@@ -3,8 +3,6 @@
  */
 var $ = require('jquery');
 var User = require('./User');
-var Toast = require('./component/DoneToast');
-var PayPage = require('./component/PayPage');
 var React = require('react');
 
 

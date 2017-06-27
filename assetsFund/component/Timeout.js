@@ -3,9 +3,7 @@
  */
 
 var React = require('react');
-var ReactDom = require('react-dom');
 var Util = require('../Util');
-var PayPage = require('./PayPage');
 
 var timer = null;
 
