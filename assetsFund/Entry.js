@@ -10,18 +10,14 @@ var Util = require('./Util');
 var User = require('./User');
 var Loading = require('./Loading');
 
-
+//工程中用到的
 var style = require('./css/style.scss');
+var DialogAlert = require('./component/DialogAlert');
 
 var InnerRouter = require('./InnerRouter');
 var BeforeStart = require('./GlobalFunc/BeforeStart');
-// alert(Util.getUrlPara('code'));
-// if( !Util.getUrlPara('code') ) {
-//     alert("2.5");
-//     User.redirectToBaseInfo();
-// }
 
-////初始化用户信息
+//初始化用户信息
 alert("bundle ready");
 User.initAccessInfo();
 
