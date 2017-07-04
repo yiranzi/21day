@@ -54,7 +54,6 @@ const ListenCourse = React.createClass({
             currentfmid: -1,
             lessons: [],
             allFinish: false,//全部课程都通过
-            isFree: '',
             isPay: false,
             finishElement: 0,
             totalElement: 0,
@@ -68,18 +67,20 @@ const ListenCourse = React.createClass({
     },
 
     componentWillMount() {
-        Util.postCnzzData("进入听课页面");
-        if (User.getUserInfo().userId) {
-
+        登录
+        Tools.fireRace(User.getUserInfo().userId,"OAUTH_SUCCESS").then(()=>{
             this.getFmInfo();
+        });
 
-        } else {
-            OnFire.on('OAUTH_SUCCESS', (userInfo)=>{
-                this.getFmInfo();
-            })
-        }
+        //付费
+        Tools.fireRaceCourse(sessionStorage.getItem('courseId')).then((value)=>{
+            this.state.isPay = true;
+            this.setState({
+                isPay: true,
+            });
+        });
 
-        //音频完成之后
+        //音频完成监听
         OnFire.on('AUDIO_END',()=>{
 
             if (this.state.currentPlaying<0) {
@@ -110,10 +111,10 @@ const ListenCourse = React.createClass({
             //统计免费完成课程1的进度情况
             if (!this.state.isPay && this.props.params.courseId === '10') {
                 Material.postData('免费_完成音频1_ListenCourse');
-                // Material.postData('免费_完成音频' + this.state.lessons[this.state.currentPlaying].fmid);
             }
         });
 
+        //自动滚动监听
         OnFire.on('Course_AutoMove', ()=>{
             //如果所有的课程都通过了
 
@@ -150,30 +151,13 @@ const ListenCourse = React.createClass({
 
         Material.getCourseProgress(courseId).always((progressData) => {
             Loading.hideLoading();
-            //链接是否是免费听课(首页.分享出去的课程)
-            this.state.isFree = this.props.params.free;
-            //判断是不是付费用户.付费用户不会显示报名按钮.
-            Material.getJudgeFromServer().done((result)=>{
-                Loading.hideLoading();
-                if(result){
-                    this.setState({
-                        isPay: true,
-                    });
-                } else {
-
-                }
-            });
             this.state.lessons = progressData;
             this.preFetch();
             this.fixProcess();
             this.calcProcess();
             if (progressData) {
-                // if  (this.props.location.query.name === '0') {
-                //     Material.haveStartLesson(progressData[0].fmid);
-                // }
                 this.setState({
                     lessons: this.state.lessons,
-                    isFree: this.state.isFree,
                 });
             }
         });
@@ -362,7 +346,7 @@ const ListenCourse = React.createClass({
     },
 
     renderSignUp() {
-        if (this.state.isFree === 'free' && !this.state.isPay) {
+        if (!this.state.isPay) {
             return (<div className = "sign-up-button" onClick={this.goSign}>立即报名！</div>);
         }
     },
@@ -407,7 +391,6 @@ const ListenCourse = React.createClass({
         console.log(type);
         if (type === 1) {
             this.fixProcess();
-            Util.postCnzzData("第一次点击成就卡");
             if (!this.state.isPay) {
                 Material.postData('免费_完成课程_ListenCourse');
             }

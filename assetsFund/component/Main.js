@@ -5,7 +5,7 @@
 
 var React = require('react');
 
-var PayPage = require('./PayPage');
+var IctMain = require('../view/CPlusMain');
 
 var Main = React.createClass({
     getInitialState() {
@@ -21,7 +21,7 @@ var Main = React.createClass({
     render() {
         return (
             <div className="main-container">
-                <PayPage/>
+                <IctMain/>
         </div>);
     }
 

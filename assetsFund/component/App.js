@@ -3,7 +3,7 @@
  */
 var $ = window.$ = require('jquery');
 var React = require('react');
-const payPage = require('./PayPage');
+var IctMain = require('../view/CPlusMain');
 
 
 var App = React.createClass({
@@ -16,7 +16,7 @@ var App = React.createClass({
     render() {
         return(
             <div>
-                {this.props.children || <payPage/>}
+                {this.props.children || <IctMain/>}
                 {/*<FMView/>*/}
             </div>
         )
