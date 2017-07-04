@@ -131,15 +131,6 @@ const GetReward = React.createClass({
         });
     },
     componentDidMount () {
-        // const rewardQrcode = document.getElementById('reward-qrcode')
-        // new QRcode(document.getElementById('reward-qrcode'), {
-        //     text: window.location.href,
-        //     width: rewardQrcode.offsetWidth,
-        //     height: rewardQrcode.offsetHeight,
-        //     colorDark: '#000',
-        //     colorLight: '#fff',
-        //     correctLevel: QRcode.CorrectLevel.H
-        // })
         // const element = document.getElementsByClassName('reward-pic')[0]
         // const width = element.offsetWidth
         // const height = element.offsetHeight
@@ -168,9 +159,9 @@ const GetReward = React.createClass({
     },
     componentWillUnmount () {
         let senior = this.state.senior;
-        let shareTitle = '14天基金定投训练营，手把手带你从0学习基金投资',
+        let shareTitle = '14天带你躺赢基金定投！一天10分钟，手把手教你！',
             link = Util.getShareLink(),
-            desc = '';
+            desc = '宝宝618不再担心没钱买买买啦';
         WxConfig.shareConfig(shareTitle,desc,link);
     },
 
@@ -192,7 +183,7 @@ const GetReward = React.createClass({
         switch (type) {
             //分享当日免费课(高级分享)
             case 'freeChance':
-                shareTitle = '我是第'+ this.state.senior.rank+'名完成基金训练营('+ course.dayTitle + ')的人，3个免费听课名额，请你来听';
+                shareTitle = '今天我是第'+ this.state.senior.rank+'名，Get到了“'+ course.dayTitle + '”！这是我赢得的免费学习课！';
                 desc = '';
                 link = link + '&goPath=' + '/getReward/' + senior.courseId;
                 link = link + '&courseId=' + senior.courseId;
@@ -204,7 +195,7 @@ const GetReward = React.createClass({
             //普通分享
             case 'share':
                 senior = this.state.senior;
-                shareTitle = '我是第'+ this.state.senior.rank+'名完成基金训练营('+ course.dayTitle + ')的人';
+                shareTitle = '今天我第'+ this.state.senior.rank+'名，Get到了“'+ course.dayTitle + '”！快看我的成就卡！';
                 desc = '';
                 link = link + '&goPath=' + '/getReward/' + senior.courseId;
                 link = link + '&courseId=' + senior.courseId;
@@ -218,9 +209,9 @@ const GetReward = React.createClass({
         console.log('share is' + link);
     },
 
-    handleClick() {
-        location.hash = "/select";
-    },
+    // handleClick() {
+    //     location.hash = "/select";
+    // },
 
     //上线点击
     goCommand() {

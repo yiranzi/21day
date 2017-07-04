@@ -57,6 +57,7 @@ const ListenCourse = React.createClass({
                 subTitle: '',
             },
             resPic: '',
+            timer: true,
         }
     },
 
@@ -74,11 +75,23 @@ const ListenCourse = React.createClass({
 
         //音频完成之后
         OnFire.on('AUDIO_END',()=>{
+
             if (this.state.currentPlaying<0) {
                 return null;
             }
+            //终止多余的其你去
+            if(!this.state.timer){
+                return
+            } else {
+                this.state.timer = false;
+                setTimeout(() => {
+                    this.state.timer = true;
+                }, 1000);
+            }
             //
-            OnFire.fire('Course_AutoMove');
+            if(!this.state.allFinish){
+                OnFire.fire('Course_AutoMove');
+            }
             //修改进度
             this.state.lessons[this.state.currentPlaying].process = true;
             let localLessons = this.state.lessons;

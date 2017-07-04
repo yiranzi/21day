@@ -2,13 +2,8 @@
  * 登录授权
  * Created by lip on 2016/6/7.
  */
-var $ = require('jquery');
-var React = require('react');
-var ReactDom = require('react-dom');
 var Util = require('./Util');
-var Config = require('./Config');
 var OnFire =require('onfire.js');
-var PayController = require('./PayController');
 var Loading = require('./Loading');
 var WxConfig = require('./WxConfig');
 
@@ -43,8 +38,7 @@ class User {
 
         //初始化微信通用接口
         // User.signWxApi();
-        WxConfig.initWxConfig();
-        //sharefix
+
 
         //蓝号进行授权后的
         if(Util.getUrlPara('istopay')){
@@ -121,8 +115,31 @@ class User {
             return;
         }
 
+        this.setUserInfo(data);
+        //设置用户信息缓存 此处缓存是为了第二次蓝号授权后，可以使用用户的其他信息
+        localStorage.setItem('user-info',JSON.stringify(userInfo));
+
+        //查询是否有支付的openId，没有就去做支付账号的登录，
+        if(data.payOpenId){
+            //触发登录成功事件
+            OnFire.fire('OAUTH_SUCCESS',data);
+            Loading.hideLoading();
+        }
+        else{
+            //设置支付APPID
+            Util.setPayAppId();
+            //静默授权（使用可支付公号的APPID）
+            console.log('静默授权（使用可支付公号的APPID）');
+            User.redirectToBaseInfo(true);
+        }
+
+
+    }
+
+    static setUserInfo(data) {
         //保存用户信息
         userInfo = {};
+        userInfo.payOpenId = data.payOpenId;
         userInfo.userId = data.userId;
         userInfo.sessionId = data.sessionId;
         userInfo.openId = data.openId;
@@ -138,46 +155,8 @@ class User {
 
         userInfo.unionId = data.unionId;
 
-        // TODO 检测用户nickName是否为空并上报
-        console.log('userInfo.nickName = '+ userInfo.nickName);
-        if(!userInfo.nickName) {
-            Util.postCnzzData('获取用户名为空', 'nickName=' + userInfo.nickName + ';' + 'userId=' + userInfo.userId);
-        }
-
-        //配置分享内容
-        WxConfig.shareConfig();
-
-        console.log('unionId'+userInfo.unionId);
-
-
-        //查询是否有支付的openId，没有就去做支付账号的登录，
-        if(data.payOpenId){
-
-            userInfo.payOpenId = data.payOpenId;
-
-            //设置用户信息缓存 此处缓存是为了第二次蓝号授权后，可以使用用户的其他信息
-            localStorage.setItem('user-info',JSON.stringify(userInfo));
-
-            Util.postCnzzData("用户登录");
-
-            //触发登录成功事件
-            OnFire.fire('OAUTH_SUCCESS',data);
-
-            Loading.hideLoading();
-        }
-        else{
-            //设置用户信息缓存 此处缓存是为了第二次蓝号授权后，可以使用用户的其他信息
-            localStorage.setItem('user-info',JSON.stringify(userInfo));
-
-            //设置支付APPID
-            Util.setPayAppId();
-
-            //静默授权（使用可支付公号的APPID）
-            console.log('静默授权（使用可支付公号的APPID）');
-            User.redirectToBaseInfo(true);
-        }
-
-
+        //设置用户信息缓存 此处缓存是为了第二次蓝号授权后，可以使用用户的其他信息
+        localStorage.setItem('user-info',JSON.stringify(userInfo));
     }
 
     /**

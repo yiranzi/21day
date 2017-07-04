@@ -4,7 +4,7 @@
 const React = require('react');
 const Dimensions = require('../../Dimensions');
 
-const GetReward = React.createClass({
+const FixedBg = React.createClass({
     getInitialState: function() {
         // console.log('123');
         return {
@@ -31,4 +31,4 @@ const GetReward = React.createClass({
     }
 });
 
-module.exports = GetReward;
+module.exports = FixedBg;

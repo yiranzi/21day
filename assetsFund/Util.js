@@ -46,8 +46,8 @@ const USER_NUMBER = 500; // TODO roy 活动报名总人数
 const NORMAL_PRICE = 580;// TODO roy 上线价格，普通用户
 const CHEAP_PRICE = 580;// TODO roy 下线价格，享有的优惠价格
 
-const SHARE_TITLE = '14天基金定投训练营，手把手带你从0学习基金投资';
-const SHARE_DESC = '';
+const SHARE_TITLE = '14天带你躺赢基金定投！一天10分钟，手把手教你！';
+const SHARE_DESC = '宝宝618不再担心没钱买买买啦';
 
 //是否是debug
 const IS_DEBUG = location.href.indexOf('localhost') > 0;
@@ -247,11 +247,6 @@ class Util {
     static onShareSuccess(channel, from) {
         let User = require('./User');
         let userInfo = User.getUserInfo();
-        // TODO 检测用户nickName是否为空并上报
-        console.log('userInfo.nickName = '+ userInfo.nickName);
-        if(!userInfo.nickName) {
-            Util.postCnzzData('分享时用户名为空', 'nickName=' + userInfo.nickName + ';' + 'userId=' + userInfo.userId);
-        }
 
         Util.shareCommonHandler();
 
@@ -263,13 +258,8 @@ class Util {
         } else if (!from) {
             Material.postData('一般分享')
         }
-        Util.postCnzzData('分享成功');
         Material.postData('上线_分享成功');
         let seniorId = Util.getUrlPara('ictchannel');
-        if (seniorId && seniorId != userInfo.userId) {
-          Util.postCnzzData('下线分享成功');
-        }
-
         OnFire.fire('SHARE_SUCCESS');
     }
 
@@ -281,7 +271,6 @@ class Util {
         Util.shareCommonHandler();
 
         channel = channel || '';
-        Util.postCnzzData('分享取消');
     }
 
     /**

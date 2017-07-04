@@ -79,10 +79,10 @@ class Material {
         })
     }
 
-    static getJudgeFromServer() {
+    static getJudgeFromServer(courseId) {
         var User = require('./User');
         const Util = require('./Util'),
-            apiUrl = Util.getAPIUrl('get_judge_signup').replace('{courseId}',COURSE_ID);
+            apiUrl = Util.getAPIUrl('get_judge_signup').replace('{courseId}',courseId);
         let userInfo = User.getUserInfo();
         return $.ajax(
             {

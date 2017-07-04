@@ -131,12 +131,8 @@ const GlobalAudioComp = React.createClass({
      */
     endedHandler() {
         // this.pauseHandler();
-
         GlobalAudio.pause();
-
         OnFire.fire('AUDIO_END');
-
-        Util.postCnzzData('听完');
     },
 
     render() {

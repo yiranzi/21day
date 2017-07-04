@@ -24,13 +24,13 @@ const CourseSelect = React.createClass({
         return {
             courseList: {},
             tips:[],
-            treasure: {
-                status: -1,
-                haveOpen: true,
-                canOpen: false,
-                canView: false,
-            },
-            allFinish: false,//所有课程都完成.
+            // treasure: {
+            //     status: -1,
+            //     haveOpen: true,
+            //     canOpen: false,
+            //     canView: false,
+            // },
+            allLessonStatus: 'NotAll',//所有课程都完成状态
             allowLesson: '',//用户听课权限
             topBarStatus: [
                 false,true,false
@@ -110,29 +110,39 @@ const CourseSelect = React.createClass({
 
         //0.获取听课列表
         this.getCourseList();
-
-        //2.获取宝箱信息
-        Material.getTreasureInfo().always( (data) => {
-            //如果未领取.
-            if(!data) {
-                this.state.treasure.haveOpen = false;
-                this.setState({treasure: this.state.treasure});
-            }
-        })
     },
 
 
     getCourseList () {
         Material.getCourseList().always( (data) => {
-            this.setState({courseList: data})
-            for( let process of this.state.courseList) {
-                if (process.status !== 2) {
-                    return;
+            this.setState({courseList: data});
+            let countUnlock = 0;
+            let countPass = 0;
+            let countTotle = this.state.courseList.length - 1;
+            let result = 0;
+            for ( let i = 1; i < this.state.courseList.length; i++ ){
+                result = this.state.courseList[i].status;
+                if (result !== -1) {
+                    countUnlock++;
+                }
+                if (result === 2) {
+                    countPass++;
                 }
             }
-            //如果课程都通过了,并且没有领取宝箱.
-            if(!this.state.treasure.haveOpen){
-                this.setState({allFinish: true})
+            if( countUnlock === countTotle ) {
+                this.state.allLessonStatus = 'AllEnter';
+                this.state.topBarStatus[0] = true;
+                this.setState({topBarStatus: this.state.topBarStatus});
+            }
+            if( countPass === countTotle ) {
+                this.state.allLessonStatus = 'AllPass';
+                this.state.topBarStatus[2] = true;
+                this.setState({topBarStatus: this.state.topBarStatus});
+            }
+            console.log(countPass);
+            if(countPass > 3) {
+                console.log(countPass);
+                this.state.qqStatus = 1;
             }
         })
     },
@@ -149,10 +159,7 @@ const CourseSelect = React.createClass({
                     <FixedBg/>
                     <div>
                         {this.renderTopBar()}
-                        {/*{this.renderTreasure()}*/}
                         {this.renderCourseList()}
-                        {/*{this.renderGraduated()}*/}
-                        {this.reloadPic()}
                     </div>
                 </div>
             )
@@ -413,156 +420,71 @@ const CourseSelect = React.createClass({
         }
     },
 
-    //可以领取宝箱,自动滚动
-    componentDidUpdate() {
-        if(boolOnce){
-            if(this.state.treasure.canOpen){
-                scrollTo(0,999);
-                boolOnce = false;
-            }
-        }
-
-    },
-
-    //预加载毕业证的大图.
-    reloadPic() {
-        //如果可以领取
-        if(this.state.treasure.canOpen){
-            return(
-                <div className="reload-bg" style = {{backgroundImage: 'url("./assetsFund/image/course/graduated.png")'}}></div>
-            )
-        }
-    },
-
-
-
-    renderTreasure() {
-        console.log('render treasure');
-        let courseList = this.state.courseList;
-        if (!courseList.length || courseList.length === 0) {
-            return null;
-        }
-        let countUnlock = 0;
-        let countPass = 0;
-        let countTotle = this.state.courseList.length;
-        let result = 0;
-        for ( let i = 0; i < courseList.length; i++ ){
-            result = courseList[i].status;
-            if (result !== -1) {
-                countUnlock++;
-            }
-            if (result === 2) {
-                countPass++;
-            }
-        }
-        if( countUnlock === countTotle ) {
-            this.state.treasure.canView = true;
-        }
-        if( countPass === countTotle ) {
-            this.state.treasure.canOpen = true;
-        }
-        // this.calcTreasureInfo();
-
-        // return(<div className="lesson-bar" onClick={this.openTreasure}>
-        //         <TreasureBar treasure = {this.state.treasure}></TreasureBar>
-        //         </div>)
-        return <img onClick={this.openTreasure} className={this.state.allFinish ? 'fix-treasure-shake' : 'fix-treasure'} src={'./assetsFund/image/course/treasure.png'}/>
-
-
-    },
-
-    // calcTreasureInfo() {
-    //     let treasure =  this.state.treasure;
-    //     if(treasure.canView) {
-    //         //
-    //         treasure.status = 0;
-    //     }else if(!treasure.canOpen) {
-    //         //不可以打开,因为没有完成所有的课程
-    //         treasure.status = 0;
-    //     } else if (this.state.treasure.canOpen) {
-    //         //可以打开
-    //         treasure.status = 1;
-    //     }
-    //     else if (!treasure.haveOpen) {
-    //         //不可以打开,页还没打开
-    //         treasure.status = 3;
-    //     } else {
-    //         //已经领取
-    //         treasure.status = 2;
-    //     }
-    // },
-
-    renderGraduated(){
-        if(this.state.treasure.canOpen){
-            return(
-                <div>
-                    <img className="graduatedButton" onClick={this.openGraduated} src={'./assetsFund/image/course/graduatedButton.png'}/>
-                </div>
-            )
-        } else if(this.state.courseList.length && this.state.courseList.length !== 0){
-            return(
-                <div>
-                    <div className="show-group" onClick={this.showGroup}>点我加群</div>
-                </div>
-            )
-        }
-    },
 
     showGroup() {
-        window.dialogAlertComp.show('加入学习社群','基金课教学QQ群，手把手带你投资实战基金课。群暗号：棉花（QQ群：188416619）','点击加入',()=>
-        {location.href = "https://jq.qq.com/?_wv=1027&k=4AdZhRM";},'我加过了',true)
+        if (this.state.qqStatus === 1) {
+            window.dialogAlertComp.show('加入学习社群','基金课教学QQ群，手把手带你投资实战基金课。群暗号：棉花（QQ群：113052958）','点击加入',()=>
+            {location.href = "https://jq.qq.com/?_wv=1027&k=4APqRNR";},'我加过了',true)
+        } else {
+            window.dialogAlertComp.show('加入学习社群','基金课教学QQ群，手把手带你投资实战基金课。群暗号：棉花（QQ群：188416619）','点击加入',()=>
+            {location.href = "https://jq.qq.com/?_wv=1027&k=4AdZhRM";},'我加过了',true)
+        }
     },
 
     openGraduated() {
-        // Util.postCnzzData("点击毕业证");
-        window.dialogAlertComp.show('还不能领取毕业证哦！','按时完成14天的训练之后，就可以顺利领取毕业证啦。','我会加油的',()=>{},'',false);
-        // Material.getGraduatedRank().always( (rank) => {
-        //     //2如果请求道有效值
-        //     // rank !== -1
-        //     if ( rank!== -1 ) {
-        //         let courseId = 8;
-        //         if (courseId) {
-        //             location.hash = '/getGraduated/mine';
-        //         }
-        //     } else {
-        //         window.dialogAlertComp.show('还不能领取毕业证哦！','你还没有完成全部课程呢，要都通过才行哦。','好的',()=>{},'',false);
-        //     }
-        // });
+        if (this.state.allLessonStatus === 'AllPass') {
+            Material.getGraduatedRank().always( (rank) => {
+                //2如果请求道有效值
+                // rank !== -1
+                if ( rank!== -1 ) {
+                    sessionStorage.setItem('graduated-rank',rank);
+                    location.hash = '/getGraduated/mine';
+                } else {
+                    window.dialogAlertComp.show('还不能领取毕业证哦！','你还没有完成全部课程呢，要都通过才行哦。','好的',()=>{},'',false);
+                }
+            });
+        } else if(this.state.allLessonStatus === 'AllEnter') {
+            window.dialogAlertComp.show('还不能领取毕业证哦！','现在全部的课程都可以听了，把他们都完成，就可以领取毕业证。','好的',()=>{},'',false);
+        } else {
+            window.dialogAlertComp.show('还不能领取毕业证哦！','按时完成14天的训练之后，就可以顺利领取毕业证啦。','我会加油的',()=>{},'',false);
+        }
+
+
     },
 
     openTreasure() {
-        if(this.state.treasure.canView) {
-            if(this.state.treasure.canOpen){
-
-                if(this.state.treasure.haveOpen) {
-                    //领了
-                    window.dialogAlertComp.show('你已经领取过宝箱啦','使用长投FM去积分商城兑换奖励吧！','去看看',()=>{
-                        location.href = "https://h5.ichangtou.com/h5/fm/index.html#/mall";},'等一等',true);
+        //可以领取
+        if (this.state.allLessonStatus === 'AllPass') {
+            Material.getTreasureInfo().always((data) => {
+                console.log('宝箱请求的结果是' + data);
+                //如果已领取
+                if (data) {
+                    window.dialogAlertComp.show('你已经领取过宝箱啦', '使用长投FM去积分商城兑换奖励吧！', '去看看', () => {
+                        location.href = "https://h5.ichangtou.com/h5/fm/index.html#/mall";
+                    }, '等一等', true);
                 } else {
-                    //听完课,还没领,
-                    //1如果可以完成毕业证
-                    Material.openTreasure().always( (data) => {
+                    Material.openTreasure().always((data) => {
                         //弹出打开宝箱的界面1
-                        if(data.status)
-                        {
+                        if (data.status) {
                             Util.postCnzzData("成功领取宝箱");
-                            this.state.treasure.haveOpen = true;
-                            window.dialogAlertComp.show('领取了50金币！','使用长投FM去积分商城兑换奖励吧！','去看看',()=>{
+                            window.dialogAlertComp.show('领取了'+data.content+'金币！', '使用长投FM去积分商城兑换奖励吧！', '去看看', () => {
                                 Util.postCnzzData("宝箱跳转FM");
-                                location.href = "https://h5.ichangtou.com/h5/fm/index.html#/mall";},'等一等',true);
+                                location.href = "https://h5.ichangtou.com/h5/fm/index.html#/mall";
+                            }, '等一等', true);
                         } else {
-                            Util.postCnzzData("失败领取宝箱",data.msg);
-                            window.dialogAlertComp.show(data.msg,'领取失败了','我知道了',()=>{},()=>{},false);
+                            Util.postCnzzData("失败领取宝箱", data.msg);
+                            window.dialogAlertComp.show(data.msg, '领取失败了', '我知道了', () => {
+                            }, () => {
+                            }, false);
                         }
                     })
                 }
-            } else {
-                ////到了第七天,还没听完课
-                window.dialogAlertComp.show('毕业宝箱等着你！','按时完成14天的训练之后，才可以领取毕业宝箱噢。','我没问题的',()=>{},()=>{},false);
-            }
+            });
+        } else if(this.state.allLessonStatus === 'AllEnter'){
+            window.dialogAlertComp.show('毕业宝箱等着你！', '现在全部的课程都可以听了，把他们都完成，就可以领取毕业宝箱噢。', '我会加油的', () => {
+            }, '', false);
         } else {
-            //还没有到第七天
-            window.dialogAlertComp.show('毕业宝箱等着你！','按时完成14天的训练之后，才可以领取毕业宝箱噢。','我会加油的',()=>{},()=>{},false);
+            window.dialogAlertComp.show('毕业宝箱等着你！', '按时完成14天的训练之后，才可以领取毕业宝箱噢。', '我会加油的',()=>{},'',false);
         }
     }
 });
