@@ -26,7 +26,7 @@ var PayPage = React.createClass({
     getInitialState(){
         return {
             hasPaid:false, //是否付费
-            isSubscribed: true, //是否订阅
+            ifCanPaid: false,
             showGuide: false, // 显示关注引导信息
             showShareHint: false, //显示分享
             QQNum: null, //QQ群号
@@ -37,10 +37,6 @@ var PayPage = React.createClass({
             //21days2.0
             hasSenior: false, //是否有上线
             buttonPrice: Util.getNormalPrice(), //
-            buttonChange:false,//判断提示时间截止panel
-            //share
-            showSharePanel: false, //显示分享panel
-            showShareModal: false , //显示分享modal
 
             //wechat
             showWechatGroup: false, //显示微信联系方式
@@ -57,49 +53,52 @@ var PayPage = React.createClass({
 
 
     componentWillMount(){
-        //0获取当前的
+        Material.postData('人_进入_payPage');
+        //0获取当前的Id
         let courseId = sessionStorage.getItem('courseId');
-        OnFire.on('PAID_DONE', ()=>{
+        //1获取用户名 获取报名信息
+        this.getUserId().then(()=>{
+            //获取用户是否有报名记录
             Tools.fireRaceCourse(courseId).then((value)=>{
                 if(value === 'pay'){
-                    // alert("PAID_DONE已报名");
-
                     this.setState({
                         hasPaid: true, //已报名
                     });
-                    OnFire.fire('PAID_SUCCESS','normalPay');
                 } else if(value === 'free'){
                     this.setState({
                         hasPaid: false, //未报名
                     });
                 }
-            })
+            });
         });
-        //已付费
-        OnFire.on('PAID_SUCCESS',(payWay)=>{
-            Tools.postData('支付成功');
-            // 下线支付成功后上报
-            let seniorId = Util.getUrlPara('ictchannel');
-            this.checkSubscribe();
-        });
-        this.getUserId().then(()=>{
-            let seniorId = Util.getUrlPara('ictchannel');
-            Material.postData('人_进入_payPage');
-            //获取用户是否有报名记录
-            this.postRegisterRecord(User.getUserInfo());
-            //设置订阅
-            this.setSubscribeInfo(User.getUserInfo().subscribe);
-            // 下线打开分享链接
-            this.setSenior(seniorId,User.getUserInfo().userId);
-        });
-        //设置价格
-    },
-
-    setPrice() {
-        let getWhere = sessionStorage.getItem('getWhere');
-        if (getWhere === 'zl') {
-            //设置价格
+        //2监听支付完成 通往听课
+        let outBool = false;
+        while(!outBool) {
+            outBool = true;
+            OnFire.on('PAID_DONE', ()=>{
+                Tools.fireRaceCourse(courseId).then((value)=>{
+                    if(value === 'pay'){
+                        OnFire.fire('PAID_SUCCESS','normalPay');
+                    } else {
+                        outBool = false;
+                    }
+                })
+            });
+            OnFire.on('PAID_SUCCESS',(payWay)=>{
+                Tools.postData('支付成功');
+                this.setState({
+                    hasPaid: true, //已报名
+                });
+                this.state.hasPaid = true;
+                this.checkSubscribe();
+            });
         }
+        //3设置下线
+        this.setIfCanPaid();
+        //5请求倒计时和剩余人数
+        this.signUpNumber();
+        //6设置价格
+        this.setPrice();
     },
 
     getUserId() {
@@ -107,15 +106,35 @@ var PayPage = React.createClass({
         return Tools.fireRace(userId,"OAUTH_SUCCESS");
     },
 
+    setPrice() {
+        let getWhere = sessionStorage.getItem('getWhere');
+        //特殊渠道设置价格
+        if (getWhere === 'zl') {
+            Util.getNormalPrice()
+        } else {
+            Util.getCheapPrice()
+        }
+    },
+
+    setIfCanPaid() {
+        let seniorId = sessionStorage.getItem('ictchannel');
+        //seniorId则表示该用户拥有上线
+        if(seniorId){
+            this.state.ifCanPaid = true;
+        }
+        if(sessionStorage.getItem('pathFrom') === 'ListenCourse') {
+            this.state.ifCanPaid = true;
+        }
+        if(sessionStorage.getItem('getWhere') === 'zl') {
+            this.state.ifCanPaid = true;
+        }
+    },
+
     /***
      * 请求剩余报名人数和报名时间是否截止
      */
     signUpNumber(){
         Material.getRegistered().done((result) => {
-            console.log('signUpNumber-result', result);
-            // TODO test roy
-            // result.time = false;
-
             let restNum = Util.getUserNumber() - result.number;
             if (restNum <= 0){
                 this.setState({
@@ -137,60 +156,6 @@ var PayPage = React.createClass({
 
     },
 
-    /**
-     * 下线打开分享链接
-     */
-    setSenior(seniorId, userId) {
-        //seniorId则表示该用户拥有上线
-        if((seniorId && seniorId != userId)|| MyStorage.getItem('S','pathFrom') === 'ListenCourse') {
-            let free = this.props.params.free;
-            // TODO test roy
-            // free = true;
-
-            if (free) {
-                this.setState({
-                    hasSenior: true,
-                });
-            } else {
-                this.setState({
-                    hasSenior: true,
-                    buttonPrice: Util.getCheapPrice()
-                });
-
-                console.log("下线打开分享链接");
-                Util.postCnzzData("下线打开分享链接");
-            }
-        } else {
-            this.setState({
-                buttonPrice: Util.getNormalPrice()
-            });
-            // 请求倒计时和剩余人数
-            this.signUpNumber();
-        }
-    },
-
-    /**
-     * 发送是否报名请求
-     * @param termId
-     * @param userInfo
-     * @param payWay
-     */
-    postRegisterRecord (userInfo, payWay) {
-
-    },
-
-    /**
-     * 设置用户关注信息
-     * @param subscribe
-     */
-    setSubscribeInfo(subscribe){
-
-        this.setState({
-            isSubscribed: subscribe,
-            followSubscribe:subscribe,
-        });
-        console.log('isSubscribed', subscribe);
-    },
 
     /**
      * 按钮点击
@@ -219,9 +184,7 @@ var PayPage = React.createClass({
             PayController.wechatPay();
         }else{
             this.scrollToTop();
-            Util.postCnzzData('拿不到用户数据');
-            //提醒用户加付费群
-            window.dialogAlertComp.show('提示','你好像被流星砸中...服务器君拿不到你的数据，请点击页面上的QQ群报名训练营','知道啦',()=>{},()=>{},false);
+            window.dialogAlertComp.show('提示','重新进入一下再试试，还不行的话可以报告管理员.手机号：15652778863','知道啦',()=>{},'',false);
         }
     },
 
@@ -252,12 +215,8 @@ var PayPage = React.createClass({
             DoneToast.show('报名成功，开始学习第一课吧！');
             this.gotoSelectPage();
         } else { // 未关注引导关注公号
-            this.setState({
-                hasPaid: true,
-            });
             this.scrollToTop();
             window.dialogAlertComp.show('报名成功','赶紧关注公众号"长投"，"长投"，"长投"，每天陪你一起学习哟~','好勒，知道了！',this.gotoSelectPage,()=>{},false);
-            Util.postCnzzData("报名成功未关注公号");
         }
     },
 
@@ -297,7 +256,7 @@ var PayPage = React.createClass({
         } else {
             Material.postData('人_点击试听_payPage');
         }
-        location.hash = 'course/10/free'
+        Tools.MyRouter('ListenCourse','/listenCourse/10');
     }
 
 });

@@ -57,26 +57,15 @@ const CourseSelect = React.createClass({
         let courseId = sessionStorage.getItem('courseId');
         Tools.fireRaceCourse(courseId).then((value)=>{
             this.state.allowLesson = value;
-            this.init();
             this.setState({allowLesson: this.state.allowLesson});
+            this.init();
         });
     },
 
-    /**
-     * 检查用户购买状态
-     */
-    checkUserPayStatue() {
-
-    },
-
     init() {
-        //支付页首页-判定支付状态 || 课程页首页-渲染列表
-        let isSubscribed = User.getUserInfo().subscribe;
-
-        if (!isSubscribed) {
+        if (!User.getUserInfo().subscribe) {
             DoneToast.show('赶紧关注公众号"长投"，"长投"，"长投"，每天陪你一起学习哟~');
         }
-
         //0.获取听课列表
         this.getCourseList();
     },
@@ -339,7 +328,7 @@ const CourseSelect = React.createClass({
         switch (status.enter) {
             case 'free-enter':
                 Material.postData('免费_试听_CourseSelect');
-                location.hash = '/course/' + courseId;
+                Tools.MyRouter('ListenCourse','/listenCourse/' + courseId);
                 break;
             case 'free-no-pay':
                 Material.postData('免费_禁止_CourseSelect');
@@ -347,7 +336,7 @@ const CourseSelect = React.createClass({
                 {location.hash = '/payPage';Material.postData('免费_跳转购买_CourseSelect');},'先不要',true);
                 break;
             case 'pay':
-                location.hash = '/course/' + courseId;
+                Tools.MyRouter('ListenCourse','/listenCourse/' + courseId);
                 break;
             case 'no-time':
                 window.dialogAlertComp.show('还没有开放课程哦','每天更新一课哦，耐心等一等吧！','知道啦',()=>{},()=>{},false);
@@ -365,19 +354,18 @@ const CourseSelect = React.createClass({
         let courseId = this.state.courseList[index].id;
         switch (status.reward) {
             case 'free-not-get':
-                location.hash = '/course/' + courseId;
-                break;
+                Tools.MyRouter('ListenCourse','/listenCourse/' + courseId);
                 // window.dialogAlertComp.show('你未完成课程,不能查看成就卡','快去完成吧','完成',()=>
                 // {location.hash = '/course/' + courseId;},'先不去',false);
                 break;
             case 'free-get':
                 //如果已获得成就卡
-                location.hash = '/course/' + courseId;
+                Tools.MyRouter('ListenCourse','/listenCourse/' + courseId);
                 // location.hash = '/getReward/' + courseId;
                 break;
             case 'not-get':
                 window.dialogAlertComp.show('你未完成课程,不能查看成就卡','快去完成吧','完成',()=>
-                {location.hash = '/course/' + courseId;},'先不去',true);
+                {Tools.MyRouter('ListenCourse','/listenCourse/' + courseId);},'先不去',true);
                 break;
             case 'get':
                 //如果已获得成就卡

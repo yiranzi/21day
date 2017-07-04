@@ -9,8 +9,8 @@ var React = require('react');
 var App = require('./component/App');
 // const FMView = require('./component/FMView');
 
-const PayPage = require('./component/PayPage');
-const CourseSelect = require('./component/course/CourseSelect');
+// const PayPage = require('./component/PayPage');
+// const CourseSelect = require('./component/course/CourseSelect');
 // const ListenCourse = require('./component/course/ListenCourse');
 const GetReward = require('./component/course/GetReword');
 const GetGraduated = require('./component/course/GetGraduated');
@@ -44,17 +44,16 @@ let InnerRouter = React.createClass({
                     <IndexRedirect to={this.props.goWhere}/>
                     <Route path ="/fund/payPage" component={PayPageFund}/>
                     <Route path ="/fund/courseSelect" component={CourseSelectFund}/>
+                    <Route path ="/fund/listenCourse" component={ListenCourseFund}/>
 
                     <Route path ="/seven/payPage" component={PayPageSeven}/>
                     <Route path ="/seven/courseSelect" component={CourseSelectSeven}/>
 
 
                     <Route path="/main" component={CPlusMain}/>
-                    <Route path="/select" component={CourseSelect}/>
-                    {/*用于免费报名*/}
-                    <Route path="/payPage(/:free)" component={PayPage}/>
-                    {/*用于免费听课*/}
-                    <Route path="/course/:courseId(/:free)" component={ListenCourse}/>
+                    {/*<Route path="/payPage(/:free)" component={PayPage}/>*/}
+                    {/*<Route path="/select" component={CourseSelect}/>*/}
+                    {/*<Route path="/course/:courseId(/:free)" component={ListenCourse}/>*/}
                     {/*用于标识是自己在听课*/}
                     <Route path="/getReward/:courseId(/:mine)" component={GetReward}/>
                     <Route path="/getGraduated(/:mine)" component={GetGraduated}/>
