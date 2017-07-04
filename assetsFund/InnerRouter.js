@@ -44,10 +44,11 @@ let InnerRouter = React.createClass({
                     <IndexRedirect to={this.props.goWhere}/>
                     <Route path ="/fund/payPage" component={PayPageFund}/>
                     <Route path ="/fund/courseSelect" component={CourseSelectFund}/>
-                    <Route path ="/fund/listenCourse" component={ListenCourseFund}/>
+                    <Route path ="/fund/listenCourse/:courseId" component={ListenCourseFund}/>
 
                     <Route path ="/seven/payPage" component={PayPageSeven}/>
                     <Route path ="/seven/courseSelect" component={CourseSelectSeven}/>
+                    <Route path ="/seven/listenCourse/:courseId" component={ListenCourseSeven}/>
 
 
                     <Route path="/main" component={CPlusMain}/>
