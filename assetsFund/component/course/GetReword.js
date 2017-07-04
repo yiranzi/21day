@@ -8,7 +8,6 @@ var User = require('../../User');
 const WxConfig = require('../../WxConfig');
 const Util = require('../../Util');
 var OnFire =require('onfire.js');
-const convertHtmlToBase64 = require('../../ImageShare');
 const courseInfo = require('../../CourseInfo')
 const GetReward = React.createClass({
     getInitialState: function() {
@@ -130,33 +129,7 @@ const GetReward = React.createClass({
             this.setState({friendInfo: info});
         });
     },
-    componentDidMount () {
-        // const element = document.getElementsByClassName('reward-pic')[0]
-        // const width = element.offsetWidth
-        // const height = element.offsetHeight
-        // const courseId = Util.getUrlPara('courseId') || this.props.params.courseId
-        // const userId = this.state.type === 'mine' ? User.getUserInfo().userId : Util.getUrlPara('ictchannel')
-        // Material.getNoteCardText(courseId).done((data) => {
-        //     this.setState({
-        //         noteText: data.message
-        //     }, () => {
-        //         Material.courseFinishRank(courseId,userId).done(data => {
-        //             this.state.senior.rank = data
-        //             convertHtmlToBase64(element, height, width).then(
-        //                 base64 => {
-        //                     this.setState({
-        //                         shareImgUrl: base64,
-        //                         isNoteCardDomShow: false
-        //                     })
-        //                     Loading.hideLoading()
-        //                 }
-        //             )
-        //         })
-        //
-        //     })
-        // })
 
-    },
     componentWillUnmount () {
         let senior = this.state.senior;
         let shareTitle = '14天带你躺赢基金定投！一天10分钟，手把手教你！',

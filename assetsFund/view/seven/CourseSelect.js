@@ -1,18 +1,13 @@
 /**
  * Created by yiran on 2017/5/5.
  */
-const $ = window.$ = require('jquery');
 const React = require('react');
-const ReactDom = require('react-dom');
-const OnFire = require('onfire.js');
 const User = require('../../User');
+const DoneToast = require('../../component/DoneToast');
 
-const Config = require('../../Config');
-const Link = require('react-router').Link;
 const LessonBar = require('../../component/course/LessonBar');
 const FixedBg = require('../../component/course/FixedBg');
 var boolOnce = true;
-// const GetReword = require('./GetReword');
 
 const Tools = require('../../GlobalFunc/Tools');
 
@@ -46,7 +41,11 @@ const CourseSelect = React.createClass({
 
     init() {
         //支付页首页-判定支付状态 || 课程页首页-渲染列表
+        let isSubscribed = User.getUserInfo().subscribe;
 
+        if (!isSubscribed) {
+            DoneToast.show('赶紧关注公众号"长投"，"长投"，"长投"，每天陪你一起学习哟~');
+        }
 
         //0.获取听课列表
         this.getCourseList();

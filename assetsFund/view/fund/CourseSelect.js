@@ -1,27 +1,19 @@
 /**
  * Created by yiran on 2017/5/5.
  */
-const $ = window.$ = require('jquery');
 const React = require('react');
-const ReactDom = require('react-dom');
-const OnFire = require('onfire.js');
 const User = require('../../User');
 
 const Config = require('../../Config');
 const DoneToast = require('../../component/DoneToast');
-const Link = require('react-router').Link;
 const LessonBar = require('../../component/course/LessonBar');
 const FixedBg = require('../../component/course/FixedBg');
 const IconBar = require('../../component/course/IconBar');
-let boolOnce = true;
-
-const MyStorage = require('../../GlobalFunc/MyStorage');
 
 const Tools = require('../../GlobalFunc/Tools');
 
 
 
-// const GetReword = require('./GetReword');
 
 const CourseSelect = React.createClass({
 
