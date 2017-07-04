@@ -8,7 +8,7 @@ var User = require('../../User');
 const WxConfig = require('../../WxConfig');
 const Util = require('../../Util');
 var OnFire =require('onfire.js');
-const convertHtmlToBase64 = require('../../ImageShare')
+const convertHtmlToBase64 = require('../../ImageShare');
 
 const GetGraduated = React.createClass({
     getInitialState: function() {

@@ -11,18 +11,28 @@ var App = require('./component/App');
 
 const PayPage = require('./component/PayPage');
 const CourseSelect = require('./component/course/CourseSelect');
+// const ListenCourse = require('./component/course/ListenCourse');
+const GetReward = require('./component/course/GetReword');
+const GetGraduated = require('./component/course/GetGraduated');
 
 
 const PayPageFund = require('./view/fund/PayPage');
 const CourseSelectFund = require('./view/fund/CourseSelect');
+const ListenCourseFund = require('./view/fund/ListenCourse');
+const GetRewardFund = require('./view/fund/GetReword');
+const GetGraduatedFund = require('./view/fund/GetGraduated');
+
 
 const PayPageSeven = require('./view/seven/PayPage');
 const CourseSelectSeven = require('./view/seven/CourseSelect');
+const ListenCourseSeven = require('./view/seven/ListenCourse');
+const GetRewardSeven = require('./view/seven/GetReword');
+const GetGraduatedSeven = require('./view/seven/GetGraduated');
 
 
-const ListenCourse = require('./component/course/ListenCourse');
-const GetReward = require('./component/course/GetReword');
-const GetGraduated = require('./component/course/GetGraduated');
+
+
+
 const CPlusMain = require('./view/CPlusMain');
 
 let InnerRouter = React.createClass({

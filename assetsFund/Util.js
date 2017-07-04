@@ -44,7 +44,7 @@ const END_TIME = [2017,6,16,9,0,0]; // TODO roy 截止时间，需要和后台�
 const USER_NUMBER = 500; // TODO roy 活动报名总人数
 
 const NORMAL_PRICE = 580;// TODO roy 上线价格，普通用户
-const CHEAP_PRICE = 580;// TODO roy 下线价格，享有的优惠价格
+const CHEAP_PRICE = 480;// TODO roy 下线价格，享有的优惠价格
 
 const SHARE_TITLE = '14天带你躺赢基金定投！一天10分钟，手把手教你！';
 const SHARE_DESC = '宝宝618不再担心没钱买买买啦';

@@ -4,16 +4,23 @@
 const React = require('react');
 const Material = require('../../Material');
 const Loading = require('../../Loading');
-const GlobalAudio = require('../GlobalAudio');
-const AudioProgressBar = require('../Audio/AudioProgressBar');
+
+
 const OnFire = require('onfire.js');
 const WxConfig = require('../../WxConfig');
 const Util = require('../../Util');
 
+//component
+const GlobalAudio = require('../../component/GlobalAudio');
+const AudioProgressBar = require('../../component/audioPlayer/AudioProgressBar');
 const ChooseBar = require('../../component/course/Choose');
-const AudioBar = require('../../component/course/Audio');
 const FixedBg = require('../../component/course/FixedBg');
 const CourseProcessBar = require('../../component/course/CourseProcessBar');
+
+
+//diff
+const AudioBar = require('../../component/fund/Audio');
+
 const courseInfo = require('../../CourseInfo');
 
 
@@ -22,7 +29,6 @@ const User = require('../../User');
 
 const autoMove = require('../../AutoMove');
 const PreFetch = require('../../GlobalFunc/PreFetch');
-const LoadingProgress = require('../GlobalComponent/LoadingProgress');
 
 const Tools = require('../../GlobalFunc/Tools');
 

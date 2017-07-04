@@ -32,7 +32,6 @@ var PayPage = React.createClass({
             QQNum: null, //QQ群号
             QQLink: null, //QQ群链接
             QQCode: null, //QQ暗号
-            showBackup: false, //显示备用QQ
             remain: parseInt(localStorage.getItem('remain-num')) || Util.getUserNumber(), //剩余席位
 
             //21days2.0
@@ -50,7 +49,6 @@ var PayPage = React.createClass({
 
             endTime: Util.getEndTime(), // 截止时间
 
-            isFreeUser: false, // 是否免费用户
 
             num: 0,
             time: 0
@@ -71,20 +69,10 @@ var PayPage = React.createClass({
                     });
                     OnFire.fire('PAID_SUCCESS','normalPay');
                 } else if(value === 'free'){
-                    // alert("PAID_DONE未报名");
-
                     this.setState({
                         hasPaid: false, //未报名
                     });
-                    Util.postCnzzData('点击取消付费');
                 }
-            })
-        });
-
-        //分享成功后，通知后台，给用户加红包
-        OnFire.on('PAID_LOSER',()=>{
-            this.setState({
-                showBackup:true,
             })
         });
         //已付费
@@ -94,34 +82,29 @@ var PayPage = React.createClass({
             let seniorId = Util.getUrlPara('ictchannel');
             this.checkSubscribe();
         });
-        let seniorId = Util.getUrlPara('ictchannel'),
-            openId = User.getUserInfo().openId;
-
-        if(openId) {
+        this.getUserId().then(()=>{
+            let seniorId = Util.getUrlPara('ictchannel');
             Material.postData('人_进入_payPage');
             //获取用户是否有报名记录
             this.postRegisterRecord(User.getUserInfo());
-
             //设置订阅
             this.setSubscribeInfo(User.getUserInfo().subscribe);
-
             // 下线打开分享链接
             this.setSenior(seniorId,User.getUserInfo().userId);
+        });
+        //设置价格
+    },
 
+    setPrice() {
+        let getWhere = sessionStorage.getItem('getWhere');
+        if (getWhere === 'zl') {
+            //设置价格
         }
-        else{
-            OnFire.on('OAUTH_SUCCESS',(userInfo)=>{
-                Material.postData('人_进入_payPage');
-                //获取用户是否有报名记录
-                this.postRegisterRecord(userInfo);
+    },
 
-                //设置订阅
-                this.setSubscribeInfo(userInfo.subscribe);
-
-                // 下线打开分享链接
-                this.setSenior(seniorId,userInfo.userId);
-            });
-        }
+    getUserId() {
+        let userId = User.getUserInfo().userId;
+        return Tools.fireRace(userId,"OAUTH_SUCCESS");
     },
 
     /***
@@ -139,14 +122,12 @@ var PayPage = React.createClass({
                     num: 0,
                     time: result.time,
                     showint: false,
-                    hasSenior: false
                 });
             } else {
                 this.setState({
                     num: restNum,
                     time: result.time,
                     showint: true,
-                    hasSenior: false
                 });
             }
         }).fail(()=>{
@@ -169,12 +150,10 @@ var PayPage = React.createClass({
             if (free) {
                 this.setState({
                     hasSenior: true,
-                    isFreeUser: true
                 });
             } else {
                 this.setState({
                     hasSenior: true,
-                    isFreeUser: false,
                     buttonPrice: Util.getCheapPrice()
                 });
 
@@ -197,41 +176,7 @@ var PayPage = React.createClass({
      * @param payWay
      */
     postRegisterRecord (userInfo, payWay) {
-        Loading.showLoading('获取信息...');
 
-        console.log('是否报名'+'userInfo',userInfo);
-
-        Material.getJudgeFromServer().done((record)=>{
-            Loading.hideLoading();
-            console.log('是否报名', record);
-
-            // TODO test roy
-            // record = true;
-            // alert("是否报名：" + record);
-
-            if(record){
-                if (!this.state.isFreeUser) {
-                    this.setState({
-                        hasPaid: true, //已报名
-                    });
-                } else {
-                    this.setState({
-                        hasPaid: false, //未报名
-                    });
-                }
-
-            } else {
-                this.setState({
-                    hasPaid: false, //未报名
-                });
-            }
-        })
-            .fail(()=>{
-                Loading.hideLoading();
-                this.setState({
-                    hasPaid: false, //未报名
-                })
-            })
     },
 
     /**
@@ -270,46 +215,18 @@ var PayPage = React.createClass({
      */
     payHandler() {
         if(User.getUserInfo().userId){
-            this.setState({
-                showBackup: false,
-            });
-
             //微信支付
             PayController.wechatPay();
         }else{
-            this.setState({
-                showBackup: true,
-                FMLink:'http://jq.qq.com/?_wv=1027&k=41976jN' //非付费的QQ群号
-            });
-
             this.scrollToTop();
             Util.postCnzzData('拿不到用户数据');
             //提醒用户加付费群
             window.dialogAlertComp.show('提示','你好像被流星砸中...服务器君拿不到你的数据，请点击页面上的QQ群报名训练营','知道啦',()=>{},()=>{},false);
         }
-
     },
 
     scrollToTop() {
         scrollTo(0,0);
-    },
-
-    /**
-     * 隐藏提示时间截止panel
-     */
-    closeSharePanelHandler() {
-        this.setState({
-            buttonChange: false
-        });
-    },
-    /***
-     * 显示提示时间截止panel
-     */
-    didClickHandler(){
-        Util.postCnzzData('报名截止后点击报名');
-        this.setState({
-            buttonChange:true,
-        })
     },
 
     /**
@@ -344,23 +261,6 @@ var PayPage = React.createClass({
         }
     },
 
-    /**
-     * 显示shareModal操作
-     */
-    shareModalHandler() {
-        var speed=10;//滑动的速度
-        $('body,html').animate({ scrollTop: 0 }, speed);
-        this.setState({
-            showShareModal: true
-        })
-    },
-
-    hideShareModalHandler() {
-        this.setState({
-            showShareModal: false
-        })
-    },
-
     render(){
         return (
             <div className="pay_page">
@@ -393,10 +293,8 @@ var PayPage = React.createClass({
     freeLesson() {
         // location.hash = '/select';
         if (this.state.hasSenior) {
-            Util.postCnzzData('下线_点击试听_payPage');
             Material.postData('下线_点击试听_payPage');
         } else {
-            Util.postCnzzData('人_点击试听_payPage');
             Material.postData('人_点击试听_payPage');
         }
         location.hash = 'course/10/free'
