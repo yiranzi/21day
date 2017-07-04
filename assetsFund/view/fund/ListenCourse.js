@@ -67,7 +67,7 @@ const ListenCourse = React.createClass({
     },
 
     componentWillMount() {
-        登录
+        //登录
         Tools.fireRace(User.getUserInfo().userId,"OAUTH_SUCCESS").then(()=>{
             this.getFmInfo();
         });

@@ -392,12 +392,12 @@ class Material {
     /***
      * 获得关卡列表
      */
-    static getCourseList() {
+    static getCourseList(courseId) {
         const Util = require('./Util');
         const User = require('./User');
 
         // let userInfo = User.getUserInfo();
-        let apiUrl = Util.getAPIUrl('get_course_list').replace('{courseId}',COURSE_ID);
+        let apiUrl = Util.getAPIUrl('get_course_list').replace('{courseId}',courseId);
 
         return $.ajax({
             url: apiUrl,

@@ -108,7 +108,7 @@ var PayPage = React.createClass({
             //todo
             // window.dialogAlertComp.show('报名成功','点击“立即加群”进入QQ群。也可以复制页面上的QQ群号，手动进群。请注意页面上的加群【暗号】哟~','知道啦',()=>{},()=>{},false);
         });
-        console.log('openid')
+        console.log('openid');
         let seniorId = Util.getUrlPara('ictchannel'),
             openId = User.getUserInfo().openId;
 

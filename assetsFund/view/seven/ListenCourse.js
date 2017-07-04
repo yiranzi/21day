@@ -17,7 +17,7 @@ const CourseProcessBar = require('../../component/course/CourseProcessBar');
 
 
 //diff
-const AudioBar = require('../../component/fund/Audio');
+const AudioBar = require('../../component/seven/Audio');
 
 
 const User = require('../../User');
@@ -48,26 +48,26 @@ const ListenCourse = React.createClass({
             currentfmid: -1,
             lessons: [],
             allFinish: false,//全部课程都通过
-            isFree: '',
             isPay: false,
         }
     },
 
     componentWillMount() {
 
-        Util.postCnzzData("进入听课页面");
-
-        if (User.getUserInfo().userId) {
-
+        //登录
+        Tools.fireRace(User.getUserInfo().userId,"OAUTH_SUCCESS").then(()=>{
             this.getFmInfo();
+        });
 
-        } else {
-            OnFire.on('OAUTH_SUCCESS', (userInfo)=>{
-                this.getFmInfo();
-            })
-        }
+        //付费
+        Tools.fireRaceCourse(sessionStorage.getItem('courseId')).then((value)=>{
+            this.state.isPay = true;
+            this.setState({
+                isPay: true,
+            });
+        });
 
-        //音频完成之后
+        //音频完成监听
         OnFire.on('AUDIO_END',()=>{
             if (this.state.currentPlaying<0) {
                 return null;
@@ -119,7 +119,6 @@ const ListenCourse = React.createClass({
         Material.getCourseProgress(courseId).always((progressData) => {
             Loading.hideLoading();
             //链接是否是免费听课(首页.分享出去的课程)
-            this.state.isFree = this.props.params.free;
             //判断是不是付费用户.付费用户不会显示报名按钮.
             Material.getJudgeFromServer().done((result)=>{
                 Loading.hideLoading();
@@ -139,7 +138,6 @@ const ListenCourse = React.createClass({
                 // }
                 this.setState({
                     lessons: this.state.lessons,
-                    isFree: this.state.isFree,
                 });
             }
         });
@@ -258,7 +256,7 @@ const ListenCourse = React.createClass({
     },
 
     renderSignUp() {
-        if (this.state.isFree === 'free' && !this.state.isPay) {
+        if (!this.state.isPay) {
             return (<div className = "sign-up-button" onClick={this.goSign}>点击播放按钮听课！喜欢的话点击这里报名！</div>);
         }
     },

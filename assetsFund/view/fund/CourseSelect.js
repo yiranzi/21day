@@ -50,6 +50,7 @@ const CourseSelect = React.createClass({
             ],
             rewardImg: "./assetsFund/image/course/indNote.png",
             qqStatus: 2,
+            courseId: sessionStorage.getItem('courseId'),
         };
     },
 
@@ -72,7 +73,7 @@ const CourseSelect = React.createClass({
 
 
     getCourseList () {
-        Material.getCourseList().always( (data) => {
+        Material.getCourseList(this.state.courseId).always( (data) => {
             this.setState({courseList: data});
             let countUnlock = 0;
             let countPass = 0;
