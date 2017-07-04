@@ -12,8 +12,8 @@ var App = require('./component/App');
 // const PayPage = require('./component/PayPage');
 // const CourseSelect = require('./component/course/CourseSelect');
 // const ListenCourse = require('./component/course/ListenCourse');
-const GetReward = require('./component/course/GetReword');
-const GetGraduated = require('./component/course/GetGraduated');
+// const GetReward = require('./component/course/GetReword');
+// const GetGraduated = require('./component/course/GetGraduated');
 
 
 const PayPageFund = require('./view/fund/PayPage');
@@ -41,23 +41,29 @@ let InnerRouter = React.createClass({
             <Router history={hashHistory}>
                 <Route path="/" component={App}>
                     {/*<IndexRedirect to="/FMView"/>*/}
+                    {/*共有*/}
                     <IndexRedirect to={this.props.goWhere}/>
+                    <Route path="/main" component={CPlusMain}/>
+                    {/*基金课*/}
                     <Route path ="/fund/payPage" component={PayPageFund}/>
                     <Route path ="/fund/courseSelect" component={CourseSelectFund}/>
                     <Route path ="/fund/listenCourse/:courseId" component={ListenCourseFund}/>
-
+                    <Route path="/fund/getReward/:courseId(/:mine)" component={GetRewardFund}/>
+                    <Route path="/fund/getGraduated(/:mine)" component={GetGraduatedSeven}/>
+                    {/*七天*/}
                     <Route path ="/seven/payPage" component={PayPageSeven}/>
                     <Route path ="/seven/courseSelect" component={CourseSelectSeven}/>
                     <Route path ="/seven/listenCourse/:courseId" component={ListenCourseSeven}/>
+                    <Route path="/seven/getReward/:courseId(/:mine)" component={GetRewardSeven}/>
+                    <Route path="/seven/getGraduated(/:mine)" component={GetGraduatedSeven}/>
 
 
-                    <Route path="/main" component={CPlusMain}/>
                     {/*<Route path="/payPage(/:free)" component={PayPage}/>*/}
                     {/*<Route path="/select" component={CourseSelect}/>*/}
                     {/*<Route path="/course/:courseId(/:free)" component={ListenCourse}/>*/}
                     {/*用于标识是自己在听课*/}
-                    <Route path="/getReward/:courseId(/:mine)" component={GetReward}/>
-                    <Route path="/getGraduated(/:mine)" component={GetGraduated}/>
+                    {/*<Route path="/getReward/:courseId(/:mine)" component={GetReward}/>*/}
+                    {/*<Route path="/getGraduated(/:mine)" component={GetGraduated}/>*/}
                     {/*<Route path="/FMView" component={FMView}/>*/}
                 </Route>
             </Router>

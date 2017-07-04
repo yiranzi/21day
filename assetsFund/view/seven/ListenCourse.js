@@ -49,11 +49,18 @@ const ListenCourse = React.createClass({
             lessons: [],
             allFinish: false,//全部课程都通过
             isPay: false,
+            finishElement: 0,
+            totalElement: 0,
+            courseTitle: {
+                title: '',
+                subTitle: '',
+            },
+            resPic: '',
+            timer: true,
         }
     },
 
     componentWillMount() {
-
         //登录
         Tools.fireRace(User.getUserInfo().userId,"OAUTH_SUCCESS").then(()=>{
             this.getFmInfo();
@@ -72,8 +79,19 @@ const ListenCourse = React.createClass({
             if (this.state.currentPlaying<0) {
                 return null;
             }
+            //终止多余的其你去
+            if(!this.state.timer){
+                return
+            } else {
+                this.state.timer = false;
+                setTimeout(() => {
+                    this.state.timer = true;
+                }, 1000);
+            }
             //
-            OnFire.fire('Course_AutoMove');
+            if(!this.state.allFinish){
+                OnFire.fire('Course_AutoMove');
+            }
             //修改进度
             this.state.lessons[this.state.currentPlaying].process = true;
             let localLessons = this.state.lessons;
@@ -85,15 +103,14 @@ const ListenCourse = React.createClass({
             Util.postCnzzData("听完", this.state.lessons[this.state.currentPlaying].fmid);
             //统计免费完成课程1的进度情况
             if (!this.state.isPay && this.props.params.courseId === '1') {
-                Material.postData('免费_完成音频' + this.state.lessons[this.state.currentPlaying].fmid);
+                Material.postData('免费_完成音频7天_ListenCourse');
             }
         });
 
+        //自动滚动监听
         OnFire.on('Course_AutoMove', ()=>{
             //如果所有的课程都通过了
-            if (this.state.allFinish) {
-                return;
-            }
+
             // if  (this.props.location.query.name === '2') {
             //
             // }
@@ -118,24 +135,11 @@ const ListenCourse = React.createClass({
 
         Material.getCourseProgress(courseId).always((progressData) => {
             Loading.hideLoading();
-            //链接是否是免费听课(首页.分享出去的课程)
-            //判断是不是付费用户.付费用户不会显示报名按钮.
-            Material.getJudgeFromServer().done((result)=>{
-                Loading.hideLoading();
-                if(result){
-                    this.setState({
-                        isPay: true,
-                    });
-                } else {
-
-                }
-            });
             this.state.lessons = progressData;
+            this.preFetch();
             this.fixProcess();
+            this.calcProcess();
             if (progressData) {
-                // if  (this.props.location.query.name === '0') {
-                //     Material.haveStartLesson(progressData[0].fmid);
-                // }
                 this.setState({
                     lessons: this.state.lessons,
                 });
@@ -143,8 +147,29 @@ const ListenCourse = React.createClass({
         });
     },
 
-    renderInit() {
+    calcInit() {
+        let allLesson = this.state.lessons;
+        let lastLesson = allLesson[allLesson.length - 1].subs;
+        //1完成全部选择题后
+        if(lastLesson[lastLesson.length - 1].process === true) {
+            this.state.allFinish = true;
+            this.setState({allFinish: this.state.allFinish});
+        }
+    },
 
+    //计算进度
+    calcProcess() {
+        let allLesson = this.state.lessons;
+        for(let i = 0; i<allLesson.length; i++){
+            this.state.totalElement++;
+            if(allLesson[i].subs[allLesson[i].subs.length - 1].process === true) {
+                this.state.finishElement++;
+            }
+        }
+        this.setState({
+            totalElement:this.state.totalElement,
+            finishElement: this.state.finishElement
+        })
     },
 
     fixProcess() {
@@ -153,7 +178,6 @@ const ListenCourse = React.createClass({
         let lastLesson = allLesson[allLesson.length - 1].subs;
         //1完成全部选择题后
         if(lastLesson[lastLesson.length - 1].process === true) {
-            this.state.allFinish = true;
             for (let lesson of allLesson) {
                 if(lesson.process!==true){
 
@@ -200,6 +224,9 @@ const ListenCourse = React.createClass({
         //发送修改1
         Material.finishWork(1, this.state.lessons[lessonIndex].subs[index].subjectid).always( (data) => {
         });
+        this.state.finishElement++;
+        this.setState({finishElement: this.state.finishElement});
+        Material.postData('免费_完成选择题_ListenCourse');
     },
 
     /**
@@ -210,6 +237,7 @@ const ListenCourse = React.createClass({
         if (isPlaying) {
             this.setState({currentPlaying: -1});
         } else {
+            this.state.currentPlaying = index;
             this.setState({currentPlaying: index});
         }
         this.controlHandler(index, isPlaying)
@@ -222,11 +250,11 @@ const ListenCourse = React.createClass({
         if (isPlaying) {
             GlobalAudio.pause();
         } else {
-            let lesson = this.state.lessons[index]
+            let lesson = this.state.lessons[index];
             //保存当前正在播放的音频
-            this.setState({currentfmid: lesson.fmid})
+            this.setState({currentfmid: lesson.fmid});
             GlobalAudio.play(lesson.audio, lesson.fmid);
-
+            this.preFetch();
             Util.postCnzzData("播放", lesson.fmid);
         }
     },
@@ -244,6 +272,7 @@ const ListenCourse = React.createClass({
             <div id="fmView" className="fm-view">
                 <FixedBg />
                 <div className="fix-bg-space"></div>
+                <CourseProcessBar finishElement = {this.state.finishElement} totalElement = {this.state.totalElement}/>
                 {/*<span>当前点击的index{this.state.currentPlaying}</span>*/}
                 {/*<span>当前播放的fmid{this.state.currentfmid}</span>*/}
                 {/*<div>进入时,这门课程的状态时{this.props.location.query.name}</div>*/}
@@ -255,6 +284,30 @@ const ListenCourse = React.createClass({
         )
     },
 
+    //预加载资源
+    preFetch() {
+        console.log('try' + this.state.currentPlaying);
+        if(this.state.lessons.length <= 0) {
+            if(!this.state.lessons)
+            {
+                console.log('lier')
+            }
+            return;
+        }
+        let index= this.state.currentPlaying;
+        // if (index<0) {
+        //     index = -1;
+        // }
+        //往后播放一课
+        index = index + 1;
+        let audio = this.state.lessons[index];
+        if (audio) {
+            let res = PreFetch.fetchRes(audio.pptUrl,0);
+            let res2 = PreFetch.fetchRes(audio.audio,0);
+            res.then(res2);
+        }
+    },
+
     renderSignUp() {
         if (!this.state.isPay) {
             return (<div className = "sign-up-button" onClick={this.goSign}>点击播放按钮听课！喜欢的话点击这里报名！</div>);
@@ -263,7 +316,7 @@ const ListenCourse = React.createClass({
 
     goSign() {
         Material.postData('免费_跳转报名_ListenCourse');
-        location.hash = '/payPage';
+        Tools.LocationHash('PayPage','/payPage');
     },
 
     preLoadPic() {
@@ -301,14 +354,14 @@ const ListenCourse = React.createClass({
         console.log(type);
         if (type === 1) {
             this.fixProcess();
-            Util.postCnzzData("第一次点击成就卡");
             if (!this.state.isPay) {
-                Material.postData('免费_完成课程' + this.props.params.courseId +'_Listy');
+                Material.postData('免费_完成课程' + this.props.params.courseId +'_ListenCourse');
             }
         } else {
             Util.postCnzzData("再次点击成就卡");
         }
-        location.hash = '/getReward/' + this.props.params.courseId + '/mine';
+        let url = '/getReward/' + this.props.params.courseId + '/mine';
+        Tools.MyRouter('GetReward',url);
     },
 
     /**

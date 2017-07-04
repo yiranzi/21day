@@ -4,8 +4,6 @@
 const React = require('react');
 const Material = require('../../Material');
 const Loading = require('../../Loading');
-
-
 const OnFire = require('onfire.js');
 const WxConfig = require('../../WxConfig');
 const Util = require('../../Util');
@@ -38,8 +36,7 @@ const ListenCourse = React.createClass({
 
     getPropsType() {
         return {
-            fmid: React.PropTypes.string,
-            // preFetchBool: true,
+            fmid: React.PropTypes.string
         }
     },
 
@@ -82,7 +79,6 @@ const ListenCourse = React.createClass({
 
         //音频完成监听
         OnFire.on('AUDIO_END',()=>{
-
             if (this.state.currentPlaying<0) {
                 return null;
             }
@@ -110,7 +106,7 @@ const ListenCourse = React.createClass({
             Util.postCnzzData("听完", this.state.lessons[this.state.currentPlaying].fmid);
             //统计免费完成课程1的进度情况
             if (!this.state.isPay && this.props.params.courseId === '10') {
-                Material.postData('免费_完成音频1_ListenCourse');
+                Material.postData('免费_完成音频基金课_ListenCourse');
             }
         });
 
@@ -269,7 +265,6 @@ const ListenCourse = React.createClass({
             let lesson = this.state.lessons[index];
             //保存当前正在播放的音频
             this.setState({currentfmid: lesson.fmid});
-            console.log(this);
             GlobalAudio.play(lesson.audio, lesson.fmid);
             this.preFetch();
             // setTimeout(function(){
@@ -353,7 +348,7 @@ const ListenCourse = React.createClass({
 
     goSign() {
         Material.postData('免费_跳转报名_ListenCourse');
-        Tools.LocationHash('payPage','/payPage');
+        Tools.LocationHash('PayPage','/payPage');
     },
 
     preLoadPic() {
@@ -392,12 +387,13 @@ const ListenCourse = React.createClass({
         if (type === 1) {
             this.fixProcess();
             if (!this.state.isPay) {
-                Material.postData('免费_完成课程_ListenCourse');
+                Material.postData('免费_完成课程' + this.props.params.courseId +'_ListenCourse');
             }
         } else {
             Util.postCnzzData("再次点击成就卡");
         }
-        location.hash = '/getReward/' + this.props.params.courseId + '/mine';
+        let url = '/getReward/' + this.props.params.courseId + '/mine';
+        Tools.MyRouter('GetReward',url);
     },
 
     /**

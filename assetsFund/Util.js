@@ -94,7 +94,8 @@ const API_URL_GROUP = {
     'get_other_headinfo': '7day/user-image/{userId}',//获取用户头像
 
     //毕业分享
-    'get_share_info': '7day/next-level/{userId}',//获取上线是否分享了
+    'get_course_share_info': '7day/next-level/{userId}',//获取上线是否分享了
+
 
 
     //数据上报

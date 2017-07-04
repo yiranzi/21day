@@ -2,12 +2,16 @@
  * Created by yiran1 on 2017/5/5.
  */
 const React = require('react');
+var OnFire =require('onfire.js');
+
+//根目录
+const Tools = require('../../GlobalFunc/Tools');
+const convertHtmlToBase64 = require('../../ImageShare');
 const Dimensions = require('../../Dimensions');
 const Material = require('../../Material');
 var User = require('../../User');
 const WxConfig = require('../../WxConfig');
 const Util = require('../../Util');
-var OnFire =require('onfire.js');
 
 const GetGraduated = React.createClass({
     getInitialState: function() {
@@ -68,18 +72,15 @@ const GetGraduated = React.createClass({
         console.log('get reward');
         let userId;
         this.state.senior.rank = Util.getUrlPara('rank');
+        let isMine = this.props.params.mine;
         //下线查看别人的成就卡
-        if (this.state.senior.rank) {
+        //下线查看别人的成就卡
+        if (this.state.senior.rank && !isMine) {
             userId = Util.getUrlPara('ictchannel');
-            if (User.getUserInfo().userId) {
-                Material.postData('下线_查看_getGraduated');
+            Tools.fireRace(User.getUserInfo().userId,"OAUTH_SUCCESS").then(()=>{
+                Material.postData('下线_查看_getReward');
                 this.setState({myName: User.getUserInfo().nickName})
-            } else {
-                OnFire.on('OAUTH_SUCCESS',()=>{
-                    Material.postData('下线_查看_getGraduated');
-                    this.setState({myName: User.getUserInfo().nickName})
-                });
-            }
+            });
             this.state.senior.userId = userId;
             Material.getOtherHeadImage(userId).always( (img)=>{
                 this.state.senior.headImg = img.responseText;
@@ -89,39 +90,35 @@ const GetGraduated = React.createClass({
             this.state.senior.rank = Util.getUrlPara('rank');
             this.setState({type: 'other'});
             //TODO yiran 获得下线名字 这边名字会改成多个.并且成就卡那边也需要这个功能.
-            Material.getShareInfo(userId).always( (name)=>{
+            console.log('seven 毕业证');
+            Material.getCourseShareInfo(userId).always( (name)=>{
                 this.setState({friendName: name});
                 // this.setShareConfig();
             });
         } else {//查看自己的毕业证
-            userId = User.getUserInfo().userId;
-            Material.postData('上线_进入_getGraduated');
-            Material.getShareInfo(userId).always( (name)=>{
-                this.setState({friendName: name});
-            });
-            this.setState({type: 'mine'});
-            this.setState({userInfo: User.getUserInfo()});
+            Tools.fireRace(User.getUserInfo().userId,"OAUTH_SUCCESS").then(()=>{
+                Material.postData('上线_进入_getGraduated');
+                Material.getCourseShareInfo(User.getUserInfo().userId).always( (name)=>{
+                    this.setState({friendName: name});
+                });
+                this.setState({type: 'mine'});
+                // this.setState({userInfo: User.getUserInfo()});
 
-            this.state.senior.name = User.getUserInfo().nickName;
-            this.state.senior.headImg = User.getUserInfo().headImage;
-            //获得排名
-            Material.getGraduatedRank().always( (rank) => {
-                this.state.senior.rank = rank;
+                this.state.senior.name = User.getUserInfo().nickName;
+                this.state.senior.headImg = User.getUserInfo().headImage;
+                //获得排名
+                this.state.senior.rank = sessionStorage.getItem('graduated-rank');
                 this.setState({senior: this.state.senior});
                 this.setShareConfig();
                 Loading.hideLoading();
             });
+
         }
     },
 
     //重置分享链接
     componentWillUnmount () {
-        console.log('didUnMount')
-        let senior = this.state.senior;
-        let shareTitle = '快和我一起参加财商训练营吧',
-            link = Util.getShareLink(),
-            desc = '点击链接报名只需3元哦,按时毕业还有奖学金!';
-        WxConfig.shareConfig(shareTitle,desc,link);
+        WxConfig.shareConfig();
     },
 
     /**

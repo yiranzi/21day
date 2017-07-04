@@ -188,7 +188,6 @@ const AudioProgressBar = React.createClass({
                 </div>
             </div>);
         }
-
     }
 });
 

@@ -80,6 +80,8 @@ class Material {
     }
 
     static getJudgeFromServer(courseId) {
+        //接口合并未上线
+        // courseId = 1;
         var User = require('./User');
         const Util = require('./Util'),
             apiUrl = Util.getAPIUrl('get_judge_signup').replace('{courseId}',courseId);
@@ -564,12 +566,12 @@ class Material {
     }
 
     /***
-     * 打开宝箱
+     * 毕业排名
      */
-    static getGraduatedRank() {
+    static getGraduatedRank(courseId) {
         var User = require('./User');
         const Util = require('./Util'),
-            apiUrl = Util.getAPIUrl('get_graduated_finish_rank').replace('{courseId}',COURSE_ID);
+            apiUrl = Util.getAPIUrl('get_graduated_finish_rank').replace('{courseId}',courseId);
         let userInfo = User.getUserInfo();
         return $.ajax(
             {
@@ -670,6 +672,31 @@ class Material {
         )
     }
 
+    /***
+     * 获得上线课程免费报名的名额信息
+     */
+    static getCourseShareInfo(userId) {
+        var User = require('./User');
+        const Util = require('./Util'),
+            apiUrl = Util.getAPIUrl('get_course_share_info').replace('{userId}',userId);
+        let userInfo = User.getUserInfo();
+        return $.ajax(
+            {
+                url: apiUrl,
+                type: 'get',
+                cache: false,
+                contentType: 'application/json;charset=utf-8',
+                headers: {
+                    Accept: 'application/json'
+                },
+                beforeSend: (request)=>{
+                    request.setRequestHeader("X-iChangTou-Json-Api-Token", Util.getApiToken());
+                    request.setRequestHeader("X-iChangTou-Json-Api-User", userInfo.userId);
+                }
+            }
+        )
+    }
+
     //基金课
     /***
      * 获得上线免费报名的名额信息
@@ -695,6 +722,8 @@ class Material {
             }
         )
     }
+
+
 
     //获取免费课程
     static GetFreeShareLesson(userId,dayId) {

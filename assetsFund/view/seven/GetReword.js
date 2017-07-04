@@ -2,12 +2,14 @@
  * Created by yiran1 on 2017/5/5.
  */
 const React = require('react');
+var OnFire =require('onfire.js');
+//根目录
+const Tools = require('../../GlobalFunc/Tools');
 const Dimensions = require('../../Dimensions');
 const Material = require('../../Material');
 var User = require('../../User');
 const WxConfig = require('../../WxConfig');
 const Util = require('../../Util');
-var OnFire =require('onfire.js');
 
 const GetReward = React.createClass({
     getInitialState: function() {
@@ -73,15 +75,10 @@ const GetReward = React.createClass({
         //下线查看别人的成就卡
         if (this.state.senior.courseId && !isMine) {
             userId = Util.getUrlPara('ictchannel');
-            if (User.getUserInfo().userId) {
+            Tools.fireRace(User.getUserInfo().userId,"OAUTH_SUCCESS").then(()=>{
                 Material.postData('下线_查看_getReward');
                 this.setState({myName: User.getUserInfo().nickName})
-            } else {
-                OnFire.on('OAUTH_SUCCESS',()=>{
-                    Material.postData('下线_查看_getReward');
-                    this.setState({myName: User.getUserInfo().nickName})
-                });
-            }
+            });
             this.state.senior.userId = userId;
             Material.getOtherHeadImage(userId).always( (img)=>{
                 this.state.senior.headImg = img.responseText;
@@ -95,22 +92,24 @@ const GetReward = React.createClass({
                 // this.setShareConfig();
             });
         } else {//查看自己的
-            userId = User.getUserInfo().userId;
-            Material.postData('上线_进入_getReward');
-            //获得课程的Id
-            let courseId = this.props.params.courseId;
-            this.setState({type: 'mine'});
-            this.setState({userInfo: User.getUserInfo()});
-            //获得自己的课程排名
-            Material.courseFinishRank(courseId,userId).done((data) =>{
-                this.state.senior.name = User.getUserInfo().nickName;
-                this.state.senior.headImg = User.getUserInfo().headImage;
-                this.state.senior.rank = data;
-                this.state.senior.courseId = this.props.params.courseId;
-                this.setState({senior: this.state.senior});
-                this.setShareConfig();
-                Loading.hideLoading();
-            })
+            Tools.fireRace(User.getUserInfo().userId,"OAUTH_SUCCESS").then(()=>{
+                Material.postData('上线_进入_getReward');
+                userId = User.getUserInfo().userId;
+                //获得课程的Id
+                let courseId = this.props.params.courseId;
+                this.setState({type: 'mine'});
+                this.setState({userInfo: User.getUserInfo()});
+                //获得自己的课程排名
+                Material.courseFinishRank(courseId,userId).done((data) =>{
+                    this.state.senior.name = User.getUserInfo().nickName;
+                    this.state.senior.headImg = User.getUserInfo().headImage;
+                    this.state.senior.rank = data;
+                    this.state.senior.courseId = this.props.params.courseId;
+                    this.setState({senior: this.state.senior});
+                    this.setShareConfig();
+                    Loading.hideLoading();
+                })
+            });
         }
     },
 
@@ -147,14 +146,6 @@ const GetReward = React.createClass({
 
     // + '&code=' + Util.getUrlPara('code')
     goSignUp() {
-        Util.postCnzzData("成就页面报名");
-        if (User.getUserInfo().userId) {
-            Material.postData('下线_点击_getReward');
-        } else {
-            OnFire.on('OAUTH_SUCCESS',()=>{
-                Material.postData('下线_点击_getReward');
-            });
-        }
         let url = Util.getHtmlUrl() + '?ictchannel=' + Util.getUrlPara('ictchannel');
         // location.href = url;
         location.hash = '/course/' + this.state.senior.courseId + '/free';

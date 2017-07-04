@@ -370,7 +370,7 @@ const CourseSelect = React.createClass({
                 break;
             case 'get':
                 //如果已获得成就卡
-                location.hash = '/getReward/' + courseId + '/mine';
+                Tools.MyRouter('GetReward','/getReward/' + courseId + '/mine');
                 break;
             default:
                 console.log('error' + status.reward);
@@ -391,12 +391,12 @@ const CourseSelect = React.createClass({
 
     openGraduated() {
         if (this.state.allLessonStatus === 'AllPass') {
-            Material.getGraduatedRank().always( (rank) => {
+            Material.getGraduatedRank(sessionStorage.getItem('courseId')).always( (rank) => {
                 //2如果请求道有效值
                 // rank !== -1
                 if ( rank!== -1 ) {
                     sessionStorage.setItem('graduated-rank',rank);
-                    location.hash = '/getGraduated/mine';
+                    Tools.MyRouter('GetGraduated','/getGraduated/mine');
                 } else {
                     window.dialogAlertComp.show('还不能领取毕业证哦！','你还没有完成全部课程呢，要都通过才行哦。','好的',()=>{},'',false);
                 }

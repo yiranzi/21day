@@ -8,7 +8,10 @@ var User = require('../../User');
 const WxConfig = require('../../WxConfig');
 const Util = require('../../Util');
 var OnFire =require('onfire.js');
-const courseInfo = require('../../CourseInfo')
+const courseInfo = require('../../CourseInfo');
+//根目录
+const Tools = require('../../GlobalFunc/Tools');
+
 const GetReward = React.createClass({
     getInitialState: function() {
 
@@ -37,7 +40,7 @@ const GetReward = React.createClass({
 
     componentWillMount() {
         Loading.showLoading('正在生成笔记卡');
-        document.body.scrollTop = document.documentElement.scrollTop = 0
+        document.body.scrollTop = document.documentElement.scrollTop = 0;
         let userId;
         //判定是否有分享成就卡
         this.state.senior.courseId = Util.getUrlPara('courseId') || this.props.params.courseId;
@@ -48,7 +51,7 @@ const GetReward = React.createClass({
                 this.setState({
                     noteText: data.message
                 })
-            })
+            });
             userId = Util.getUrlPara('ictchannel');
             if (User.getUserInfo().userId) {
                 Material.postData('下线_进入笔记卡_getReward');
@@ -93,14 +96,13 @@ const GetReward = React.createClass({
                 this.setState({senior: this.state.senior});
                 this.setShareConfig('share');
                 //1是否是付费用户?
-                Material.getJudgeFromServer().done((result)=>{
-                    //付费用户分享
-                    if(result){
+                Tools.fireRaceCourse(sessionStorage.getItem('courseId')).then((value)=>{
+                    if(value === 'pay'){
                         this.setState({
                             isPay: true,
                         });
                         //2是否是当天完成?
-                        Material.getUpstreamShare(this.state.senior.courseId).done( (result)=>{
+                        Material.getUpstreamShare(courseId).done( (result)=>{
                             if (result) {
                                 //设置分享权限
                                 this.setState({

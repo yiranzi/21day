@@ -2,13 +2,15 @@
  * Created by yiran1 on 2017/5/5.
  */
 const React = require('react');
+
+//根目录
+const Tools = require('../../GlobalFunc/Tools');
+const convertHtmlToBase64 = require('../../ImageShare');
 const Dimensions = require('../../Dimensions');
 const Material = require('../../Material');
 var User = require('../../User');
 const WxConfig = require('../../WxConfig');
 const Util = require('../../Util');
-var OnFire =require('onfire.js');
-const convertHtmlToBase64 = require('../../ImageShare');
 
 const GetGraduated = React.createClass({
     getInitialState: function() {
@@ -43,19 +45,15 @@ const GetGraduated = React.createClass({
         //下线查看别人的成就卡
         if (this.state.senior.rank && !isMine) {
             userId = Util.getUrlPara('ictchannel');
-            if (User.getUserInfo().userId) {
-                Material.postData('下线_查看_getGraduated');
+            Tools.fireRace(User.getUserInfo().userId,"OAUTH_SUCCESS").then(()=>{
+                Material.postData('下线_查看_getReward');
                 this.setState({myName: User.getUserInfo().nickName})
-            } else {
-                OnFire.on('OAUTH_SUCCESS',()=>{
-                    Material.postData('下线_查看_getGraduated');
-                    this.setState({myName: User.getUserInfo().nickName})
-                });
-            }
+            });
             this.state.senior.userId = userId;
             this.state.senior.name = Util.getUrlPara('name');
             this.state.senior.rank = Util.getUrlPara('rank');
             this.setState({type: 'other'});
+            this.calcRank();
             //TODO yiran 获得下线名字 这边名字会改成多个.并且成就卡那边也需要这个功能.
             // Material.getShareInfo(userId).always( (name)=>{
             //     this.setState({friendName: name});
@@ -63,22 +61,24 @@ const GetGraduated = React.createClass({
             // });
         } else {//查看自己的毕业证
             userId = User.getUserInfo().userId;
-            Material.postData('上线_进入_getGraduated');
-            // Material.getShareInfo(userId).always( (name)=>{
-            //     this.setState({friendName: name});
-            // });
-            this.setState({type: 'mine'});
-            this.setState({userInfo: User.getUserInfo()});
+            Tools.fireRace(User.getUserInfo().userId,"OAUTH_SUCCESS").then(()=>{
+                Material.postData('上线_进入_getGraduated');
+                // Material.getShareInfo(userId).always( (name)=>{
+                //     this.setState({friendName: name});
+                // });
+                this.setState({type: 'mine'});
+                this.setState({userInfo: User.getUserInfo()});
 
-            this.state.senior.name = User.getUserInfo().nickName;
-            this.state.senior.headImg = User.getUserInfo().headImage;
-            //获得排名
-            this.state.senior.rank = sessionStorage.getItem('graduated-rank');
-            this.setState({senior: this.state.senior});
-            this.setShareConfig();
-            Loading.hideLoading();
+                this.state.senior.name = User.getUserInfo().nickName;
+                this.state.senior.headImg = User.getUserInfo().headImage;
+                //获得排名
+                this.state.senior.rank = sessionStorage.getItem('graduated-rank');
+                this.setState({senior: this.state.senior});
+                this.setShareConfig();
+                this.calcRank();
+                Loading.hideLoading();
+            });
         }
-        this.calcRank();
     },
 
     calcRank() {
@@ -87,12 +87,7 @@ const GetGraduated = React.createClass({
 
     //重置分享链接
     componentWillUnmount () {
-        console.log('didUnMount');
-        let senior = this.state.senior;
-        let shareTitle = '快和我一起参加财商训练营吧',
-            link = Util.getShareLink(),
-            desc = '点击链接报名只需3元哦,按时毕业还有奖学金!';
-        WxConfig.shareConfig(shareTitle,desc,link);
+        WxConfig.shareConfig();
     },
 
     componentDidMount () {
@@ -100,45 +95,43 @@ const GetGraduated = React.createClass({
         const element = document.getElementById('need-draw');
         const width = element.offsetWidth;
         const height = element.offsetHeight;
-        const courseId = 11;
-        // const courseId = Util.getUrlPara('courseId') || this.props.params.courseId
-        const userId = this.state.type === 'mine' ? User.getUserInfo().userId : Util.getUrlPara('ictchannel');
-        Material.getNoteCardText(courseId).done((data) => {
-            this.setState({
-                noteText: data.message
-            }, () => {
-                if(this.props.params.mine) {
-                    convertHtmlToBase64(element, height, width).then(
-                        base64 => {
-                            this.setState({
-                                shareImgUrl: base64,
-                                isNoteCardDomShow: false
-                            });
-                            Loading.hideLoading()
-                        }
-                    )
-                } else {
-                    Material.getOtherHeadImage(userId).always( (img)=>{
-                        this.state.senior.headImg = img.responseText;
-                        this.setState({senior: this.state.senior}, ()=>{
-                            setTimeout(() => {
-                                convertHtmlToBase64(element, height, width).then(
-                                    base64 => {
-                                        this.setState({
-                                            shareImgUrl: base64,
-                                            // isNoteCardDomShow: false
-                                        });
-                                        Loading.hideLoading()
-                                    }
-                                )
-                            },1000)
+        Tools.fireRace(User.getUserInfo().userId,"OAUTH_SUCCESS").then(()=>{
+            const userId = this.state.type === 'mine' ? User.getUserInfo().userId : Util.getUrlPara('ictchannel');
+            if(this.props.params.mine) {
+                convertHtmlToBase64(element, height, width).then(
+                    base64 => {
+                        this.setState({
+                            shareImgUrl: base64,
+                            isNoteCardDomShow: false
                         });
+                        Loading.hideLoading()
+                    }
+                )
+            } else {
+                Material.getOtherHeadImage(userId).always( (img)=>{
+                    this.state.senior.headImg = img.responseText;
+                    this.setState({senior: this.state.senior}, ()=>{
+                        setTimeout(() => {
+                            convertHtmlToBase64(element, height, width).then(
+                                base64 => {
+                                    this.setState({
+                                        shareImgUrl: base64,
+                                        // isNoteCardDomShow: false
+                                    });
+                                    Loading.hideLoading()
+                                }
+                            )
+                        },1000)
                     });
-                }
-
-            })
-        })
-
+                });
+            }
+        });
+        // Material.getNoteCardText(courseId).done((data) => {
+        //     this.setState({
+        //         noteText: data.message
+        //     }, () => {
+        //     })
+        // })
     },
 
     /**
