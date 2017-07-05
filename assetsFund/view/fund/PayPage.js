@@ -16,9 +16,6 @@ const Timeout = require('../../component/Timeout');
 
 const FixedBg = require('../../component/course/FixedBg');
 
-//之后做成全局的.
-const MyStorage = require('../../GlobalFunc/MyStorage');
-
 const Tools = require('../../GlobalFunc/Tools');
 
 var PayPage = React.createClass({
@@ -120,6 +117,7 @@ var PayPage = React.createClass({
         let seniorId = sessionStorage.getItem('ictchannel');
         //seniorId则表示该用户拥有上线
         if(seniorId){
+            this.state.hasSenior = true;
             this.state.ifCanPaid = true;
         }
         if(sessionStorage.getItem('pathFrom') === 'ListenCourse') {
@@ -128,6 +126,10 @@ var PayPage = React.createClass({
         if(sessionStorage.getItem('getWhere') === 'zl') {
             this.state.ifCanPaid = true;
         }
+        this.setState({
+            hasSenior: this.state.hasSenior,
+            ifCanPaid: this.state.ifCanPaid,
+        });
     },
 
     /***
@@ -196,7 +198,7 @@ var PayPage = React.createClass({
      * 跳转到关卡页面
      */
     gotoSelectPage() {
-        location.hash = "/select";
+        Tools.MyRouter('CourseSelect','/courseSelect/');
         let ictChannel = Util.getUrlPara("ictchannel");
         if (ictChannel) {
             location.href = Util.getHtmlUrl() + "?ictchannel=" + Util.getUrlPara("");
