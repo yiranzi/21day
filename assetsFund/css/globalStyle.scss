@@ -4,3 +4,21 @@
   top: 100px;
   color: red;
 }
+
+.global-div-relative{
+  position: relative;
+  bottom: 0;
+  width: 100%;
+}
+
+.global-div-fixed{
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+}
+
+.global-empty-div{
+  position: relative;
+  height: px2rem(80);
+}
+

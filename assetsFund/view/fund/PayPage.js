@@ -148,7 +148,7 @@ var PayPage = React.createClass({
                 });
             } else {
                 this.setState({
-                    num: restNum,
+                    num: 59 + restNum,
                     time: result.time,
                     showint: true,
                 });
@@ -239,18 +239,42 @@ var PayPage = React.createClass({
                         </div>
                         }
                     </div>
-                    <div className="fund-join-btns">
-                        <span className="btn try" onClick={this.freeLesson}>试听</span>
-                        {
-                            (this.state.hasSenior || (!this.state.time && (this.state.num > 0))) ?
-                                <span className="btn join" onClick={this.clickHandler}><span>报名</span><span>(￥{this.state.buttonPrice})</span></span> :
-                                <span className="btn join" onClick={this.onWantJoinTap}><span>还想报名？点我</span></span>
-
-                        }
-                    </div>
+                    {this.bottomBar()}
+                    <div className="global-empty-div" style={{height: 70}}>123</div>
                 </div>
             </div>
         )
+    },
+
+    bottomBar() {
+        return(<div className="global-div-fixed">
+            <div className="fund-join-btns">
+                {this.buttonLesson()}
+                {this.buttonSignUp()}
+            </div>
+        </div>)
+    },
+
+    buttonLesson() {
+        return(<span className="btn try" onClick={this.freeLesson}>试听</span>)
+    },
+
+    buttonSignUp() {
+        if(this.state.hasSenior || (!this.state.time && (this.state.num > 0))){
+            return(<span className="btn join" onClick={this.clickHandler}>{this.renderPrice()}</span>)
+        } else {
+            return(<span className="btn join" onClick={this.onWantJoinTap}><span>还想报名？点我</span></span>)
+        }
+
+    },
+
+    renderPrice() {
+        let arr = [];
+        //报名
+        arr.push(<div className="price-span-left"><span>报名</span></div>);
+        //价格
+        arr.push(<div className="price-span-right"><s className="price-span-inner origin-price">原价¥{780}</s><span className="price-span-inner current-price">现价¥{this.state.buttonPrice}</span></div>);
+        return arr;
     },
 
     freeLesson() {
