@@ -11,7 +11,7 @@ const Util = require('../../Util');
 //component
 const GlobalAudio = require('../../component/GlobalAudio');
 const AudioProgressBar = require('../../component/audioPlayer/AudioProgressBar');
-const ChooseBar = require('../../component/course/Choose');
+const ChooseBar = require('../../component/fund/ChooseBar');
 const FixedBg = require('../../component/course/FixedBg');
 const CourseProcessBar = require('../../component/course/CourseProcessBar');
 

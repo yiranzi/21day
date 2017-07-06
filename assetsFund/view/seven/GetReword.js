@@ -19,22 +19,22 @@ const GetReward = React.createClass({
         return {
             content: this.props.content,
             lockPic: [
-                "./asstesFund/image/seven/card_1.png",
-                "./asstesFund/image/seven/card_2.png",
-                "./asstesFund/image/seven/card_3.png",
-                "./asstesFund/image/seven/card_4.png",
-                "./asstesFund/image/seven/card_5.png",
-                "./asstesFund/image/seven/card_6.png",
-                "./asstesFund/image/seven/card_7.png",
+                "./assetsFund/image/seven/card_1.png",
+                "./assetsFund/image/seven/card_2.png",
+                "./assetsFund/image/seven/card_3.png",
+                "./assetsFund/image/seven/card_4.png",
+                "./assetsFund/image/seven/card_5.png",
+                "./assetsFund/image/seven/card_6.png",
+                "./assetsFund/image/seven/card_7.png",
             ],
             lockPicHQ: [
-                "./asstesFund/image/seven/card_1_b.png",
-                "./asstesFund/image/seven/card_2_b.png",
-                "./asstesFund/image/seven/card_3_b.png",
-                "./asstesFund/image/seven/card_4_b.png",
-                "./asstesFund/image/seven/card_5_b.png",
-                "./asstesFund/image/seven/card_6_b.png",
-                "./asstesFund/image/seven/card_7_b.png",
+                "./assetsFund/image/seven/card_1_b.png",
+                "./assetsFund/image/seven/card_2_b.png",
+                "./assetsFund/image/seven/card_3_b.png",
+                "./assetsFund/image/seven/card_4_b.png",
+                "./assetsFund/image/seven/card_5_b.png",
+                "./assetsFund/image/seven/card_6_b.png",
+                "./assetsFund/image/seven/card_7_b.png",
             ],
             title: [
                 '第一课',
@@ -164,10 +164,10 @@ const GetReward = React.createClass({
 
     render() {
         return(
-            <div className="get-reward">
+            <div className="get-reward-seven">
                 <FixedBg/>
                 {this.renderFinishCard()}
-                <img className="reward-light" onClick={this.handleClick} src={this.state.type ==='mine' ? './asstesFund/image/seven/bglight_b.png' : './asstesFund/image/seven/bglight.png'}/>
+                <img className="reward-light" onClick={this.handleClick} src={this.state.type ==='mine' ? './assetsFund/image/seven/bglight_b.png' : './assetsFund/image/seven/bglight.png'}/>
             </div>
         )
     },
@@ -176,7 +176,7 @@ const GetReward = React.createClass({
         return(
             <div>
                 {this.renderTitle()}
-                {/*<img className="reward-light" onClick={this.handleClick} src={'./asstesFund/image/seven/bglight.png'}/>*/}
+                {/*<img className="reward-light" onClick={this.handleClick} src={'./assetsFund/image/seven/bglight.png'}/>*/}
                 <img className="reward-pic" onClick={this.handleClick} src={this.state.type ==='mine' ? this.state.lockPicHQ[this.state.senior.courseId - 1] : this.state.lockPic[this.state.senior.courseId - 1] }/>
                 {this.buttonRender()}
             </div>
@@ -209,12 +209,12 @@ const GetReward = React.createClass({
         let arr = [];
         if(this.state.type ==='mine') {
             return <div className="reward-button" onClick = {this.goCommand}>
-                <img className="button-img" src={'./asstesFund/image/seven/btnSignin.png'}/>
+                <img className="button-img" src={'./assetsFund/image/seven/btnSignin.png'}/>
                 <p className="button-p">我要分享</p>
             </div>
         } else {
             return <div className="reward-button" onClick = {this.goSignUp.bind(this,1)}>
-                <img className="button-img" src={'./asstesFund/image/seven/btnSignin.png'}/>
+                <img className="button-img" src={'./assetsFund/image/seven/btnSignin.png'}/>
                 <p className="button-p">我也去看看</p>
             </div>
         }

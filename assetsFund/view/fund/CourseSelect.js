@@ -189,7 +189,7 @@ const CourseSelect = React.createClass({
                     //     );
                     // }
                     arr.push(
-                        <div className="lesson-bar">
+                        <div className="lesson-bar-fund">
                             <LessonBar  index = {i} content = {this.state.courseList[i]} cbfGoLesson = {this.cbfGoLesson} cbfSeeReward = {this.cbfSeeReward}></LessonBar>
                         </div>
                     );

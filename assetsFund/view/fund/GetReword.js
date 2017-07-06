@@ -247,7 +247,7 @@ const GetReward = React.createClass({
 
     render() {
         return(
-            <div className="get-reward">
+            <div className="get-reward-fund">
                 <FixedBg/>
                 {this.renderFinishCard()}
             </div>

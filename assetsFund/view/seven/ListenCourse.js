@@ -11,7 +11,7 @@ const Util = require('../../Util');
 //component
 const GlobalAudio = require('../../component/GlobalAudio');
 const AudioProgressBar = require('../../component/audioPlayer/AudioProgressBar');
-const ChooseBar = require('../../component/course/Choose');
+const ChooseBar = require('../../component/seven/ChooseBar');
 const FixedBg = require('../../component/course/FixedBg');
 const CourseProcessBar = require('../../component/course/CourseProcessBar');
 
@@ -325,7 +325,7 @@ const ListenCourse = React.createClass({
 
     preLoadPic() {
         return(<div className="pre-load">
-            <img src={'./asstesFund/image/seven/bglight_b.png'}/>
+            <img src={'./assetsFund/image/seven/bglight_b.png'}/>
         </div>)
     },
 

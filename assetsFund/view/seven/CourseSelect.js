@@ -97,7 +97,7 @@ const CourseSelect = React.createClass({
                 //计算出来状态,并赋值.
                 this.calcCourseStatus(courseList[i], i);
                 arr.push(
-                    <div className="lesson-bar">
+                    <div className="lesson-bar-seven">
                         <LessonBar  index = {i} content = {this.state.courseList[i]} cbfGoLesson = {this.cbfGoLesson} cbfSeeReward = {this.cbfSeeReward}></LessonBar>
                     </div>
                 );
@@ -340,7 +340,7 @@ const CourseSelect = React.createClass({
         //如果可以领取
         if(this.state.treasure.canOpen){
             return(
-                <div className="reload-bg" style = {{backgroundImage: 'url("./asstesFund/image/seven/graduated.png")'}}></div>
+                <div className="reload-bg" style = {{backgroundImage: 'url("./assetsFund/image/seven/graduated.png")'}}></div>
             )
         }
     },
@@ -377,7 +377,7 @@ const CourseSelect = React.createClass({
         // return(<div className="lesson-bar" onClick={this.openTreasure}>
         //         <TreasureBar treasure = {this.state.treasure}></TreasureBar>
         //         </div>)
-        return <img onClick={this.openTreasure} className={this.state.allFinish ? 'fix-treasure-shake' : 'fix-treasure'} src={'./asstesFund/image/seven/treasure.png'}/>
+        return <img onClick={this.openTreasure} className={this.state.allFinish ? 'fix-treasure-shake' : 'fix-treasure'} src={'./assetsFund/image/seven/treasure.png'}/>
 
 
     },
@@ -407,7 +407,7 @@ const CourseSelect = React.createClass({
         if(this.state.treasure.canOpen){
             return(
                 <div>
-                    <img className="graduatedButton" onClick={this.openGraduated} src={'./asstesFund/image/seven/graduatedButton.png'}/>
+                    <img className="graduatedButton" onClick={this.openGraduated} src={'./assetsFund/image/seven/graduatedButton.png'}/>
                 </div>
             )
         } else if(this.state.courseList.length && this.state.courseList.length !== 0){
