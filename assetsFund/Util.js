@@ -175,9 +175,6 @@ class Util {
         }else {
             getRes = null;
         }
-        console.log('------------------------------------');
-        console.log('key' + key);
-        console.log('getRes' + getRes);
         return getRes;
     }
 

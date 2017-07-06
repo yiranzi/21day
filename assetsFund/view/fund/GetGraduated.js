@@ -37,6 +37,8 @@ const GetGraduated = React.createClass({
 
 
     componentWillMount() {
+        sessionStorage.setItem('pathNow','毕业证');
+
         console.log('get reward');
         let userId;
         this.state.senior.rank = Util.getUrlPara('rank');

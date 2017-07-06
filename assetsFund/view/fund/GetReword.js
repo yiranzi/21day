@@ -12,6 +12,8 @@ const courseInfo = require('../../CourseInfo');
 //根目录
 const Tools = require('../../GlobalFunc/Tools');
 
+const FixedBg = require('../../component/course/FixedBg');
+
 const GetReward = React.createClass({
     getInitialState: function() {
 
@@ -39,6 +41,8 @@ const GetReward = React.createClass({
     },
 
     componentWillMount() {
+        sessionStorage.setItem('pathNow','成就卡');
+
         Loading.showLoading('正在生成笔记卡');
         document.body.scrollTop = document.documentElement.scrollTop = 0;
         let userId;
@@ -59,7 +63,7 @@ const GetReward = React.createClass({
             } else {
                 OnFire.on('OAUTH_SUCCESS',()=>{
                     Material.postData('下线_进入笔记卡_getReward');
-                    this.setState({myName: User.getUserInfo().nickName})
+                    this.seztState({myName: User.getUserInfo().nickName})
                 });
             }
             this.state.senior.userId = userId;
@@ -243,7 +247,8 @@ const GetReward = React.createClass({
 
     render() {
         return(
-            <div className="get-reward" style = {{backgroundImage: 'url("./assetsFund/image/fundJoin/join-bg.jpg")',width: Dimensions.getWindowWidth(),minHeight: Dimensions.getWindowHeight()}}>
+            <div className="get-reward">
+                <FixedBg/>
                 {this.renderFinishCard()}
             </div>
         )

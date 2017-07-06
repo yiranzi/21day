@@ -50,6 +50,8 @@ var PayPage = React.createClass({
 
 
     componentWillMount(){
+        sessionStorage.setItem('pathNow','支付');
+
         Material.postData('人_进入_payPage');
         //0获取当前的Id
         let courseId = sessionStorage.getItem('courseId');
@@ -227,9 +229,9 @@ var PayPage = React.createClass({
             <div className="pay_page">
                 <FixedBg/>
                 <div className="fund-join-page">
-                    <img src="./assetsFund/image/fundJoin/join-title.png" alt="" className="fund-join-title"/>
+                    <img src="./assetsFund/image/fund/join-title.png" alt="" className="fund-join-title"/>
                     <div className="fund-join-content-box">
-                        <img src="./assetsFund/image/fundJoin/join-content.png" alt="" className="fund-join-content"/>
+                        <img src="./assetsFund/image/fund/join-content.png" alt="" className="fund-join-content"/>
                         {!this.state.hasSenior &&
                         <div className="fund-status">
                             <Timeout hasEnded={this.state.time} finalDate={this.state.endTime}/>

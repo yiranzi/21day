@@ -8,9 +8,12 @@
 
 const OnFire = require('onfire.js');
 const User = require('../User');
+const Util = require('../Util');
 const WxConfig = require('../WxConfig');
 const MyStorage = require('../GlobalFunc/MyStorage');
 const Tools = require('../GlobalFunc/Tools');
+
+const Statistics = require('../GlobalFunc/Statistics');
 
 class BeforeStart {
     static init() {
@@ -21,6 +24,7 @@ class BeforeStart {
         this.getUserId().then(this.start.bind(this));
         //2 将项目业务需求所需要的参数统统保存起来
         this.getInfoFromUrl();
+        Statistics.setStaticData();
         //3 截取入口(之后这个操作统一汇总到信息中)
         this.getWhereChannel();
         //4 获取之后要跳转的连接
@@ -47,6 +51,17 @@ class BeforeStart {
         let goPath = sessionStorage.getItem('goPath');
         if(goPath){
             redictUrl = goPath;
+            //如果有课程
+            let courseId = Util.getUrlPara('courseId');
+            if(courseId) {
+                sessionStorage.setItem('courseId',courseId);
+                //重定向前,需要请求对应课程的课程状态.
+                this.checkUserPayStatue(courseId).then((result)=>{
+                    //保存到课程列表中
+                    MyStorage.setCourseStatus(courseId,result);
+                });
+                redictUrl = Tools.setCourseUrl(courseId) + redictUrl;
+            }
         }
         return redictUrl;
     }
@@ -56,17 +71,34 @@ class BeforeStart {
         return Tools.fireRace(userId,"OAUTH_SUCCESS");
     }
 
+    //userId        - 这个用户的userId
+
+    //ictchannel    - 上线/null
+    //goPath        - 跳转到哪里(着陆页)/null
+    //getWhere      - 哪个渠道来的/null
+    //courseId      - 哪个课程/null(从入口进入,之后再赋值)    这个值在分享链接的时候要再次加进去
+    //shareType     - 高级/低级/普通/null
+
+    //上下线
+    //isBuy         -??
+
+    //pathFrom      - 从哪里来
+    //pathNow       - 到哪里
+
+    //分享
+    //dayId         - 第几天的课程/null   这个值需要修改
+
+
+
+    //这里面用于保存逻辑上需要的东西.从url中获取到的
     static getInfoFromUrl() {
-        //将基金课需要的参数回补
-        let linkParamsTypes = ['goPath','getWhere','freeLesson','courseId','name','rank'];
-        // let shareTypes = ['getWhere','freeLesson','finish','graduated'];
-        for(let i = 0 ;i < linkParamsTypes.length; i++) {
-            let getParams = Util.getUrlPara(linkParamsTypes[i]);
-            if(getParams){
-                sessionStorage.setItem(linkParamsTypes[i],getParams);
-            }
-        }
+
     }
+
+    //这里面保存从url中截取并用于数据统计的东西
+    //如果这个统计里面有别的连带参数,也一并获取并加入进去
+    //用户类型userType,上线ID,登陆页,渠道,免费课
+
 
     //现在判断购买情况放在这里.
     //因为流程上需要先登录userInfo 在进行购买判定.

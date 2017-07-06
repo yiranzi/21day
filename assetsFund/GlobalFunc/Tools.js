@@ -28,23 +28,6 @@ class Tools {
         return this.fireRace(payStatus,keyWord)
     }
 
-    getCourseStatus() {
-        let courseList = this.state.courseList;
-        for( let i = 0; i<courseList.length; i++) {
-
-
-
-
-        }
-        //首先,这是一个课程列表
-        //每个列表关心自己的课程状态
-        //让他们分别去获取.fireRace
-        //如果拿到的ID是自己的.那么执行逻辑
-        //如果不是自己的.那么继续等待
-        //或者是保存完所有的之后统一进行
-        //因为课程状态没办法精确
-    }
-
     static postData(eventName){
         let where;
         let what;
@@ -75,8 +58,7 @@ class Tools {
         location.hash = path;
     }
 
-    static MyRouter(pathTo,pathUrl) {
-        let courseId = sessionStorage.getItem('courseId');
+    static setCourseUrl(courseId) {
         let courseUrl;
         switch (Number(courseId)) {
             case 0:
@@ -86,11 +68,12 @@ class Tools {
                 courseUrl = '/fund';
                 break;
         }
-        //将跳转改成当前页面
-        let pathFrom = sessionStorage.getItem('pathNow');
-        MyStorage.setItem('pathFrom',pathFrom);
-        MyStorage.setItem('pathNow',pathTo);
-        location.hash = courseUrl + pathUrl;
+        return courseUrl;
+    }
+
+    static MyRouter(pathTo,pathUrl) {
+        let courseId = sessionStorage.getItem('courseId');
+        location.hash = this.setCourseUrl(courseId) + pathUrl;
     }
 }
 

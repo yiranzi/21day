@@ -23,6 +23,8 @@ const courseInfo = require('../../CourseInfo');
 
 
 
+
+
 const User = require('../../User');
 
 const autoMove = require('../../AutoMove');
@@ -64,6 +66,8 @@ const ListenCourse = React.createClass({
     },
 
     componentWillMount() {
+        sessionStorage.setItem('pathNow','听课');
+
         //登录
         Tools.fireRace(User.getUserInfo().userId,"OAUTH_SUCCESS").then(()=>{
             this.getFmInfo();
@@ -71,10 +75,12 @@ const ListenCourse = React.createClass({
 
         //付费
         Tools.fireRaceCourse(sessionStorage.getItem('courseId')).then((value)=>{
-            this.state.isPay = true;
-            this.setState({
-                isPay: true,
-            });
+            if(value === 'pay'){
+                this.state.isPay = true;
+                this.setState({
+                    isPay: true,
+                });
+            }
         });
 
         //音频完成监听
@@ -429,8 +435,7 @@ const ListenCourse = React.createClass({
                         }
                         //如果选择题都完成了1
                         if(lessonQuestions[lessonQuestions.length - 1].process && i !== lessons.length - 1) {
-                            arr.push(<div style = {{backgroundImage: 'url("./assetsFund/image/course/DividingLine.png")'}} className="lesson-column-line"></div>);
-                            //background-image: url("../image/course/DividingLine.png");
+                            arr.push(<div style = {{backgroundImage: 'url("./assetsFund/image/fund/DividingLine.png")'}} className="lesson-column-line-fund"></div>);
                             count++;
                         }
                     } else break OUT;

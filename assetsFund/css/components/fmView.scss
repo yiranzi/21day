@@ -49,12 +49,20 @@
     height: px2rem(10);
     width: 100%;
   }
-  .lesson-column-line{
-    //background-image: url("../image/course/DividingLine.png");
+
+  //fund
+  .lesson-column-line-fund{
     background-size:cover;
     height: px2rem(39);
     margin: 0 auto px2rem(18) auto;
-    //width: px2rem(359);
+  }
+
+  //seven
+  .lesson-column-line-seven{
+    background-size:cover;
+    height: px2rem(39);
+    margin: 0 auto px2rem(18) auto;
+    width: px2rem(359);
   }
 
   .fm-title{

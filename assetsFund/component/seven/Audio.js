@@ -52,7 +52,7 @@ const AudioBar = React.createClass({
         let content = this.props.content
         return(
             <div onClick={this.controlHandler} className="audio-title">
-                <img className="click-button" src={this.state.isPlaying ? './assets7Intro/image/course/btnPressed.png':'./assets7Intro/image/course/btnPlay.png'}
+                <img className="click-button" src={this.state.isPlaying ? './asstesFund/image/course/btnPressed.png':'./asstesFund/image/course/btnPlay.png'}
                 />
                 <p className={this.state.isPlaying ? 'title-bottom':'title-top'}>{content.title}</p>
             </div>

@@ -11,28 +11,30 @@ var User = require('../../User');
 const WxConfig = require('../../WxConfig');
 const Util = require('../../Util');
 
+const FixedBg = require('../../component/course/FixedBg');
+
 const GetReward = React.createClass({
     getInitialState: function() {
 
         return {
             content: this.props.content,
             lockPic: [
-                "./assets7Intro/image/course/card_1.png",
-                "./assets7Intro/image/course/card_2.png",
-                "./assets7Intro/image/course/card_3.png",
-                "./assets7Intro/image/course/card_4.png",
-                "./assets7Intro/image/course/card_5.png",
-                "./assets7Intro/image/course/card_6.png",
-                "./assets7Intro/image/course/card_7.png",
+                "./asstesFund/image/seven/card_1.png",
+                "./asstesFund/image/seven/card_2.png",
+                "./asstesFund/image/seven/card_3.png",
+                "./asstesFund/image/seven/card_4.png",
+                "./asstesFund/image/seven/card_5.png",
+                "./asstesFund/image/seven/card_6.png",
+                "./asstesFund/image/seven/card_7.png",
             ],
             lockPicHQ: [
-                "./assets7Intro/image/course/card_1_b.png",
-                "./assets7Intro/image/course/card_2_b.png",
-                "./assets7Intro/image/course/card_3_b.png",
-                "./assets7Intro/image/course/card_4_b.png",
-                "./assets7Intro/image/course/card_5_b.png",
-                "./assets7Intro/image/course/card_6_b.png",
-                "./assets7Intro/image/course/card_7_b.png",
+                "./asstesFund/image/seven/card_1_b.png",
+                "./asstesFund/image/seven/card_2_b.png",
+                "./asstesFund/image/seven/card_3_b.png",
+                "./asstesFund/image/seven/card_4_b.png",
+                "./asstesFund/image/seven/card_5_b.png",
+                "./asstesFund/image/seven/card_6_b.png",
+                "./asstesFund/image/seven/card_7_b.png",
             ],
             title: [
                 '第一课',
@@ -67,6 +69,8 @@ const GetReward = React.createClass({
     },
 
     componentWillMount() {
+        sessionStorage.setItem('pathNow','成就卡');
+
         console.log('get reward');
         let userId;
         //判定是否有分享成就卡
@@ -160,9 +164,10 @@ const GetReward = React.createClass({
 
     render() {
         return(
-            <div className="get-reward" style = {{backgroundImage: 'url("./assets7Intro/image/course/bg_1.png")',width: Dimensions.getWindowWidth(), height: Dimensions.getWindowHeight()}}>
+            <div className="get-reward">
+                <FixedBg/>
                 {this.renderFinishCard()}
-                <img className="reward-light" onClick={this.handleClick} src={this.state.type ==='mine' ? './assets7Intro/image/course/bglight_b.png' : './assets7Intro/image/course/bglight.png'}/>
+                <img className="reward-light" onClick={this.handleClick} src={this.state.type ==='mine' ? './asstesFund/image/seven/bglight_b.png' : './asstesFund/image/seven/bglight.png'}/>
             </div>
         )
     },
@@ -171,7 +176,7 @@ const GetReward = React.createClass({
         return(
             <div>
                 {this.renderTitle()}
-                {/*<img className="reward-light" onClick={this.handleClick} src={'./assets7Intro/image/course/bglight.png'}/>*/}
+                {/*<img className="reward-light" onClick={this.handleClick} src={'./asstesFund/image/seven/bglight.png'}/>*/}
                 <img className="reward-pic" onClick={this.handleClick} src={this.state.type ==='mine' ? this.state.lockPicHQ[this.state.senior.courseId - 1] : this.state.lockPic[this.state.senior.courseId - 1] }/>
                 {this.buttonRender()}
             </div>
@@ -204,12 +209,12 @@ const GetReward = React.createClass({
         let arr = [];
         if(this.state.type ==='mine') {
             return <div className="reward-button" onClick = {this.goCommand}>
-                <img className="button-img" src={'./assets7Intro/image/course/btnSignin.png'}/>
+                <img className="button-img" src={'./asstesFund/image/seven/btnSignin.png'}/>
                 <p className="button-p">我要分享</p>
             </div>
         } else {
             return <div className="reward-button" onClick = {this.goSignUp.bind(this,1)}>
-                <img className="button-img" src={'./assets7Intro/image/course/btnSignin.png'}/>
+                <img className="button-img" src={'./asstesFund/image/seven/btnSignin.png'}/>
                 <p className="button-p">我也去看看</p>
             </div>
         }

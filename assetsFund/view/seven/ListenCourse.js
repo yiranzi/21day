@@ -61,6 +61,8 @@ const ListenCourse = React.createClass({
     },
 
     componentWillMount() {
+        sessionStorage.setItem('pathNow','听课');
+
         //登录
         Tools.fireRace(User.getUserInfo().userId,"OAUTH_SUCCESS").then(()=>{
             this.getFmInfo();
@@ -68,10 +70,12 @@ const ListenCourse = React.createClass({
 
         //付费
         Tools.fireRaceCourse(sessionStorage.getItem('courseId')).then((value)=>{
-            this.state.isPay = true;
-            this.setState({
-                isPay: true,
-            });
+            if(value === 'pay'){
+                this.state.isPay = true;
+                this.setState({
+                    isPay: true,
+                });
+            }
         });
 
         //音频完成监听
@@ -321,7 +325,7 @@ const ListenCourse = React.createClass({
 
     preLoadPic() {
         return(<div className="pre-load">
-            <img src={'./assets7Intro/image/course/bglight_b.png'}/>
+            <img src={'./asstesFund/image/seven/bglight_b.png'}/>
         </div>)
     },
 
@@ -398,6 +402,8 @@ const ListenCourse = React.createClass({
                         //如果选择题都完成了1
                         if(lessonQuestions[lessonQuestions.length - 1].process && i !== lessons.length - 1) {
                             arr.push(<div className="lesson-column-line"></div>)
+                            arr.push(<div style = {{backgroundImage: 'url("./assetsFund/image/seven/DividingLine.png")'}} className="lesson-column-line-seven"></div>);
+
                             count++;
                         }
                     } else break OUT;

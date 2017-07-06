@@ -9,6 +9,8 @@ const React = require('react');
 const Dimensions = require('../Dimensions');
 const OnFire = require('onfire.js');
 const Tools = require('../GlobalFunc/Tools');
+const Util = require('../Util');
+const Statistics = require('../GlobalFunc/Statistics');
 const MyStorage = require('../GlobalFunc/MyStorage');
 const FixedBg = require('../component/course/FixedBg');
 // const PayPageFund = require('./fund/PayPage');
@@ -29,6 +31,8 @@ const CPlus = React.createClass({
     },
 
     componentWillMount() {
+        Statistics.setPathNow('长投家');
+
         //0 设置页面默认分享
         // WxConfig.shareConfig(shareTitle,desc,link);
         //1 获取课程ID

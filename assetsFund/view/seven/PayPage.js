@@ -50,6 +50,8 @@ var PayPage = React.createClass({
 
 
     componentWillMount(){
+        sessionStorage.setItem('pathNow','支付');
+
         Material.postData('人_进入_payPage');
         //0获取当前的Id
         let courseId = sessionStorage.getItem('courseId');
@@ -247,7 +249,7 @@ var PayPage = React.createClass({
                      </div>
                      </div>*/}
 
-                    <img src="./assets7Intro/image/bg.png" className={this.state.hasSenior ? "intro-img-has-senior" : "intro-img"}/>
+                    <img src="./assetsFund/image/seven/join-content.png" className={this.state.hasSenior ? "intro-img-has-senior" : "intro-img"}/>
                 </div> }
                 {/*如果已经报名，报名链接时展示*/}
                 {this.state.hasPaid && <div>
@@ -266,7 +268,7 @@ var PayPage = React.createClass({
                                 <p className="paid-text">下一个百万富翁就是你</p>
                                 {!this.state.followSubscribe && <div><p className="paid-text">长按扫描下方二维码进入课程公号的“财商训练”，开始学习吧</p>
                                     <div className="page-div">
-                                        <img className="page-image" src="./assets7Intro/image/tousha-qrcode.jpg"/>
+                                        <img className="page-image" src="./asstesFund/image/tousha-qrcode.jpg"/>
                                     </div></div>}
 
                             </div>}
@@ -309,7 +311,7 @@ var PayPage = React.createClass({
                 }
 
                 {/*点击分享时的提示模态引导框*/}
-                {this.state.showShareModal && <img src="./assets7Intro/image/shareModal.png" onClick={this.hideShareModalHandler} className="share-modal"/>}
+                {this.state.showShareModal && <img src="./asstesFund/image/shareModal.png" onClick={this.hideShareModalHandler} className="share-modal"/>}
 
                 {/*入页面时弹出的分享提示panel*/}
                 {this.state.buttonChange && <Modal hideOnTap={false}><SharePanel onClose={this.closeSharePanelHandler} isSubscribed={this.state.isSubscribed}/></Modal>}
@@ -324,7 +326,7 @@ var PayPage = React.createClass({
         } else {
             Material.postData('人_点击试听_payPage');
         }
-        Tools.MyRouter('ListenCourse','/listenCourse/10');
+        Tools.MyRouter('ListenCourse','/listenCourse/1');
     }
 
 });
