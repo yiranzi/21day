@@ -12,7 +12,10 @@ const Tools = require('../GlobalFunc/Tools');
 const Util = require('../Util');
 const Statistics = require('../GlobalFunc/Statistics');
 const MyStorage = require('../GlobalFunc/MyStorage');
+
+//
 const FixedBg = require('../component/course/FixedBg');
+const Tabbar = require('../component/home/Tabbar');
 // const PayPageFund = require('./fund/PayPage');
 // const PayPageSeven = require('./seven/PayPage');
 
@@ -106,8 +109,18 @@ const CPlus = React.createClass({
                     </div>
                     {/*bottom*/}
                 </div>
+                {this.renderTabbar()}
             </div>
         )
+    },
+
+    //路由跳转
+    cbfTabClick(index) {
+        console.log(index)
+    },
+
+    renderTabbar() {
+        return(<Tabbar indexNow = {this.state.} cbfTabClick = {this.cbfTabClick}/>)
     },
 
     renderCourseList(){
