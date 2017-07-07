@@ -762,6 +762,17 @@ class Util {
         return NORMAL_PRICE;
     }
 
+    /** 获取特殊价格
+     */
+    static getOtherPrice(type) {
+        if(type === 'typeB') {
+            return 630;
+        } else {
+            return 580;
+        }
+
+    }
+
     /** 获取优惠用户价格
     */
     static getCheapPrice() {

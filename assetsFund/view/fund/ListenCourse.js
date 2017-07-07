@@ -17,7 +17,7 @@ const CourseProcessBar = require('../../component/course/CourseProcessBar');
 
 
 //diff
-const AudioBar = require('../../component/fund/Audio');
+const AudioPlayer = require('../../component/fund/AudioPlayer');
 
 const courseInfo = require('../../CourseInfo');
 
@@ -154,13 +154,13 @@ const ListenCourse = React.createClass({
         Material.getCourseProgress(courseId).always((progressData) => {
             Loading.hideLoading();
             this.state.lessons = progressData;
+            //TODO testUrl
             for(let i = 0; i<this.state.lessons.length; i++) {
                 let testUrl = this.state.lessons[i].pptUrl;
                 this.state.lessons[i].pptUrl = [
                     testUrl,testUrl
                 ];
             }
-
             this.preFetch();
             this.fixProcess();
             this.calcInit();
@@ -461,7 +461,7 @@ const ListenCourse = React.createClass({
      */
     renderFMBar(index, FMContent,count) {
         return (<div key={count} className={this.state.currentPlaying === index ? 'audio-player-on' : 'audio-player-off'}>
-            <AudioBar
+            <AudioPlayer
                 content = {FMContent}
                 playingIndex = {this.state.currentPlaying}//控制暂停按钮的逻辑11
                 audioIndex={index}
