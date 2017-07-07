@@ -154,8 +154,16 @@ const ListenCourse = React.createClass({
         Material.getCourseProgress(courseId).always((progressData) => {
             Loading.hideLoading();
             this.state.lessons = progressData;
+            for(let i = 0; i<this.state.lessons.length; i++) {
+                let testUrl = this.state.lessons[i].pptUrl;
+                this.state.lessons[i].pptUrl = [
+                    testUrl,testUrl
+                ];
+            }
+
             this.preFetch();
             this.fixProcess();
+            this.calcInit();
             this.calcProcess();
             if (progressData) {
                 this.setState({
@@ -329,9 +337,11 @@ const ListenCourse = React.createClass({
         index = index + 1;
         let audio = this.state.lessons[index];
         if (audio) {
-            let res = PreFetch.fetchRes(audio.pptUrl,0);
-            let res2 = PreFetch.fetchRes(audio.audio,0);
-            res.then(res2);
+            //加载ppt
+            for(let i = 0;i < audio.pptUrl.length; i++){
+                PreFetch.fetchRes(audio.pptUrl[i],0);
+            }
+            PreFetch.fetchRes(audio.audio,0);
         }
     },
 
@@ -455,7 +465,9 @@ const ListenCourse = React.createClass({
                 content = {FMContent}
                 playingIndex = {this.state.currentPlaying}//控制暂停按钮的逻辑11
                 audioIndex={index}
+                currentPlaying = {this.state.currentPlaying === index ? true : false}
                 audioCallBack = {this.OnAudioButton}/>
+
             <AudioProgressBar
                 audioIndex={this.state.lessons[index].fmid} //控制播放哪个音频
                 playingIndex = {this.state.currentfmid}/>

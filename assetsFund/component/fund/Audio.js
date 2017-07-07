@@ -51,7 +51,7 @@ const AudioBar = React.createClass({
     PPTComponent(content, index) {
             const num = ['一', '二', '三', '四', '五', '六', '七', '八', '九']
             return(
-                <div>
+                <div onClick={this.controlHandler}>
                     {this.state.isPlaying && <p className={this.state.isPlaying ? 'title-bottom-fund':'title-top-fund'} style={{dispaly:'none'}}>
                         <img src={content.pptUrl} className="title-ppt"/>
                     </p>}
@@ -72,16 +72,45 @@ const AudioBar = React.createClass({
     },
 
     render() {
-        let content = this.props.content
-        let index = this.props.audioIndex
+        let content = this.props.content;
+        let index = this.props.audioIndex;
         let audioTitleStyle = Project === '7days' ? 'audio-title' : 'audio-title-fund'
         return(
-            <div onClick={this.controlHandler} className={audioTitleStyle}>
+            <div  className={audioTitleStyle}>
                 {/*<img className="click-button" src={this.state.isPlaying ? './assetsFund/image/course/btnPressed.png':'./assetsFund/image/course/btnPlay.png'}
-                />*/}
+                 />*/}
                 {this.PPTComponent(content, index)}
+                {this.buttonNextPage('L')}
+                {this.buttonNextPage('R')}
             </div>
         )
+    },
+
+    buttonNextPage(type) {
+        if(!this.props.currentPlaying) {
+            return
+        }
+        if(type === 'L') {
+            if(this.state.pptIndex !== 0) {
+                return(<img onClick={this.nextPPt.bind(this,type)} src="./assetsFund/image/course/pptButtonLeft.png"/>
+                )
+            }
+        } else {
+            if(this.state.pptIndex !== this.state.content.pptUrl.length - 1) {
+                return(<img onClick={this.nextPPt.bind(this,type)} src="./assetsFund/image/course/pptButtonRight.png"/>
+                )
+            }
+        }
+
+    },
+
+    nextPPt(type) {
+        if(type === 'L') {
+            this.state.pptIndex = this.state.pptIndex - 1;
+        } else if(type ==='R') {
+            this.state.pptIndex = this.state.pptIndex + 1;
+        }
+        this.setState({pptIndex: this.state.pptIndex})
     },
 
 });

@@ -142,6 +142,7 @@ const ListenCourse = React.createClass({
             this.state.lessons = progressData;
             this.preFetch();
             this.fixProcess();
+            this.calcInit();
             this.calcProcess();
             if (progressData) {
                 this.setState({

@@ -15,11 +15,11 @@
   box-shadow: 0px px2rem(2) px2rem(4) rgba(0, 0, 0, 0.3);
 }
 
-.audio-title,.audio-title-fund{
+.audio-title-fund{
   border-radius: px2rem(4) px2rem(4) 0 0 ;
   position: relative;
   background-color: #ffffff;
-  height: 8rem;
+  height: 12rem;
   opacity: 0.9;
   overflow: hidden;
   .click-button{
@@ -140,7 +140,4 @@
       height: px2rem(50);
     }
   }
-}
-.audio-title-fund{
-  height: 12rem;
 }
