@@ -134,6 +134,9 @@ const API_URL_GROUP = {
 
     //笔记卡
     'get_notes': 'ctplus/notes/{dayId}', //获取笔记卡内容
+
+    //获取用户汇总后的信息
+    'get_advance_user_info': 'h5/user/get-user/{userId}'
 };
 
 class Util {

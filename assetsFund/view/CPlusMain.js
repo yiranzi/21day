@@ -16,6 +16,10 @@ const MyStorage = require('../GlobalFunc/MyStorage');
 //
 const FixedBg = require('../component/course/FixedBg');
 const Tabbar = require('../component/home/Tabbar');
+
+
+const HomeCourseList = require('./page/HomeCourseList');
+const MineStatus = require('./page/MineStatus');
 // const PayPageFund = require('./fund/PayPage');
 // const PayPageSeven = require('./seven/PayPage');
 
@@ -30,123 +34,89 @@ const CPlus = React.createClass({
             courseStatus: [],//课程状态
             courseContent: ['7天','基金课'],//课程内容信息
 
+            currentPageindex:0,
+            tabs:[
+                ['./assetsFund/image/home/tabbar0_0.png','./assetsFund/image/home/tabbar0_1.png'],
+                ['./assetsFund/image/home/tabbar1_0.png','./assetsFund/image/home/tabbar1_1.png'],
+            ],
+            userAdvanceInfo: {}
+
         };
     },
 
     componentWillMount() {
+        sessionStorage.setItem('courseId',-1);
         Statistics.setPathNow('长投家');
-
-        //0 设置页面默认分享
-        // WxConfig.shareConfig(shareTitle,desc,link);
-        //1 获取课程ID
-        this.getCourseList();
-        //2 根据课程列表获取课程信息
-        this.getCourseContent();
-        //3 根据课程Id获取用户相关数据
-        this.getCourseStatus();
+        this.getUserInfo();
     },
 
-    //获取列表并初始化
-    getCourseList() {
-        let courseList = this.state.courseList = MyStorage.getCourseList();
-        for( let i = 0; i<courseList.length; i++) {
-            this.state.courseStatus[courseList[i]] = {};
-        }
-    },
-
-    getCourseContent() {
-
-    },
-
-    //根据列表获取购买情况
-    getCourseStatus() {
-        let courseList = this.state.courseList;
-        for( let i = 0; i<courseList.length; i++) {
-            let courseId = courseList[i];
-            Tools.fireRaceCourse(courseId).then((value)=>{
-                this.state.courseStatus[courseId].payStatus = value;
-                this.setState({courseStatus: this.state.courseStatus});
+    getUserInfo() {
+        let userId = User.getUserInfo().userId;
+        Tools.fireRace(userId,"OAUTH_SUCCESS").then(()=>{
+            Material.getUserAdvanceInfo(userId).done((result)=>{
+                this.state.userAdvanceInfo = result;
+                this.setState({userAdvanceInfo: this.state.userAdvanceInfo});
             })
-        }
-        //首先,这是一个课程列表
-        //每个列表关心自己的课程状态
-        //让他们分别去获取.fireRace
-        //如果拿到的ID是自己的.那么执行逻辑
-        //如果不是自己的.那么继续等待
-        //或者是保存完所有的之后统一进行
-        //因为课程状态没办法精确
+        });
     },
-
-    goRouter(courseId,type) {
-        //0保存上当前的课程ID
-        sessionStorage.setItem('courseId',courseId);
-        switch (type) {
-            case 0:
-                Tools.MyRouter('PayPage','/payPage');
-                break;
-            case 1:
-                Tools.MyRouter('CourseSelect','/courseSelect');
-                break;
+    initTabbar() {
+        let tabs = this.state.tabs;
+        let picUrl = './assetsFund/image/home/tabbar';
+        for(let i = 0; i<tabs.length; i++) {
+            for(let j = 0; j<tabs[i].length;j++){
+                tabs[i][j] = picUrl + i +'_' +j +'.png';
+            }
         }
-
     },
-
-
 
     //渲染
     render() {
         return(
             <div className="ict-main">
                 <FixedBg/>
-                <div>
-                    <h1>
-                        welcome to Chang Tou Plus!
-                    </h1>
-                    {/*top*/}
-                    <div className="course-list">
-                        {this.renderCourseList()}
-                        {this.renderCourseList2()}
-                    </div>
-                    {/*bottom*/}
-                </div>
+                {/*top*/}
+                <h1>
+                    welcome to Chang Tou Plus!
+                </h1>
+                {/*mid*/}
+                {this.renderMid()}
+                {/*bottom*/}
                 {this.renderTabbar()}
             </div>
         )
     },
 
+    renderMid() {
+        let index = this.state.currentPageindex;
+        let arr = [];
+        switch (index) {
+            case 0:
+                arr.push(this.renderCourseList());
+                break;
+            case 1:
+                arr.push(this.renderMineStatus());
+                break;
+        }
+        return arr;
+    },
+
+    renderCourseList() {
+        return(<HomeCourseList></HomeCourseList>)
+    },
+
+    renderMineStatus() {
+        return(<MineStatus userAdvanceInfo ={this.state.userAdvanceInfo}></MineStatus>)
+    },
+
     //路由跳转
     cbfTabClick(index) {
+        this.state.currentPageindex = index;
+        this.setState({currentPageindex: this.state.currentPageindex});
         console.log(index)
     },
 
     renderTabbar() {
-        return(<Tabbar indexNow = {this.state.} cbfTabClick = {this.cbfTabClick}/>)
-    },
-
-    renderCourseList(){
-        let arr =[];
-        let courseList = this.state.courseList;
-        for(let i = 0;i<courseList.length;i++) {
-            arr.push(<div className="course-content-line" key={i} onClick={this.goRouter.bind(this,courseList[i],0)}>
-                <span>课程ID为{courseList[i]}</span>
-                <span>课程名称为{this.state.courseContent[i]}</span>
-                <span>课程状态为{this.state.courseStatus[i].payStatus}</span>
-            </div>)
-        }
-        return arr;
-    },
-
-    renderCourseList2(){
-        let arr =[];
-        let courseList = this.state.courseList;
-        for(let i = 0;i<courseList.length;i++) {
-            arr.push(<div className="course-content-line" key={i} onClick={this.goRouter.bind(this,courseList[i],1)}>
-                <span>课程ID为{courseList[i]}</span>
-                <span>课程名称为{this.state.courseContent[i]}</span>
-                <span>课程状态为{this.state.courseStatus[i].payStatus}</span>
-            </div>)
-        }
-        return arr;
+        return(<Tabbar currentIndex = {this.state.currentPageindex} cbfTabClick = {this.cbfTabClick} tabs = {this.state.tabs}/>)
     }
 });
 

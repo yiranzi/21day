@@ -2,7 +2,6 @@
  * Created by yiran on 2017/5/5.
  */
 const React = require('react');
-const OnFire = require('onfire.js');
 
 const Tabbar = React.createClass({
 
@@ -10,12 +9,12 @@ const Tabbar = React.createClass({
         return {
             // finishElement: this.props.finishElement,
             // totalElement: this.props.totalElement
-            currentIndex: this.props.nowIndex,
+            currentIndex: this.props.currentIndex,
             tabs: this.props.tabs,
-            icon: {
-                onPic: this.props.icons[0],
-                offPic: this.props.icons[1],
-            }
+            // icon: {
+            //     onPic: this.props.icons[0],
+            //     offPic: this.props.icons[1],
+            // }
         };
     },
 
@@ -27,7 +26,7 @@ const Tabbar = React.createClass({
     render() {
         return(
             <div className="tabbar">
-                {this.renderIcons}
+                {this.renderIcons()}
             </div>
         )
     },
@@ -42,14 +41,16 @@ const Tabbar = React.createClass({
             } else {
                 result = 0;
             }
-            arr.push(<div className="tabbar-icon">
-                    <img src={tabs.pic[result]}/>
+            arr.push(<div onClick={this.tabClick.bind(this,i)} className="tabbar-icon">
+                    <img src={tabs[i][result]}/>
                 </div>)
         }
+        return arr;
     },
 
-    callBackFunc() {
-        this.props.cbfTabClick(this.state.currentIndex);
+   tabClick(index) {
+       console.log('staet render icons');
+        this.props.cbfTabClick(index);
     }
 });
 

@@ -25,16 +25,20 @@ const FixedBg = React.createClass({
     },
     // style = {fullbg}
     render() {
+        console.log('enter bg');
         if(sessionStorage.getItem('courseId') === '1') {
             return(
                 <div className="bg-ground" style = {{backgroundImage: 'url("./assetsFund/image/fund/join-bg.jpg")', width:Dimensions.getWindowWidth(), height: Dimensions.getWindowHeight()}}></div>
             )
-        }else {
+        }else if(sessionStorage.getItem('courseId') === '0'){
             return(
                 <div className="bg-ground" style = {{backgroundImage: 'url("./assetsFund/image/seven/bg_1.png")', width:Dimensions.getWindowWidth(), height: Dimensions.getWindowHeight()}}></div>
             )
+        } else {
+            console.log('push arr ');
+            return(<div className="bg-ground" style = {{backgroundColor: '#4498c7', width:Dimensions.getWindowWidth(), height: Dimensions.getWindowHeight()}}></div>
+            )
         }
-
     }
 });
 
