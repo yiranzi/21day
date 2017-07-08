@@ -143,28 +143,20 @@ class PayController {
         }
 
         userInfo = userInfo || window.User.getUserInfo();
-        sum = Util.getNormalPrice();
+        sum = Util.getPrice();
         console.log('getNormalPrice',sum);
         let seniorId = Util.getUrlPara('ictchannel'),
             // teacherId = Util.getUrlPara('teacherid'),
             userId = userInfo.userId;
 
-        if(seniorId && seniorId != userId) {
-            sum = Util.getCheapPrice();
-            console.log('getCheapPrice',sum);
-        }
-
         if(!seniorId){
             seniorId = '';
         }
 
-        // if(!teacherId){
-        //     teacherId = '';
-        // }
 
         let jsonData = JSON.stringify(
             {
-                "body":'7天训练营报名' ,
+                "body":'长投派报名' ,
                 "deal": {
                     "items": [
                         {

@@ -18,11 +18,11 @@ var InnerRouter = require('./InnerRouter');
 var BeforeStart = require('./GlobalFunc/BeforeStart');
 
 //初始化用户信息
-alert("bundle ready");
+// alert("bundle ready");
 User.initAccessInfo();
 
 $(document).ready(() => {
-    alert("html ready");
+    // alert("html ready");
     if(!Util.isWeixin()){
         Loading.hideLoading();
         window.dialogAlertComp.show('提示','请复制地址并在微信中打开','知道啦',()=>{
@@ -37,7 +37,7 @@ $(document).ready(() => {
         //尺寸初始化
         let goWhere = BeforeStart.init();
         ReactDom.render(<InnerRouter goWhere = {goWhere}/>, $('#root')[0]);
-        alert("start react");
+        // alert("start react");
     }
 
 });

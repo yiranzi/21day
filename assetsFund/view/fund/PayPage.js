@@ -33,7 +33,7 @@ var PayPage = React.createClass({
 
             //21days2.0
             hasSenior: false, //是否有上线
-            buttonPrice: Util.getNormalPrice(), //
+            buttonPrice: Util.getPrice(), //
 
             //wechat
             showWechatGroup: false, //显示微信联系方式
@@ -85,6 +85,19 @@ var PayPage = React.createClass({
             });
             OnFire.on('PAID_SUCCESS',(payWay)=>{
                 Tools.postData('支付成功');
+
+                if(sessionStorage.getItem('channel')) {
+                    if (User.getUserInfo().userId) {
+                        Material.postData(sessionStorage.getItem('channel') + '_支付成功_' + User.getUserInfo().userId);
+                    } else {
+                        OnFire.on('OAUTH_SUCCESS', ()=>{
+                            //1.判断听课状态.
+                            Material.postData(sessionStorage.getItem('channel') + '_支付成功_' + User.getUserInfo().userId);
+                        });
+                    }
+                }
+
+
                 this.setState({
                     hasPaid: true, //已报名
                 });
@@ -92,12 +105,10 @@ var PayPage = React.createClass({
                 this.checkSubscribe();
             });
         }
-        //3设置下线
+        //3设置下线和价格
         this.setIfCanPaid();
         //5请求倒计时和剩余人数
         this.signUpNumber();
-        //6设置价格
-        this.setPrice();
     },
 
     getUserId() {
@@ -105,32 +116,41 @@ var PayPage = React.createClass({
         return Tools.fireRace(userId,"OAUTH_SUCCESS");
     },
 
-    setPrice() {
-        let getWhere = sessionStorage.getItem('getWhere');
-        //特殊渠道设置价格
-        if (getWhere === 'zl') {
-            Util.getNormalPrice()
-        } else {
-            Util.getCheapPrice()
-        }
-    },
-
     setIfCanPaid() {
         let seniorId = sessionStorage.getItem('ictchannel');
-        //seniorId则表示该用户拥有上线
+        Util.setPrice(680);
+        //下线进入界面
         if(seniorId){
             this.state.hasSenior = true;
             this.state.ifCanPaid = true;
+            //seniorId则表示该用户拥有上线
+            let channel =sessionStorage.getItem('channel');
+            if(channel) {
+                //合伙人进入报名页上报
+                if (User.getUserInfo().userId) {
+                    Material.postData(channel + '_进入页面_' + User.getUserInfo().userId);
+                } else {
+                    OnFire.on('OAUTH_SUCCESS', () => {
+                        //1.判断听课状态.
+                        Material.postData(channel + '_进入页面_' + User.getUserInfo().userId);
+                    });
+                }
+                //区分优惠类型
+                if(channel === 'typeB') {
+                    Util.setPrice(630);
+                } else {
+                    Util.setPrice(580);
+                }
+            }
         }
+        //试听进入
         if(sessionStorage.getItem('pathFrom') === 'ListenCourse') {
-            this.state.ifCanPaid = true;
-        }
-        if(sessionStorage.getItem('getWhere') === 'zl') {
             this.state.ifCanPaid = true;
         }
         this.setState({
             hasSenior: this.state.hasSenior,
             ifCanPaid: this.state.ifCanPaid,
+            buttonPrice: Util.getPrice(),
         });
     },
 
@@ -270,10 +290,12 @@ var PayPage = React.createClass({
 
     renderPrice() {
         let arr = [];
-        //报名
-        arr.push(<div className="price-span-left"><span>报名</span></div>);
-        //价格
-        arr.push(<div className="price-span-right"><s className="price-span-inner origin-price">原价¥{780}</s><span className="price-span-inner current-price">现价¥{this.state.buttonPrice}</span></div>);
+        let channel  = sessionStorage.getItem('channel');
+        if(!channel) {
+            arr.push(<div className="price-span-right"><s className="price-span-inner origin-price">原价¥{780}</s><span className="price-span-inner current-price">现价¥{this.state.buttonPrice}</span></div>);
+        } else {
+            arr.push(<div className="price-span-right"><s className="price-span-inner origin-price">原价¥{780}</s><span className="price-span-inner current-price">友情价¥{this.state.buttonPrice}</span></div>);
+        }
         return arr;
     },
 

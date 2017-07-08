@@ -43,8 +43,7 @@ const CURRENT_BATCH = 1; //当前期数
 const END_TIME = [2017,6,16,9,0,0]; // TODO roy 截止时间，需要和后台同步
 const USER_NUMBER = 500; // TODO roy 活动报名总人数
 
-const NORMAL_PRICE = 580;// TODO roy 上线价格，普通用户
-const CHEAP_PRICE = 480;// TODO roy 下线价格，享有的优惠价格
+let coursePayPrice;
 
 const SHARE_TITLE = '14天带你躺赢基金定投！一天10分钟，手把手教你！';
 const SHARE_DESC = '宝宝618不再担心没钱买买买啦';
@@ -138,6 +137,8 @@ const API_URL_GROUP = {
     //获取用户汇总后的信息
     'get_advance_user_info': 'h5/user/get-user/{userId}'
 };
+
+
 
 class Util {
 
@@ -759,27 +760,41 @@ class Util {
         return USER_NUMBER;
     }
 
-    /** 获取普通用户价格
-    */
-    static getNormalPrice() {
-        return NORMAL_PRICE;
+    static setPrice(price) {
+        console.log('set price' + price);
+        coursePayPrice = price;
     }
 
-    /** 获取特殊价格
-     */
-    static getOtherPrice(type) {
-        if(type === 'typeB') {
-            return 630;
-        } else {
-            return 580;
-        }
+    static getPrice() {
+        // let courseId = sessionStorage.getItem('courseId');
+        // switch (courseId) {
+        //     case 0:
+        //         switch (type) {
+        //             case 0:
+        //                 return 9;
+        //                 break;
+        //             case 1:
+        //                 return 3;
+        //                 break;
+        //         }
+        //         break;
+        //     case 1:
+        //         switch (type) {
+        //             case 0:
+        //                 return 680;
+        //                 break;
+        //             case 1:
+        //                 return 630;
+        //                 break;
+        //             case 2:
+        //                 return 580;
+        //                 break;
+        //         }
+        //         break;
+        // }
+        console.log('get price' + coursePayPrice);
+        return coursePayPrice;
 
-    }
-
-    /** 获取优惠用户价格
-    */
-    static getCheapPrice() {
-        return CHEAP_PRICE;
     }
 
 }

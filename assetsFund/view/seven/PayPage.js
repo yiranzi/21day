@@ -33,7 +33,7 @@ var PayPage = React.createClass({
 
             //21days2.0
             hasSenior: false, //是否有上线
-            buttonPrice: Util.getNormalPrice(), //
+            buttonPrice: Util.getPrice(), //
 
             //wechat
             showWechatGroup: false, //显示微信联系方式
@@ -92,12 +92,10 @@ var PayPage = React.createClass({
                 this.checkSubscribe();
             });
         }
-        //3设置下线
+        //3设置下线置价格
         this.setIfCanPaid();
         //5请求倒计时和剩余人数
         this.signUpNumber();
-        //6设置价格
-        this.setPrice();
     },
 
     getUserId() {
@@ -105,32 +103,23 @@ var PayPage = React.createClass({
         return Tools.fireRace(userId,"OAUTH_SUCCESS");
     },
 
-    setPrice() {
-        let getWhere = sessionStorage.getItem('getWhere');
-        //特殊渠道设置价格
-        if (getWhere === 'zl') {
-            Util.getNormalPrice()
-        } else {
-            Util.getCheapPrice()
-        }
-    },
-
     setIfCanPaid() {
         let seniorId = sessionStorage.getItem('ictchannel');
-        //seniorId则表示该用户拥有上线
+        Util.setPrice(9);
+        //下线进入界面
         if(seniorId){
             this.state.hasSenior = true;
             this.state.ifCanPaid = true;
+            Util.setPrice(3);
         }
+        //试听进入
         if(sessionStorage.getItem('pathFrom') === 'ListenCourse') {
-            this.state.ifCanPaid = true;
-        }
-        if(sessionStorage.getItem('getWhere') === 'zl') {
             this.state.ifCanPaid = true;
         }
         this.setState({
             hasSenior: this.state.hasSenior,
             ifCanPaid: this.state.ifCanPaid,
+            buttonPrice: Util.getPrice(),
         });
     },
 
