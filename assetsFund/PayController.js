@@ -153,7 +153,7 @@ class PayController {
             seniorId = '';
         }
         let jsonData;
-        switch (sessionStorage.getItem('userId')) {
+        switch (sessionStorage.getItem('courseId')) {
             case '0':
                 jsonData = JSON.stringify(
                     {
@@ -167,7 +167,7 @@ class PayController {
                                     // misc: Util.getUrlPara('dingyuehao')||'0'+'@'+seniorId+'@'+teacherId,
                                     // price: sum,
                                     dealType: 102, //交易类型
-                                    itemId: Util.getCurrentBatch(),
+                                    itemId: 2,
                                     mchantType: 11, //商品类型 21days
                                     misc: '',
                                     price: sum

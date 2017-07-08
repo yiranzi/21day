@@ -221,12 +221,6 @@ var PayPage = React.createClass({
      */
     gotoSelectPage() {
         Tools.MyRouter('CourseSelect','/courseSelect/');
-        let ictChannel = Util.getUrlPara("ictchannel");
-        if (ictChannel) {
-            location.href = Util.getHtmlUrl() + "?ictchannel=" + Util.getUrlPara("");
-        } else {
-            location.href = Util.getHtmlUrl();
-        }
     },
 
     /**
