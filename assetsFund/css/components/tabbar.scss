@@ -4,11 +4,9 @@
   left: 0;
   right: 0;
   bottom: 0;
-  height: 50px;
+  height: px2rem(50);
 
   background: #e9e9e9;
-  border-top: 1px #ccc solid;
-  box-shadow: 0 -3px 5px #ddd;
 
   display: flex;
   flex-direction: row;
@@ -16,8 +14,12 @@
   align-items: center;
 
   text-align: center;
-
-  .icon {
+  .tabbar-icon{
     width: 50%;
+    .icon {
+      width: px2rem(49);
+      height: px2rem(49);
+    }
   }
+
 }

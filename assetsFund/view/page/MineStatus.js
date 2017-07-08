@@ -48,10 +48,10 @@ const MineStatus = React.createClass({
         let userAdvanceInfo = this.props.userAdvanceInfo;
         return(<div className="user-info">
             <div className="head-info">
-                <img src={userAdvanceInfo.headImg}/>
+                <img src={userAdvanceInfo.headImage}/>
             </div>
             <div className="base-info">
-                <p>{userAdvanceInfo.username}</p>
+                <p className="name">{userAdvanceInfo.username}</p>
                 {this.renderSex(userAdvanceInfo.sex)}
                 <p>金币数：{userAdvanceInfo.gold}</p>
             </div>
@@ -61,18 +61,28 @@ const MineStatus = React.createClass({
     renderSex(type) {
         let arr = [];
         if(type === 0) {
-            arr.push(<img src={'./assetsFund/image/home/home_female.png'}/>)
+            arr.push(<img className="sex-icon" src={'./assetsFund/image/home/home_female.png'}/>)
         } else {
-            arr.push(<img src={'./assetsFund/image/home/home_male.png'}/>)
+            arr.push(<img className="sex-icon" src={'./assetsFund/image/home/home_male.png'}/>)
         }
         return arr;
     },
 
     midInfo() {
+       return(<div className="other-info">{this.subInfo()}</div>)
+    },
+
+    subInfo() {
         let subTitle = this.state.subTitle;
         let arr = [];
         for (let i = 0; i< subTitle.length; i++) {
-            arr.push(<div>{subTitle[i]}</div>)
+            arr.push(
+                <div className="subs-out">
+                    <div className="sub-inner"></div>
+                    <div className="sub-out-border"></div>
+                    <span className="sub-title">{subTitle[i]}</span>
+                </div>)
+
         }
         return arr;
     }

@@ -53,6 +53,7 @@ const CPlus = React.createClass({
     getUserInfo() {
         let userId = User.getUserInfo().userId;
         Tools.fireRace(userId,"OAUTH_SUCCESS").then(()=>{
+            userId = User.getUserInfo().userId;
             Material.getUserAdvanceInfo(userId).done((result)=>{
                 this.state.userAdvanceInfo = result;
                 this.setState({userAdvanceInfo: this.state.userAdvanceInfo});
@@ -75,9 +76,6 @@ const CPlus = React.createClass({
             <div className="ict-main">
                 <FixedBg/>
                 {/*top*/}
-                <h1>
-                    welcome to Chang Tou Plus!
-                </h1>
                 {/*mid*/}
                 {this.renderMid()}
                 {/*bottom*/}

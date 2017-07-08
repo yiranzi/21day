@@ -1,13 +1,67 @@
 .mine-status{
   .user-info{
     display : flex;
+    padding: px2rem(30) 0 px2rem(30) px2rem(50);
     //justify-content: center;
-    flex-direction: row;
+    //flex-direction: row;
     .head-info{
-
+      img{
+        margin-right: px2rem(30);
+        border: 3px solid white;
+        border-radius: 50%;
+        width: px2rem(90);
+        height: px2rem(90);
+      }
     }
     .base-info{
+      color: #FFFFFF;
       align-items: center;
+      p{
+        margin-bottom: px2rem(10);
+      }
+      .name{
+        font-size: px2rem(20);
+      }
+      .sex-icon{
+        width: px2rem(24);
+        height: px2rem(24);
+      }
+    }
+  }
+
+  .other-info{
+    display : flex;
+    flex-wrap:  wrap;//换行
+    justify-content: center;//水平居中
+    align-items: center;//垂直方向
+    text-align: center;
+    .subs-out{
+      margin: 10px;
+      width: px2rem(150);
+      height: px2rem(150);
+      position: relative;
+      .sub-out-border{
+        border-radius: 10px;
+        border: 1px dashed white;
+        width: px2rem(150);
+        height: px2rem(150);
+        position: absolute;
+        z-index: 1;
+      }
+      .sub-title{
+        color: white;
+        margin-top: px2rem(120);
+        display: inline-block;
+      }
+      .sub-inner{
+        position: absolute;
+        z-index: -1;
+        width: px2rem(150);
+        height: px2rem(150);
+        border-radius: 10px;
+        background-color: black;
+        opacity: 0.2;
+      }
     }
   }
 }
