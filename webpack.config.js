@@ -3,10 +3,10 @@ var Path = require("path");
 var fs = require("fs");
 
 // TODO 需要根据项目目录和文件不同，自行调整~
-var assetsFolder = './assetsFund/';
-var buildFolder = '/buildFund/';
-var htmlFileName = "indexFund.html";
-var path = __dirname + "/buildFund";
+var assetsFolder = './assetsPlus/';
+var buildFolder = '/buildPlus/';
+var htmlFileName = "indexPlus.html";
+var path = __dirname + "/buildPlus";
 
 module.exports = {
   entry:[
