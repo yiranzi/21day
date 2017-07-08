@@ -155,12 +155,12 @@ const ListenCourse = React.createClass({
             Loading.hideLoading();
             this.state.lessons = progressData;
             //TODO testUrl
-            for(let i = 0; i<this.state.lessons.length; i++) {
-                let testUrl = this.state.lessons[i].pptUrl;
-                this.state.lessons[i].pptUrl = [
-                    testUrl,testUrl
-                ];
-            }
+            // for(let i = 0; i<this.state.lessons.length; i++) {
+            //     let testUrl = this.state.lessons[i].pptUrl;
+            //     this.state.lessons[i].pptUrl = [
+            //         testUrl,testUrl
+            //     ];
+            // }
             this.preFetch();
             this.fixProcess();
             this.calcInit();

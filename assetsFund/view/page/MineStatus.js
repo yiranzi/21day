@@ -77,7 +77,7 @@ const MineStatus = React.createClass({
         let arr = [];
         for (let i = 0; i< subTitle.length; i++) {
             arr.push(
-                <div className="subs-out">
+                <div onClick = {this.subClick.bind(this,i)}className="subs-out">
                     <div className="sub-inner"></div>
                     <div className="sub-out-border"></div>
                     <span className="sub-title">{subTitle[i]}</span>
@@ -85,6 +85,10 @@ const MineStatus = React.createClass({
 
         }
         return arr;
+    },
+
+    subClick(type) {
+        window.dialogAlertComp.show('即将开启','新鲜的内容正在精心准备中，敬请期待！','知道啦',()=>{},'',false);
     }
 });
 

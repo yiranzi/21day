@@ -152,32 +152,60 @@ class PayController {
         if(!seniorId){
             seniorId = '';
         }
-
-
-        let jsonData = JSON.stringify(
-            {
-                "body":'长投派报名' ,
-                "deal": {
-                    "items": [
-                        {
-                            // dealType: 1, //交易类型
-                            // itemId: Util.getCurrentBatch(),
-                            // mchantType: 5, //商品类型 21days
-                            // misc: Util.getUrlPara('dingyuehao')||'0'+'@'+seniorId+'@'+teacherId,
-                            // price: sum,
-                            dealType: 103, //交易类型
-                            // itemId: Util.getCurrentBatch(),
-                            itemId: 1,//基金课,应该改成全局
-                            mchantType: 11, //商品类型 21days
-                            misc: '',
-                            price: sum
-                        }
-                    ]
-                },
-                "openId": userInfo.payOpenId && userInfo.payOpenId.toString(),
-                "sum": sum
-            }
-        );
+        let jsonData;
+        switch (sessionStorage.getItem('userId')) {
+            case '0':
+                jsonData = JSON.stringify(
+                    {
+                        "body":'7天训练营报名' ,
+                        "deal": {
+                            "items": [
+                                {
+                                    // dealType: 1, //交易类型
+                                    // itemId: Util.getCurrentBatch(),
+                                    // mchantType: 5, //商品类型 21days
+                                    // misc: Util.getUrlPara('dingyuehao')||'0'+'@'+seniorId+'@'+teacherId,
+                                    // price: sum,
+                                    dealType: 102, //交易类型
+                                    itemId: Util.getCurrentBatch(),
+                                    mchantType: 11, //商品类型 21days
+                                    misc: '',
+                                    price: sum
+                                }
+                            ]
+                        },
+                        "openId": userInfo.payOpenId && userInfo.payOpenId.toString(),
+                        "sum": sum
+                    }
+                );
+                break;
+            case '1':
+                jsonData = JSON.stringify(
+                    {
+                        "body":'基金课报名' ,
+                        "deal": {
+                            "items": [
+                                {
+                                    // dealType: 1, //交易类型
+                                    // itemId: Util.getCurrentBatch(),
+                                    // mchantType: 5, //商品类型 21days
+                                    // misc: Util.getUrlPara('dingyuehao')||'0'+'@'+seniorId+'@'+teacherId,
+                                    // price: sum,
+                                    dealType: 103, //交易类型
+                                    // itemId: Util.getCurrentBatch(),
+                                    itemId: 1,//基金课,应该改成全局
+                                    mchantType: 11, //商品类型 21days
+                                    misc: '',
+                                    price: sum
+                                }
+                            ]
+                        },
+                        "openId": userInfo.payOpenId && userInfo.payOpenId.toString(),
+                        "sum": sum
+                    }
+                );
+                break;
+        }
         console.log('jsonData',jsonData);
         //扫码支付 和 公众号支付调用不同的接口
         let apiUrl = isNative ? Util.getAPIUrl('get_native_order') : GET_ORDER_API;

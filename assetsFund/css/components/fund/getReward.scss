@@ -4,10 +4,11 @@
   background-size: cover;
   background-repeat:no-repeat;
   background-attachment:fixed;
-  position: relative;
+
   height: 100%;
-  padding-top: px2rem(5);
-  padding-bottom: px2rem(20);
+  position: relative;
+  //padding-top: px2rem(5);
+  //padding-bottom: px2rem(20);
   .get-graduated-after {
     position: absolute;
     top: px2rem(40);

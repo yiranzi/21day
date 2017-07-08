@@ -13,6 +13,9 @@ var User = require('../../User');
 const WxConfig = require('../../WxConfig');
 const Util = require('../../Util');
 
+
+const FixedBg = require('../../component/course/FixedBg');
+
 const GetGraduated = React.createClass({
     getInitialState: function() {
 
@@ -185,7 +188,8 @@ const GetGraduated = React.createClass({
     // style = {fullbg}
     render() {
         return(
-            <div className="get-reward-seven" style = {{backgroundImage: 'url("./assetsFund/image/seven/bg_1.png")',width: Dimensions.getWindowWidth(), height: Dimensions.getWindowHeight()}}>
+            <div className="get-reward-seven">
+                <FixedBg/>
                 {this.renderGraduated()}
                 <img className="reward-light" onClick={this.handleClick} src={this.state.type ==='mine' ? './assetsFund/image/seven/bglight_b.png' : './assetsFund/image/seven/bglight.png'}/>
             </div>

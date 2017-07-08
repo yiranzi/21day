@@ -12,6 +12,8 @@ var User = require('../../User');
 const WxConfig = require('../../WxConfig');
 const Util = require('../../Util');
 
+const FixedBg = require('../../component/course/FixedBg');
+
 const GetGraduated = React.createClass({
     getInitialState: function() {
 
@@ -166,7 +168,8 @@ const GetGraduated = React.createClass({
     // style = {fullbg}
     render() {
         return(
-            <div className="get-reward-fund" style = {{backgroundImage: 'url("./assetsFund/image/fundJoin/join-bg.jpg")',width: Dimensions.getWindowWidth(), height: Dimensions.getWindowHeight()}}>
+            <div className="get-reward-fund">
+                <FixedBg/>
                 {/*<div className="reward-pic" style={{backgroundImage:"url('./assetsFund/image/course/noteCard.png')"}}>*/}
                     {/*<p className="note-card-project-title">14天基金定投训练营</p>*/}
                     {/*<p className="note-card-header">-{this.state.senior.rank}-</p>*/}
