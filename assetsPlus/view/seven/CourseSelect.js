@@ -5,7 +5,7 @@ const React = require('react');
 const User = require('../../User');
 const DoneToast = require('../../component/DoneToast');
 
-const LessonBar = require('../../component/course/LessonBar');
+const LessonBar = require('../../component/seven/LessonBar');
 const FixedBg = require('../../component/course/FixedBg');
 var boolOnce = true;
 

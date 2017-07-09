@@ -6,7 +6,7 @@ const User = require('../../User');
 
 const Config = require('../../Config');
 const DoneToast = require('../../component/DoneToast');
-const LessonBar = require('../../component/course/LessonBar');
+const LessonBar = require('../../component/fund/LessonBar');
 const FixedBg = require('../../component/course/FixedBg');
 const IconBar = require('../../component/course/IconBar');
 
