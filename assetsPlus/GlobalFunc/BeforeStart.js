@@ -36,6 +36,8 @@ class BeforeStart {
     static initGlobal() {
         console.log(this);
         MyStorage.init();
+        //清空有影响的缓存
+        sessionStorage.removeItem('courseId');
     }
 
     static getWhereChannel () {
@@ -47,6 +49,7 @@ class BeforeStart {
     }
 
     static getRedirect() {
+        //重定向到main
         let redictUrl = '/main';
         let goPath = MyStorage.getItem('goPath');
         if(goPath){

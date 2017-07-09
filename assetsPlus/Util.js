@@ -45,6 +45,9 @@ const USER_NUMBER = 500; // TODO roy 活动报名总人数
 
 let coursePayPrice;
 
+
+const SHARE_COURSE_TITLE = ['和我一起提高财商吧！','14天带你躺赢基金定投！一天10分钟，手把手教你！'];
+const SHARE_COURSE_DESC = ['邀请你一起参加7天财商训练营','宝宝618不再担心没钱买买买啦'];
 const SHARE_TITLE = '14天带你躺赢基金定投！一天10分钟，手把手教你！';
 const SHARE_DESC = '宝宝618不再担心没钱买买买啦';
 
@@ -477,15 +480,12 @@ class Util {
      * @returns {string}
      */
     static getShareTitle() {
-        let nickName = User.getUserInfo().nickName;
-        console.log('获取分享标题时nickName:' + nickName);
-        // if( Config.gift ) {
-        //     return nickName + '送了一个迷你课给你';
-        // }else{
-            // return nickName + SHARE_TITLE;
-        // }
-
-        return SHARE_TITLE;
+        let courseId = sessionStorage.getItem('userId');
+        if(courseId){
+            return SHARE_COURSE_TITLE[courseId];
+        } else {
+            return SHARE_TITLE;
+        }
     }
 
     /**
@@ -528,7 +528,13 @@ class Util {
      */
     static getShareDesc() {
         //let userName = User.getUserInfo().nickName || '';
-        return SHARE_DESC;
+        let courseId = sessionStorage.getItem('userId')
+        if(courseId){
+            return SHARE_COURSE_DESC[courseId];
+        } else {
+            return SHARE_DESC;
+        }
+
     }
 
     /**
