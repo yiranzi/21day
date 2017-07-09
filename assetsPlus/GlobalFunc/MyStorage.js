@@ -41,25 +41,19 @@ class MyStorage {
         return courseList;
     }
 
-    static setItem(type,key,value){
-        switch(type) {
-            case 'S':
-                sessionStorage.setItem(key,value);
-                // if(!getItem(type,key)){
-                //     sessionStorage.setItem(key,value);
-                // } else {
-                //     console.log('已经有数值');
-                // }
-                break;
-        }
+    static setItem(key,value){
+        console.log('read-only')
+        // sessionStorage.setItem(key,value);
+        // if(!getItem(type,key)){
+        //     sessionStorage.setItem(key,value);
+        // } else {
+        //     console.log('已经有数值');
+        // }
     }
 
-    static getItem(type,key){
-        switch(type) {
-            case 'S':
-                return sessionStorage.getItem(key);
-                break;
-        }
+    static getItem(key){
+        return Util.getUrlPara(key);
+        // return sessionStorage.getItem(key);
     }
 }
 

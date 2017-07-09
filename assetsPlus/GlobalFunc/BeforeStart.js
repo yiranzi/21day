@@ -48,14 +48,15 @@ class BeforeStart {
 
     static getRedirect() {
         let redictUrl = '/main';
-        let goPath = sessionStorage.getItem('goPath');
+        let goPath = MyStorage.getItem('goPath');
         if(goPath){
             redictUrl = goPath;
             //如果有课程
-            let courseId = Util.getUrlPara('courseId');
+            let courseId = MyStorage.getItem('courseId');
             if(courseId) {
                 sessionStorage.setItem('courseId',courseId);
                 //重定向前,需要请求对应课程的课程状态.
+                //action发起
                 this.checkUserPayStatue(courseId).then((result)=>{
                     //保存到课程列表中
                     MyStorage.setCourseStatus(courseId,result);

@@ -100,7 +100,7 @@ const GetReward = React.createClass({
                 Material.postData('上线_进入_getReward');
                 userId = User.getUserInfo().userId;
                 //获得课程的Id
-                let courseId = this.props.params.courseId;
+                let courseId = this.props.params.dayId;
                 this.setState({type: 'mine'});
                 this.setState({userInfo: User.getUserInfo()});
                 //获得自己的课程排名
@@ -108,7 +108,7 @@ const GetReward = React.createClass({
                     this.state.senior.name = User.getUserInfo().nickName;
                     this.state.senior.headImg = User.getUserInfo().headImage;
                     this.state.senior.rank = data;
-                    this.state.senior.courseId = this.props.params.courseId;
+                    this.state.senior.courseId = this.props.params.dayId;
                     this.setState({senior: this.state.senior});
                     this.setShareConfig();
                     Loading.hideLoading();

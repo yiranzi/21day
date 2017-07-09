@@ -47,7 +47,7 @@ const GetReward = React.createClass({
         document.body.scrollTop = document.documentElement.scrollTop = 0;
         let userId;
         //判定是否有分享成就卡
-        this.state.senior.courseId = Util.getUrlPara('courseId') || this.props.params.courseId;
+        this.state.senior.courseId = Util.getUrlPara('courseId') || this.props.params.dayId;
         let isMine = this.props.params.mine;
         //下线查看别人的成就卡
         if (this.state.senior.courseId && !isMine) {
@@ -86,12 +86,12 @@ const GetReward = React.createClass({
         } else {    //查看自己的
             userId = User.getUserInfo().userId;
             Material.postData('上线_进入笔记卡_getReward');
-            let courseId = this.props.params.courseId;
+            let courseId = this.props.params.dayId;
             this.setState({type: 'mine', userInfo: User.getUserInfo()});
             this.state.type = 'mine'
             this.state.senior.name = User.getUserInfo().nickName;
             this.state.senior.headImg = User.getUserInfo().headImage;
-            this.state.senior.courseId = this.props.params.courseId;
+            this.state.senior.courseId = this.props.params.dayId;
 
             //获得自己的课程排名
             Material.courseFinishRank(courseId,userId).done((data) =>{
@@ -266,7 +266,7 @@ const GetReward = React.createClass({
         }
         let course = courseInfo.find(
             course => {
-                return course.id === parseInt(Util.getUrlPara('courseId') || this.props.params.courseId)
+                return course.id === parseInt(Util.getUrlPara('courseId') || this.props.params.dayId)
             }
         )
         const imgClassName = course.id === 10 ? 'reward-pic-img-big' : 'reward-pic-img'
@@ -295,7 +295,7 @@ const GetReward = React.createClass({
         const content = textArr ? textArr[1].replace(/\r\n/g, '<br>') : ''
         let course = courseInfo.find(
             course => {
-                return course.id === parseInt(Util.getUrlPara('courseId') || this.props.params.courseId)
+                return course.id === parseInt(Util.getUrlPara('courseId') || this.props.params.dayId)
             }
         )
         console.log(course)

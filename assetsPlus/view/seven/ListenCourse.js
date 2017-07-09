@@ -106,7 +106,7 @@ const ListenCourse = React.createClass({
 
             Util.postCnzzData("听完", this.state.lessons[this.state.currentPlaying].fmid);
             //统计免费完成课程1的进度情况
-            if (!this.state.isPay && this.props.params.courseId === '1') {
+            if (!this.state.isPay && this.props.params.dayId === '1') {
                 Material.postData('免费_完成音频7天_ListenCourse');
             }
         });
@@ -135,7 +135,7 @@ const ListenCourse = React.createClass({
      */
     getFmInfo() {
         Loading.showLoading('获取信息...');
-        let courseId = this.props.params.courseId;
+        let courseId = this.props.params.dayId;
 
         Material.getCourseProgress(courseId).always((progressData) => {
             Loading.hideLoading();
@@ -321,7 +321,7 @@ const ListenCourse = React.createClass({
 
     goSign() {
         Material.postData('免费_跳转报名_ListenCourse');
-        Tools.LocationHash('PayPage','/payPage');
+        Tools.MyRouter('PayPage','/payPage');
     },
 
     preLoadPic() {
@@ -360,12 +360,12 @@ const ListenCourse = React.createClass({
         if (type === 1) {
             this.fixProcess();
             if (!this.state.isPay) {
-                Material.postData('免费_完成课程' + this.props.params.courseId +'_ListenCourse');
+                Material.postData('免费_完成课程' + this.props.params.dayId +'_ListenCourse');
             }
         } else {
             Util.postCnzzData("再次点击成就卡");
         }
-        let url = '/getReward/' + this.props.params.courseId + '/mine';
+        let url = '/getReward/' + this.props.params.dayId + '/mine';
         Tools.MyRouter('GetReward',url);
     },
 

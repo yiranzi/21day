@@ -47,14 +47,14 @@ let InnerRouter = React.createClass({
                     {/*基金课*/}
                     <Route path ="/fund/payPage" component={PayPageFund}/>
                     <Route path ="/fund/courseSelect" component={CourseSelectFund}/>
-                    <Route path ="/fund/listenCourse/:courseId" component={ListenCourseFund}/>
-                    <Route path="/fund/getReward/:courseId(/:mine)" component={GetRewardFund}/>
+                    <Route path ="/fund/listenCourse/:dayId" component={ListenCourseFund}/>
+                    <Route path="/fund/getReward/:dayId(/:mine)" component={GetRewardFund}/>
                     <Route path="/fund/getGraduated(/:mine)" component={GetGraduatedSeven}/>
                     {/*七天*/}
                     <Route path ="/seven/payPage" component={PayPageSeven}/>
                     <Route path ="/seven/courseSelect" component={CourseSelectSeven}/>
-                    <Route path ="/seven/listenCourse/:courseId" component={ListenCourseSeven}/>
-                    <Route path="/seven/getReward/:courseId(/:mine)" component={GetRewardSeven}/>
+                    <Route path ="/seven/listenCourse/:dayId" component={ListenCourseSeven}/>
+                    <Route path="/seven/getReward/:dayId(/:mine)" component={GetRewardSeven}/>
                     <Route path="/seven/getGraduated(/:mine)" component={GetGraduatedSeven}/>
 
 
