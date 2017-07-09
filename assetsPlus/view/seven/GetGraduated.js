@@ -137,7 +137,8 @@ const GetGraduated = React.createClass({
         let shareTitle = '经过7天的学习，我成为第'+ this.state.senior.rank+'个完成财商训练营的人！',
             link = Util.getShareLink(),
             desc = '快来看看我的毕业证！';
-        link = link + '&goPath=' + '/getGraduated';
+        link = link + '&goPath=' + 'getReward';
+        link = link + '&courseId=' + sessionStorage.getItem('courseId');
         link = link + '&name=' + senior.name;
         link = link + '&rank=' + senior.rank;
         WxConfig.shareConfig(shareTitle,desc,link);

@@ -74,7 +74,7 @@ const GetReward = React.createClass({
         console.log('get reward');
         let userId;
         //判定是否有分享成就卡
-        this.state.senior.courseId = Util.getUrlPara('courseId');
+        this.state.senior.courseId = Util.getUrlPara('dayId');
         let isMine = this.props.params.mine;
         //下线查看别人的成就卡
         if (this.state.senior.courseId && !isMine) {
@@ -118,12 +118,7 @@ const GetReward = React.createClass({
     },
 
     componentWillUnmount () {
-        console.log('didUnMount')
-        let senior = this.state.senior;
-        let shareTitle = '快和我一起参加财商训练营吧',
-            link = Util.getShareLink(),
-            desc = '点击链接报名只需3元哦,按时毕业还有奖学金!';
-        WxConfig.shareConfig(shareTitle,desc,link);
+        WxConfig.shareConfig();
     },
 
     /**
@@ -136,8 +131,9 @@ const GetReward = React.createClass({
         let shareTitle = '我是第'+ this.state.senior.rank+'名完成'+this.state.shareTitle[ this.state.senior.courseId - 1] + '课的人，快来看看我的成就卡吧！',
             link = Util.getShareLink(),
             desc = '快比比谁的财商更高吧?';
-        link = link + '&goPath=' + '/getReward/' + senior.courseId;
-        link = link + '&courseId=' + senior.courseId;
+        link = link + '&goPath=' + 'getReward';
+        link = link + '&courseId=' + sessionStorage.getItem('courseId');
+        link = link + '&dayId=' + senior.courseId;
         link = link + '&name=' + senior.name;
         link = link + '&rank=' + senior.rank;
         WxConfig.shareConfig(shareTitle,desc,link);

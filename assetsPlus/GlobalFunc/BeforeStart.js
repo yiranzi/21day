@@ -64,8 +64,13 @@ class BeforeStart {
                     //保存到课程列表中
                     MyStorage.setCourseStatus(courseId,result);
                 });
-                redictUrl = Tools.setCourseUrl(courseId) + redictUrl;
+                // 举例/fund/getReward/
+                redictUrl = Tools.setCourseUrl(courseId) + '/' + redictUrl;
             }
+        }
+        let dayId = MyStorage.getItem('dayId');
+        if(dayId){
+            redictUrl = redictUrl + '/' + dayId;
         }
         return redictUrl;
     }

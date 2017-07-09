@@ -47,7 +47,7 @@ const GetReward = React.createClass({
         document.body.scrollTop = document.documentElement.scrollTop = 0;
         let userId;
         //判定是否有分享成就卡
-        this.state.senior.courseId = Util.getUrlPara('courseId') || this.props.params.dayId;
+        this.state.senior.courseId = Util.getUrlPara('dayId') || this.props.params.dayId;
         let isMine = this.props.params.mine;
         //下线查看别人的成就卡
         if (this.state.senior.courseId && !isMine) {
@@ -63,7 +63,7 @@ const GetReward = React.createClass({
             } else {
                 OnFire.on('OAUTH_SUCCESS',()=>{
                     Material.postData('下线_进入笔记卡_getReward');
-                    this.seztState({myName: User.getUserInfo().nickName})
+                    this.setState({myName: User.getUserInfo().nickName})
                 });
             }
             this.state.senior.userId = userId;
@@ -137,11 +137,7 @@ const GetReward = React.createClass({
     },
 
     componentWillUnmount () {
-        let senior = this.state.senior;
-        let shareTitle = '14天带你躺赢基金定投！一天10分钟，手把手教你！',
-            link = Util.getShareLink(),
-            desc = '宝宝618不再担心没钱买买买啦';
-        WxConfig.shareConfig(shareTitle,desc,link);
+        WxConfig.shareConfig();
     },
 
     /**
@@ -164,8 +160,9 @@ const GetReward = React.createClass({
             case 'freeChance':
                 shareTitle = '今天我是第'+ this.state.senior.rank+'名，Get到了“'+ course.dayTitle + '”！这是我赢得的免费学习课！';
                 desc = '';
-                link = link + '&goPath=' + '/getReward/' + senior.courseId;
-                link = link + '&courseId=' + senior.courseId;
+                link = link + '&goPath=' + 'getReward';
+                link = link + '&courseId=' + sessionStorage.getItem('courseId');
+                link = link + '&dayId=' + senior.courseId;
                 link = link + '&name=' + senior.name;
                 link = link + '&rank=' + senior.rank;
                 link = link + '&freeLesson=true';
@@ -176,8 +173,9 @@ const GetReward = React.createClass({
                 senior = this.state.senior;
                 shareTitle = '今天我第'+ this.state.senior.rank+'名，Get到了“'+ course.dayTitle + '”！快看我的成就卡！';
                 desc = '';
-                link = link + '&goPath=' + '/getReward/' + senior.courseId;
-                link = link + '&courseId=' + senior.courseId;
+                link = link + '&goPath=' + 'getReward';
+                link = link + '&courseId=' + sessionStorage.getItem('courseId');
+                link = link + '&dayId=' + senior.courseId;
                 link = link + '&name=' + senior.name;
                 link = link + '&rank=' + senior.rank;
                 WxConfig.shareConfig(shareTitle,desc,link,'笔记卡普通分享');
@@ -266,7 +264,7 @@ const GetReward = React.createClass({
         }
         let course = courseInfo.find(
             course => {
-                return course.id === parseInt(Util.getUrlPara('courseId') || this.props.params.dayId)
+                return course.id === parseInt(Util.getUrlPara('dayId') || this.props.params.dayId)
             }
         )
         const imgClassName = course.id === 10 ? 'reward-pic-img-big' : 'reward-pic-img'
@@ -295,7 +293,7 @@ const GetReward = React.createClass({
         const content = textArr ? textArr[1].replace(/\r\n/g, '<br>') : ''
         let course = courseInfo.find(
             course => {
-                return course.id === parseInt(Util.getUrlPara('courseId') || this.props.params.dayId)
+                return course.id === parseInt(Util.getUrlPara('dayId') || this.props.params.dayId)
             }
         )
         console.log(course)

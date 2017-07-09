@@ -10,6 +10,7 @@ const Util = require('../../Util');
 const Material = require('../../Material');
 const Statistics = require('../../GlobalFunc/Statistics');
 const MyStorage = require('../../GlobalFunc/MyStorage');
+const WxConfig = require('../../WxConfig');
 
 //
 // const PayPageFund = require('./fund/PayPage');
@@ -75,8 +76,17 @@ const HomeCourseList = React.createClass({
     },
 
     goRouter(courseId,type) {
+        //当抓到courseId后都需要一系列操作
+        //设置微信
+        //设置id
+        //获取课程状态
+
         //0保存上当前的课程ID
         sessionStorage.setItem('courseId',courseId);
+        WxConfig.shareConfig();
+        //根据付费筛选方向
+        //TODO
+        //根据id设置微信
         switch (type) {
             case 0:
                 Tools.MyRouter('PayPage','/payPage');

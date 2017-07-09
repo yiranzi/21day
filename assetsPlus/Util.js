@@ -480,7 +480,7 @@ class Util {
      * @returns {string}
      */
     static getShareTitle() {
-        let courseId = sessionStorage.getItem('userId');
+        let courseId = sessionStorage.getItem('courseId');
         if(courseId){
             return SHARE_COURSE_TITLE[courseId];
         } else {
@@ -528,7 +528,7 @@ class Util {
      */
     static getShareDesc() {
         //let userName = User.getUserInfo().nickName || '';
-        let courseId = sessionStorage.getItem('userId')
+        let courseId = sessionStorage.getItem('courseId')
         if(courseId){
             return SHARE_COURSE_DESC[courseId];
         } else {
@@ -625,7 +625,7 @@ class Util {
         }
 
         //将基金课需要的参数回补
-        let linkParamsTypes = ['goPath','getWhere','freeLesson','courseId','name','rank'];
+        let linkParamsTypes = ['goPath','courseId','getWhere','freeLesson','dayId','name','rank'];
         // let shareTypes = ['getWhere','freeLesson','finish','graduated'];
         for(let i = 0 ;i < linkParamsTypes.length; i++) {
             let getParams = Util.getUrlPara(linkParamsTypes[i]);
