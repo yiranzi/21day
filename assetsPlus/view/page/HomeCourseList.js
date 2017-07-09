@@ -12,6 +12,8 @@ const Statistics = require('../../GlobalFunc/Statistics');
 const MyStorage = require('../../GlobalFunc/MyStorage');
 const WxConfig = require('../../WxConfig');
 
+// const Loading = require('../../Loading');
+
 //
 // const PayPageFund = require('./fund/PayPage');
 // const PayPageSeven = require('./seven/PayPage');
@@ -25,14 +27,15 @@ const HomeCourseList = React.createClass({
 
             courseList: [],//课程ID列表
             courseStatus: [],//课程状态
-            courseContent: ['7天','基金课'],//课程内容信息
+            courseContent: ['./assetsPlus/image/home/course_seven.png','./assetsPlus/image/home/course_fund.png'],//课程内容信息
 
         };
     },
 
     componentWillMount() {
         // Statistics.setPathNow('长投家');
-        console.log('enter courseList')
+        Loading.hideLoading();
+        console.log('enter courseList');
 
         //0 设置页面默认分享
         // WxConfig.shareConfig(shareTitle,desc,link);
@@ -80,21 +83,30 @@ const HomeCourseList = React.createClass({
         //设置微信
         //设置id
         //获取课程状态
+        Loading.showLoading('获取课程中...');
+        let enterWhere;
 
         //0保存上当前的课程ID
         sessionStorage.setItem('courseId',courseId);
         WxConfig.shareConfig();
-        //根据付费筛选方向
-        //TODO
-        //根据id设置微信
-        switch (type) {
-            case 0:
-                Tools.MyRouter('PayPage','/payPage');
-                break;
-            case 1:
-                Tools.MyRouter('CourseSelect','/courseSelect');
-                break;
-        }
+        Tools.fireRaceCourse(courseId).then((value)=>{
+            Loading.hideLoading();
+            if (value === 'pay') {
+                enterWhere = '/courseSelect';
+            } else {
+                enterWhere = '/payPage';
+            }
+            Tools.MyRouter('',enterWhere);
+        });
+
+        // switch (type) {
+        //     case 0:
+        //         Tools.MyRouter('PayPage','/payPage');
+        //         break;
+        //     case 1:
+        //         Tools.MyRouter('CourseSelect','/courseSelect');
+        //         break;
+        // }
 
     },
 
@@ -105,16 +117,29 @@ const HomeCourseList = React.createClass({
         return(
             <div className="home-course-list">
                 <div>
+                    <div className="course-banner">banner</div>
                     <div className="course-list">
                         {this.renderCourseList()}
-                        {this.renderCourseList2()}
+                        {/*{this.renderCourseList2()}*/}
                     </div>
                 </div>
             </div>
         )
     },
 
+
     renderCourseList(){
+        let arr =[];
+        let courseList = this.state.courseList;
+        for(let i = 0;i<courseList.length;i++) {
+            arr.push(<div className="course-content-line" key={i} onClick={this.goRouter.bind(this,courseList[i])}>
+                <img className="course-line-img" src={this.state.courseContent[i]}/>
+            </div>)
+        }
+        return arr;
+    },
+
+    renderCourseList3() {
         let arr =[];
         let courseList = this.state.courseList;
         for(let i = 0;i<courseList.length;i++) {
@@ -126,6 +151,8 @@ const HomeCourseList = React.createClass({
         }
         return arr;
     },
+
+
 
     renderCourseList2(){
         let arr =[];

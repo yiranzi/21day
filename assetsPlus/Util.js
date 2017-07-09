@@ -48,8 +48,8 @@ let coursePayPrice;
 
 const SHARE_COURSE_TITLE = ['和我一起提高财商吧！','14天带你躺赢基金定投！一天10分钟，手把手教你！'];
 const SHARE_COURSE_DESC = ['邀请你一起参加7天财商训练营','宝宝618不再担心没钱买买买啦'];
-const SHARE_TITLE = '14天带你躺赢基金定投！一天10分钟，手把手教你！';
-const SHARE_DESC = '宝宝618不再担心没钱买买买啦';
+const SHARE_TITLE = '长投派,每天进步一点点的行动派';
+const SHARE_DESC = '生活变得不一样';
 
 //是否是debug
 const IS_DEBUG = location.href.indexOf('localhost') > 0;

@@ -71,8 +71,6 @@ class WxConfig {
      * 分享配置
      */
     static shareConfig(title, desc,link,channel) {
-        console.log('初始化为微信的普通API');
-
         //console.log('分享配置',title, desc,fmid,link);
         //if(!shareConfigFlag){
         //    console.log('return  whatever');
@@ -150,6 +148,7 @@ class WxConfig {
         wx.onMenuShareWeibo(weiboOpt);
 
         shareConfigFlag = false;
+        console.log(link);
     }
 }
 module.exports = WxConfig;
