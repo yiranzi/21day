@@ -5,8 +5,7 @@
  */
 Object.defineProperty(exports, "__esModule", { value: true });
 const React = require("react");
-const SwipeView = require('../container/SwipeView');
-
+const SwipeView_1 = require("../../component/container/SwipeView").default;
 /**
  * 滑动容器组件
  *
@@ -76,12 +75,10 @@ class Carousel extends React.PureComponent {
             verticalAlign: "top"
         };
     }
-    onSwiped() {
-        console.log('onSwiped');
+    swiped() {
         this.touchLock = true;
     }
-    onSwiping(e, deltaX, deltaY, absX, absY, velocity) {
-        console.log('onSwiping');
+    swiping(e, deltaX, deltaY, absX, absY, velocity) {
         console.log(velocity);
         if (this.props.direction === "horizontal") {
             if (deltaX > 80 && velocity > 1 && this.touchLock) {
@@ -105,13 +102,15 @@ class Carousel extends React.PureComponent {
         }
     }
     render() {
-        return(<SwipeView>
-            onSwiped = {this.onSwiped()}
-            onSwiping = {this.onSwiping()}
-        </SwipeView>)
+        return (React.createElement(SwipeView_1.default, { preventDefaultTouchmoveEvent: true, onSwiping: this.swiping, className: "carousel-container", onSwiped: this.swiped },
+            React.createElement("div", { style: { flexDirection: this.props.direction === "horizontal" ? "column" : "row" }, className: "contentBody" }, this.contentBody.map((element, index) => {
+                return React.createElement("div", { key: index, className: "contentPage", style: this.style(index) }, element);
+            })),
+            React.createElement("div", { className: "contentTop" + ' ' + this.props.styleTop }, this.props.topNode),
+            React.createElement("div", { className: "contentBottom" + ' ' + this.props.styleBottom }, this.props.bottomNode),
+            React.createElement("div", { className: "contentRight" + ' ' + this.props.styleRight }, this.props.rightNode),
+            React.createElement("div", { className: "contentLeft" + ' ' + this.props.styleLeft }, this.props.leftNode)));
     }
-
-
 }
 Carousel.defaultProps = {
     direction: "vertical"

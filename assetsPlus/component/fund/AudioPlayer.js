@@ -109,7 +109,7 @@ const AudioBar = React.createClass({
         } else if(type ==='R') {
             this.state.pptIndex = this.state.pptIndex + 1;
         }
-        this.setState({pptIndex: this.state.pptIndex})
+        this.setState({pptIndex: this.state.pptIndex});
         console.log('get click' +this.state.pptIndex);
     },
 

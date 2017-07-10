@@ -11,14 +11,10 @@ const Material = require('../../Material');
 const Statistics = require('../../GlobalFunc/Statistics');
 const MyStorage = require('../../GlobalFunc/MyStorage');
 const WxConfig = require('../../WxConfig');
-const Banner = require('../../component/home/Banner');
+const Carousel = require('../../component/home/Carousel');
+// const SwipeView = require('../../component/container/SwipeView').default;
 
-
-// const Loading = require('../../Loading');
-
-//
-// const PayPageFund = require('./fund/PayPage');
-// const PayPageSeven = require('./seven/PayPage');
+let bannerTimer;//banner timer
 
 const HomeCourseList = React.createClass({
     getInitialState: function() {
@@ -26,11 +22,11 @@ const HomeCourseList = React.createClass({
         //course lesson
         return {
             content: this.props.content,
-
+            bannerIndex: 0,
+            bannerContent: [],
             courseList: [],//课程ID列表
             courseStatus: [],//课程状态
             courseContent: ['./assetsPlus/image/home/course_seven.png','./assetsPlus/image/home/course_fund.png'],//课程内容信息
-
         };
     },
 
@@ -47,6 +43,24 @@ const HomeCourseList = React.createClass({
         this.getCourseContent();
         //3 根据课程Id获取用户相关数据
         this.getCourseStatus();
+    },
+
+    componentDidMount() {
+        bannerTimer = window.setInterval(this.bannerChange.bind(this), 1000);
+    },
+
+    componentWillUnmount () {
+        window.clearInterval(bannerTimer);
+    },
+
+    bannerChange() {
+        console.log('123');
+        if(this.state.bannerIndex >= this.state.bannerContent.length) {
+            this.state.bannerIndex = 0;
+        } else {
+            this.state.bannerIndex++;
+        }
+        this.setState({bannerIndex: this.state.bannerIndex});
     },
 
     //获取列表并初始化
@@ -112,20 +126,20 @@ const HomeCourseList = React.createClass({
 
     },
 
-
+    onSwiping() {
+      console.log(123)
+    },
 
     //渲染
     render() {
+        // console.log(Banner);
         return(
             <div className="home-course-list">
                 <div>
-                    {/*<Banner>*/}
-                        {/*<div className="course-banner">banner</div>*/}
-                    {/*</Banner>*/}
                     <div className="course-list">
                         {this.renderCourseList()}
-                        {/*{this.renderCourseList2()}*/}
                     </div>
+
                 </div>
             </div>
         )
