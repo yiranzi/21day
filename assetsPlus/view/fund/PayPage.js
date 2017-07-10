@@ -143,10 +143,10 @@ var PayPage = React.createClass({
                 }
             }
         }
-        //试听进入
-        if(sessionStorage.getItem('pathFrom') === 'ListenCourse') {
-            this.state.ifCanPaid = true;
-        }
+        // //试听进入
+        // if(sessionStorage.getItem('pathFrom') === 'ListenCourse') {
+        //     this.state.ifCanPaid = true;
+        // }
         this.setState({
             hasSenior: this.state.hasSenior,
             ifCanPaid: this.state.ifCanPaid,
@@ -185,18 +185,11 @@ var PayPage = React.createClass({
      * 按钮点击
      */
     clickHandler() {
-        if (this.state.hasSenior) {
-            Util.postCnzzData('下线_点击报名_payPage');
-            Material.postData('下线_点击报名_payPage');
-        } else {
-            Util.postCnzzData('人_点击报名_payPage');
-            Material.postData('人_点击报名_payPage');
-        }
         this.payHandler();
     },
 
     onWantJoinTap () {
-        window.dialogAlertComp.show('告诉你个小秘密','请好友分享给你后，你可以无视截止时间的限制，想报名就报名~','快去试试吧',()=>{},()=>{},false);
+        window.dialogAlertComp.show('报名已截止','这次报名截止了哦.下次报名开放要14天之后了.还想上课的小伙伴可以去听听7天训练营!','知道了',()=>{},()=>{},false);
     },
 
     /**
@@ -246,12 +239,10 @@ var PayPage = React.createClass({
                     <img src="./assetsPlus/image/fund/join-title.png" alt="" className="fund-join-title"/>
                     <div className="fund-join-content-box">
                         <img src="./assetsPlus/image/fund/join-content.png" alt="" className="fund-join-content"/>
-                        {!this.state.hasSenior &&
                         <div className="fund-status">
                             <Timeout hasEnded={this.state.time} finalDate={this.state.endTime}/>
-                            <span className="fund-status-number">剩余名额：{this.state.showint ? this.state.num : 0}</span>
+                            <span className="fund-status-number">剩余名额：{this.state.ifCanPaid ? this.state.num : 0}</span>
                         </div>
-                        }
                     </div>
                     {this.bottomBar()}
                     <div className="global-empty-div" style={{height: 70}}>123</div>
@@ -274,7 +265,7 @@ var PayPage = React.createClass({
     },
 
     buttonSignUp() {
-        if(this.state.hasSenior || (!this.state.time && (this.state.num > 0))){
+        if(!this.state.time && (this.state.num > 0)){
             return(<span className="btn join" onClick={this.clickHandler}>{this.renderPrice()}</span>)
         } else {
             return(<span className="btn join" onClick={this.onWantJoinTap}><span>还想报名？点我</span></span>)
