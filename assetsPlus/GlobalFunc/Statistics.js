@@ -93,7 +93,7 @@ class Statistics {
 }
 
 
-
+window.Statistics = Statistics;
 module.exports = Statistics;
 
 

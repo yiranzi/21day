@@ -63,15 +63,13 @@ const GetReward = React.createClass({
                 headImg: '',
                 userId: '',
             },
-            friendName: '',
             myName: ''
         };
     },
 
     componentWillMount() {
-        sessionStorage.setItem('pathNow','成就卡');
+        Statistics.setPathNow('成就卡');
 
-        console.log('get reward');
         let userId;
         //判定是否有分享成就卡
         this.state.senior.courseId = Util.getUrlPara('dayId');
@@ -91,10 +89,6 @@ const GetReward = React.createClass({
             this.state.senior.name = Util.getUrlPara('name');
             this.state.senior.rank = Util.getUrlPara('rank');
             this.setState({type: 'other'});
-            Material.getShareInfo(userId).always( (name)=>{
-                this.setState({friendName: name});
-                // this.setShareConfig();
-            });
         } else {//查看自己的
             Tools.fireRace(User.getUserInfo().userId,"OAUTH_SUCCESS").then(()=>{
                 Material.postData('上线_进入_getReward');
@@ -141,21 +135,12 @@ const GetReward = React.createClass({
 
 
     handleClick() {
-        location.hash = "/select";
+        Tools.MyRouter('',"/select");
     },
 
     // + '&code=' + Util.getUrlPara('code')
     goSignUp() {
-        let url = Util.getHtmlUrl() + '?ictchannel=' + Util.getUrlPara('ictchannel');
-        // location.href = url;
-        location.hash = '/course/' + this.state.senior.courseId + '/free';
-
-
-        // let url = Util.getHtmlUrl() + '?ictchannel=' + Util.getUrlPara('ictchannel');
-        // let url = Util.getHtmlUrl() + '?ictchannel=' + Util.getUrlPara('ictchannel') + '&goPath=' + '/course/' + (this.state.senior.courseId);
-        // console.log(url);
-        // location.href = url;
-        // location.href = '/course/' + (this.state.senior.courseId + 1);
+        Tools.MyRouter('',"/payPage");
     },
 
     render() {
