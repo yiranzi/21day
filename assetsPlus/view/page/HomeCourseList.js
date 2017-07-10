@@ -11,6 +11,8 @@ const Material = require('../../Material');
 const Statistics = require('../../GlobalFunc/Statistics');
 const MyStorage = require('../../GlobalFunc/MyStorage');
 const WxConfig = require('../../WxConfig');
+const Banner = require('../../component/home/Banner');
+
 
 // const Loading = require('../../Loading');
 
@@ -117,7 +119,9 @@ const HomeCourseList = React.createClass({
         return(
             <div className="home-course-list">
                 <div>
-                    <div className="course-banner">banner</div>
+                    {/*<Banner>*/}
+                        {/*<div className="course-banner">banner</div>*/}
+                    {/*</Banner>*/}
                     <div className="course-list">
                         {this.renderCourseList()}
                         {/*{this.renderCourseList2()}*/}
