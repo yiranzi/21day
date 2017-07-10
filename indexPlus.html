@@ -39,6 +39,23 @@
             0% {transform:rotate(0deg);}
             100% {transform:rotate(360deg);}
         }
+        .logo{
+            position:fixed;
+            top: 50%;
+            left: 50%;
+            margin-top: -100px;
+            margin-left: -100px;
+            z-index: 50;
+            text-align: center;
+        }
+        .logo-contain{
+            position:fixed;
+            width: 200px;
+            height: 200px;
+        }
+        .loading-title{
+            color: white;
+        }
     </style>
 </head>
 
@@ -53,13 +70,15 @@
 
 <!--DOM入口 -->
 <div id="root" style="height: 100%">
-    <div style="background-color: #4498c7;">
-        <div style="position:absolute;top:40%;left:50%">
-            <img src="./assetsFund/image/pai_logo_out.png" class="loading" style="position:relative;right:50%;width:100px; height:100px;">
-            <img src="./assetsFund/image/pai_logo_inner.png" style="position:relative;right:50%;width:100px; height:100px;">
+    <div style="background-color: #4498c7;height: 100%;position: relative">
+        <div class="logo">
+            <img class="loading logo-contain" src="./assetsPlus/image/pai_logo_out.png"  >
+            <img class="logo-contain" src="./assetsPlus/image/pai_logo_inner.png">
         </div>
+        <p class="loading-title">长投派加载中</p>
     </div>
 </div>
+<!--style="position:relative;right:50%;width:100px; height:100px;"-->
 <div id="audio"></div>
 
 <!--Modal-->
@@ -78,7 +97,7 @@
 <!--<script src="http://192.168.0.190:8081/target/target-script-min.js#anonymous"></script>-->
 <!--每次提交代码前修改v的值，使代码生效更快-->
 <!--5.27线上版本-->
-<script src="buildPlus/bundle.fe67709b.js?v=40"></script>
+<script src="buildPlus/bundle.4d209b07.js?v=40"></script>
 <script type="text/javascript">
     if( location.href.indexOf('h5.ichangtou.com') > 1 ){
         var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");
