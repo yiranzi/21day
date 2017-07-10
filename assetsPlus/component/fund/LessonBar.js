@@ -153,7 +153,7 @@ const LessonBar = React.createClass({
     renderFinish() {
         // return <img onClick={this.callBackFunc.bind(this,'goReward')} className="column-type" src={'./assetsPlus/image/course/indFinished.png'}/>
         if( this.props.content.courseStatus.allFinish) {
-            return <img onClick={this.callBackFunc.bind(this,'goReward')} className="column-type" src={'./assetsPlus/image/course/indFinished.png'}/>
+            return <img onClick={this.callBackFunc.bind(this,'goReward')} className="column-type" src={'./assetsPlus/image/fund/indFinished.png'}/>
         } else {
             if (this.props.content.courseStatus.enter === 'free-enter') {
                 return(<p className = "free-lesson">免费收听</p>)

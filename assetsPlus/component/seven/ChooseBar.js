@@ -72,15 +72,15 @@ const ChooseBar = React.createClass({
         if(this.state.process) {
             if(question.trueindex[0] === index) {
                 this.state.nowClick = index
-                return <img className= "choose-options-img" src={'./assets7Intro/image/course/indRight.png'}></img>
+                return <img className= "choose-options-img" src={'./assetsPlus/image/seven/indRight.png'}></img>
             } else {
                 return null;
             }
         } else if(this.state.nowClick === index){
             if(this.state.results[index] === 1) {
-                return <img className= "choose-options-img" src={'./assets7Intro/image/course/indRight.png'}></img>
+                return <img className= "choose-options-img" src={'./assetsPlus/image/seven/indRight.png'}></img>
             } else if(this.state.results[index] === 0){
-                return <img className= "choose-options-img" src={'./assets7Intro/image/course/indWrong.png'}></img>
+                return <img className= "choose-options-img" src={'./assetsPlus/image/seven/indWrong.png'}></img>
             }
         }
     },

@@ -136,9 +136,9 @@ const HomeCourseList = React.createClass({
         return(
             <div className="home-course-list">
                 <div>
-                    <div className="course-banner">
-                        <img src="./assetsPlus/image/home/banner_seven.png"/>
-                    </div>
+                    {/*<div className="course-banner">*/}
+                        {/*<img src="./assetsPlus/image/home/banner_seven.png"/>*/}
+                    {/*</div>*/}
                     <div className="course-list">
                         {this.renderCourseList()}
                     </div>
