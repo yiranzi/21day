@@ -233,13 +233,12 @@ const GetReward = React.createClass({
                         });
                     }
                 }
-                location.hash = '/course/' + this.state.senior.courseId + '/free';
+                Tools.MyRouter('','/listenCourse/' + this.state.senior.courseId + '/free')
             } else {
-
-                location.hash = '/course/10/free';
+                Tools.MyRouter('','/listenCourse/10/free');
             }
         } else {      //如果是普通链接
-            location.hash = '/course/10/free';
+            Tools.MyRouter('','/listenCourse/10/free');
         }
     },
 
@@ -287,26 +286,26 @@ const GetReward = React.createClass({
             </div>
         )
     },
-    renderShareCard () {
-        const text = this.state.noteText
-        const textArr = text ? text.split('#') : ''
-        const content = textArr ? textArr[1].replace(/\r\n/g, '<br>') : ''
-        let course = courseInfo.find(
-            course => {
-                return course.id === parseInt(Util.getUrlPara('dayId') || this.props.params.dayId)
-            }
-        )
-        console.log(course)
-        return (
-            <div className="reward-pic" style={{backgroundImage:"url('./assetsPlus/image/course/noteCard.png')"}}>
-                <p className="note-card-project-title">14天基金定投训练营</p>
-                <p className="note-card-header">-{course.cardTitle}-</p>
-                <p className="note-card-content-title">{textArr && textArr[0]}</p>
-                <div className="note-card-text" dangerouslySetInnerHTML={{__html:content || ''}}></div>
-                <div className="share-qrcode"><img src="./assetsPlus/image/course/shareqrcode.png" alt=""/></div>
-            </div>
-        )
-    },
+    // renderShareCard () {
+    //     const text = this.state.noteText
+    //     const textArr = text ? text.split('#') : ''
+    //     const content = textArr ? textArr[1].replace(/\r\n/g, '<br>') : ''
+    //     let course = courseInfo.find(
+    //         course => {
+    //             return course.id === parseInt(Util.getUrlPara('dayId') || this.props.params.dayId)
+    //         }
+    //     )
+    //     console.log(course)
+    //     return (
+    //         <div className="reward-pic" style={{backgroundImage:"url('./assetsPlus/image/fund/noteCard.png')"}}>
+    //             <p className="note-card-project-title">14天基金定投训练营</p>
+    //             <p className="note-card-header">-{course.cardTitle}-</p>
+    //             <p className="note-card-content-title">{textArr && textArr[0]}</p>
+    //             <div className="note-card-text" dangerouslySetInnerHTML={{__html:content || ''}}></div>
+    //             <div className="share-qrcode"><img src="./assetsPlus/image/course/shareqrcode.png" alt=""/></div>
+    //         </div>
+    //     )
+    // },
 
 
     buttonRender() {

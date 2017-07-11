@@ -20,6 +20,8 @@ const Tabbar = require('../component/home/Tabbar');
 
 const HomeCourseList = require('./page/HomeCourseList');
 const MineStatus = require('./page/MineStatus');
+
+const WxConfig = require('../WxConfig');
 // const PayPageFund = require('./fund/PayPage');
 // const PayPageSeven = require('./seven/PayPage');
 
@@ -45,7 +47,8 @@ const CPlus = React.createClass({
     },
 
     componentWillMount() {
-        sessionStorage.setItem('courseId',-1);
+        sessionStorage.removeItem('courseId');
+        WxConfig.shareConfig();
         Statistics.setPathNow('长投家');
         this.getUserInfo();
     },

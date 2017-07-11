@@ -102,17 +102,23 @@ const HomeCourseList = React.createClass({
         Loading.showLoading('获取课程中...');
         let enterWhere;
 
-        //0保存上当前的课程ID
-        sessionStorage.setItem('courseId',courseId);
-        WxConfig.shareConfig();
+
         Tools.fireRaceCourse(courseId).then((value)=>{
-            Loading.hideLoading();
+            //0保存上当前的课程ID
             if (value === 'pay') {
                 enterWhere = '/courseSelect';
             } else {
                 enterWhere = '/payPage';
             }
-            Tools.MyRouter('',enterWhere);
+            let wxshare = sessionStorage.getItem('wxshare');
+            Tools.fireRace(wxshare,"wxshare").then(()=>{
+                //保存courseId
+                sessionStorage.setItem('courseId',courseId);
+                WxConfig.shareConfig();
+                Loading.hideLoading();
+                Tools.MyRouter('',enterWhere);
+            })
+
         });
 
         // switch (type) {
