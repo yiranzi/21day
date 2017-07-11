@@ -41,10 +41,9 @@ class BeforeStart {
     }
 
     static getWhereChannel () {
-        let getWhere = sessionStorage.getItem('getWhere');
+        let getWhere = Util.getUrlPara("getWhere");
         if (getWhere) {
-            Material.postData('网页人' + getWhere +'_进入_CourseSelect');
-            console.log(getWhere);
+            sessionStorage.setItem('hhr',getWhere);
         }
     }
 
