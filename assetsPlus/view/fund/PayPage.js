@@ -85,14 +85,15 @@ var PayPage = React.createClass({
             });
             OnFire.on('PAID_SUCCESS',(payWay)=>{
                 Tools.postData('支付成功');
-
-                if(sessionStorage.getItem('channel')) {
+                let seniorId = Util.getUrlPara("ictchannel");
+                let channel = Util.getUrlPara("getWhere");
+                if(channel && seniorId) {
                     if (User.getUserInfo().userId) {
-                        Material.postData(sessionStorage.getItem('channel') + '_支付成功_' + User.getUserInfo().userId);
+                        Material.postData(channel + '_支付成功_' + seniorId);
                     } else {
                         OnFire.on('OAUTH_SUCCESS', ()=>{
                             //1.判断听课状态.
-                            Material.postData(sessionStorage.getItem('channel') + '_支付成功_' + User.getUserInfo().userId);
+                            Material.postData(channel + '_支付成功_' + seniorId);
                         });
                     }
                 }
@@ -117,30 +118,27 @@ var PayPage = React.createClass({
     },
 
     setIfCanPaid() {
-        let seniorId = sessionStorage.getItem('ictchannel');
+        let seniorId = Util.getUrlPara("ictchannel");
         Util.setPrice(680);
         //下线进入界面
-        if(seniorId){
-            this.state.hasSenior = true;
+        //seniorId则表示该用户拥有上线
+        let channel = Util.getUrlPara("getWhere");
+        if(channel && seniorId) {
             this.state.ifCanPaid = true;
-            //seniorId则表示该用户拥有上线
-            let channel =sessionStorage.getItem('channel');
-            if(channel) {
-                //合伙人进入报名页上报
-                if (User.getUserInfo().userId) {
-                    Material.postData(channel + '_进入页面_' + User.getUserInfo().userId);
-                } else {
-                    OnFire.on('OAUTH_SUCCESS', () => {
-                        //1.判断听课状态.
-                        Material.postData(channel + '_进入页面_' + User.getUserInfo().userId);
-                    });
-                }
-                //区分优惠类型
-                if(channel === 'typeB') {
-                    Util.setPrice(630);
-                } else {
-                    Util.setPrice(580);
-                }
+            //合伙人进入报名页上报
+            if (User.getUserInfo().userId) {
+                Material.postData(channel + '_进入页面_' + seniorId);
+            } else {
+                OnFire.on('OAUTH_SUCCESS', () => {
+                    //1.判断听课状态.
+                    Material.postData(channel + '_进入页面_' + seniorId);
+                });
+            }
+            //区分优惠类型
+            if(channel === 'typeB') {
+                Util.setPrice(630);
+            } else {
+                Util.setPrice(580);
             }
         }
         // //试听进入
@@ -148,7 +146,6 @@ var PayPage = React.createClass({
         //     this.state.ifCanPaid = true;
         // }
         this.setState({
-            hasSenior: this.state.hasSenior,
             ifCanPaid: this.state.ifCanPaid,
             buttonPrice: Util.getPrice(),
         });
@@ -160,17 +157,24 @@ var PayPage = React.createClass({
     signUpNumber(){
         Material.getRegistered().done((result) => {
             let restNum = Util.getUserNumber() - result.number;
+            //手动调试
+            result.time = true;
+            if(!result.time && (restNum > 0)) {
+                this.state.ifCanPaid = true;
+            }
             if (restNum <= 0){
                 this.setState({
                     num: 0,
                     time: result.time,
                     showint: false,
+                    ifCanPaid: this.state.ifCanPaid,
                 });
             } else {
                 this.setState({
-                    num: 59 + restNum,
+                    num: restNum,
                     time: result.time,
                     showint: true,
+                    ifCanPaid: this.state.ifCanPaid,
                 });
             }
         }).fail(()=>{
@@ -189,7 +193,17 @@ var PayPage = React.createClass({
     },
 
     onWantJoinTap () {
-        window.dialogAlertComp.show('报名已截止','这次报名截止了哦.下次报名开放要14天之后了.还想上课的小伙伴可以去听听7天训练营!','知道了',()=>{},()=>{},false);
+        window.dialogAlertComp.show('报名已截止','这次报名截止了哦。还想上课的小伙伴可以去听听7天训练营！','去看看',this.goRouter,'先不看',true);
+    },
+
+    goRouter() {
+        console.log("goRouter");
+        let ictChannel = Util.getUrlPara("ictchannel");
+        if (ictChannel) {
+            location.href = Util.getHtmlUrl() + "?ictchannel=" + Util.getUrlPara("");
+        } else {
+            location.href = Util.getHtmlUrl();
+        }
     },
 
     /**
@@ -265,17 +279,17 @@ var PayPage = React.createClass({
     },
 
     buttonSignUp() {
-        if(!this.state.time && (this.state.num > 0)){
+        if(this.state.ifCanPaid){
             return(<span className="btn join" onClick={this.clickHandler}>{this.renderPrice()}</span>)
         } else {
-            return(<span className="btn join" onClick={this.onWantJoinTap}><span>还想报名？点我</span></span>)
+            return(<span className="btn join" onClick={this.onWantJoinTap}><span style={{lineHeight: '2.8rem'}}>开启报名？</span></span>)
         }
 
     },
 
     renderPrice() {
         let arr = [];
-        let channel  = sessionStorage.getItem('channel');
+        let channel = Util.getUrlPara("getWhere");
         if(!channel) {
             arr.push(<div className="price-span-right"><s className="price-span-inner origin-price">原价¥{780}</s><span className="price-span-inner current-price">现价¥{this.state.buttonPrice}</span></div>);
         } else {
@@ -285,12 +299,6 @@ var PayPage = React.createClass({
     },
 
     freeLesson() {
-        // location.hash = '/select';
-        if (this.state.hasSenior) {
-            Material.postData('下线_点击试听_payPage');
-        } else {
-            Material.postData('人_点击试听_payPage');
-        }
         Tools.MyRouter('ListenCourse','/listenCourse/10');
     }
 
