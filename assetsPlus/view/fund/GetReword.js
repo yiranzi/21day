@@ -88,7 +88,7 @@ const GetReward = React.createClass({
             Material.postData('上线_进入笔记卡_getReward');
             let courseId = this.props.params.dayId;
             this.setState({type: 'mine', userInfo: User.getUserInfo()});
-            this.state.type = 'mine'
+            this.state.type = 'mine';
             this.state.senior.name = User.getUserInfo().nickName;
             this.state.senior.headImg = User.getUserInfo().headImage;
             this.state.senior.courseId = this.props.params.dayId;
@@ -298,7 +298,7 @@ const GetReward = React.createClass({
         )
         console.log(course)
         return (
-            <div className="reward-pic" style={{backgroundImage:"url('./assetsPlus/image/course/noteCard.png')"}}>
+            <div className="reward-pic" style={{backgroundImage:"url('./assetsPlus/image/fund/noteCard.png')"}}>
                 <p className="note-card-project-title">14天基金定投训练营</p>
                 <p className="note-card-header">-{course.cardTitle}-</p>
                 <p className="note-card-content-title">{textArr && textArr[0]}</p>

@@ -47,7 +47,7 @@ var PayPage = React.createClass({
             num: 0,
             time: 0,
 
-            userComments: {},
+            userComments: [],
         };
     },
 
@@ -261,7 +261,7 @@ var PayPage = React.createClass({
     },
 
     renderMessage() {
-        return(<MassageBoard/>)
+        return(<MassageBoard titleImg = './assetsPlus/image/fund/payPage/comment-top.png' userLists = {this.state.userComments}/>)
     },
 
     freeLesson() {

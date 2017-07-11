@@ -1,3 +1,32 @@
 .message-board{
+  .title{
+    text-align: center;
+    img{
+      width: 100%;
+      height: px2rem(30);
+    }
+    p{
+      color: blue;
+    }
+  }
+  .user-message{
+    display: flex;
+    .head-image{
 
+    }
+    .user-info{
+      .name{
+
+      }
+      .data{
+
+      }
+      .message{
+
+      }
+    }
+    .like{
+
+    }
+  }
 }

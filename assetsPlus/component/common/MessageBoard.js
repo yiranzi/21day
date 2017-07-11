@@ -9,6 +9,9 @@ const React = require('react');
 const Material = require('../../Material');
 const Tools = require('../../GlobalFunc/Tools');
 
+
+//titleImg
+//userLists[][]
 const messageBoard = React.createClass({
     getInitialState: function() {
         // console.log('123');
@@ -39,6 +42,7 @@ const messageBoard = React.createClass({
             <div className="message-board">
                 <div className="title">
                     <img src={this.props.titleImg}/>
+                    <p>学员评价</p>
                 </div>
                 <div className="list">
                     {this.renderList()}
@@ -48,12 +52,14 @@ const messageBoard = React.createClass({
     },
 
     renderList() {
-        let arr = []
+        let arr = [];
+        let userLists = this.props.userLists;
+        // if
         //多少页
-        for (let i = 0; i < this.props.userLists.length; i++) {
+        for (let i = 0; i < userLists.length; i++) {
             let messagePage = this.props.userLists[i];
-            for (let i = 0; i < messagePage.length; i++) {
-                let userMessage = messagePage[i];
+            for (let j = 0; j < messagePage.length; j++) {
+                let userMessage = messagePage[j];
                 arr.push(this.renderLine(userMessage))
             }
         }
@@ -68,7 +74,7 @@ const messageBoard = React.createClass({
                 <p className="data">userMessage.create_time</p>
                 <p className="message">userMessage.content</p>
             </div>
-            <img className="like" src=""/>
+            <img className="like" src='./assetsPlus/image/fund/payPage/like-icon.png'/>
         </div>)
     }
 
