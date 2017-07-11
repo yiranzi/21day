@@ -809,7 +809,32 @@ class Material {
     }
 
 
+    //获取用户评论
+    static getUserComment(dayId) {
+        dayId = '20100307';
+        let pageIndex = 0;
+        const Util = require('./Util'),
+            User = require('./User');
 
+        //{fmId}/{pageSize}/{pageIndex}
+
+        let userInfo = User.getUserInfo(),
+            apiUrl = Util.getAPIUrl('get_next_page_comment').replace('{fmId}',dayId).replace('{pageSize}',20).replace('{pageIndex}',pageIndex);
+
+        return $.ajax({
+            url: apiUrl,
+            type: 'get',
+            cache: false,
+            contentType: 'application/json;charset=utf-8',
+            headers: {
+                Accept:"application/json"
+            },
+            beforeSend: function(request) {
+                request.setRequestHeader("X-iChangTou-Json-Api-User", userInfo.userId);
+                request.setRequestHeader("X-iChangTou-Json-Api-Token", Util.getApiToken());
+            }
+        });
+    }
 
 
 

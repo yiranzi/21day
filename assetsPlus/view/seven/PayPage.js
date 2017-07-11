@@ -17,6 +17,7 @@ const Timeout = require('../../component/Timeout');
 const FixedBg = require('../../component/course/FixedBg');
 
 const Tools = require('../../GlobalFunc/Tools');
+const MassageBoard = require('../../component/common/MessageBoard');
 
 var PayPage = React.createClass({
 
@@ -44,7 +45,9 @@ var PayPage = React.createClass({
 
 
             num: 0,
-            time: 0
+            time: 0,
+
+            userComments: {},
         };
     },
 
@@ -96,6 +99,14 @@ var PayPage = React.createClass({
         this.setIfCanPaid();
         //5请求倒计时和剩余人数
         this.signUpNumber();
+        //6获取评论
+        this.getComment();
+    },
+
+    getComment() {
+        Material.getUserComment().done((result) => {
+            this.setState({userComments: result})
+        })
     },
 
     getUserId() {
@@ -209,31 +220,9 @@ var PayPage = React.createClass({
     render(){
         return (
             <div className="pay_page">
-
-                {/*。。。。从上线发的链接打开时展示*/}
-                {/*{this.state.hasSenior && <SeniorInfo/>}*/}
-                {/*删除掉无用的逻辑*/}
-                {/*点击报名但没有查到用户信息时提示加群*/}
-                {/*{this.state.showBackup && <a className="backup-text" href="http://jq.qq.com/?_wv=1027&k=41976jN">QQ群号：*/}
-                {/*<span className="red-text">429827363</span>*/}
-                {/*<p className="red-text  tada animated infinite">暗号：7天</p></a>}*/}
                 {/*如果未报名，并且不是下线，则显示报名时间和人数*/}
                 {!this.state.hasPaid &&
                 <div>
-                    {/*!this.state.hasSenior && <div>
-                     <div className="top-time-bottom">
-                     <div className="top-time">
-                     <Timeout hasEnded={this.state.time} finalDate={this.state.endTime}/>
-                     </div>
-                     <div className="entered">
-                     <div className="show-entered">
-                     <div className="show-number"> 剩余名额</div>
-                     </div>
-                     {this.state.showint ? <span>{this.state.num}</span>:<span>0</span>}
-                     </div>
-                     </div>
-                     </div>*/}
-
                     <img src="./assetsPlus/image/seven/join-content.png" className={this.state.hasSenior ? "intro-img-has-senior" : "intro-img"}/>
                 </div> }
                 {/*如果已经报名，报名链接时展示*/}
@@ -241,15 +230,8 @@ var PayPage = React.createClass({
                     <div className="paid-bg" style={{height:window.innerHeight}} onClick={this.gotoSelectPage}>
                         <div className="paid-text-box">
                             <p className="paid-text">报名成功！</p>
-                            {/*this.state.showWechatGroup && <div>
-                             <p className="paid-text">扫码加小助手，拉你进群：</p>
-                             <p className="paid-text">微信号：dahuilangshu</p>
-                             <img src="build21Intro/dashu.jpg" className="dashu-img"/>
-                             </div>*/}
                             {!this.state.showWechatGroup && <div>
-
                                 <p className="paid-text paid-times"></p>
-                                {/*<p className="paid-texts  tada infinite ">耐心等待</p>*/}
                                 <p className="paid-text">下一个百万富翁就是你</p>
                                 {!this.state.followSubscribe && <div><p className="paid-text">长按扫描下方二维码进入课程公号的“财商训练”，开始学习吧</p>
                                     <div className="page-div">
@@ -257,51 +239,29 @@ var PayPage = React.createClass({
                                     </div></div>}
 
                             </div>}
-
                         </div>
                     </div>
-
                 </div>}
-
-                <div id="payCon"></div>
-
-                <div>
-
-                </div>
-                {/**分享链接进入**/}
-                {/*{this.state.buttonPrice == 6 &&*/}
-                {/*<div className="bottom-button" >*/}
-                {/*<span onClick={this.clickHandler} className={this.state.hasSenior==false ?"join-button":"whole-join-button"}>立即参加（<span className="full-price">￥9</span>  ￥6）</span>*/}
-                {/*{!this.state.hasSenior && <span className="share-button" onClick={this.shareModalHandler}>邀请好友</span>}*/}
-                {/*</div>*/}
-                {/*}*/}
-
-                {/*普通用户底部购买按钮*/}
-                {/*TODO 测试屏蔽掉邀请好友*/}
                 {(!this.state.hasPaid && !this.state.isFreeUser) &&
                 <div className="bottom-button">
-                    {/*{((this.state.time || !this.state.showint ) && !this.state.hasSenior) ? <span onClick={this.didClickHandler}  className="join-button">还想报名？点我！</span> : <span onClick={this.clickHandler}  className={!this.state.hasSenior ?"join-button":"whole-join-button"}>立即参加（{this.state.buttonPrice}元）</span>}*/}
                     {<span onClick={this.clickHandler}  className={!this.state.hasSenior ?"join-button":"whole-join-button"}>立即参加（{this.state.buttonPrice}元）</span>}
-                    {/*<span className="share-button" onClick={this.shareModalHandler}>邀请好友</span>*/}
                     <span className="free-lesson-button" onClick={this.freeLesson}>免费试听</span>
                 </div>
                 }
 
-                {/*免费用户底部购买按钮*/}
                 {(!this.state.hasPaid && this.state.isFreeUser) &&
                 <div className="bottom-button">
                     <span onClick={this.checkSubscribe} className="join-button">开始学习吧！</span>
                     <span className="share-button" onClick={this.shareModalHandler}>邀请好友</span>
                 </div>
                 }
-
-                {/*点击分享时的提示模态引导框*/}
-                {this.state.showShareModal && <img src="./asstesFund/image/shareModal.png" onClick={this.hideShareModalHandler} className="share-modal"/>}
-
-                {/*入页面时弹出的分享提示panel*/}
-                {this.state.buttonChange && <Modal hideOnTap={false}><SharePanel onClose={this.closeSharePanelHandler} isSubscribed={this.state.isSubscribed}/></Modal>}
+                {this.renderMessage()}
             </div>
         )
+    },
+
+    renderMessage() {
+        return(<MassageBoard/>)
     },
 
     freeLesson() {
