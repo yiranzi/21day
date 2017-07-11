@@ -649,10 +649,18 @@ class Material {
         const Util = require('./Util'),
             apiUrl = Util.getAPIUrl('post_statistic_data');
         let userInfo = User.getUserInfo();
-        let jsonData = JSON.stringify({
-            eventName: eventName,
-            version: 11,
-        });
+        let jsonData;
+        if(sessionStorage.getItem('courseId') === '1') {
+            jsonData = JSON.stringify({
+                eventName: eventName,
+                version: 21,
+            })
+        } else {
+            jsonData = JSON.stringify({
+                eventName: eventName,
+                version: 20,
+            })
+        }
         // alert(eventName + '/' + userInfo.userId);
         return $.ajax(
             {

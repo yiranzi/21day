@@ -158,7 +158,7 @@ var PayPage = React.createClass({
         Material.getRegistered().done((result) => {
             let restNum = Util.getUserNumber() - result.number;
             //手动调试
-            result.time = true;
+            // result.time = true;
             if(!result.time && (restNum > 0)) {
                 this.state.ifCanPaid = true;
             }
