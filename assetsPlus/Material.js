@@ -811,8 +811,8 @@ class Material {
 
     //获取用户评论
     static getUserComment(dayId) {
-        dayId = '20170710';
-        let pageIndex = 0;
+        dayId = '20160808';
+        let pageIndex = 1;
         const Util = require('./Util'),
             User = require('./User');
 

@@ -1,32 +1,40 @@
 .message-board{
-  .title{
-    text-align: center;
-    img{
-      width: 100%;
-      height: px2rem(30);
-    }
-    p{
-      color: blue;
+  color: #4498C7;
+  background-color: white;
+  padding-bottom: 30px;
+  //border: 1px solid white;
+  .list{
+    padding: 0 10px 0 10px;
+    .user-message{
+      padding: 25px 10px 25px 10px;
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      border-bottom: 2px solid #4498C7;;
+      .head-image{
+        width: 64px;
+        border-radius: 50%;
+      }
+      .user-info{
+        text-align: left;
+        width: 220px;
+        .name{
+          font-size: px2rem(18);
+          font-weight: bold;
+          //margin-bottom: 5px;
+        }
+        .data{
+          font-size: px2rem(12);
+          //margin-bottom: 5px;
+        }
+        .message{
+          font-size: px2rem(16);
+        }
+      }
+      .like{
+
+      }
     }
   }
-  .user-message{
-    display: flex;
-    .head-image{
 
-    }
-    .user-info{
-      .name{
-
-      }
-      .data{
-
-      }
-      .message{
-
-      }
-    }
-    .like{
-
-    }
-  }
 }

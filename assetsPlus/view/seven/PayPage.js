@@ -105,7 +105,20 @@ var PayPage = React.createClass({
 
     getComment() {
         Material.getUserComment().done((result) => {
-            this.setState({userComments: result})
+            // console.log('get info');
+            // result = [{image: "http://wx.qlogo.cn/mmopen/dx4Y70y9XcvUicibqS0w6QZKLGSrRXW5N8rAfku2nhD3Kp2d0Y7AFia6EH2I90ATNPEC6uBZUnhak14mBNgmxYzqxOoLX8LImAE/0",
+            //     userName: 'yiran1',
+            //     create_time: 2010-1-1,
+            //     content: '好好好好好好2010-1-120好好好10-1-120好好好好好好10-1-好好好1',},{image: "http://wx.qlogo.cn/mmopen/dx4Y70y9XcvUicibqS0w6QZKLGSrRXW5N8rAfku2nhD3Kp2d0Y7AFia6EH2I90ATNPEC6uBZUnhak14mBNgmxYzqxOoLX8LImAE/0",
+            //     userName: 'yiran2',
+            //     create_time: 2010-1-1,
+            //     content: '好好好好好好2010-1-120好好好10-1-120好好好好好好10-1-好好好1',},{image: "http://wx.qlogo.cn/mmopen/dx4Y70y9XcvUicibqS0w6QZKLGSrRXW5N8rAfku2nhD3Kp2d0Y7AFia6EH2I90ATNPEC6uBZUnhak14mBNgmxYzqxOoLX8LImAE/0",
+            //     userName: 'yiran3',
+            //     create_time: 2010-1-1,
+            //     content: '好好好好好好2010-1-120好好好10-1-120好好好好好好10-1-好好好1',}]
+
+            this.state.userComments.push(result);
+            this.setState({userComments: this.state.userComments})
         })
     },
 
@@ -225,6 +238,11 @@ var PayPage = React.createClass({
                 </div>
                 <div className={"intro-img"}>
                     <img src='./assetsPlus/image/seven/payPage/paypage-seven-bg.png' />
+                    {this.renderBuyButton()}
+                </div>
+                <div className="bottom-img">
+                    <img src={'./assetsPlus/image/seven/payPage/comment-top.png'}/>
+                    <p>学员评价</p>
                 </div>
                 {this.state.hasPaid && <div>
                     <div className="paid-bg" style={{height:window.innerHeight}} onClick={this.gotoSelectPage}>
@@ -242,20 +260,20 @@ var PayPage = React.createClass({
                         </div>
                     </div>
                 </div>}
-                {this.renderBuyButton}
+                {/*{this.renderBuyButton}*/}
 
-                {(!this.state.hasPaid && !this.state.isFreeUser) &&
-                <div className="bottom-button">
-                    {<span onClick={this.clickHandler}  className={!this.state.hasSenior ?"join-button":"whole-join-button"}>立即参加（{this.state.buttonPrice}元）</span>}
-                    <span className="free-lesson-button" onClick={this.freeLesson}>免费试听</span>
-                </div>
-                }
-                {(!this.state.hasPaid && this.state.isFreeUser) &&
-                <div className="bottom-button">
-                    <span onClick={this.checkSubscribe} className="join-button">开始学习吧！</span>
-                    <span className="share-button" onClick={this.shareModalHandler}>邀请好友</span>
-                </div>
-                }
+                {/*{(!this.state.hasPaid && !this.state.isFreeUser) &&*/}
+                {/*<div className="bottom-button">*/}
+                    {/*{<span onClick={this.clickHandler}  className={!this.state.hasSenior ?"join-button":"whole-join-button"}>立即参加（{this.state.buttonPrice}元）</span>}*/}
+                    {/*<span className="free-lesson-button" onClick={this.freeLesson}>免费试听</span>*/}
+                {/*</div>*/}
+                {/*}*/}
+                {/*{(!this.state.hasPaid && this.state.isFreeUser) &&*/}
+                {/*<div className="bottom-button">*/}
+                    {/*<span onClick={this.checkSubscribe} className="join-button">开始学习吧！</span>*/}
+                    {/*<span className="share-button" onClick={this.shareModalHandler}>邀请好友</span>*/}
+                {/*</div>*/}
+                {/*}*/}
                 {this.renderMessage()}
             </div>
         )
@@ -263,19 +281,29 @@ var PayPage = React.createClass({
 
     renderBuyButton() {
         let arr = [];
-        if(this.state.isFreeUser) {
-            arr.push(<div></div>)
-        } else {
-
-        }
+        arr.push(<div onClick={this.clickHandler} className="buy-button">
+            <img src = {"./assetsPlus/image/seven/payPage/paypage-buy.png"}/>
+            <p>立即参加（{this.state.buttonPrice}元）</p>
+        </div>);
+        // if(this.state.isFreeUser) {
+        //     arr.push(<div onClick={this.clickHandler} className="buy-button">
+        //         <img src = {"./assetsPlus/image/seven/payPage/paypage-buy.png"}/>
+        //         <span>立即参加（{this.state.buttonPrice}元）</span>
+        //     </div>)
+        // } else {
+        //     arr.push(<div onClick={this.clickHandler} className="buy-button">
+        //         <img src = {"./assetsPlus/image/seven/payPage/paypage-buy.png"}/>
+        //         <span>免费领取</span>
+        //     </div>)
+        // }
         return arr;
     },
 
     renderMessage() {
-        return(<MassageBoard titleImg = './assetsPlus/image/fund/payPage/comment-top.png' userLists = {this.state.userComments}/>)
+        return(<MassageBoard userLists = {this.state.userComments}/>)
     },
 
-    freeLesson() {
+    freeLesson() {s
         // location.hash = '/select';
         if (this.state.hasSenior) {
             Material.postData('下线_点击试听_payPage');

@@ -136,6 +136,11 @@ class User {
 
     }
 
+    static setUserIdTest(userId) {
+        userInfo = {};
+        userInfo.userId = userId;
+    }
+
     static setUserInfo(data) {
         //保存用户信息
         userInfo = {};

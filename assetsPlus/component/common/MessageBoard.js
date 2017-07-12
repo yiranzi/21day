@@ -40,10 +40,6 @@ const messageBoard = React.createClass({
     render() {
         return(
             <div className="message-board">
-                <div className="title">
-                    <img src={this.props.titleImg}/>
-                    <p>学员评价</p>
-                </div>
                 <div className="list">
                     {this.renderList()}
                 </div>
@@ -52,6 +48,7 @@ const messageBoard = React.createClass({
     },
 
     renderList() {
+        console.log('enter list');
         let arr = [];
         let userLists = this.props.userLists;
         // if
@@ -70,9 +67,9 @@ const messageBoard = React.createClass({
         return(<div className="user-message">
             <img className="head-image" src={userMessage.image}/>
             <div className="user-info">
-                <p className="name">userMessage.userName</p>
-                <p className="data">userMessage.create_time</p>
-                <p className="message">userMessage.content</p>
+                <p className="name">{userMessage.userName}</p>
+                <p className="data">{userMessage.create_time}</p>
+                <p className="message">{userMessage.content}</p>
             </div>
             <img className="like" src='./assetsPlus/image/fund/payPage/like-icon.png'/>
         </div>)
