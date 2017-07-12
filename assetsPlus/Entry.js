@@ -25,20 +25,20 @@ User.initAccessInfo();
 
 $(document).ready(() => {
     // alert("html ready");
-    if(test) {
-        new Dimensions().init();
-        User.setUserIdTest('8588d5124d1541c0b8656d675cee761d');
-        let goWhere = BeforeStart.init();
-        ReactDom.render(<InnerRouter goWhere = {goWhere}/>, $('#root')[0]);
-    } else {
-        if(!Util.isWeixin()){
+    if(!Util.isWeixin()){
+        if(test) {
+            new Dimensions().init();
+            User.setUserIdTest('8588d5124d1541c0b8656d675cee761d');
+            let goWhere = BeforeStart.init();
+            ReactDom.render(<InnerRouter goWhere = {goWhere}/>, $('#root')[0]);
+        } else {
+            alert('is test please change');
             Loading.hideLoading();
             window.dialogAlertComp.show('提示','请复制地址并在微信中打开','知道啦',()=>{
                 Loading.showLoading('获取信息...');
             },()=>{},false);
         }
-
-
+    } else {
         if( Util.getUrlPara('code') ) {
             new Dimensions().init();
             Loading.showLoading('获取信息...');
@@ -48,4 +48,5 @@ $(document).ready(() => {
             // alert("start react");
         }
     }
+
 });

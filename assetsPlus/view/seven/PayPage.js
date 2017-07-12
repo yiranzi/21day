@@ -274,9 +274,14 @@ var PayPage = React.createClass({
                     {/*<span className="share-button" onClick={this.shareModalHandler}>邀请好友</span>*/}
                 {/*</div>*/}
                 {/*}*/}
+                {this.renderListenFree()}
                 {this.renderMessage()}
             </div>
         )
+    },
+
+    renderListenFree () {
+        return(<img onClick={this.freeLesson} className="pay-listen-free" src={'./assetsPlus/image/seven/payPage/listen-free.png'}/>)
     },
 
     renderBuyButton() {
@@ -303,7 +308,7 @@ var PayPage = React.createClass({
         return(<MassageBoard userLists = {this.state.userComments}/>)
     },
 
-    freeLesson() {s
+    freeLesson() {
         // location.hash = '/select';
         if (this.state.hasSenior) {
             Material.postData('下线_点击试听_payPage');
