@@ -220,12 +220,12 @@ var PayPage = React.createClass({
     render(){
         return (
             <div className="pay_page">
-                {/*如果未报名，并且不是下线，则显示报名时间和人数*/}
-                {!this.state.hasPaid &&
-                <div>
-                    <img src="./assetsPlus/image/seven/join-content.png" className={this.state.hasSenior ? "intro-img-has-senior" : "intro-img"}/>
-                </div> }
-                {/*如果已经报名，报名链接时展示*/}
+                <div className="top-banner">
+                    <img src={'./assetsPlus/image/seven/payPage/banner_seven.jpg'}/>
+                </div>
+                <div className={"intro-img"}>
+                    <img src='./assetsPlus/image/seven/payPage/paypage-seven-bg.png' />
+                </div>
                 {this.state.hasPaid && <div>
                     <div className="paid-bg" style={{height:window.innerHeight}} onClick={this.gotoSelectPage}>
                         <div className="paid-text-box">
@@ -242,13 +242,14 @@ var PayPage = React.createClass({
                         </div>
                     </div>
                 </div>}
+                {this.renderBuyButton}
+
                 {(!this.state.hasPaid && !this.state.isFreeUser) &&
                 <div className="bottom-button">
                     {<span onClick={this.clickHandler}  className={!this.state.hasSenior ?"join-button":"whole-join-button"}>立即参加（{this.state.buttonPrice}元）</span>}
                     <span className="free-lesson-button" onClick={this.freeLesson}>免费试听</span>
                 </div>
                 }
-
                 {(!this.state.hasPaid && this.state.isFreeUser) &&
                 <div className="bottom-button">
                     <span onClick={this.checkSubscribe} className="join-button">开始学习吧！</span>
@@ -258,6 +259,16 @@ var PayPage = React.createClass({
                 {this.renderMessage()}
             </div>
         )
+    },
+
+    renderBuyButton() {
+        let arr = [];
+        if(this.state.isFreeUser) {
+            arr.push(<div></div>)
+        } else {
+
+        }
+        return arr;
     },
 
     renderMessage() {
