@@ -56,6 +56,7 @@ const CPlus = React.createClass({
     getUserInfo() {
         let userId = User.getUserInfo().userId;
         Tools.fireRace(userId,"OAUTH_SUCCESS").then(()=>{
+            Material.postData('进入长投派');
             userId = User.getUserInfo().userId;
             Material.getUserAdvanceInfo(userId).done((result)=>{
                 this.state.userAdvanceInfo = result;
@@ -111,6 +112,7 @@ const CPlus = React.createClass({
 
     //路由跳转
     cbfTabClick(index) {
+        Material.postData('长投派点击' + index);
         this.state.currentPageindex = index;
         this.setState({currentPageindex: this.state.currentPageindex});
         console.log(index)

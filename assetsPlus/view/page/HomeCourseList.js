@@ -102,7 +102,7 @@ const HomeCourseList = React.createClass({
         Loading.showLoading('获取课程中...');
         let enterWhere;
 
-
+        Material.postData('pai课程点击' + index);
         Tools.fireRaceCourse(courseId).then((value)=>{
             //0保存上当前的课程ID
             if (value === 'pay') {

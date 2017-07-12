@@ -47,11 +47,11 @@ const GetReward = React.createClass({
         document.body.scrollTop = document.documentElement.scrollTop = 0;
         let userId;
         //判定是否有分享成就卡
-        this.state.senior.courseId = Util.getUrlPara('dayId') || this.props.params.dayId;
         let isMine = this.props.params.mine;
         //下线查看别人的成就卡
-        if (this.state.senior.courseId && !isMine) {
-            Material.getNoteCardText(this.state.senior.courseId).done((data) => {
+        if (!isMine) {
+            this.state.senior.courseId = Util.getUrlPara('dayId');
+                Material.getNoteCardText(this.state.senior.courseId).done((data) => {
                 this.setState({
                     noteText: data.message
                 })
@@ -70,7 +70,7 @@ const GetReward = React.createClass({
             this.state.senior.name = Util.getUrlPara('name');
             this.state.senior.rank = Util.getUrlPara('rank');
             this.setState({type: 'other'});
-            this.state.type = 'other'
+            this.state.type = 'other';
             //todo 如果是试听分享链接
             if (Util.getUrlPara('freeLesson')) {
                 //todo sta 下线_进入_GetReword
@@ -88,7 +88,7 @@ const GetReward = React.createClass({
             Material.postData('上线_进入笔记卡_getReward');
             let courseId = this.props.params.dayId;
             this.setState({type: 'mine', userInfo: User.getUserInfo()});
-            this.state.type = 'mine'
+            this.state.type = 'mine';
             this.state.senior.name = User.getUserInfo().nickName;
             this.state.senior.headImg = User.getUserInfo().headImage;
             this.state.senior.courseId = this.props.params.dayId;
@@ -233,12 +233,12 @@ const GetReward = React.createClass({
                         });
                     }
                 }
-                Tools.MyRouter('','/listenCourse/' + this.state.senior.courseId + '/free')
+                Tools.MyRouter('','/listenCourse/' + this.state.senior.courseId);
             } else {
-                Tools.MyRouter('','/listenCourse/10/free');
+                Tools.MyRouter('','/listenCourse/10');
             }
         } else {      //如果是普通链接
-            Tools.MyRouter('','/listenCourse/10/free');
+            Tools.MyRouter('','/listenCourse/10');
         }
     },
 
@@ -269,7 +269,7 @@ const GetReward = React.createClass({
         const imgClassName = course.id === 10 ? 'reward-pic-img-big' : 'reward-pic-img'
         return(
             <div>
-                {!(course.id === 10) && <div className="note-card-title" style={cardStyleSenior}>恭喜，你是第{this.state.senior.rank}名完成当天学习任务的人</div>}
+                {<div className="note-card-title" style={cardStyleSenior}>恭喜，{this.state.senior.name}是第{this.state.senior.rank}名完成当天学习任务的人</div>}
                 {/*<img className="reward-light" onClick={this.handleClick} src={'./assetsPlus/image/course/bglight.png'}/>*/}
                 {/*<img className="reward-pic" onClick={this.handleClick} src={this.state.type ==='mine' ? this.state.lockPicHQ[this.state.senior.courseId - 1] : this.state.lockPic[this.state.senior.courseId - 1] }/>*/}
                 <img className={imgClassName} src={course.noteCardUrl}/>
