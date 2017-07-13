@@ -138,7 +138,10 @@ const API_URL_GROUP = {
     'get_notes': 'ctplus/notes/{dayId}', //获取笔记卡内容
 
     //获取用户汇总后的信息
-    'get_advance_user_info': 'h5/user/get-user/{userId}'
+    'get_advance_user_info': 'h5/user/get-user/{userId}',
+    //获取评论信息
+    'get_next_page_comment': 'course/minic/comment/{fmId}/{pageSize}/{pageIndex}', //评论分页
+    // 'get_next_page_comment': 'course/minic/comment/{fmId}/{pageSize}/{pageIndex}', //评论分页
 };
 
 
