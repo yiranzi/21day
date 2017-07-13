@@ -44,7 +44,8 @@ var PayPage = React.createClass({
 
 
             num: 0,
-            time: 0
+            time: 0,
+            hhrChannel: false,
         };
     },
 
@@ -85,9 +86,8 @@ var PayPage = React.createClass({
             });
             OnFire.on('PAID_SUCCESS',(payWay)=>{
                 Tools.postData('支付成功');
-                let seniorId = Util.getUrlPara("ictchannel");
-                let channel = Util.getUrlPara("getWhere");
-                if(channel && seniorId) {
+                //合伙人上报
+                if(this.state.hhrChannel) {
                     if (User.getUserInfo().userId) {
                         Material.postData(channel + '_支付成功_' + seniorId);
                     } else {
@@ -106,10 +106,21 @@ var PayPage = React.createClass({
                 this.checkSubscribe();
             });
         }
+        //判定特殊渠道
+        // this.ifHhrChannel();
         //3设置下线和价格
         this.setIfCanPaid();
         //5请求倒计时和剩余人数
         this.signUpNumber();
+    },
+
+    ifHhrChannel() {
+        let seniorId = Util.getUrlPara("ictchannel");
+        let channel = Util.getUrlPara("getWhere");
+        if(seniorId && channel) {
+            this.state.hhrChannel = true;
+            this.setState({hhrChannel: this.state.hhrChannel});
+        }
     },
 
     getUserId() {
@@ -118,12 +129,10 @@ var PayPage = React.createClass({
     },
 
     setIfCanPaid() {
-        let seniorId = Util.getUrlPara("ictchannel");
         Util.setPrice(680);
         //下线进入界面
         //seniorId则表示该用户拥有上线
-        let channel = Util.getUrlPara("getWhere");
-        if(channel && seniorId) {
+        if(this.state.hhrChannel) {
             this.state.ifCanPaid = true;
             //合伙人进入报名页上报
             if (User.getUserInfo().userId) {
@@ -141,10 +150,10 @@ var PayPage = React.createClass({
                 Util.setPrice(580);
             }
         }
-        // //试听进入
-        // if(sessionStorage.getItem('pathFrom') === 'ListenCourse') {
-        //     this.state.ifCanPaid = true;
-        // }
+        //试听进入
+        if(sessionStorage.getItem('pathFrom') === 'ListenCourse') {
+            this.state.ifCanPaid = true;
+        }
         this.setState({
             ifCanPaid: this.state.ifCanPaid,
             buttonPrice: Util.getPrice(),
@@ -289,8 +298,7 @@ var PayPage = React.createClass({
 
     renderPrice() {
         let arr = [];
-        let channel = Util.getUrlPara("getWhere");
-        if(!channel) {
+        if(!this.state.hhrChannel) {
             arr.push(<div className="price-span-right"><s className="price-span-inner origin-price">原价¥{780}</s><span className="price-span-inner current-price">现价¥{this.state.buttonPrice}</span></div>);
         } else {
             arr.push(<div className="price-span-right"><s className="price-span-inner origin-price">原价¥{780}</s><span className="price-span-inner current-price">友情价¥{this.state.buttonPrice}</span></div>);
