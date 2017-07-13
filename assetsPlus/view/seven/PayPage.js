@@ -131,7 +131,6 @@ var PayPage = React.createClass({
         let seniorId = Util.getUrlPara("ictchannel");
         Util.setPrice(9);
         //下线进入界面
-        console.log('设置下线');
         if(seniorId){
             this.state.hasSenior = true;
             this.state.ifCanPaid = true;
