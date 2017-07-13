@@ -64,6 +64,7 @@ const messageBoard = React.createClass({
     },
 
     renderLine(userMessage) {
+        // userMessage.likeCount = 12123;
         return(<div className="user-message">
             <img className="head-image" src={userMessage.image}/>
             <div className="user-info">
@@ -71,7 +72,11 @@ const messageBoard = React.createClass({
                 <p className="data">{userMessage.create_time}</p>
                 <p className="message">{userMessage.content}</p>
             </div>
-            <img className="like" src='./assetsPlus/image/fund/payPage/like-icon.png'/>
+            <div className="like" >
+                <img src='./assetsPlus/image/seven/payPage/like-icon-on.png'/>
+                <span>{userMessage.likeCount}</span>
+            </div>
+
         </div>)
     }
 
