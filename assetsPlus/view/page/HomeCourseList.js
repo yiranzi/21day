@@ -12,6 +12,7 @@ const Statistics = require('../../GlobalFunc/Statistics');
 const MyStorage = require('../../GlobalFunc/MyStorage');
 const WxConfig = require('../../WxConfig');
 const Carousel = require('../../component/home/Carousel');
+const Banner = require('../../component/home/Banner');
 // const SwipeView = require('../../component/container/SwipeView').default;
 
 let bannerTimer;//banner timer
@@ -27,6 +28,7 @@ const HomeCourseList = React.createClass({
             courseList: [],//课程ID列表
             courseStatus: [],//课程状态
             courseContent: ['./assetsPlus/image/home/course_seven.png','./assetsPlus/image/home/course_fund.png'],//课程内容信息
+            bannerPic: ['./assetsPlus/image/home/banner_fund.png','./assetsPlus/image/home/banner_seven.png','./assetsPlus/image/home/banner_fund.png','./assetsPlus/image/home/banner_seven.png'],//课程内容信息
         };
     },
 
@@ -45,23 +47,8 @@ const HomeCourseList = React.createClass({
         this.getCourseStatus();
     },
 
-    componentDidMount() {
-        bannerTimer = window.setInterval(this.bannerChange.bind(this), 1000);
-    },
 
-    componentWillUnmount () {
-        window.clearInterval(bannerTimer);
-    },
 
-    bannerChange() {
-        console.log('123');
-        if(this.state.bannerIndex >= this.state.bannerContent.length) {
-            this.state.bannerIndex = 0;
-        } else {
-            this.state.bannerIndex++;
-        }
-        this.setState({bannerIndex: this.state.bannerIndex});
-    },
 
     //获取列表并初始化
     getCourseList() {
@@ -141,6 +128,9 @@ const HomeCourseList = React.createClass({
         // console.log(Banner);
         return(
             <div className="home-course-list">
+                <div className = 'course-banner'>
+                    <Banner totalImage = {this.state.bannerPic}/>
+                </div>
                 <div>
                     {/*<div className="course-banner">*/}
                         {/*<img src="./assetsPlus/image/home/banner_seven.png"/>*/}

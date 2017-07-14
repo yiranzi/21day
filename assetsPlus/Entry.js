@@ -17,7 +17,7 @@ var DialogAlert = require('./component/DialogAlert');
 var InnerRouter = require('./InnerRouter');
 var BeforeStart = require('./GlobalFunc/BeforeStart');
 
-let test = false;
+let test = true;
 
 //初始化用户信息
 // alert("bundle ready");

@@ -64,8 +64,6 @@ class WxConfig {
             //sharefix
             // 登录后再配置微信分享
             WxConfig.shareConfig();
-            sessionStorage.setItem('wxshare',true);
-            OnFire.fire('wxshare');
         });
     }
 
