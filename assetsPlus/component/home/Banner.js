@@ -22,54 +22,98 @@ const Banner = React.createClass({
             picWidth: 0,
             boolAutoMoving: false,
             direction: 'right',
+            numbers: [],
 
         };
     },
 
     componentWillMount() {
         this.getWidth();
-        this.setImgSlot();
+        this.initNumbers();
+        this.fixNumber();
+        // this.setImgSlot();
 
-        this.startTimer();
+        this.startMoveTimer();
         // this.setState({moveClass: 'move-left'})
       //设置
         //设置定时器.每个间隔调用一次移动
     },
+
+    initNumbers() {
+        for(let i = 0;i < this.props.totalImage.length; i++) {
+            this.state.numbers[i] = i;
+        }
+    },
+
+    fixNumber() {
+        let totalImage = this.props.totalImage;
+        let maxIndex = totalImage.length - 2;
+        for(let i = 0; i < this.state.numbers.length; i++) {
+            let result = this.state.numbers[i];
+                if(result < -maxIndex) {
+                    result = 1
+                } else if(result > maxIndex) {
+                    result = -1
+                }
+                this.state.numbers[i] = result;
+            }
+        this.setState({numbers: this.state.numbers});
+    },
+
+    addNumber() {
+        let totalImage = this.props.totalImage;
+        let next = 0;
+        for(let i = 0; i < this.state.numbers.length; i++) {
+            switch (this.state.direction) {
+                case 'left':
+                    next = -1;
+                    break;
+                case 'right':
+                    next = 1;
+                    break;
+            }
+            this.state.numbers[i] = this.state.numbers[i] + 1;
+        }
+        this.setState({numbers: this.state.numbers});
+    },
+
 
     getWidth() {
         // document.getElementById('need-draw');
         this.state.picWidth = 351;
     },
 
-    startTimer() {
+    startMoveTimer() {
         //如果要移动
-        if(this.state.boolAutoMoving) {
-            setTimeout(this.bannerChange.bind(this), 2100);
-        } else {
-            setTimeout(this.bannerChange.bind(this), 1000);
-        }
-
+        // this.setState({boolAutoMoving: true});
+        setTimeout(this.bannerAfterMove.bind(this), 2100);
     },
 
-    clearTimer() {
-        if(this.state.boolAutoMoving) {
-            window.clearInterval(bannerTimer);
-        } else {
-            window.clearInterval(bannerTimer);
-        }
+    startWaitTimer() {
+        // this.setState({boolAutoMoving: false});
+        setTimeout(this.bannerAfterWait.bind(this), 1000);
     },
 
-    bannerChange() {
-        //如果正在移动.
-        if(this.state.boolAutoMoving) {
-            //停止移动后
-            this.state.boolAutoMoving  = !this.state.boolAutoMoving;
-            //1计算将谁的位置调整/换图
-            //2.打开等待的timer
-            this.startTimer()
-        } else {
+    bannerAfterMove() {
+        console.log('移动完毕,等待中');
+        //停止移动后
+        this.state.boolAutoMoving  = !this.state.boolAutoMoving;
+        //1计算将谁的位置调整/换图
+        this.setCurrentIndex();
+        console.log('移动前');
+        console.log(this.state.numbers);
+        this.fixNumber();
+        // this.setCurrentImgPos();
+        console.log('移动后');
+        console.log(this.state.numbers);
+        //2.打开等待的timer
+        this.startWaitTimer()
+    },
 
-        }
+    bannerAfterWait() {
+        this.state.boolAutoMoving  = !this.state.boolAutoMoving;
+        this.startMoveTimer();
+        this.addNumber();
     },
 
 
@@ -87,52 +131,78 @@ const Banner = React.createClass({
         //
     },
 
-    //设置各个img曹的图片内容
-    setImgSlot() {
+    //设置当前的编号
+    setCurrentIndex() {
         let totalImage = this.props.totalImage;
         let maxIndex = totalImage.length - 1;
         let currentIndex = this.state.currentIndex;
+        let next = 0;
+        //如果要移动
+        switch (this.state.direction) {
+            case 'left':
+                next = -1;
+                break;
+            case 'right':
+                next = 1;
+                break;
+        }
 
-        let slotLeft = currentIndex - 1 < 0 ? maxIndex : currentIndex - 1;
-        let slotRight = currentIndex + 1 > maxIndex ? 0 : currentIndex + 1;
-        let arr = [];
-        arr.push(totalImage[slotLeft]);
-        arr.push(totalImage[currentIndex]);
-        arr.push(totalImage[slotRight]);
-        this.state.containers = arr;
-        this.setState({containers: this.state.containers});
+        currentIndex = currentIndex + next;
+        if(currentIndex < 0) {
+            currentIndex = maxIndex
+        } else if(currentIndex > maxIndex) {
+            currentIndex = 0
+        }
+        console.log(currentIndex);
+        this.setState({currentIndex: currentIndex});
+    },
+
+
+
+    //设置当前的编号
+    setCurrentImgPos() {
+        let totalImage = this.props.totalImage;
+        let maxIndex = totalImage.length - 1;
+        let next = 0;
+        //如果要移动
+        switch (this.state.direction) {
+            case 'left':
+                next = -1;
+                break;
+            case 'right':
+                next = 1;
+                break;
+        }
+        for(let i = 0; i< totalImage.length;i++) {
+            let result = this.state.numbers[i] + next;
+            if(result < -maxIndex) {
+                result = 1
+            } else if(result > maxIndex) {
+                result = -1
+            }
+            this.state.numbers[i] = result;
+        }
+        this.setState({numbers: this.state.numbers});
     },
 
     style(index) {
         console.log('set');
-        let worldPox = 0;
-        worldPox = worldPox + index - this.state.currentIndex;
-        if(worldPox === 2) {
-            worldPox = -1;
-        } else if(worldPox === -2) {
-            worldPox = 1;
-        }
+        let worldPox = this.state.numbers[index];
+        console.log(worldPox);
+
         let imgWidth = 351;
-        let next = 0;
-        switch (this.state.direction) {
-            case 'left':
-                next = 1;
-                break;
-            case 'right':
-                next = -1;
-                break;
-        }
         // this.state.currentIndex = this.state.currentIndex + next;
         if(!this.state.boolAutoMoving) {
             return {
                 // left: `(${worldPox * imgWidth}%)`,
+                transition: 'left 2s',
                 left: worldPox * imgWidth,
             }
         } else {
             return {
                 // left: `(${worldPox * imgWidth}%)`,
-                left: (worldPox + next) * imgWidth,
-                transition: 'left 2s'
+                left: (worldPox) * imgWidth,
+                // transition: 'left 2s'
             }
         }
 
@@ -159,13 +229,15 @@ const Banner = React.createClass({
     autoMove() {
         console.log('123');
         let result = this.state.boolAutoMoving;
+        this.setCurrentIndex();
         this.setState({boolAutoMoving: !result})
     },
 
     renderImgSlot() {
+        let imgs = this.props.totalImage;
         let arr = [];
-        for(let i = 0; i< 3; i++) {
-            arr.push(<img style={this.style(i)} src={this.state.containers[i]}/>);
+        for(let i = 0; i < imgs.length; i++) {
+            arr.push(<img style={this.style(i)} src={imgs[i]}/>);
         }
         return arr;
     },
