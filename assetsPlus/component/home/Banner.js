@@ -24,7 +24,7 @@ const Banner = React.createClass({
             direction: 'right',
             numbers: [],
             currentMove: [],
-            isMoving: false,
+            isAutoMoving: false,
 
         };
     },
@@ -91,21 +91,21 @@ const Banner = React.createClass({
     bannerAfterMove() {
         console.log('移动完毕,等待中');
         //停止移动后
-        this.state.isMoving  = !this.state.isMoving;
+        this.state.isAutoMoving  = !this.state.isAutoMoving;
         //触发渲染
-        this.setState({isMoving: this.state.isMoving});
+        this.setState({isAutoMoving: this.state.isAutoMoving});
         //2.打开等待的timer
         this.startWaitTimer()
     },
 
     bannerAfterWait() {
-        this.state.isMoving  = !this.state.isMoving;
+        this.state.isAutoMoving  = !this.state.isAutoMoving;
         //设置好下一个坐标
         this.setCurrentIndex();
         //计算出来需要移动的图片
         this.setCurrentMove();
         //触发渲染
-        this.setState({isMoving: this.state.isMoving});
+        this.setState({isAutoMoving: this.state.isAutoMoving});
         //开始move的timer
         this.startMoveTimer();
 
@@ -174,14 +174,26 @@ const Banner = React.createClass({
         }
         result = result - 1;
         let imgWidth = 351;
-        if(this.state.isMoving) {
-            return {
-                // left: worldPox * imgWidth,
-                // transition: 'left 2s'
-                transition: 'transform 2s linear',
-                transform: `translateX(${result * imgWidth}px)`,
-                visibility: 'visible',
-                // transform: `translateX(${worldPox}00%)`
+        if(this.state.isAutoMoving) {
+            let hiddenIndex = 0;
+            if(this.state.direction === 'right') {
+                hiddenIndex = 1;
+            } else {
+                hiddenIndex = -1;
+            }
+            if(result!=hiddenIndex) {
+                return {
+                    // left: worldPox * imgWidth,
+                    // transition: 'left 2s'
+                    transition: 'transform 2s linear',
+                    transform: `translateX(${result * imgWidth}px)`,
+                    visibility: 'visible',
+                    // transform: `translateX(${worldPox}00%)`
+                }
+            } else {
+                return {
+                    visibility: 'hidden',
+                }
             }
         } else {
             return {
