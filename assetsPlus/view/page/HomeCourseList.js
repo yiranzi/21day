@@ -28,7 +28,11 @@ const HomeCourseList = React.createClass({
             courseList: [],//课程ID列表
             courseStatus: [],//课程状态
             courseContent: ['./assetsPlus/image/home/course_seven.png','./assetsPlus/image/home/course_fund.png'],//课程内容信息
-            bannerPic: ['./assetsPlus/image/home/banner_fund.png','./assetsPlus/image/home/banner_seven.png','./assetsPlus/image/home/banner_fund.png','./assetsPlus/image/home/banner_seven.png'],//课程内容信息
+            bannerPic: ['./assetsPlus/image/home/banner_fund.png','./assetsPlus/image/home/banner_seven.png',
+                './assetsPlus/image/home/banner_fund.png','./assetsPlus/image/home/banner_seven.png',
+                './assetsPlus/image/home/banner_fund.png','./assetsPlus/image/home/banner_seven.png',
+                './assetsPlus/image/home/banner_fund.png','./assetsPlus/image/home/banner_seven.png',
+                './assetsPlus/image/home/banner_fund.png','./assetsPlus/image/home/banner_seven.png',],//课程内容信息
         };
     },
 
