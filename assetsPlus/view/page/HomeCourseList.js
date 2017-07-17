@@ -145,6 +145,7 @@ const HomeCourseList = React.createClass({
 
     cbfClickBanner(index) {
         let courseId = index % 2;
+        Material.postData('Banner' + courseId);
         this.goRouter(courseId);
     },
 
