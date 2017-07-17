@@ -8,6 +8,8 @@ const React = require('react');
 const SwipeView = require("../../component/container/SwipeView").default;
 
 let initPos = 0;
+let movingTimer;
+let waitTimer;
 
 const Banner = React.createClass({
 
@@ -18,7 +20,7 @@ const Banner = React.createClass({
             isMoveByHand: false,
             picWidth: 0,
             boolAutoMoving: false,
-            direction: 'right',
+            direction: 'left',
             currentMove: [],
             isAutoMoving: false,
             isMoveByHand: false,
@@ -34,6 +36,10 @@ const Banner = React.createClass({
         this.startWaitTimer();
     },
 
+    getWidth() {
+        // document.getElementById('need-draw');
+        // this.state.picWidth = 351;
+    },
 
 
     setCurrentMove() {
@@ -54,34 +60,26 @@ const Banner = React.createClass({
         // this.setState({currentMove: this.state.currentMove});
     },
 
-    getWidth() {
-        // document.getElementById('need-draw');
-        this.state.picWidth = 351;
-    },
-
-    autoMove() {
-        // if(!this.state.boolAutoMoving) {
-        //     this.bannerAfterMove();
-        // } else {
-        //     this.bannerAfterWait();
-        // }
-    },
-
     startMoveTimer() {
         //如果要移动
         // this.setState({boolAutoMoving: true});
-        setTimeout(this.bannerAfterMove.bind(this), 2600);
+        movingTimer = setTimeout(this.bannerAfterMove.bind(this), 1200);
     },
 
     startWaitTimer() {
         // this.setState({boolAutoMoving: false});
-        setTimeout(this.bannerAfterWait.bind(this), 1000);
+        waitTimer = setTimeout(this.bannerAfterWait.bind(this), 1000);
     },
 
     bannerAfterMove() {
-        console.log('移动完毕,等待中');
-        //停止移动后
-        this.state.isAutoMoving  = !this.state.isAutoMoving;
+        //清空timer
+
+
+        //初始化(防止没设置的bug)
+        this.state.isMoveByHand = false;
+        this.state.direction = 'left';
+        //停止移动后,关闭移动
+        this.state.isAutoMoving  = false;
         //触发渲染
         this.setState({isAutoMoving: this.state.isAutoMoving});
         //2.打开等待的timer
@@ -89,7 +87,8 @@ const Banner = React.createClass({
     },
 
     bannerAfterWait() {
-        this.state.isAutoMoving  = !this.state.isAutoMoving;
+        //开启移动
+        this.state.isAutoMoving  = true;
         //设置好下一个坐标
         this.setCurrentIndex();
         //计算出来需要移动的图片
@@ -110,10 +109,10 @@ const Banner = React.createClass({
         //如果要移动
         switch (this.state.direction) {
             case 'left':
-                next = -1;
+                next = 1;
                 break;
             case 'right':
-                next = 1;
+                next = -1;
                 break;
         }
 
@@ -123,10 +122,87 @@ const Banner = React.createClass({
         } else if(currentIndex > maxIndex) {
             currentIndex = 0
         }
-        console.log(currentIndex);
         this.state.currentIndex = currentIndex;
     },
 
+
+    // cbfPress(e, deltaX, deltaY, absX, absY, velocity) {
+    //     //如果当前在等待状态中.并且非手动操作
+    //     if (!this.state.isAutoMoving && !this.state.isMoveByHand) {
+    //         //修改操作模式
+    //         this.state.isMoveByHand = true;
+    //         //关闭timer
+    //
+    //         //记录初始位置.
+    //         initPos = 0;
+    //         //开始捕捉滑动
+    //
+    //     }
+    // },
+
+    cbfMoving(e, deltaX, deltaY, absX, absY, velocity) {
+        deltaX = -deltaX;
+        if (!this.state.isAutoMoving && !this.state.isMoveByHand) {
+            //修改操作模式
+            this.state.isMoveByHand = true;
+            //关闭timer
+            window.clearInterval(waitTimer);
+            //记录img初始位置.
+            initPos = 0;
+        }
+        //开始捕捉滑动(如果是手动模式.)
+        if(this.state.isMoveByHand) {
+            //设置好方向.
+            if(deltaX >= 0) {
+                if(this.state.direction !== 'right') {
+                    this.state.direction = 'right';
+                    this.setState({direction: 'right'});
+                }
+            } else {
+                if(this.state.direction !== 'left') {
+                    this.setState({direction: 'left'});
+                }
+            }
+            this.setState({currentPos: deltaX});
+            //计算好加速度.
+        }
+    },
+
+    cbfPutOn(e, deltaX, deltaY, absX, absY, velocity) {
+        //如果是手动模式
+        if(!this.state.isMoveByHand) {
+            return;
+        }
+        //关闭手动,打开
+        this.state.isMoveByHand = false;
+        this.bannerAfterWait();
+        //
+    },
+
+    // onTap = {this.cbfPress}
+
+    render() {
+        return(
+            <div id = 'banner' className = "global-banner">
+                {/*<SwipeView/>*/}
+                <SwipeView className="banner-container" onSwiping = {this.cbfMoving} onSwiped = {this.cbfPutOn} >
+                    <div onClick={this.goRouter} >
+                        {this.renderImgSlot()}
+                    </div>
+                </SwipeView>
+                <div className="banner-process">
+                    {this.renderBannerProcess()}
+                </div>
+            </div>
+        )
+    },
+
+    goRouter() {
+
+        if(!this.state.isAutoMoving && !this.state.isMoveByHand) {
+            this.props.cbfClickBanner(this.state.currentIndex);
+        }
+    },
 
     // transform: translateZ(0);
     // style={{transform: `translateX(-100%)`}}
@@ -141,15 +217,15 @@ const Banner = React.createClass({
             //自动移动.
             let hiddenIndex = 0;
             if(this.state.direction === 'right') {
-                hiddenIndex = 1;
-            } else {
                 hiddenIndex = -1;
+            } else {
+                hiddenIndex = 1;
             }
             if(result!=hiddenIndex) {
                 return {
                     // left: worldPox * imgWidth,
                     // transition: 'left 2s'
-                    transition: 'transform 2s linear',
+                    transition: 'transform 1s',
                     transform: `translateX(${result * imgWidth}px)`,
                     visibility: 'visible',
                     // transform: `translateX(${worldPox}00%)`
@@ -181,54 +257,6 @@ const Banner = React.createClass({
         }
     },
 
-    cbfPress(e, deltaX, deltaY, absX, absY, velocity) {
-        console.log('moving' + deltaX);
-        //如果当前在等待状态中.并且非手动操作
-        if (!this.state.isAutoMoving && !this.state.isMoveByHand) {
-            //修改操作模式
-            this.state.isMoveByHand = true;
-            //关闭timer
-
-            //记录初始位置.
-            initPos = 0;
-            //开始捕捉滑动
-
-        }
-    },
-
-    cbfMoving(e, deltaX, deltaY, absX, absY, velocity) {
-        // console.log('moving' + deltaX);
-        //如果是手动模式.
-
-        //设置好方向.
-
-        //计算好加速度.
-    },
-
-    cbfPutOn() {
-        //如果是手动模式
-        if(!this.state.isMoveByHand) {
-            return;
-        }
-        //关闭手动,打开
-        this.state.isMoveByHand = false;
-        this.bannerAfterWait();
-        //
-    },
-
-    render() {
-        return(
-            <div id = 'banner' className = "global-banner">
-                {/*<SwipeView/>*/}
-                <SwipeView className="banner-container" onSwiping = {this.cbfMoving} onSwiped = {this.cbfPress} >
-                    <div onClick={this.autoMove} >
-                        {this.renderImgSlot()}
-                    </div>
-                </SwipeView>
-            </div>
-        )
-    },
-
     renderImgSlot() {
         let imgs = this.props.totalImage;
         let arr = [];
@@ -237,6 +265,20 @@ const Banner = React.createClass({
         }
         return arr;
     },
+
+    renderBannerProcess() {
+        let imgs = this.props.totalImage;
+        let arr = [];
+        for(let i = 0; i < imgs.length; i++) {
+            let j = i % 2;
+            if(i === 0 || i === 1){
+                arr.push(<span className="banner-span" style={this.state.currentIndex % 2 === j ? {backgroundColor: 'white'} : {}}/>);
+            }
+
+            // arr.push(<span className="banner-span" style={this.state.currentIndex === i ? {backgroundColor: 'white'} : {}}/>);
+        }
+        return arr;
+    }
 });
 
 module.exports = Banner;

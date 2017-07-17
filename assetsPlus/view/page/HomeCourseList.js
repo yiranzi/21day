@@ -28,11 +28,7 @@ const HomeCourseList = React.createClass({
             courseList: [],//课程ID列表
             courseStatus: [],//课程状态
             courseContent: ['./assetsPlus/image/home/course_seven.png','./assetsPlus/image/home/course_fund.png'],//课程内容信息
-            bannerPic: ['./assetsPlus/image/home/banner_fund.png','./assetsPlus/image/home/banner_seven.png',
-                './assetsPlus/image/home/banner_fund.png','./assetsPlus/image/home/banner_seven.png',
-                './assetsPlus/image/home/banner_fund.png','./assetsPlus/image/home/banner_seven.png',
-                './assetsPlus/image/home/banner_fund.png','./assetsPlus/image/home/banner_seven.png',
-                './assetsPlus/image/home/banner_fund.png','./assetsPlus/image/home/banner_seven.png',],//课程内容信息
+            bannerPic: ['./assetsPlus/image/home/banner_seven.png','./assetsPlus/image/home/banner_fund.png','./assetsPlus/image/home/banner_seven.png','./assetsPlus/image/home/banner_fund.png',],//课程内容信息
         };
     },
 
@@ -133,7 +129,7 @@ const HomeCourseList = React.createClass({
         return(
             <div className="home-course-list">
                 <div className = 'course-banner'>
-                    <Banner totalImage = {this.state.bannerPic}/>
+                    <Banner totalImage = {this.state.bannerPic} cbfClickBanner = {this.cbfClickBanner}/>
                 </div>
                 <div>
                     {/*<div className="course-banner">*/}
@@ -145,6 +141,11 @@ const HomeCourseList = React.createClass({
                 </div>
             </div>
         )
+    },
+
+    cbfClickBanner(index) {
+        let courseId = index % 2;
+        this.goRouter(courseId);
     },
 
 
@@ -159,33 +160,33 @@ const HomeCourseList = React.createClass({
         return arr;
     },
 
-    renderCourseList3() {
-        let arr =[];
-        let courseList = this.state.courseList;
-        for(let i = 0;i<courseList.length;i++) {
-            arr.push(<div className="course-content-line" key={i} onClick={this.goRouter.bind(this,courseList[i],0)}>
-                <span>课程ID为{courseList[i]}</span>
-                <span>课程名称为{this.state.courseContent[i]}</span>
-                <span>课程状态为{this.state.courseStatus[i].payStatus}</span>
-            </div>)
-        }
-        return arr;
-    },
-
-
-
-    renderCourseList2(){
-        let arr =[];
-        let courseList = this.state.courseList;
-        for(let i = 0;i<courseList.length;i++) {
-            arr.push(<div className="course-content-line" key={i} onClick={this.goRouter.bind(this,courseList[i],1)}>
-                <span>课程ID为{courseList[i]}</span>
-                <span>课程名称为{this.state.courseContent[i]}</span>
-                <span>课程状态为{this.state.courseStatus[i].payStatus}</span>
-            </div>)
-        }
-        return arr;
-    }
+    // renderCourseList3() {
+    //     let arr =[];
+    //     let courseList = this.state.courseList;
+    //     for(let i = 0;i<courseList.length;i++) {
+    //         arr.push(<div className="course-content-line" key={i} onClick={this.goRouter.bind(this,courseList[i],0)}>
+    //             <span>课程ID为{courseList[i]}</span>
+    //             <span>课程名称为{this.state.courseContent[i]}</span>
+    //             <span>课程状态为{this.state.courseStatus[i].payStatus}</span>
+    //         </div>)
+    //     }
+    //     return arr;
+    // },
+    //
+    //
+    //
+    // renderCourseList2(){
+    //     let arr =[];
+    //     let courseList = this.state.courseList;
+    //     for(let i = 0;i<courseList.length;i++) {
+    //         arr.push(<div className="course-content-line" key={i} onClick={this.goRouter.bind(this,courseList[i],1)}>
+    //             <span>课程ID为{courseList[i]}</span>
+    //             <span>课程名称为{this.state.courseContent[i]}</span>
+    //             <span>课程状态为{this.state.courseStatus[i].payStatus}</span>
+    //         </div>)
+    //     }
+    //     return arr;
+    // }
 });
 
 module.exports = HomeCourseList;
