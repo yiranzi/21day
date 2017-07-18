@@ -67,13 +67,13 @@ const Banner = React.createClass({
     },
 
     startWaitTimer() {
+
         // this.setState({boolAutoMoving: false});
         waitTimer = setTimeout(this.bannerAfterWait.bind(this), 1000);
     },
 
     bannerAfterMove() {
         //清空timer
-
 
         //初始化(防止没设置的bug)
         this.state.isMoveByHand = false;
@@ -175,6 +175,9 @@ const Banner = React.createClass({
         }
         //关闭手动,打开
         this.state.isMoveByHand = false;
+        console.log('startWaitTimer');
+        window.clearInterval(waitTimer);
+        window.clearInterval(movingTimer);
         this.bannerAfterWait();
         //
     },
