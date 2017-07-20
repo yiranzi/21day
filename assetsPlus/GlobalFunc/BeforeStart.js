@@ -18,6 +18,8 @@ const Statistics = require('../GlobalFunc/Statistics');
 class BeforeStart {
     static init() {
         console.log('init');
+        //1 微信设置
+        this.initWxConfig();
         //0 初始化全局
         this.initGlobal();
         //1 进行异步的userID请求 之后进行必要的请求(付费,设置分享等)
@@ -51,6 +53,7 @@ class BeforeStart {
         //重定向到main
         let redictUrl = '/main';
         let goPath = MyStorage.getItem('goPath');
+        console.log('redict!!!!');
         if(goPath){
             redictUrl = goPath;
             //如果有课程
@@ -59,10 +62,16 @@ class BeforeStart {
                 sessionStorage.setItem('courseId',courseId);
                 //重定向前,需要请求对应课程的课程状态.
                 //action发起
-                this.checkUserPayStatue(courseId).then((result)=>{
-                    //保存到课程列表中
-                    MyStorage.setCourseStatus(courseId,result);
-                });
+                //判断是否是21报名(因为接口未统一)
+                if(courseId !== 2) {
+                    this.checkUserPayStatue(courseId).then((result)=>{
+                        //保存到课程列表中
+                        MyStorage.setCourseStatus(courseId,result);
+                    });
+
+                } else {
+                    //发送请求课程报名情况的请求
+                }
                 // 举例/fund/getReward/
                 redictUrl = Tools.setCourseUrl(courseId) + '/' + redictUrl;
             }
@@ -114,7 +123,6 @@ class BeforeStart {
     static start() {
         let f = this.SetCoursePayStatus.bind(this);
         f();
-        this.initWxConfig();
     }
 
     static initWxConfig() {

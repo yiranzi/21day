@@ -30,6 +30,9 @@ const GetRewardSeven = require('./view/seven/GetReword');
 const GetGraduatedSeven = require('./view/seven/GetGraduated');
 
 
+const PayPage21 = require('./view/21Intro/PayPage');
+
+
 
 
 
@@ -56,6 +59,8 @@ let InnerRouter = React.createClass({
                     <Route path ="/seven/listenCourse/:dayId" component={ListenCourseSeven}/>
                     <Route path="/seven/getReward/:dayId(/:mine)" component={GetRewardSeven}/>
                     <Route path="/seven/getGraduated(/:mine)" component={GetGraduatedSeven}/>
+                    {/*21天*/}
+                    <Route path="/21Intro/payPage(/:mine)" component={PayPage21}/>
 
 
                     {/*<Route path="/payPage(/:free)" component={PayPage}/>*/}

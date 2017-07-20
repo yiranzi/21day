@@ -67,6 +67,9 @@ class Tools {
             case 1:
                 courseUrl = '/fund';
                 break;
+            case 2:
+                courseUrl = '/21Intro';
+                break;
         }
         return courseUrl;
     }

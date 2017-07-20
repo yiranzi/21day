@@ -8,19 +8,18 @@ const OnFire = require('onfire.js');
 //课程信息
 let courseInfo = [];
 //课程Id列表
-let courseList = [0,1];
+let courseList = [0,1,2];
 
 class MyStorage {
-    constructor() {
-        console.log('constructor');
-        for(let i = 0; i<courseList.length; i++) {
-            courseInfo[courseList[i]] = {};
-        }
-    }
-
     static init() {
         console.log('init');
+        let max = 0;
         for(let i = 0; i<courseList.length; i++) {
+            if(courseList[i]>max) {
+                max = courseList[i];
+            }
+        }
+        for(let i = 0; i<max+1; i++) {
             courseInfo[courseList[i]] = {};
         }
     }

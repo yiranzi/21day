@@ -48,7 +48,6 @@ const CPlus = React.createClass({
 
     componentWillMount() {
         sessionStorage.removeItem('courseId');
-        WxConfig.shareConfig();
         Statistics.setPathNow('长投家');
         this.getUserInfo();
     },

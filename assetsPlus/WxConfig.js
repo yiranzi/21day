@@ -6,6 +6,7 @@ var $ = require('jquery');
 var Util = require('./Util');
 var OnFire= require('onfire.js');
 var shareConfigFlag = true;
+const Tools = require('./GlobalFunc/Tools');
 
 class WxConfig {
     /**
@@ -63,9 +64,13 @@ class WxConfig {
         wx.ready( () => {
             //sharefix
             // 登录后再配置微信分享
-            WxConfig.shareConfig();
-            sessionStorage.setItem('wxshare',true);
-            OnFire.fire('wxshare');
+            let userId = User.getUserInfo().userId;
+            Tools.fireRace(userId,"OAUTH_SUCCESS").then(()=>{
+                userId = User.getUserInfo().userId;
+                WxConfig.shareConfig();
+                sessionStorage.setItem('wxshare',true);
+                OnFire.fire('wxshare');
+            });
         });
     }
 
@@ -89,6 +94,7 @@ class WxConfig {
         link = link || Util.getShareLink();
         desc = desc || Util.getShareDesc();
         title = title || Util.getShareTitle();
+        alert(link);
 
         if( !imgUrl ) {
           imgUrl = 'https://h5test.ichangtou.com/minic/assetsPlus/image/logo.png';
