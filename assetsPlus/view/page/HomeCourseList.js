@@ -33,7 +33,7 @@ const HomeCourseList = React.createClass({
     },
 
     componentWillMount() {
-        // Statistics.setPathNow('长投家');
+        Statistics.setPathNow('长投家-课程页');
         Loading.hideLoading();
         console.log('enter courseList');
 

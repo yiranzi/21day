@@ -68,7 +68,7 @@ class PayController {
     }
 
     static wechatPay() {
-
+        console.log('wechatPay');
         if( payPullingFlag ) {
             //如果正在拉取支付数据，阻止，避免重复请求
             setTimeout(()=>{
@@ -204,6 +204,31 @@ class PayController {
                         "sum": sum
                     }
                 );
+            case '2':
+                jsonData = JSON.stringify(
+                    {
+                        "body":'7天训练营报名' ,
+                        "deal": {
+                            "items": [
+                                {
+                                    // dealType: 1, //交易类型
+                                    // itemId: Util.getCurrentBatch(),
+                                    // mchantType: 5, //商品类型 21days
+                                    // misc: Util.getUrlPara('dingyuehao')||'0'+'@'+seniorId+'@'+teacherId,
+                                    // price: sum,
+                                    dealType: 1, //交易类型
+                                    itemId: 23,
+                                    mchantType: 5, //商品类型 21days
+                                    misc: '',
+                                    price: sum
+                                }
+                            ]
+                        },
+                        "openId": userInfo.payOpenId && userInfo.payOpenId.toString(),
+                        "sum": sum
+                    }
+                );
+                break;
                 break;
         }
         console.log('jsonData',jsonData);
@@ -259,6 +284,8 @@ class PayController {
             },
 
             error : (data)=>{
+                console.log('测试错误支付回调');
+                OnFire.fire('PAID_DONE','normalPay');
                 Util.postCnzzData("error-请求微信支付失败" + data.status + '-' + data.statusText + '-uid:' + userInfo.userId);
                 //标记请求结束
                 Loading.showLoading('请求微信支付失败');

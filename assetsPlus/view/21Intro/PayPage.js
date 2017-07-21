@@ -52,7 +52,7 @@ var PayPage = React.createClass({
             hhrChannel: false,
 
             //21天的报名信息
-            signUpInfo: {}
+            // signUpInfo: {}
         };
     },
 
@@ -72,7 +72,7 @@ var PayPage = React.createClass({
             Tools.fireRaceCourse(courseId).then((value)=>{
                 if(value.pay){
                     this.setState({
-                        signUpInfo: value,
+                        // signUpInfo: value,
                         hasPaid: true, //已报名
                     });
                 } else{
@@ -88,13 +88,14 @@ var PayPage = React.createClass({
             outBool = true;
             //首先接收到付款结束.
             OnFire.on('PAID_DONE', ()=>{
+                console.log('get done');
                 if (sessionStorage.getItem('courseId') !== courseId) {
                     return
                 }
                 //先ajax更新这个数据(花费少量时间)
                 Tools.updataCourseData(courseId).then((value)=>{
                     if(value.pay){
-                        this.state.signUpInfo = value;
+                        // this.state.signUpInfo = value;
                         OnFire.fire('PAID_SUCCESS','normalPay');
                     } else {
                         outBool = false;
@@ -108,7 +109,7 @@ var PayPage = React.createClass({
                 Statistics.postDplusData('paySuccess');
                 this.state.hasPaid = true;
                 this.setState({
-                    signUpInfo: this.state.signUpInfo,
+                    // signUpInfo: this.state.signUpInfo,
                     hasPaid: true, //已报名
                 });
                 this.checkSubscribe();
@@ -170,16 +171,14 @@ var PayPage = React.createClass({
                     num: 0,
                     time: result.time,
                     showint: false,
-                    ifCanPaid: this.state.ifCanPaid,
-                    endTime: [2017,7,25,9,0,0],
+                    ifCanPaid: false,
                 });
             } else {
                 this.setState({
                     num: restNum,
                     time: result.time,
                     showint: true,
-                    ifCanPaid: this.state.ifCanPaid,
-                    endTime: [2017,7,25,9,0,0],
+                    ifCanPaid: true,
                 });
             }
             this.setState({
@@ -187,18 +186,6 @@ var PayPage = React.createClass({
             });
 
         });
-    },
-
-
-    /**
-     * 按钮点击
-     */
-    clickHandler() {
-        this.payHandler();
-    },
-
-    onWantJoinTap () {
-        window.dialogAlertComp.show('报名已截止','这次报名截止了哦。还想上课的小伙伴可以去听听7天训练营！','去看看',this.goRouter,'先不看',true);
     },
 
     goRouter() {
@@ -215,6 +202,7 @@ var PayPage = React.createClass({
      * 支付动作
      */
     payHandler() {
+        console.log('click');
         if(User.getUserInfo().userId){
             //微信支付
             PayController.wechatPay();
@@ -244,7 +232,10 @@ var PayPage = React.createClass({
         if (isSubscribed) {
             DoneToast.show('报名成功，开始学习第一课吧！');
             //TODO 加qq群号.的弹窗.
+            // 重新请求.
+            this.signUpNumber()
             //TODO 显示报名开课证(跳转)
+            //TODo 上下线
             // this.gotoSelectPage();
         } else { // 未关注引导关注公号
             this.scrollToTop();
@@ -275,39 +266,73 @@ var PayPage = React.createClass({
     bottomBar() {
         return(<div className="global-div-fixed">
             <div className="fund-join-btns">
-                {this.buttonLesson()}
-                {this.buttonSignUp()}
+                {this.renderButtonSignUp()}
+                {this.renderButtonShare()}
             </div>
         </div>)
     },
 
-    buttonLesson() {
-        return(<span className="btn try" onClick={this.freeLesson}>试听</span>)
-    },
-
-    buttonSignUp() {
-        if(this.state.ifCanPaid){
-            return(<span className="btn join" onClick={this.clickHandler}>{this.renderPrice()}</span>)
+    renderButtonSignUp() {
+        if(!this.state.hasPaid){
+            //报名按钮
+            return(<span className="btn try" onClick={this.clickHandler}>我要报名　（{this.state.buttonPrice}元）</span>)
         } else {
-            return(<span className="btn join" onClick={this.onWantJoinTap}><span style={{lineHeight: '2.8rem'}}>开启报名？</span></span>)
+            //查看毕业证按钮
+            return(<span className="btn try" onClick={this.onSeeReward}>我的开课证</span>)
         }
 
     },
 
-    renderPrice() {
-        let arr = [];
-        if(!this.state.hhrChannel) {
-            arr.push(<div className="price-span-right"><s className="price-span-inner origin-price">原价¥{20}</s><span className="price-span-inner current-price">现价¥{this.state.buttonPrice}</span></div>);
-        } else {
-            arr.push(<div className="price-span-right"><s className="price-span-inner origin-price">原价¥{200}</s><span className="price-span-inner current-price">友情价¥{this.state.buttonPrice}</span></div>);
-        }
-        return arr;
+    renderButtonShare() {
+        Statistics.postDplusData('rewardButton');
+        return(<img className="btn join" style={{lineHeight: '2.8rem'}} onClick={this.onSeeReward}/>)
     },
 
-    freeLesson() {
-        Statistics.postDplusData('click');
+    onSeeReward () {
+        //TODO 跳转到成就卡界面
+        Statistics.postDplusData('shareButton');
         Tools.MyRouter('ListenCourse','/listenCourse/10');
-    }
+    },
+
+    /**
+     * 按钮点击
+     */
+    clickHandler() {
+        if(this.state.ifCanPaid) {
+            this.payHandler();
+        } else {
+            window.dialogAlertComp.show('报名失败','出故障了.重新进入一下再试试，还不行的话可以报告管理员.手机号：15652778863','知道啦',()=>{},'',false);
+        }
+
+    },
+
+
+    // buttonSignUp() {
+    //     if(!this.state.hasPaid){
+    //         //报名按钮
+    //         return(<span className="btn join" onClick={this.clickHandler}>{this.renderPrice()}</span>)
+    //     } else {
+    //         //查看毕业证按钮
+    //         return(<span className="btn join" onClick={this.onSeeReward}><span style={{lineHeight: '2.8rem'}}>查看开课</span></span>)
+    //     }
+    //
+    // },
+
+    // renderPrice() {
+    //     let arr = [];
+    //     if(!this.state.hhrChannel) {
+    //         arr.push(<div className="price-span-right"><s className="price-span-inner origin-price">原价¥{20}</s><span className="price-span-inner current-price">现价¥{this.state.buttonPrice}</span></div>);
+    //     } else {
+    //         arr.push(<div className="price-span-right"><s className="price-span-inner origin-price">原价¥{200}</s><span className="price-span-inner current-price">友情价¥{this.state.buttonPrice}</span></div>);
+    //     }
+    //     return arr;
+    // },
+
+    // freeLesson() {
+    //     //TODO 分享给好友
+    //     Statistics.postDplusData('shareButton');
+    //     Tools.MyRouter('ListenCourse','/listenCourse/10');
+    // }
 
 });
 

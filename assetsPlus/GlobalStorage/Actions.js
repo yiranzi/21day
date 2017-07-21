@@ -23,12 +23,12 @@ class Actions {
             case '2':
                 //判断是否是21报名(因为接口未统一)
                 Material.getJudgeFromServer21().done((result)=>{
-                    if(typeof (result === 'boolean')) {
+                    if(typeof (result) === 'boolean') {
                         ajaxResult.pay = result;
                     } else {
                         ajaxResult = result;
                         //已购买
-                        if(result.data.qqGroup) {
+                        if(result.qqGroup) {
                             ajaxResult.pay = true;
                         } else {
                             ajaxResult.pay = false;
