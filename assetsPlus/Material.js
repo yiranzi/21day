@@ -836,6 +836,62 @@ class Material {
         });
     }
 
+    /***
+     * 获取报名人数21
+     * @param albumId
+     * @returns {*}
+     */
+    static getRegistered21() {
+        const Util = require('./Util');
+        const User = require('./User');
+
+        let apiUrl = Util.getAPIUrl('get_activity_status');
+
+        return $.ajax({
+            url: apiUrl,
+            type: 'get',
+            cache: false,
+            contentType: 'application/json;charset=utf-8',
+            headers: {
+                Accept:"application/json"
+            },
+            beforeSend: function(request) {
+                request.setRequestHeader("X-iChangTou-Json-Api-User", User.getUserInfo().userId);
+                request.setRequestHeader("X-iChangTou-Json-Api-Token", Util.getApiToken());
+            }
+        });
+    }
+
+    /***
+     * 获取是否报名人数
+     * @param albumId
+     * @returns {*}
+     */
+    static getJudgeFromServer21() {
+        //接口合并未上线
+        // courseId = 1;
+        var User = require('./User');
+        const Util = require('./Util'),
+            apiUrl = Util.getAPIUrl('has_registered');
+        let userInfo = User.getUserInfo();
+        return $.ajax(
+            {
+                url: apiUrl,
+                type: 'post',
+                cache: false,
+                contentType: 'application/json;charset=utf-8',
+                headers: {
+                    Accept: 'application/json'
+                },
+                beforeSend: (request)=>{
+                    request.setRequestHeader("X-iChangTou-Json-Api-Token", Util.getApiToken());
+                    request.setRequestHeader("X-iChangTou-Json-Api-User", userInfo.userId);
+                }
+            }
+        )
+    }
+
+
 
 
 

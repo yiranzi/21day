@@ -11,7 +11,11 @@ const $ = window.$ = require('jquery');
 const React = require('react');
 const OnFire = require('onfire.js');
 
-let paramsType = ['Sictchannel','SgoPath','SgetWhere','SfreeLesson'];
+const Tools = require('../GlobalFunc/Tools');
+
+let paramsOriginType = ['ictchannel','goPath','getWhere','freeLesson'];
+let paramsSaveType = ['ictchannel','goPath','getWhere','freeLesson'];
+let paramsStatisType = ['Sictchannel','SgoPath','SgetWhere','SfreeLesson'];
 
 class Statistics {
     static setPathNow(pathNow) {
@@ -21,39 +25,60 @@ class Statistics {
         }
         sessionStorage.setItem('pathFrom',pathOld);
         sessionStorage.setItem('pathNow',pathNow);
+        sessionStorage.setItem('SpathFrom',pathOld);
+        sessionStorage.setItem('SpathNow',pathNow);
     }
 
     static setStaticData() {
-        let linkParamsTypes = paramsType;
-        for(let i = 0 ;i < linkParamsTypes.length; i++) {
-            let getParams = Util.getUrlPara(linkParamsTypes[i]);
+        // let linkParamsTypes = paramsType;
+        for(let i = 0 ;i < paramsOriginType.length; i++) {
+            let getParams = Util.getUrlPara(paramsOriginType[i]);
             switch (i) {
                 case 0:
                     if(getParams) {
-                        sessionStorage.setItem(linkParamsTypes[i],getParams);
-                        sessionStorage.setItem('userType','下线');
+                        sessionStorage.setItem(paramsSaveType[i],getParams);
+                        sessionStorage.setItem(paramsStatisType[i],'下线');
                     } else {
-                        sessionStorage.setItem(linkParamsTypes[i],'null');
-                        sessionStorage.setItem('userType','上线');
+                        sessionStorage.setItem(paramsSaveType[i],'null');
+                        sessionStorage.setItem(paramsStatisType[i],'上线');
                     }
                     break;
                 default:
-                    if(getParams) {
-                        let title = ['课程','日期'];
-                        let arr = [];
-                        let result;
-                        arr.push(Util.getUrlPara('courseId'));
-                        arr.push(Util.getUrlPara('dayId'));
-                        for(let i = 0; i<arr.length; i++) {
-                            result = result + title[i] + arr[i] + ',';
-                        }
-                        sessionStorage.setItem(linkParamsTypes[i],result);
-                    } else {
-                        sessionStorage.setItem(linkParamsTypes[i],'null');
-                    }
+                    // if(getParams) {
+                    //     let title = ['课程','日期'];
+                    //     let arr = [];
+                    //     let result;
+                    //     arr.push(Util.getUrlPara('courseId'));
+                    //     arr.push(Util.getUrlPara('dayId'));
+                    //     for(let i = 0; i<arr.length; i++) {
+                    //         result = result + title[i] + arr[i] + ',';
+                    //     }
+                    //     sessionStorage.setItem(linkParamsTypes[i],result);
+                    // } else {
+                    //     sessionStorage.setItem(linkParamsTypes[i],'null');
+                    // }
                     break;
             }
         }
+
+    }
+
+    static GlobalStatis() {
+        dplus.register({
+            "who" : sessionStorage.getItem(paramsStatisType[0]),
+            "from" : sessionStorage.getItem('SpathFrom'),
+            "to" : sessionStorage.getItem('SpathNow'),
+        })
+    }
+
+
+    static postDplusData(eventName,data) {
+        let userId = User.getUserInfo().userId;
+        Tools.fireRace(userId,"OAUTH_SUCCESS").then(()=>{
+            console.log('hava post DPlus ' + eventName);
+            this.GlobalStatis();
+            dplus.track(eventName,data)
+        });
     }
 
     static add(eventName) {
@@ -63,7 +88,7 @@ class Statistics {
     }
 
     //数据上报
-    static  postData(eventName) {
+    static postData(eventName) {
         var User = require('../User');
         const Util = require('../Util'),
             apiUrl = Util.getAPIUrl('post_statistic_data');

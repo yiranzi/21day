@@ -10,6 +10,11 @@ let courseInfo = [];
 //课程Id列表
 let courseList = [0,1,2];
 
+//这里面需要分出来几个
+//1做一个全局的常量保存的地方
+//2这里面用来保存变量数据.主要就是set和get
+//3这里还负责保存后的广播.
+
 class MyStorage {
     static init() {
         console.log('init');
@@ -24,16 +29,23 @@ class MyStorage {
         }
     }
 
-    static setCourseStatus(courseId,status) {
+    /**
+     *  保存数据,并且广播数据
+     * @param courseId 课程ID 拼接广播
+     * @param status 关于购买的数据 .pay是是否支付
+     */
+
+    static setCourseStatus(courseId,dataResult) {
         console.log('set');
-        courseInfo[courseList[courseId]].payStatus = status;
+        //保存到全局
+        courseInfo[courseList[courseId]].dataResult = dataResult;
         // OnFire.fire("courseStatus",{courseId: courseId,status: status});
-        OnFire.fire("courseStatus" + courseId,status);
+        OnFire.fire("courseStatus" + courseId,dataResult);
     }
 
     static getCourseStatus(courseId) {
         console.log('get');
-        return courseInfo[courseId].payStatus;
+        return courseInfo[courseId].dataResult;
     }
 
     static getCourseList() {

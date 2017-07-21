@@ -36,6 +36,7 @@ var Timeout = React.createClass({
     },
 
     componentWillMount() {
+        console.log('set time');
         let f_time = this.props.finalDate;
         let f_years = f_time[0];
         let f_mounths = f_time[1];

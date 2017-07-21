@@ -54,7 +54,7 @@ class BeforeStart {
         let redictUrl = '/main';
         let goPath = MyStorage.getItem('goPath');
         console.log('redict!!!!');
-        if(goPath){
+        if (goPath) {
             redictUrl = goPath;
             //如果有课程
             let courseId = MyStorage.getItem('courseId');
@@ -62,19 +62,13 @@ class BeforeStart {
                 sessionStorage.setItem('courseId',courseId);
                 //重定向前,需要请求对应课程的课程状态.
                 //action发起
-                //判断是否是21报名(因为接口未统一)
-                if(courseId !== 2) {
-                    this.checkUserPayStatue(courseId).then((result)=>{
-                        //保存到课程列表中
-                        MyStorage.setCourseStatus(courseId,result);
-                    });
 
-                } else {
-                    //发送请求课程报名情况的请求
-                }
                 // 举例/fund/getReward/
                 redictUrl = Tools.setCourseUrl(courseId) + '/' + redictUrl;
             }
+        } else {
+            // 获取全部课程的购买.
+            // this.SetCoursePayStatus();
         }
         let dayId = MyStorage.getItem('dayId');
         if(dayId){
@@ -121,8 +115,8 @@ class BeforeStart {
     //因为流程上需要先登录userInfo 在进行购买判定.
     //这个过程写在这里.当得到结果后统一发送Onfire就可以.
     static start() {
-        let f = this.SetCoursePayStatus.bind(this);
-        f();
+        // let f = this.SetCoursePayStatus.bind(this);
+        // f();
     }
 
     static initWxConfig() {
@@ -141,30 +135,7 @@ class BeforeStart {
         }
     }
 
-    /**
-     * 检查用户购买状态
-     */
-    static checkUserPayStatue(courseId) {
-        console.log('enter');
-        let returnValue;
-        returnValue = MyStorage.getCourseStatus(courseId);
-        return new Promise((reslove,reject)=>{
-            if(!returnValue) {
-                Material.getJudgeFromServer(courseId).done((result)=>{
-                    if(result){
-                        returnValue = 'pay'
-                    } else{
-                        returnValue = 'free'
-                    }
-                    reslove(returnValue);
-                }).fail(()=>{
 
-                });
-            } else {
-                reslove(returnValue);
-            }
-        });
-    }
 }
 
 module.exports = BeforeStart;

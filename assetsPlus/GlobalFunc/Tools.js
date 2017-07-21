@@ -6,9 +6,10 @@ const MyStorage = require('../GlobalFunc/MyStorage');
 const $ = window.$ = require('jquery');
 const React = require('react');
 const OnFire = require('onfire.js');
+const Actions = require('../GlobalStorage/Actions');
 
 class Tools {
-    static fireRace(result,eventName) {
+    static fireRace(result,eventName,courseId) {
         return new Promise((resolve,reject)=>{
             if (result) {
                 resolve(result);
@@ -20,12 +21,47 @@ class Tools {
         })
     }
 
+    static updataCourseData(courseId) {
+        let keyWord = 'courseStatus';
+        keyWord = keyWord + courseId;
+        //down
+        let payStatus = MyStorage.getCourseStatus(courseId);
+        return new Promise((resolve,reject)=>{
+            //这个版本现在actions和get耦合在一起.
+            //先试图取值 如果失败 则action ajax
+            //action
+            console.log('action!!!!!!!!'+ keyWord);
+            Actions.ifCourseSignUp(courseId);
+            //get
+            OnFire.on(keyWord, (value)=>{
+                resolve(value);
+            })
+        })
+        // return this.fireRace(payStatus,keyWord,courseId)
+    }
+
     //获取课程进度
     static fireRaceCourse(courseId) {
         let keyWord = 'courseStatus';
         keyWord = keyWord + courseId;
+        //down
         let payStatus = MyStorage.getCourseStatus(courseId);
-        return this.fireRace(payStatus,keyWord)
+        return new Promise((resolve,reject)=>{
+            if (payStatus) {
+                resolve(payStatus);
+            } else {
+                //这个版本现在actions和get耦合在一起.
+                //先试图取值 如果失败 则action ajax
+                //action
+                console.log('action!!!!!!!!'+ keyWord);
+                Actions.ifCourseSignUp(courseId);
+                //get
+                OnFire.on(keyWord, (value)=>{
+                    resolve(value);
+                })
+            }
+        })
+        // return this.fireRace(payStatus,keyWord,courseId)
     }
 
     static postData(eventName){

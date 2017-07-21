@@ -44,37 +44,38 @@ var PayPage = React.createClass({
 
             showint:true,//初始剩余人数
 
-            endTime: Util.getEndTime(), // 截止时间
+            endTime:[2017,7,25,9,0,0], // 截止时间
 
 
             num: 0,
             time: 0,
             hhrChannel: false,
+
+            //21天的报名信息
+            signUpInfo: {}
         };
     },
 
 
     componentWillMount(){
-        sessionStorage.setItem('pathNow','支付');
-
         //设置分享
         let wxshare = sessionStorage.getItem('wxshare');
         Tools.fireRace(wxshare,"wxshare").then(()=>{
             this.setShareConfig();
         });
-
-        Material.postData('人_进入_payPage');
+        Statistics.postDplusData('enter');
         //0获取当前的Id
         let courseId = sessionStorage.getItem('courseId');
         //1获取用户名 获取报名信息
         this.getUserId().then(()=>{
             //获取用户是否有报名记录
             Tools.fireRaceCourse(courseId).then((value)=>{
-                if(value === 'pay'){
+                if(value.pay){
                     this.setState({
+                        signUpInfo: value,
                         hasPaid: true, //已报名
                     });
-                } else if(value === 'free'){
+                } else{
                     this.setState({
                         hasPaid: false, //未报名
                     });
@@ -85,9 +86,15 @@ var PayPage = React.createClass({
         let outBool = false;
         while(!outBool) {
             outBool = true;
+            //首先接收到付款结束.
             OnFire.on('PAID_DONE', ()=>{
-                Tools.fireRaceCourse(courseId).then((value)=>{
-                    if(value === 'pay'){
+                if (sessionStorage.getItem('courseId') !== courseId) {
+                    return
+                }
+                //先ajax更新这个数据(花费少量时间)
+                Tools.updataCourseData(courseId).then((value)=>{
+                    if(value.pay){
+                        this.state.signUpInfo = value;
                         OnFire.fire('PAID_SUCCESS','normalPay');
                     } else {
                         outBool = false;
@@ -95,29 +102,18 @@ var PayPage = React.createClass({
                 })
             });
             OnFire.on('PAID_SUCCESS',(payWay)=>{
-                Tools.postData('支付成功');
-                //合伙人上报
-                if(this.state.hhrChannel) {
-                    if (User.getUserInfo().userId) {
-                        Material.postData(channel + '_支付成功_' + seniorId);
-                    } else {
-                        OnFire.on('OAUTH_SUCCESS', ()=>{
-                            //1.判断听课状态.
-                            Material.postData(channel + '_支付成功_' + seniorId);
-                        });
-                    }
+                if (sessionStorage.getItem('courseId') !== courseId) {
+                    return
                 }
-
-
+                Statistics.postDplusData('paySuccess');
+                this.state.hasPaid = true;
                 this.setState({
+                    signUpInfo: this.state.signUpInfo,
                     hasPaid: true, //已报名
                 });
-                this.state.hasPaid = true;
                 this.checkSubscribe();
             });
         }
-        //判定特殊渠道
-        // this.ifHhrChannel();
         //3设置下线和价格
         this.setIfCanPaid();
         //5请求倒计时和剩余人数
@@ -148,31 +144,7 @@ var PayPage = React.createClass({
     },
 
     setIfCanPaid() {
-        Util.setPrice(680);
-        //下线进入界面
-        //seniorId则表示该用户拥有上线
-        if(this.state.hhrChannel) {
-            this.state.ifCanPaid = true;
-            //合伙人进入报名页上报
-            if (User.getUserInfo().userId) {
-                Material.postData(channel + '_进入页面_' + seniorId);
-            } else {
-                OnFire.on('OAUTH_SUCCESS', () => {
-                    //1.判断听课状态.
-                    Material.postData(channel + '_进入页面_' + seniorId);
-                });
-            }
-            //区分优惠类型
-            if(channel === 'typeB') {
-                Util.setPrice(630);
-            } else {
-                Util.setPrice(580);
-            }
-        }
-        //试听进入
-        if(sessionStorage.getItem('pathFrom') === 'ListenCourse') {
-            this.state.ifCanPaid = true;
-        }
+        Util.setPrice(1);
         this.setState({
             ifCanPaid: this.state.ifCanPaid,
             buttonPrice: Util.getPrice(),
@@ -183,19 +155,23 @@ var PayPage = React.createClass({
      * 请求剩余报名人数和报名时间是否截止
      */
     signUpNumber(){
-        Material.getRegistered().done((result) => {
-            let restNum = Util.getUserNumber() - result.number;
-            //手动调试
-            // result.time = true;
+        Material.getRegistered21().done((result) =>{
+            console.log(result);
+            //设置报名时间
+            result.time = false;// 一定可以报名
+            //设置剩余人数
+            let restNum = Util.getUserNumber() - result.leftQuota;
             if(!result.time && (restNum > 0)) {
                 this.state.ifCanPaid = true;
             }
+            //设置报名人数/时间等属性
             if (restNum <= 0){
                 this.setState({
                     num: 0,
                     time: result.time,
                     showint: false,
                     ifCanPaid: this.state.ifCanPaid,
+                    endTime: [2017,7,25,9,0,0],
                 });
             } else {
                 this.setState({
@@ -203,13 +179,14 @@ var PayPage = React.createClass({
                     time: result.time,
                     showint: true,
                     ifCanPaid: this.state.ifCanPaid,
+                    endTime: [2017,7,25,9,0,0],
                 });
             }
-        }).fail(()=>{
+            this.setState({
+                endTime: [2017,7,25,9,0,0],
+            });
 
         });
-
-
     },
 
 
@@ -266,7 +243,9 @@ var PayPage = React.createClass({
         // 已关注公号的用户直接跳转关卡页面学习
         if (isSubscribed) {
             DoneToast.show('报名成功，开始学习第一课吧！');
-            this.gotoSelectPage();
+            //TODO 加qq群号.的弹窗.
+            //TODO 显示报名开课证(跳转)
+            // this.gotoSelectPage();
         } else { // 未关注引导关注公号
             this.scrollToTop();
             window.dialogAlertComp.show('报名成功','赶紧关注公众号"长投"，"长投"，"长投"，每天陪你一起学习哟~','好勒，知道了！',this.gotoSelectPage,()=>{},false);
@@ -326,6 +305,7 @@ var PayPage = React.createClass({
     },
 
     freeLesson() {
+        Statistics.postDplusData('click');
         Tools.MyRouter('ListenCourse','/listenCourse/10');
     }
 

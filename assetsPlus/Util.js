@@ -142,6 +142,12 @@ const API_URL_GROUP = {
     //获取评论信息
     'get_next_page_comment': 'course/minic/comment/{fmId}/{pageSize}/{pageIndex}', //评论分页
     // 'get_next_page_comment': 'course/minic/comment/{fmId}/{pageSize}/{pageIndex}', //评论分页
+
+    // 21天报名
+    //21天报名活动状态
+    'get_activity_status':'21enter/activity-status',
+    //用户是否已报名
+    'has_registered': '21enter/is-entered',
 };
 
 
