@@ -94,7 +94,7 @@ class WxConfig {
         link = link || Util.getShareLink();
         desc = desc || Util.getShareDesc();
         title = title || Util.getShareTitle();
-        alert(link);
+        // alert(link);
 
         if( !imgUrl ) {
           imgUrl = 'https://h5test.ichangtou.com/minic/assetsPlus/image/logo.png';

@@ -43,19 +43,12 @@ const CourseBegin = React.createClass({
 
 
     componentWillMount() {
-        Statistics.setPathNow('开学证');
+        Statistics.setPathNow('courseBegin');
         Statistics.postDplusData('进入');
         let userId;
         let isMine = this.props.params.mine;
         //下线查看别人的成就卡
         if (!isMine) {
-            let courseId = sessionStorage.getItem('courseId');
-            //获取班级群信息
-            Tools.fireRaceCourse(courseId).then((value)=>{
-                this.setState({
-                    signUpInfo: value,
-                });
-            });
             userId = Util.getUrlPara('ictchannel');
             // Tools.fireRace(User.getUserInfo().userId,"OAUTH_SUCCESS").then(()=>{
             //     Material.postData('下线_查看_getReward');
@@ -70,6 +63,17 @@ const CourseBegin = React.createClass({
             //     // this.setShareConfig();
             // });
         } else {//查看自己的毕业证
+            //获取班级群信息
+            let courseId = sessionStorage.getItem('courseId');
+
+            Tools.updataCourseData(courseId).then((value)=>{
+                // alert('beginPage' + value.qqGroup);
+                this.setState({
+                    signUpInfo: value,
+                });
+            });
+
+
             userId = User.getUserInfo().userId;
             Tools.fireRace(User.getUserInfo().userId,"OAUTH_SUCCESS").then(()=>{
                 this.setState({type: 'mine'});
@@ -139,14 +143,22 @@ const CourseBegin = React.createClass({
      * @param title
      */
     setShareConfig() {
-        let senior = this.state.senior;
         let shareTitle = '我正在参加21天训练营',
             link = Util.getShareLink(),
             desc = '一起来参加';
-        link = link + '&goPath=' + sessionStorage.getItem('pathNow');
+        link = link + '&goPath=' + 'payPage';
         link = link + '&courseId=' + sessionStorage.getItem('courseId');
-        link = link + '&name=' + senior.name;
         WxConfig.shareConfig(shareTitle,desc,link);
+
+        //
+        // let senior = this.state.senior;
+        // let shareTitle = '我正在参加21天训练营',
+        //     link = Util.getShareLink(),
+        //     desc = '一起来参加';
+        // link = link + '&goPath=' + sessionStorage.getItem('pathNow');
+        // link = link + '&courseId=' + sessionStorage.getItem('courseId');
+        // link = link + '&name=' + senior.name;
+        // WxConfig.shareConfig(shareTitle,desc,link);
     },
 
     goSignUp(type) {
@@ -197,7 +209,7 @@ const CourseBegin = React.createClass({
     renderGraduated() {
         return(
             <div>
-                <div id = 'need-draw' className="get-graduated" style = {{backgroundImage: 'url("./assetsPlus/image/course/graduated.png")'}}>
+                <div id = 'need-draw' className="get-graduated" style = {{backgroundImage: 'url("./assetsPlus/image/course21/graduated.png")'}}>
                     <img className="head" src={this.state.senior.headImg}/>
                     <div className="title">
                         <p>
@@ -222,7 +234,7 @@ const CourseBegin = React.createClass({
         if(this.state.type ==='mine') {
             arr.push((<div key={1} className="reward-button-graduated" onClick = {this.showQQInfo}>
                 <img className="button-img" src={'./assetsPlus/image/course/btnSignin.png'}/>
-                <p className="button-p">我最棒</p>
+                <p className="button-p">qq群</p>
             </div>));
             return arr;
         } else {
@@ -250,7 +262,7 @@ const CourseBegin = React.createClass({
 
     showQQInfo() {
         window.dialogAlertComp.show('加入QQ群',`群号${this.state.signUpInfo.qqGroup},暗号${this.state.signUpInfo.secret}`,'点击加入',()=>
-        {location.href = this.state.qqGroupUrl;},'我加过了',true)
+        {location.href = this.state.signUpInfo.qqGroupUrl;},'我加过了',true)
     }
 });
 

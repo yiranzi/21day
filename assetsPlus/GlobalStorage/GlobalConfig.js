@@ -6,27 +6,31 @@ const couseIdNameMap = new Map();
 
 const courseInfo = {
     'course21':{
-        title: '21天训练营'
+        price: [9,3],
+        title: '21天训练营',
     },
     'seven':{
+        price: [9,3],
         title: '长投派'
     },
     'fund':{
+        price: [9,3],
         title: '长投派'
     },
 }
 
+
 class GlobalConfig {
     static init() {
         console.log('init');
-        couseIdNameMap.set(0, "seven");
-        couseIdNameMap.set(1, "fund");
-        couseIdNameMap.set(2, "course21");
+        couseIdNameMap.set("0", "seven");
+        couseIdNameMap.set("1", "fund");
+        couseIdNameMap.set("2", "course21");
     }
 
     static getCourseInfo(courseId) {
         let nameKey = couseIdNameMap.get(courseId);
-        return courseInfo.nameKey;
+        return courseInfo[nameKey];
     }
 
 }

@@ -145,9 +145,9 @@ class PayController {
         userInfo = userInfo || window.User.getUserInfo();
         sum = Util.getPrice();
         console.log('getNormalPrice',sum);
-        let seniorId = Util.getUrlPara('ictchannel'),
-            // teacherId = Util.getUrlPara('teacherid'),
-            userId = userInfo.userId;
+        let seniorId = window.sessionStorage.getItem('ictchannel') ? window.sessionStorage.getItem('ictchannel') : ''
+        let teacherId = window.sessionStorage.getItem('teacherid') ? window.sessionStorage.getItem('teacherid') : ''
+        let dingyuehao = window.sessionStorage.getItem('dingyuehao') ? window.sessionStorage.getItem('dingyuehao') : 0
 
         if(!seniorId){
             seniorId = '';
@@ -207,7 +207,7 @@ class PayController {
             case '2':
                 jsonData = JSON.stringify(
                     {
-                        "body":'7天训练营报名' ,
+                        "body":'21天训练营报名' ,
                         "deal": {
                             "items": [
                                 {
@@ -219,7 +219,7 @@ class PayController {
                                     dealType: 1, //交易类型
                                     itemId: 23,
                                     mchantType: 5, //商品类型 21days
-                                    misc: '',
+                                    misc: dingyuehao + '@' + seniorId + '@' + teacherId,
                                     price: sum
                                 }
                             ]
@@ -229,6 +229,7 @@ class PayController {
                     }
                 );
                 break;
+            default:
                 break;
         }
         console.log('jsonData',jsonData);
@@ -285,7 +286,6 @@ class PayController {
 
             error : (data)=>{
                 console.log('测试错误支付回调');
-                OnFire.fire('PAID_DONE','normalPay');
                 Util.postCnzzData("error-请求微信支付失败" + data.status + '-' + data.statusText + '-uid:' + userInfo.userId);
                 //标记请求结束
                 Loading.showLoading('请求微信支付失败');
@@ -304,7 +304,6 @@ class PayController {
      */
     static pay(){
         let data = PayController.getPayInfo();
-
         if (typeof WeixinJSBridge == "undefined"){
             if( document.addEventListener ){
                 document.addEventListener('WeixinJSBridgeReady', PayController.pay, false);

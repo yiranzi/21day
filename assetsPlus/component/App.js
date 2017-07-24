@@ -15,7 +15,7 @@ var App = React.createClass({
 
     render() {
         return(
-            <div>
+            <div style={{height: '100%'}}>
                 {this.props.children || <IctMain/>}
                 {/*<FMView/>*/}
             </div>

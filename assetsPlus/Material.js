@@ -891,6 +891,37 @@ class Material {
         )
     }
 
+    /***
+     * 21上报下线访问
+     * @param albumId
+     * @returns {*}
+     */
+    static recordSeniorEnter(seniorId) {
+        //接口合并未上线
+        // courseId = 1;
+        var User = require('./User');
+        const Util = require('./Util'),
+              apiUrl = Util.getAPIUrl('post_record_info').replace("{parentId}", seniorId);
+        let userInfo = User.getUserInfo();
+        return $.ajax(
+            {
+                url: apiUrl,
+                type: 'post',
+                cache: false,
+                contentType: 'application/json;charset=utf-8',
+                headers: {
+                    Accept: 'application/json'
+                },
+                beforeSend: (request)=>{
+                    request.setRequestHeader("X-iChangTou-Json-Api-Token", Util.getApiToken());
+                    request.setRequestHeader("X-iChangTou-Json-Api-User", userInfo.userId);
+                }
+            }
+        )
+    }
+
+
+
 
 
 

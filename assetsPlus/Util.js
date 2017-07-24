@@ -148,6 +148,8 @@ const API_URL_GROUP = {
     'get_activity_status':'21enter/activity-status',
     //用户是否已报名
     'has_registered': '21enter/is-entered',
+    //记录下线打开上线的分享链接
+    'post_record_info': '21enter/parent-share/{parentId}',
 };
 
 

@@ -66,6 +66,23 @@ class MyStorage {
         return Util.getUrlPara(key);
         // return sessionStorage.getItem(key);
     }
+
+    static setCourseId(courseId) {
+        sessionStorage.setItem('courseId',courseId);
+        sessionStorage.setItem('ScourseId',courseId);
+    }
+
+    static setPathNow(pathNow) {
+        let pathOld = sessionStorage.getItem('pathNow');
+        if(!pathOld) {
+            pathOld = '入口文件'
+        }
+        sessionStorage.setItem('pathFrom',pathOld);
+        sessionStorage.setItem('pathNow',pathNow);
+        sessionStorage.setItem('SpathFrom',pathOld);
+        sessionStorage.setItem('SpathNow',pathNow);
+        console.log('SpathFromSpathFrom');
+    }
 }
 
 module.exports = MyStorage;

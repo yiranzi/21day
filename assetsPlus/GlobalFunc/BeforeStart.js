@@ -14,14 +14,17 @@ const MyStorage = require('../GlobalFunc/MyStorage');
 const Tools = require('../GlobalFunc/Tools');
 
 const Statistics = require('../GlobalFunc/Statistics');
+const GlobalConfig = require('../GlobalStorage/GlobalConfig');
 
 class BeforeStart {
     static init() {
-        console.log('init');
-        //1 微信设置
-        this.initWxConfig();
+
         //0 初始化全局
         this.initGlobal();
+
+        //1 微信设置
+        this.initWxConfig();
+
         //1 进行异步的userID请求 之后进行必要的请求(付费,设置分享等)
         this.getUserId().then(this.start.bind(this));
         //2 将项目业务需求所需要的参数统统保存起来
@@ -36,16 +39,35 @@ class BeforeStart {
     }
 
     static initGlobal() {
-        console.log(this);
-        MyStorage.init();
+        //上报启动时间
+        let endTime = new Date().getTime();
+        let startTime = sessionStorage.getItem('startTime');
+        let totalTime = 0
+        if(startTime) {
+            totalTime = endTime - startTime;
+            totalTime = totalTime/1000;
+            window.dplus.track('EnterTime',{"time": totalTime})
+            console.log('启动时间'+totalTime);
+        } else {
+            window.dplus.track('EnterTime',{"time": -1})
+        }
+
+
         //清空有影响的缓存
-        sessionStorage.removeItem('courseId');
+        // sessionStorage.removeItem('courseId');
+        sessionStorage.clear();
+        sessionStorage.setItem('SstartTime',totalTime);
+        console.log('clear session');
+        MyStorage.setPathNow('入口文件');
+
+        MyStorage.init();
+        GlobalConfig.init();
     }
 
     static getWhereChannel () {
         let getWhere = Util.getUrlPara("getWhere");
         if (getWhere) {
-            sessionStorage.setItem('hhr',getWhere);
+            console.log(getWhere);
         }
     }
 
@@ -59,9 +81,8 @@ class BeforeStart {
             //如果有课程
             let courseId = MyStorage.getItem('courseId');
             if(courseId) {
-                sessionStorage.setItem('courseId',courseId);
-                //重定向前,需要请求对应课程的课程状态.
-                //action发起
+                MyStorage.setCourseId(courseId);
+                //action在特定页面懒发起,这里只负责分发跳转.
 
                 // 举例/fund/getReward/
                 redictUrl = Tools.setCourseUrl(courseId) + '/' + redictUrl;
