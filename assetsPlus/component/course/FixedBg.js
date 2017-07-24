@@ -34,7 +34,11 @@ const FixedBg = React.createClass({
             return(
                 <div className="bg-ground" style = {{backgroundImage: 'url("./assetsPlus/image/seven/bg_1.png")', width:Dimensions.getWindowWidth(), height: Dimensions.getWindowHeight()}}></div>
             )
-        } else {
+        } else if(sessionStorage.getItem('courseId') === '2'){
+            return(
+                <div className="bg-ground" style = {{backgroundColor: '#5298ea', width:Dimensions.getWindowWidth(), height: Dimensions.getWindowHeight()}}></div>
+            )
+        }else {
             console.log('push arr ');
             return(<div className="bg-ground" style = {{backgroundColor: '#4498c7', width:Dimensions.getWindowWidth(), height: Dimensions.getWindowHeight()}}></div>
             )

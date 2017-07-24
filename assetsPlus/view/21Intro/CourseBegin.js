@@ -94,6 +94,7 @@ const CourseBegin = React.createClass({
     },
 
     componentDidMount () {
+        return;
         console.log('didmount');
         const element = document.getElementById('need-draw');
         const width = element.offsetWidth;
@@ -101,18 +102,23 @@ const CourseBegin = React.createClass({
         Tools.fireRace(User.getUserInfo().userId,"OAUTH_SUCCESS").then(()=>{
             const userId = this.state.type === 'mine' ? User.getUserInfo().userId : Util.getUrlPara('ictchannel');
             if(this.props.params.mine) {
-                convertHtmlToBase64(element, height, width).then(
-                    base64 => {
-                        this.setState({
-                            shareImgUrl: base64,
-                            isNoteCardDomShow: false
-                        });
-                        Loading.hideLoading()
-                    }
-                )
+                console.log('wait');
+                setTimeout(() => {
+                    console.log('finish');
+                    convertHtmlToBase64(element, height, width).then((base64)=> {
+                        setTimeout(() => {
+                            this.setState({
+                                shareImgUrl: base64,
+                                isNoteCardDomShow: false
+                            });
+                            Loading.hideLoading()
+                        }, 1000)
+                    })
+                },1000)
             } else {
                 Material.getOtherHeadImage(userId).always( (img)=>{
-                    this.state.senior.headImg = img.responseText;
+                    // this.state.senior.headImg = img.responseText;
+                    this.state.senior.headImg = '';
                     this.setState({senior: this.state.senior}, ()=>{
                         setTimeout(() => {
                             convertHtmlToBase64(element, height, width).then(
@@ -175,15 +181,35 @@ const CourseBegin = React.createClass({
     // style = {fullbg}
     render() {
         return(
-            <div className="get-reward-fund">
+            <div className="get-begin-course21">
+                {/*<div className="test">123</div>*/}
                 <FixedBg/>
                 {/*<div className="reward-pic" style={{backgroundImage:"url('./assetsPlus/image/course/noteCard.png')"}}>*/}
                 {/*<p className="note-card-project-title">14天基金定投训练营</p>*/}
                 {/*<p className="note-card-header">-{this.state.senior.rank}-</p>*/}
                 {/*</div>*/}
-                <img className="get-graduated-after" src={this.state.shareImgUrl}/>
-                {this.state.isNoteCardDomShow ? this.renderGraduated() : null}
-                {this.buttonRender()}
+                {this.renderGraduatedBefore()}
+                {/*<img className="get-graduated-after" src={this.state.shareImgUrl}/>*/}
+                {/*{this.state.isNoteCardDomShow ? this.renderGraduated() : null}*/}
+                <div className="reward-button-graduated">{this.buttonRender()}</div>
+
+            </div>
+        )
+    },
+
+    renderGraduatedBefore() {
+        return(
+            <div id = 'need-draw' className="get-graduated-before" style = {{backgroundImage: 'url("./assetsPlus/image/course21/graduated.png")'}}>
+                <img className="head" src={this.state.senior.headImg}/>
+                {/*<img className="head" src="./assetsPlus/image/course21/share_payPage.png"/>*/}
+                <div className="title">
+                    <p>
+                        恭喜<span className="name">{this.state.senior.name}</span>同学<br/>
+                        加入21天训练营，<br/>
+                        祝你在接下来的日子里<br/>
+                        成功迈出理财第一步<br/>
+                    </p>
+                </div>
             </div>
         )
     },
@@ -211,6 +237,7 @@ const CourseBegin = React.createClass({
             <div>
                 <div id = 'need-draw' className="get-graduated" style = {{backgroundImage: 'url("./assetsPlus/image/course21/graduated.png")'}}>
                     <img className="head" src={this.state.senior.headImg}/>
+                    {/*<img className="head" src="./assetsPlus/image/course21/share_payPage.png"/>*/}
                     <div className="title">
                         <p>
                             恭喜<span className="name">{this.state.senior.name}</span>同学<br/>
@@ -231,25 +258,39 @@ const CourseBegin = React.createClass({
 
     buttonRender() {
         let arr = [];
+        let imgs = ['./assetsPlus/image/course21/wx_payPage.png','./assetsPlus/image/course21/share_payPage.png','./assetsPlus/image/course21/qqGroup_payPage.png'];
+        let fonts = ['每日作业','分享','找老师'];
         if(this.state.type ==='mine') {
-            arr.push((<div key={1} className="reward-button-graduated" onClick = {this.showQQInfo}>
-                <img className="button-img" src={'./assetsPlus/image/course/btnSignin.png'}/>
-                <p className="button-p">qq群</p>
-            </div>));
-            return arr;
-        } else {
-            arr.push((<div key={1} style={this.state.isButtonShow ? {bottom: '30px'} : {}}className="reward-button-graduated" onClick = {this.goSignUp.bind(this,0)}>
-                <img className="button-img" src={'./assetsPlus/image/course/btnSignin.png'}/>
-                <p className="button-p">为TA点赞</p>
-            </div>));
-            if(this.state.isButtonShow) {
-                arr.push((<div style = {{bottom: '80px'}} key={2} className="reward-button-graduated" onClick = {this.goSignUp.bind(this,1)}>
-                    <img className="button-img" src={'./assetsPlus/image/course/btnSignin.png'}/>
-                    <p className="button-p">我也去看看</p>
-                </div>));
+            for(let i =0; i<3; i++) {
+                arr.push(<div className="button" onClick = {this.showQQInfo.bind(this,i)}>
+                    <img src={imgs[i]}/>
+                    <span>{fonts[i]}</span>
+                </div>)
             }
+            // arr.push((<div key={1} className="reward-button-graduated" onClick = {this.showQQInfo}>
+            //     <img className="button-img" src={'./assetsPlus/image/course/btnSignin.png'}/>
+            //     <p className="button-p">qq群</p>
+            // </div>));
             return arr;
         }
+    },
+
+    showQQInfo(type) {
+        switch (type) {
+            case 0:
+                window.dialogAlertComp.show('报名成功','赶紧关注公众号"长投"，每天陪你一起学习哟~','好勒，知道了！',this.gotoBeginReward,()=>{},false);
+                break;
+            case 1:
+                window.dialogAlertComp.show('分享','快去分享给你的小伙伴吧。学姐说大家一起学习更能坚持下去哦！','知道啦',()=>{},'',false);
+                break;
+            case 2:
+                window.dialogAlertComp.show('加入QQ群（学习群务必加入）',`群号${this.state.signUpInfo.qqGroup},暗号${this.state.signUpInfo.secret}`,'点击加入',()=>
+                {location.href = this.state.signUpInfo.qqGroupUrl;},'我加过了',true);
+                break;
+            default:
+                break
+        }
+
     },
 
     renderFont(text) {
@@ -260,10 +301,7 @@ const CourseBegin = React.createClass({
             </div>)
     },
 
-    showQQInfo() {
-        window.dialogAlertComp.show('加入QQ群',`群号${this.state.signUpInfo.qqGroup},暗号${this.state.signUpInfo.secret}`,'点击加入',()=>
-        {location.href = this.state.signUpInfo.qqGroupUrl;},'我加过了',true)
-    }
+
 });
 
 module.exports = CourseBegin;

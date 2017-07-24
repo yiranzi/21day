@@ -329,7 +329,7 @@ var PayPage = React.createClass({
             return(
                 <div className="button" onClick={this.clickHandler}>
                     <img src={'./assetsPlus/image/course21/button_payPage.png'}/>
-                    <span>{this.state.hasSenior ? "我要快报名" : "分享优惠价"}　（{this.state.buttonPrice}元）</span>
+                    <span>{this.state.hasSenior ? "分享优惠价" : "我要报名"}（{this.state.buttonPrice}元）</span>
                 </div>);
             //查看毕业证按钮
         } else {
@@ -353,7 +353,7 @@ var PayPage = React.createClass({
     },
 
     onButtonShare() {
-        window.dialogAlertComp.show('报名失败','出故障了.重新进入一下再试试，还不行的话可以报告管理员.手机号：15652778863','知道啦',()=>{},'',false);
+        window.dialogAlertComp.show('分享','快去分享给你的小伙伴吧。学姐说大家一起学习更能坚持下去哦！','知道啦',()=>{},'',false);
     },
 
     /**
