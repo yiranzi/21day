@@ -18,6 +18,8 @@ class Actions {
      */
     static ifCourseSignUp(courseId) {
         let ajaxResult = {};
+        //重置数据
+        MyStorage.deleteCourseStatus(courseId);
         //根据不同的id调用接口
         switch (courseId) {
             case '2':

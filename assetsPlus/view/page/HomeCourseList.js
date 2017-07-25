@@ -11,6 +11,7 @@ const Material = require('../../Material');
 const Statistics = require('../../GlobalFunc/Statistics');
 const MyStorage = require('../../GlobalFunc/MyStorage');
 const WxConfig = require('../../WxConfig');
+const Actions = require('../../GlobalStorage/Actions');
 const Carousel = require('../../component/home/Carousel');
 const Banner = require('../../component/home/Banner');
 // const SwipeView = require('../../component/container/SwipeView').default;
@@ -33,10 +34,8 @@ const HomeCourseList = React.createClass({
     },
 
     componentWillMount() {
-        Statistics.setPathNow('长投家-课程页');
+        MyStorage.whenEnterPage('长投家-课程页');
         Loading.hideLoading();
-        console.log('enter courseList');
-
         //0 设置页面默认分享
         // WxConfig.shareConfig(shareTitle,desc,link);
         //1 获取课程ID
@@ -67,8 +66,11 @@ const HomeCourseList = React.createClass({
         let courseList = this.state.courseList;
         for( let i = 0; i<courseList.length; i++) {
             let courseId = courseList[i];
+            Actions.ifCourseSignUp(courseId);
+            //action & get
+            //这边的结果完成后get
             Tools.fireRaceCourse(courseId).then((value)=>{
-                this.state.courseStatus[courseId].payStatus = value;
+                this.state.courseStatus[courseId].payStatus = value.pay;
                 this.setState({courseStatus: this.state.courseStatus});
             })
         }
@@ -81,31 +83,24 @@ const HomeCourseList = React.createClass({
         //因为课程状态没办法精确
     },
 
-    goRouter(courseId,type) {
+    goRouter(courseId) {
+        Statistics.postDplusData('pai课程点击',[courseId]);
         //当抓到courseId后都需要一系列操作
         //设置微信
         //设置id
         //获取课程状态
         Loading.showLoading('获取课程中...');
         let enterWhere;
-
-        Material.postData('pai课程点击' + courseId);
         Tools.fireRaceCourse(courseId).then((value)=>{
             //0保存上当前的课程ID
-            if (value === 'pay') {
+            if (value.pay) {
                 enterWhere = '/courseSelect';
             } else {
                 enterWhere = '/payPage';
             }
-            let wxshare = sessionStorage.getItem('wxshare');
-            Tools.fireRace(wxshare,"wxshare").then(()=>{
-                //保存courseId
-                sessionStorage.setItem('courseId',courseId);
-                WxConfig.shareConfig();
-                Loading.hideLoading();
-                Tools.MyRouter('',enterWhere);
-            })
-
+            MyStorage.setCourseId(courseId);
+            Loading.hideLoading();
+            Tools.MyRouter('',enterWhere);
         });
 
         // switch (type) {

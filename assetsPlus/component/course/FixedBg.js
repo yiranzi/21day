@@ -25,7 +25,6 @@ const FixedBg = React.createClass({
     },
     // style = {fullbg}
     render() {
-        console.log('enter bg');
         if(sessionStorage.getItem('courseId') === '1') {
             return(
                 <div className="bg-ground" style = {{backgroundImage: 'url("./assetsPlus/image/fund/join-bg.jpg")', width:Dimensions.getWindowWidth(), height: Dimensions.getWindowHeight()}}></div>
@@ -39,7 +38,6 @@ const FixedBg = React.createClass({
                 <div className="bg-ground" style = {{backgroundColor: '#5298ea', width:Dimensions.getWindowWidth(), height: Dimensions.getWindowHeight()}}></div>
             )
         }else {
-            console.log('push arr ');
             return(<div className="bg-ground" style = {{backgroundColor: '#4498c7', width:Dimensions.getWindowWidth(), height: Dimensions.getWindowHeight()}}></div>
             )
         }

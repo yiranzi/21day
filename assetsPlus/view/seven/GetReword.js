@@ -68,7 +68,7 @@ const GetReward = React.createClass({
     },
 
     componentWillMount() {
-        Statistics.setPathNow('成就卡');
+        MyStorage.setPathNow('成就卡');
 
         let userId;
         //判定是否有分享成就卡

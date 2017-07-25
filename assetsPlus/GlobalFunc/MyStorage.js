@@ -17,7 +17,6 @@ let courseList = [0,1,2];
 
 class MyStorage {
     static init() {
-        console.log('init');
         let max = 0;
         for(let i = 0; i<courseList.length; i++) {
             if(courseList[i]>max) {
@@ -44,8 +43,16 @@ class MyStorage {
     }
 
     static getCourseStatus(courseId) {
-        console.log('get');
         return courseInfo[courseId].dataResult;
+    }
+
+    static deleteCourseStatus(courseId) {
+        console.log('delete');
+        if(courseInfo[courseId]) {
+            courseInfo[courseId].dataResult = null;
+        } else {
+            console.log('error' + 'deleteCourseStatus');
+        }
     }
 
     static getCourseList() {
@@ -67,6 +74,8 @@ class MyStorage {
         // return sessionStorage.getItem(key);
     }
 
+    //需要修改的全局变量.
+    //并且需要上报.
     static setCourseId(courseId) {
         sessionStorage.setItem('courseId',courseId);
         sessionStorage.setItem('ScourseId',courseId);
@@ -81,8 +90,13 @@ class MyStorage {
         sessionStorage.setItem('pathNow',pathNow);
         sessionStorage.setItem('SpathFrom',pathOld);
         sessionStorage.setItem('SpathNow',pathNow);
-        console.log('SpathFromSpathFrom');
+    }
+
+    static whenEnterPage(pathNow) {
+        this.setPathNow(pathNow);
+        Statistics.postDplusData('进入界面');
     }
 }
 
 module.exports = MyStorage;
+window.MyStorage = MyStorage;

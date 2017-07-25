@@ -29,18 +29,6 @@ let saveStaParams = [];
 
 //课程id
 class Statistics {
-    static setPathNow(pathNow) {
-        let pathOld = sessionStorage.getItem('pathNow');
-        if(!pathOld) {
-            pathOld = '入口文件'
-        }
-        sessionStorage.setItem('pathFrom',pathOld);
-        sessionStorage.setItem('pathNow',pathNow);
-        sessionStorage.setItem('SpathFrom',pathOld);
-        sessionStorage.setItem('SpathNow',pathNow);
-        console.log('SpathFromSpathFrom');
-    }
-
     static defaultStatic(param,getParams) {
         if(getParams) {
             //添加逻辑
@@ -128,31 +116,46 @@ class Statistics {
      * @constructor
      */
     static GlobalStatis() {
-        // let test = {};
+        let test = {};
         for (let i = 0;i< superStatictics.length; i++) {
             let key = superStatictics[i];
             let value = sessionStorage.getItem(key);
+            if(!value) {
+                value = '空'
+            }
             window.dplus.register({[key]: value});
         }
+        console.log('here!!!!!!!!!');
+        console.log(test);
     }
 
 
+    /**
+     * 传入时间名称
+     * 传入参数数组.
+     * @param eventName
+     * @param data
+     */
     static postDplusData(eventName,data) {
+        //测试
+        let testPathNow = sessionStorage.getItem('SpathNow');
+        console.log(testPathNow);
+        window.dplus.register({'SpathNow': testPathNow});
         let userId = User.getUserInfo().userId;
-        if(!data) {
-            data = {};
+        let result = {};
+        let j = 0;
+        if(data) {
+            for(let i in data) {
+                let key = 'param' + j
+                result[key] = data[i];
+                j++;
+            }
         }
         Tools.fireRace(userId,"OAUTH_SUCCESS").then(()=>{
             console.log('hava post DPlus ' + eventName);
-            // this.GlobalStatis();
+            this.GlobalStatis();
             window.dplus.track(eventName,data);
         });
-    }
-
-    static add(eventName) {
-        //手动加上 版本号 userId 事件名
-        //并且用全局保存起来(方案2)
-        sessionStorage.setItem('isBuy',result);
     }
 
     //数据上报

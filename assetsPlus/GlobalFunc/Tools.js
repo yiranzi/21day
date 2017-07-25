@@ -9,9 +9,20 @@ const OnFire = require('onfire.js');
 const Actions = require('../GlobalStorage/Actions');
 
 class Tools {
+    //返回一个get.
+    //get为结果 或者 等待结果的promise
     static fireRace(result,eventName,courseId) {
+        let keyWord = eventName;
+        switch(eventName) {
+            case 'courseStatus':
+                keyWord = keyWord + courseId;
+                break;
+            default:
+                break;
+        }
         return new Promise((resolve,reject)=>{
             if (result) {
+                console.log('get' + result);
                 resolve(result);
             } else {
                 OnFire.on(eventName, (value)=>{
@@ -20,6 +31,36 @@ class Tools {
             }
         })
     }
+
+    //获取课程进度
+    static fireRaceCourse(courseId) {
+        let keyWord = 'courseStatus';
+        keyWord = keyWord + courseId;
+        //down
+        let payStatus = MyStorage.getCourseStatus(courseId);
+        return new Promise((resolve,reject)=>{
+            if (payStatus) {
+                console.log('get' + payStatus);
+                resolve(payStatus);
+            } else {
+                OnFire.on(keyWord, (value)=>{
+                    resolve(value);
+                })
+            }
+        })
+    }
+
+    static makeGet(keyWord) {
+        return new Promise((resolve,reject)=>{
+
+            keyWord = keyWord + courseId;
+            //get
+            OnFire.on(keyWord, (value)=>{
+                resolve(value);
+            })
+        })
+    }
+
 
     static updataCourseData(courseId) {
         let keyWord = 'courseStatus';
@@ -36,30 +77,6 @@ class Tools {
             OnFire.on(keyWord, (value)=>{
                 resolve(value);
             })
-        })
-        // return this.fireRace(payStatus,keyWord,courseId)
-    }
-
-    //获取课程进度
-    static fireRaceCourse(courseId) {
-        let keyWord = 'courseStatus';
-        keyWord = keyWord + courseId;
-        //down
-        let payStatus = MyStorage.getCourseStatus(courseId);
-        return new Promise((resolve,reject)=>{
-            if (payStatus) {
-                resolve(payStatus);
-            } else {
-                //这个版本现在actions和get耦合在一起.
-                //先试图取值 如果失败 则action ajax
-                //action
-                console.log('action!!!!!!!!'+ keyWord);
-                Actions.ifCourseSignUp(courseId);
-                //get
-                OnFire.on(keyWord, (value)=>{
-                    resolve(value);
-                })
-            }
         })
         // return this.fireRace(payStatus,keyWord,courseId)
     }

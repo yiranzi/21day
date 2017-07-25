@@ -47,8 +47,9 @@ const CPlus = React.createClass({
     },
 
     componentWillMount() {
-        sessionStorage.removeItem('courseId');
-        Statistics.setPathNow('长投家');
+        // sessionStorage.removeItem('courseId');
+        MyStorage.setCourseId('-1');
+        MyStorage.setPathNow('长投家');
         this.getUserInfo();
     },
 

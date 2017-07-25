@@ -53,9 +53,7 @@ var PayPage = React.createClass({
 
 
     componentWillMount(){
-        sessionStorage.setItem('pathNow','支付');
-
-        Material.postData('人_进入_payPage');
+        MyStorage.whenEnterPage('支付页面');
         //0获取当前的Id
         let courseId = sessionStorage.getItem('courseId');
         //1获取用户名 获取报名信息
@@ -231,7 +229,7 @@ var PayPage = React.createClass({
 
     render(){
         return (
-            <div className="pay_page">
+            <div className="pay_page_seven">
                 <div className="top-banner">
                     <img src={'./assetsPlus/image/seven/payPage/banner_seven.jpg'}/>
                 </div>

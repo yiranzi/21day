@@ -61,10 +61,8 @@ var PayPage = React.createClass({
     componentWillMount(){
         //设置分享
         let wxshare = sessionStorage.getItem('wxshare');
-        Tools.fireRace(wxshare,"wxshare").then(()=>{
-            this.setShareConfig();
-        });
-        Statistics.postDplusData('Enter');
+        this.setShareConfig();
+        MyStorage.whenEnterPage('支付页面');
         //0获取当前的Id
         let courseId = sessionStorage.getItem('courseId');
         //1获取用户名 获取报名信息
@@ -98,15 +96,11 @@ var PayPage = React.createClass({
                 Tools.updataCourseData(courseId).then((value)=>{
                     // alert('start' + value.qqGroup);
                     if(value.pay){
-                        let data= {};
-                        data.result = true;
-                        Statistics.postDplusData('PayButton',data);
+                        Statistics.postDplusData('支付按钮',[true]);
                         // this.state.signUpInfo = value;
                         OnFire.fire('PAID_SUCCESS','normalPay');
                     } else {
-                        let data= {};
-                        data.result = false;
-                        Statistics.postDplusData('PayButton',data);
+                        Statistics.postDplusData('支付按钮',[false]);
                         outBool = false;
                     }
                 })

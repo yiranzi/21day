@@ -22,7 +22,6 @@ const courseInfo = {
 
 class GlobalConfig {
     static init() {
-        console.log('init');
         couseIdNameMap.set("0", "seven");
         couseIdNameMap.set("1", "fund");
         couseIdNameMap.set("2", "course21");

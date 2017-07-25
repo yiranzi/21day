@@ -67,8 +67,8 @@ class WxConfig {
             let userId = User.getUserInfo().userId;
             Tools.fireRace(userId,"OAUTH_SUCCESS").then(()=>{
                 userId = User.getUserInfo().userId;
-                WxConfig.shareConfig();
                 sessionStorage.setItem('wxshare',true);
+                WxConfig.shareConfig();
                 OnFire.fire('wxshare');
             });
         });
@@ -79,84 +79,83 @@ class WxConfig {
      */
     static shareConfig(title, desc,link,channel) {
         //console.log('分享配置',title, desc,fmid,link);
-        //if(!shareConfigFlag){
-        //    console.log('return  whatever');
-        //    return;
-        //}
 
-        //sharefix
-        let imgUrl;
-        let userInfo = User.getUserInfo();
-        if (userInfo) {
-            imgUrl = userInfo.headImage;
-        }
-
-        link = link || Util.getShareLink();
-        desc = desc || Util.getShareDesc();
-        title = title || Util.getShareTitle();
-        // alert(link);
-
-        if( !imgUrl ) {
-          imgUrl = 'https://h5test.ichangtou.com/minic/assetsPlus/image/logo.png';
-        }
-
-        let type = "img";
-
-        let timelineOpt = {
-            title,
-            desc,
-            link,
-            imgUrl,
-            type,
-            success: ()=>{
-                Util.onShareSuccess('朋友圈',channel || '');
-            },
-            cancel: ()=>{
-                Util.onShareFailure('朋友圈',channel || '');
+        //这个保证了 1)有userId 2)ready之后
+        let wxshare = sessionStorage.getItem('wxshare');
+        Tools.fireRace(wxshare,"wxshare").then(()=>{
+            let imgUrl;
+            let userInfo = User.getUserInfo();
+            if (userInfo) {
+                imgUrl = userInfo.headImage;
             }
-        }, messageOpt = {
-            title,
-            desc,
-            link,
-            imgUrl,
-            type,
-            success: ()=>{
-                Util.onShareSuccess('消息',channel || '');
-            },
-            cancel: ()=>{
-                Util.onShareFailure('消息',channel || '');
-            }
-        }, QQOpt = {
-            title,
-            desc,
-            link,
-            imgUrl,
-            success: ()=>{
-                Util.onShareSuccess('QQ',channel || '');
-            },
-            cancel: ()=>{
-                Util.onShareFailure('QQ',channel || '');
-            }
-        }, weiboOpt = {
-            title,
-            desc,
-            link,
-            imgUrl,
-            success: ()=>{
-                Util.onShareSuccess('weibo',channel || '');
-            },
-            cancel: ()=>{
-                Util.onShareFailure('weibo',channel || '');
-            }
-        };
 
-        wx.onMenuShareTimeline(timelineOpt);
-        wx.onMenuShareAppMessage(messageOpt);
-        wx.onMenuShareQQ(QQOpt);
-        wx.onMenuShareWeibo(weiboOpt);
+            link = link || Util.getShareLink();
+            desc = desc || Util.getShareDesc();
+            title = title || Util.getShareTitle();
+            // alert(link);
 
-        shareConfigFlag = false;
-        console.log(link);
+            if( !imgUrl ) {
+                imgUrl = 'https://h5test.ichangtou.com/minic/assetsPlus/image/logo.png';
+            }
+
+            let type = "img";
+
+            let timelineOpt = {
+                title,
+                desc,
+                link,
+                imgUrl,
+                type,
+                success: ()=>{
+                    Util.onShareSuccess('朋友圈',channel || '');
+                },
+                cancel: ()=>{
+                    Util.onShareFailure('朋友圈',channel || '');
+                }
+            }, messageOpt = {
+                title,
+                desc,
+                link,
+                imgUrl,
+                type,
+                success: ()=>{
+                    Util.onShareSuccess('消息',channel || '');
+                },
+                cancel: ()=>{
+                    Util.onShareFailure('消息',channel || '');
+                }
+            }, QQOpt = {
+                title,
+                desc,
+                link,
+                imgUrl,
+                success: ()=>{
+                    Util.onShareSuccess('QQ',channel || '');
+                },
+                cancel: ()=>{
+                    Util.onShareFailure('QQ',channel || '');
+                }
+            }, weiboOpt = {
+                title,
+                desc,
+                link,
+                imgUrl,
+                success: ()=>{
+                    Util.onShareSuccess('weibo',channel || '');
+                },
+                cancel: ()=>{
+                    Util.onShareFailure('weibo',channel || '');
+                }
+            };
+
+            wx.onMenuShareTimeline(timelineOpt);
+            wx.onMenuShareAppMessage(messageOpt);
+            wx.onMenuShareQQ(QQOpt);
+            wx.onMenuShareWeibo(weiboOpt);
+
+            shareConfigFlag = false;
+            console.log(link);
+        });
     }
 }
 module.exports = WxConfig;

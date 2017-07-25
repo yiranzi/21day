@@ -42,7 +42,7 @@ class BeforeStart {
         //上报启动时间
         let endTime = new Date().getTime();
         let startTime = sessionStorage.getItem('startTime');
-        let totalTime = 0
+        let totalTime = 0;
         if(startTime) {
             totalTime = endTime - startTime;
             totalTime = totalTime/1000;
@@ -72,7 +72,6 @@ class BeforeStart {
         //重定向到main
         let redictUrl = '/main';
         let goPath = MyStorage.getItem('goPath');
-        console.log('redict!!!!');
         if (goPath) {
             redictUrl = goPath;
             //如果有课程
@@ -141,17 +140,17 @@ class BeforeStart {
         WxConfig.initWxConfig();
     }
 
-    static SetCoursePayStatus() {
-        //获取课程列表
-        let list = MyStorage.getCourseList();
-        for( let i = 0; i<list.length; i++) {
-            let courseId = list[i];
-            this.checkUserPayStatue(courseId).then((result)=>{
-                //保存到课程列表中
-                MyStorage.setCourseStatus(courseId,result)
-            });
-        }
-    }
+    // static SetCoursePayStatus() {
+    //     //获取课程列表
+    //     let list = MyStorage.getCourseList();
+    //     for( let i = 0; i<list.length; i++) {
+    //         let courseId = list[i];
+    //         this.checkUserPayStatue(courseId).then((result)=>{
+    //             //保存到课程列表中
+    //             MyStorage.setCourseStatus(courseId,result)
+    //         });
+    //     }
+    // }
 
 
 }

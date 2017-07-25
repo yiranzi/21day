@@ -43,8 +43,7 @@ const CourseBegin = React.createClass({
 
 
     componentWillMount() {
-        Statistics.setPathNow('courseBegin');
-        Statistics.postDplusData('进入');
+        MyStorage.whenEnterPage('开课证');
         let userId;
         let isMine = this.props.params.mine;
         //下线查看别人的成就卡
