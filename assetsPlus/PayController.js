@@ -146,7 +146,7 @@ class PayController {
         sum = Util.getPrice();
         console.log('getNormalPrice',sum);
         let seniorId = window.sessionStorage.getItem('ictchannel') ? window.sessionStorage.getItem('ictchannel') : ''
-        let teacherId = window.sessionStorage.getItem('teacherid') ? window.sessionStorage.getItem('teacherid') : ''
+        let teacherId = window.sessionStorage.getItem('teacherId') ? window.sessionStorage.getItem('teacherId') : ''
         let dingyuehao = window.sessionStorage.getItem('dingyuehao') ? window.sessionStorage.getItem('dingyuehao') : 0
 
         if(!seniorId){

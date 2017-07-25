@@ -22,7 +22,7 @@ const superStatictics = ['ScourseId','SpathFrom','SpathNow','SisBuy'];
 //逻辑参数(不计入统计,仅仅为了逻辑,需要截取)
 const paramCalc = ['name','rank'];
 //都包括(需要截取,截取后分别保存在逻辑和统计)
-const paramsAll = ['courseId','teacherid','dingyuehao','ictchannel','goPath','getWhere','freeLesson','dayId'];
+const paramsAll = ['courseId','teacherId','dingyuehao','ictchannel','goPath','getWhere','freeLesson','dayId'];
 
 //数据统计变量
 let saveStaParams = [];
@@ -165,7 +165,6 @@ class Statistics {
             eventName: eventName,
             version: 11,
         });
-        // alert(eventName + '/' + userInfo.userId);
         return $.ajax(
             {
                 url: apiUrl,

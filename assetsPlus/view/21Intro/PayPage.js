@@ -98,9 +98,15 @@ var PayPage = React.createClass({
                 Tools.updataCourseData(courseId).then((value)=>{
                     // alert('start' + value.qqGroup);
                     if(value.pay){
+                        let data= {};
+                        data.result = true;
+                        Statistics.postDplusData('PayButton',data);
                         // this.state.signUpInfo = value;
                         OnFire.fire('PAID_SUCCESS','normalPay');
                     } else {
+                        let data= {};
+                        data.result = false;
+                        Statistics.postDplusData('PayButton',data);
                         outBool = false;
                     }
                 })

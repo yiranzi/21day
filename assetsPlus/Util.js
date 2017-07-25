@@ -636,7 +636,7 @@ class Util {
         }
 
         //将基金课需要的参数回补
-        let linkParamsTypes = ['goPath','courseId','getWhere','freeLesson','dayId','name','rank'];
+        let linkParamsTypes = ['goPath','courseId','getWhere','freeLesson','dayId','name','rank','teacherId'];
         // let shareTypes = ['getWhere','freeLesson','finish','graduated'];
         for(let i = 0 ;i < linkParamsTypes.length; i++) {
             let getParams = Util.getUrlPara(linkParamsTypes[i]);
