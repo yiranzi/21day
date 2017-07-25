@@ -22,7 +22,6 @@ let test = true;
 //初始化用户信息
 // alert("bundle ready");
 User.initAccessInfo();
-
 $(document).ready(() => {
     // alert("html ready");
     if(!Util.isWeixin()){

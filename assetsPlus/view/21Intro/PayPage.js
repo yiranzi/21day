@@ -64,7 +64,7 @@ var PayPage = React.createClass({
         Tools.fireRace(wxshare,"wxshare").then(()=>{
             this.setShareConfig();
         });
-        Statistics.postDplusData('enter');
+        Statistics.postDplusData('Enter');
         //0获取当前的Id
         let courseId = sessionStorage.getItem('courseId');
         //1获取用户名 获取报名信息
@@ -342,17 +342,17 @@ var PayPage = React.createClass({
     },
 
     renderButtonShare() {
-        Statistics.postDplusData('rewardButton');
         return(<img src={'./assetsPlus/image/course21/share_payPage.png'}/>)
     },
 
     onSeeReward () {
         //TODO 跳转到成就卡界面
-        Statistics.postDplusData('shareButton');
+        Statistics.postDplusData('RewardButton');
         Tools.MyRouter('ListenCourse','/courseBegin/mine');
     },
 
     onButtonShare() {
+        Statistics.postDplusData('ShareButton');
         window.dialogAlertComp.show('分享','快去分享给你的小伙伴吧。学姐说大家一起学习更能坚持下去哦！','知道啦',()=>{},'',false);
     },
 
@@ -360,11 +360,15 @@ var PayPage = React.createClass({
      * 按钮点击
      */
     clickHandler() {
+        let data= {}
         if(this.state.ifCanPaid) {
+            data.result = true;
             this.payHandler();
         } else {
+            data.result = false;
             window.dialogAlertComp.show('报名失败','出故障了.重新进入一下再试试，还不行的话可以报告管理员.手机号：15652778863','知道啦',()=>{},'',false);
         }
+        Statistics.postDplusData('PayButton',data);
 
     },
 

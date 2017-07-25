@@ -46,17 +46,14 @@ class BeforeStart {
         if(startTime) {
             totalTime = endTime - startTime;
             totalTime = totalTime/1000;
-            window.dplus.track('EnterTime',{"time": totalTime})
-            console.log('启动时间'+totalTime);
-        } else {
-            window.dplus.track('EnterTime',{"time": -1})
+            // totalTime = parseInt(totalTime);
         }
-
 
         //清空有影响的缓存
         // sessionStorage.removeItem('courseId');
         sessionStorage.clear();
         sessionStorage.setItem('SstartTime',totalTime);
+        console.log(totalTime);
         console.log('clear session');
         MyStorage.setPathNow('入口文件');
 

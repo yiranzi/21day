@@ -91,14 +91,8 @@ class Statistics {
                         sessionStorage.setItem('S'+param,'下线');
                     } else {
                         // sessionStorage.setItem(paramsSaveType[i],'null');
-                        sessionStorage.setItem('S'+param,'常规');
+                        sessionStorage.setItem('S'+param,'上线');
                     }
-                    break;
-                case 'goPath':// 着陆页
-                    this.defaultStatic(param,getParams);
-                    break;
-                case 'getWhere':// 渠道标记
-                    this.defaultStatic(param,getParams);
                     break;
                 default:
                     this.defaultStatic(param,getParams);
@@ -124,7 +118,7 @@ class Statistics {
         for (let i = 0;i< saveStaParams.length; i++) {
             let key = saveStaParams[i];
             let value = sessionStorage.getItem(key);
-            window.dplus.register({key: value});
+            window.dplus.register({[key]: value});
             console.log('设置了' + key + value);
         }
     }
@@ -134,20 +128,24 @@ class Statistics {
      * @constructor
      */
     static GlobalStatis() {
+        // let test = {};
         for (let i = 0;i< superStatictics.length; i++) {
             let key = superStatictics[i];
             let value = sessionStorage.getItem(key);
-            window.dplus.register({key: value});
+            window.dplus.register({[key]: value});
         }
     }
 
 
     static postDplusData(eventName,data) {
         let userId = User.getUserInfo().userId;
+        if(!data) {
+            data = {};
+        }
         Tools.fireRace(userId,"OAUTH_SUCCESS").then(()=>{
             console.log('hava post DPlus ' + eventName);
-            this.GlobalStatis();
-            dplus.track(eventName,data)
+            // this.GlobalStatis();
+            window.dplus.track(eventName,data);
         });
     }
 
