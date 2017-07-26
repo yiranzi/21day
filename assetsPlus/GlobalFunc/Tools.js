@@ -122,7 +122,7 @@ class Tools {
         //         courseUrl = '/fund';
         //         break;
         //     case 2:
-        //         courseUrl = '/21Intro';
+        //         courseUrl = '/course21';
         //         break;
         // }
         // return courseUrl;

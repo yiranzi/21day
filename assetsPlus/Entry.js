@@ -21,7 +21,20 @@ var MyStorage = require('./GlobalFunc/MyStorage');
 
 let test = true;
 
-//初始化用户信息
+//上报启动时间
+let endTime = new Date().getTime();
+let startTime = sessionStorage.getItem('startTime');
+let totalTime = 0;
+if(startTime) {
+    totalTime = endTime - startTime;
+    totalTime = totalTime/1000;
+    // totalTime = parseInt(totalTime);
+}
+startTime = sessionStorage.setItem('startTime',totalTime);
+window.dplus.track('FinishRes',{'TotalCost': totalTime});
+// alert('FinishRes' + totalTime);
+
+//初始化用户信息1
 // alert("bundle ready");
 User.initAccessInfo();
 $(document).ready(() => {

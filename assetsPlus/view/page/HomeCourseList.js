@@ -15,6 +15,8 @@ const WxConfig = require('../../WxConfig');
 const Actions = require('../../GlobalStorage/Actions');
 const Carousel = require('../../component/home/Carousel');
 const Banner = require('../../component/home/Banner');
+
+const PreFetch = require('../../GlobalFunc/PreFetch');
 // const SwipeView = require('../../component/container/SwipeView').default;
 
 let bannerTimer;//banner timer
@@ -45,6 +47,35 @@ const HomeCourseList = React.createClass({
         this.getCourseContent();
         //3 根据课程Id获取用户相关数据
         this.getCourseStatus();
+
+        let courseId = 2;
+        let path = GlobalConfig.getCourseInfo(courseId).router;
+
+        for(let i = 0;i<4 ;i++) {
+
+        }
+
+    },
+
+    preFetchBg(index,path) {
+        if(index === 3) {
+            return
+        } else {
+            index++;
+        }
+        let url = `./assetsPlus/image${path}/join-content-${index}.png`;
+        PreFetch.fetchSerialRes(url).then(this.preFetchBg.bind(this,index,path));
+    },
+
+    preFetchRes(courseId) {
+        if(courseId === 2) {
+            let path = GlobalConfig.getCourseInfo(courseId).router;
+            this.preFetchBg(-1,path);
+        }
+
+        // let url = `./assetsPlus/image${path}/join-content.png`;
+        // console.log(url);
+        // PreFetch.fetchRes(url,0);
     },
 
 
@@ -73,6 +104,8 @@ const HomeCourseList = React.createClass({
             Tools.fireRaceCourse(courseId).then((value)=>{
                 this.state.courseStatus[courseId].payStatus = value.pay;
                 this.setState({courseStatus: this.state.courseStatus});
+                //4 预加载资源
+                this.preFetchRes(courseId);
             })
         }
         //首先,这是一个课程列表

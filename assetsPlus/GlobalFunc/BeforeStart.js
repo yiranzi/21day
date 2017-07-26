@@ -41,18 +41,11 @@ class BeforeStart {
     }
 
     static initGlobal() {
-        //上报启动时间
-        let endTime = new Date().getTime();
-        let startTime = sessionStorage.getItem('startTime');
-        let totalTime = 0;
-        if(startTime) {
-            totalTime = endTime - startTime;
-            totalTime = totalTime/1000;
-            // totalTime = parseInt(totalTime);
-        }
+
 
         //清空有影响的缓存
         // sessionStorage.removeItem('courseId');
+        let totalTime = sessionStorage.getItem('startTime');
         sessionStorage.clear();
         sessionStorage.setItem('SstartTime',totalTime);
         console.log(totalTime);

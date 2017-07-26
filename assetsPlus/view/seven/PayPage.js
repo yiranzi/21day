@@ -48,6 +48,7 @@ var PayPage = React.createClass({
             time: 0,
 
             userComments: [],
+            likeCountArray: [90,65,30,25,65,32,16,50,20,30],
         };
     },
 
@@ -103,18 +104,10 @@ var PayPage = React.createClass({
 
     getComment() {
         Material.getUserComment().done((result) => {
-            // console.log('get info');
-            // result = [{image: "http://wx.qlogo.cn/mmopen/dx4Y70y9XcvUicibqS0w6QZKLGSrRXW5N8rAfku2nhD3Kp2d0Y7AFia6EH2I90ATNPEC6uBZUnhak14mBNgmxYzqxOoLX8LImAE/0",
-            //     userName: 'yiran1',
-            //     create_time: 2010-1-1,
-            //     content: '好好好好好好2010-1-120好好好10-1-120好好好好好好10-1-好好好1',},{image: "http://wx.qlogo.cn/mmopen/dx4Y70y9XcvUicibqS0w6QZKLGSrRXW5N8rAfku2nhD3Kp2d0Y7AFia6EH2I90ATNPEC6uBZUnhak14mBNgmxYzqxOoLX8LImAE/0",
-            //     userName: 'yiran2',
-            //     create_time: 2010-1-1,
-            //     content: '好好好好好好2010-1-120好好好10-1-120好好好好好好10-1-好好好1',},{image: "http://wx.qlogo.cn/mmopen/dx4Y70y9XcvUicibqS0w6QZKLGSrRXW5N8rAfku2nhD3Kp2d0Y7AFia6EH2I90ATNPEC6uBZUnhak14mBNgmxYzqxOoLX8LImAE/0",
-            //     userName: 'yiran3',
-            //     create_time: 2010-1-1,
-            //     content: '好好好好好好2010-1-120好好好10-1-120好好好好好好10-1-好好好1',}]
-
+            let likeCountArray = this.state.likeCountArray;
+            for (let i =0; i< result.length; i++) {
+                result[i].likeCount = likeCountArray[i];
+            }
             this.state.userComments.push(result);
             this.setState({userComments: this.state.userComments})
         })
@@ -234,7 +227,7 @@ var PayPage = React.createClass({
                     <img src={'./assetsPlus/image/seven/payPage/banner_seven.jpg'}/>
                 </div>
                 <div className={"intro-img"}>
-                    <img src='./assetsPlus/image/seven/payPage/paypage-seven-bg.png' />
+                    <img src='./assetsPlus/image/seven/join-content.png' />
                     {this.renderBuyButton()}
                 </div>
                 <div className="bottom-img">

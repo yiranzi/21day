@@ -280,12 +280,23 @@ var PayPage = React.createClass({
         // }
     },
 
+    renderBg() {
+        let arr =[];
+        for(let i = 0;i<4;i++) {
+            let courseId = sessionStorage.getItem('courseId');
+            let path = GlobalConfig.getCourseInfo(courseId).router;
+            let url = `./assetsPlus/image${path}/join-content-${i}.png`;
+            arr.push(<img src={url}/>)
+        }
+        return arr;
+    },
+
     render(){
         return (
             <div className="pay_page_course21">
                 <FixedBg/>
                 <div className={"intro-img"}>
-                    <img src='./assetsPlus/image/course21/join-content.png' />
+                    {this.renderBg()}
                     <div className="fund-status">
                         <Timeout hasEnded={this.state.time} finalDate={this.state.endTime}/>
                         <span className="fund-status-number">剩余名额：{this.state.ifCanPaid ? this.state.num : 0}</span>

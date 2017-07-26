@@ -26,6 +26,28 @@ class PreFetch {
         });
     }
 
+    static fetchSerialRes(url) {
+        //根据url,time来设置加载
+        // let info = {};
+        return new Promise((resolve, reject) => {
+                console.log('start done' + url);
+                var xhr = new XMLHttpRequest();
+                xhr.open('GET', url);
+                xhr.send();
+                xhr.onload = ()=> {
+                    console.log();
+                    resolve(true);
+                };
+            // xhr.onprogress =(event)=> {
+                //     if(event.lengthComputable){
+                //         OnFire.fire('LOADING',event);
+                //     }
+                // };
+                // info.url = url;
+
+        });
+    }
+
     //     let screenHeight = Dimensions.getWindowHeight();
     //     let perTime = 5;
     //     let totalTime = 600;

@@ -13,9 +13,10 @@ const courseInfo = {
     },
 
     '2':{
+        // payPicLength: 4,//报名页图片长度
         price: [9,3],//价格
         title: '21天训练营',//标题
-        router: '/21Intro',//默认路由前缀`
+        router: '/course21',//默认路由前缀`
         shareTitle: '21天训练营开开营',//分享标题
         shareDesc: '快来快来',//分享描述
     },
