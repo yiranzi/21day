@@ -154,6 +154,7 @@ class WxConfig {
             wx.onMenuShareWeibo(weiboOpt);
 
             shareConfigFlag = false;
+            console.log(title);
             console.log(link);
         });
     }

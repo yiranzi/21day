@@ -3,7 +3,7 @@
  */
 var Material = require('../Material');
 const MyStorage = require('../GlobalFunc/MyStorage');
-const $ = window.$ = require('jquery');
+const GlobalConfig = require('../GlobalStorage/GlobalConfig');
 const React = require('react');
 const OnFire = require('onfire.js');
 const Actions = require('../GlobalStorage/Actions');
@@ -112,19 +112,20 @@ class Tools {
     // }
 
     static setCourseUrl(courseId) {
-        let courseUrl;
-        switch (Number(courseId)) {
-            case 0:
-                courseUrl = '/seven';
-                break;
-            case 1:
-                courseUrl = '/fund';
-                break;
-            case 2:
-                courseUrl = '/21Intro';
-                break;
-        }
-        return courseUrl;
+        return GlobalConfig.getCourseInfo(courseId).router;
+        // let courseUrl;
+        // switch (Number(courseId)) {
+        //     case 0:
+        //         courseUrl = '/seven';
+        //         break;
+        //     case 1:
+        //         courseUrl = '/fund';
+        //         break;
+        //     case 2:
+        //         courseUrl = '/21Intro';
+        //         break;
+        // }
+        // return courseUrl;
     }
 
     static MyRouter(pathTo,pathUrl) {

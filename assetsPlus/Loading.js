@@ -9,13 +9,13 @@ var Preloader = require('./Preloader');
 var Util = require('./Util');
 var Main = require('./component/Main');
 
-var buildDir = Util.getDomain() + 'build'+ Util.getMinicId() +'/';
+// var buildDir = Util.getDomain() + 'build'+ Util.getMinicId() +'/';
 
-const PRELOAD_FILES = [
-    //buildDir + '618428273b932e3afd4d0bc05f73a232.jpg',//首页背景图
-    //buildDir + '826390ab0150c90d66c737e45da67172.png'//BOSS头像
-    //buildDir + 'ea089aafad04b1ee6f49b110a919e86d.png'  //课程标题
-];
+// const PRELOAD_FILES = [
+//     //buildDir + '618428273b932e3afd4d0bc05f73a232.jpg',//首页背景图
+//     //buildDir + '826390ab0150c90d66c737e45da67172.png'//BOSS头像
+//     //buildDir + 'ea089aafad04b1ee6f49b110a919e86d.png'  //课程标题
+// ];
 const LOADER_CONTAINER_ID = 'weLoader';
 
 /**

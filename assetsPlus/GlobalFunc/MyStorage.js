@@ -2,13 +2,15 @@
  * Created by ichangtou on 2017/5/13.1
  */
 // const Dimensions = require('./Dimensions');
-var preMove = 0;
+// const WxConfig = require('../WxConfig');
 const OnFire = require('onfire.js');
+const GlobalConfig = require('../GlobalStorage/GlobalConfig');
+
 
 //课程信息
-let courseInfo = [];
+let courseInfo = {};
 //课程Id列表
-let courseList = [0,1,2];
+// let courseList = [0,1,2];
 
 //这里面需要分出来几个
 //1做一个全局的常量保存的地方
@@ -17,14 +19,18 @@ let courseList = [0,1,2];
 
 class MyStorage {
     static init() {
-        let max = 0;
-        for(let i = 0; i<courseList.length; i++) {
-            if(courseList[i]>max) {
-                max = courseList[i];
-            }
-        }
-        for(let i = 0; i<max+1; i++) {
-            courseInfo[courseList[i]] = {};
+        // let max = 0;
+        // for(let i = 0; i<courseList.length; i++) {
+        //     if(courseList[i]>max) {
+        //         max = courseList[i];
+        //     }
+        // }
+        // for(let i = 0; i<max+1; i++) {
+        //     courseInfo[courseList[i]] = {};
+        // }
+
+        for(let i = 0; i< GlobalConfig.getCourseIdList().length; i++) {
+            courseInfo[i] = {};
         }
     }
 
@@ -37,7 +43,7 @@ class MyStorage {
     static setCourseStatus(courseId,dataResult) {
         console.log('set');
         //保存到全局
-        courseInfo[courseList[courseId]].dataResult = dataResult;
+        courseInfo[courseId].dataResult = dataResult;
         // OnFire.fire("courseStatus",{courseId: courseId,status: status});
         OnFire.fire("courseStatus" + courseId,dataResult);
     }
@@ -55,9 +61,7 @@ class MyStorage {
         }
     }
 
-    static getCourseList() {
-        return courseList;
-    }
+
 
     static setItem(key,value){
         console.log('read-only')
@@ -69,6 +73,14 @@ class MyStorage {
         // }
     }
 
+
+    /**
+     * 传入全局变量名称
+     * 返回值
+     * 封装了set/get
+     * @param key
+     * @returns {Array}
+     */
     static getItem(key){
         return Util.getUrlPara(key);
         // return sessionStorage.getItem(key);
@@ -76,11 +88,21 @@ class MyStorage {
 
     //需要修改的全局变量.
     //并且需要上报.
+
+    /**
+     * 设置当前的课程ID
+     * @param courseId
+     */
     static setCourseId(courseId) {
         sessionStorage.setItem('courseId',courseId);
         sessionStorage.setItem('ScourseId',courseId);
+        // WxConfig.shareConfig();
     }
 
+    /**
+     * 设定当前界面名称.
+     * @param pathNow
+     */
     static setPathNow(pathNow) {
         let pathOld = sessionStorage.getItem('pathNow');
         if(!pathOld) {
@@ -92,6 +114,10 @@ class MyStorage {
         sessionStorage.setItem('SpathNow',pathNow);
     }
 
+    /**
+     * 进入界面调用函数
+     * @param pathNow 界面名称
+     */
     static whenEnterPage(pathNow) {
         this.setPathNow(pathNow);
         Statistics.postDplusData('进入界面');

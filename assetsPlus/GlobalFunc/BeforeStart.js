@@ -58,7 +58,6 @@ class BeforeStart {
         MyStorage.setPathNow('入口文件');
 
         MyStorage.init();
-        GlobalConfig.init();
     }
 
     static getWhereChannel () {
@@ -79,7 +78,6 @@ class BeforeStart {
             if(courseId) {
                 MyStorage.setCourseId(courseId);
                 //action在特定页面懒发起,这里只负责分发跳转.
-
                 // 举例/fund/getReward/
                 redictUrl = Tools.setCourseUrl(courseId) + '/' + redictUrl;
             }

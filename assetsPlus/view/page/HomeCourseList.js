@@ -10,6 +10,7 @@ const Util = require('../../Util');
 const Material = require('../../Material');
 const Statistics = require('../../GlobalFunc/Statistics');
 const MyStorage = require('../../GlobalFunc/MyStorage');
+const GlobalConfig = require('../../GlobalStorage/GlobalConfig');
 const WxConfig = require('../../WxConfig');
 const Actions = require('../../GlobalStorage/Actions');
 const Carousel = require('../../component/home/Carousel');
@@ -51,7 +52,7 @@ const HomeCourseList = React.createClass({
 
     //获取列表并初始化
     getCourseList() {
-        let courseList = this.state.courseList = MyStorage.getCourseList();
+        let courseList = this.state.courseList = GlobalConfig.getCourseIdList();
         for( let i = 0; i<courseList.length; i++) {
             this.state.courseStatus[courseList[i]] = {};
         }

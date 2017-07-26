@@ -7,6 +7,7 @@ var React = require('react');
 
 var Config = require('./Config');
 const OnFire = require('onfire.js');
+const GlobalConfig = require('./GlobalStorage/GlobalConfig');
 
 
 const TEST_APPID = 'wxdd25f06df84b18ea';// //测试环境登录APPID
@@ -44,12 +45,6 @@ const END_TIME = [2017,6,16,9,0,0]; // TODO roy 截止时间，需要和后台�
 const USER_NUMBER = 500; // TODO roy 活动报名总人数
 
 let coursePayPrice;
-
-
-const SHARE_COURSE_TITLE = ['和我一起提高财商吧！','14天带你躺赢基金定投！一天10分钟，手把手教你！',"21天训练营开开营"];
-const SHARE_COURSE_DESC = ['邀请你一起参加7天财商训练营','宝宝618不再担心没钱买买买啦',"快来快来"];
-const SHARE_TITLE = '长投派,每天进步一点点的行动派';
-const SHARE_DESC = '生活变得不一样';
 
 //是否是debug
 const IS_DEBUG = location.href.indexOf('localhost') > 0;
@@ -492,32 +487,37 @@ class Util {
      */
     static getShareTitle() {
         let courseId = sessionStorage.getItem('courseId');
-        if(courseId){
-            return SHARE_COURSE_TITLE[courseId];
-        } else {
-            return SHARE_TITLE;
-        }
+        return GlobalConfig.getCourseInfo(courseId).shareTitle;
     }
 
     /**
-     * 获取普通的标题
-     * @returns {string}
+     * 获取分享描述
+     * @returns {*}
      */
-    static getCommonTitle() {
-        return SHARE_TITLE;
+    static getShareDesc() {
+        let courseId = sessionStorage.getItem('courseId');
+        return GlobalConfig.getCourseInfo(courseId).shareDesc;
     }
 
-    /**
-     * 朋友圈分享的标题
-     */
-    static getTimelineTitle(){
-        if( Config.gift ) {
-            let nickName = User.getUserInfo().nickName;
-            return nickName + '送了一个迷你课给你:《'+ 'Pokemon Go，除了抓精灵，还应该知道这些' +'》。快和我一起看看';
-        }else{
-            return SHARE_TITLE;
-        }
-    }
+    // /**
+    //  * 获取普通的标题
+    //  * @returns {string}
+    //  */
+    // static getCommonTitle() {
+    //     return SHARE_TITLE;
+    // }
+
+    // /**
+    //  * 朋友圈分享的标题
+    //  */
+    // static getTimelineTitle(){
+    //     if( Config.gift ) {
+    //         let nickName = User.getUserInfo().nickName;
+    //         return nickName + '送了一个迷你课给你:《'+ 'Pokemon Go，除了抓精灵，还应该知道这些' +'》。快和我一起看看';
+    //     }else{
+    //         return SHARE_TITLE;
+    //     }
+    // }
 
     /**
      * 分享时的通用操作
@@ -533,20 +533,7 @@ class Util {
         //}
     }
 
-    /**
-     * 获取分享描述
-     * @returns {*}
-     */
-    static getShareDesc() {
-        //let userName = User.getUserInfo().nickName || '';
-        let courseId = sessionStorage.getItem('courseId')
-        if(courseId){
-            return SHARE_COURSE_DESC[courseId];
-        } else {
-            return SHARE_DESC;
-        }
 
-    }
 
     /**
      * 获取付费下标(0开始)
