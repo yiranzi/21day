@@ -5,6 +5,8 @@ var fs = require("fs");
 // TODO 需要根据项目目录和文件不同，自行调整~
 var assetsFolder = './assetsPlus/';
 var buildFolder = '/buildPlus/';
+//webpack
+// var htmlFileName = "indexPlusTest.html";
 var htmlFileName = "indexPlus.html";
 var path = __dirname + "/buildPlus";
 

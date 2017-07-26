@@ -50,7 +50,7 @@ let coursePayPrice;
 const IS_DEBUG = location.href.indexOf('localhost') > 0;
 
 //缓存数据
-const MyStorage = require('./GlobalFunc/MyStorage');
+// const MyStorage = require('./GlobalFunc/MyStorage');
 
 //API请求url
 const API_URL_GROUP = {

@@ -10,12 +10,14 @@ var Util = require('./Util');
 var User = require('./User');
 var Loading = require('./Loading');
 
+//全局的
 //工程中用到的
 var style = require('./css/style.scss');
 var DialogAlert = require('./component/DialogAlert');
 
 var InnerRouter = require('./InnerRouter');
 var BeforeStart = require('./GlobalFunc/BeforeStart');
+var MyStorage = require('./GlobalFunc/MyStorage');
 
 let test = true;
 

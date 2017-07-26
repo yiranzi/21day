@@ -2,7 +2,6 @@
  * 登录授权
  * Created by lip on 2016/6/7.
  */
-var Util = require('./Util');
 var OnFire =require('onfire.js');
 var Loading = require('./Loading');
 var WxConfig = require('./WxConfig');
@@ -31,6 +30,7 @@ class User {
      * 非微信浏览器不加载数据
      */
     static initAccessInfo() {
+        console.log(Util);
         if( !Util.isWeixin() ) {
             //QQ浏览器中不加载数据
             return;

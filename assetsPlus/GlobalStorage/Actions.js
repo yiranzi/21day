@@ -5,7 +5,7 @@
  * Created by ichangtou on 2017/5/13
  */
 var Material = require('../Material');
-const MyStorage = require('../GlobalFunc/MyStorage');
+// const MyStorage = require('../GlobalFunc/MyStorage');
 const $ = window.$ = require('jquery');
 const React = require('react');
 const OnFire = require('onfire.js');

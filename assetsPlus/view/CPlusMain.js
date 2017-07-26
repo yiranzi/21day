@@ -11,7 +11,7 @@ const OnFire = require('onfire.js');
 const Tools = require('../GlobalFunc/Tools');
 const Util = require('../Util');
 const Statistics = require('../GlobalFunc/Statistics');
-const MyStorage = require('../GlobalFunc/MyStorage');
+// const MyStorage = require('../GlobalFunc/MyStorage');
 
 //
 const FixedBg = require('../component/course/FixedBg');

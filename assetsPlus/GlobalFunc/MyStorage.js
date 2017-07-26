@@ -2,7 +2,7 @@
  * Created by ichangtou on 2017/5/13.1
  */
 // const Dimensions = require('./Dimensions');
-// const WxConfig = require('../WxConfig');
+const WxConfig = require('../WxConfig');
 const OnFire = require('onfire.js');
 const GlobalConfig = require('../GlobalStorage/GlobalConfig');
 
@@ -96,7 +96,7 @@ class MyStorage {
     static setCourseId(courseId) {
         sessionStorage.setItem('courseId',courseId);
         sessionStorage.setItem('ScourseId',courseId);
-        // WxConfig.shareConfig();
+        WxConfig.shareConfig();
     }
 
     /**
@@ -124,5 +124,5 @@ class MyStorage {
     }
 }
 
-module.exports = MyStorage;
+// module.exports = MyStorage;
 window.MyStorage = MyStorage;

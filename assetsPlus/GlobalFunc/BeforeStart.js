@@ -8,13 +8,15 @@
 
 const OnFire = require('onfire.js');
 const User = require('../User');
-const Util = require('../Util');
+
 const WxConfig = require('../WxConfig');
-const MyStorage = require('../GlobalFunc/MyStorage');
+
 const Tools = require('../GlobalFunc/Tools');
 
 const Statistics = require('../GlobalFunc/Statistics');
 const GlobalConfig = require('../GlobalStorage/GlobalConfig');
+
+const Util = require('../Util');
 
 class BeforeStart {
     static init() {
@@ -59,7 +61,6 @@ class BeforeStart {
 
         MyStorage.init();
     }
-
     static getWhereChannel () {
         let getWhere = Util.getUrlPara("getWhere");
         if (getWhere) {

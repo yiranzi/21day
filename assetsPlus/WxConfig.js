@@ -3,7 +3,6 @@
  */
 
 var $ = require('jquery');
-var Util = require('./Util');
 var OnFire= require('onfire.js');
 var shareConfigFlag = true;
 const Tools = require('./GlobalFunc/Tools');
@@ -69,7 +68,7 @@ class WxConfig {
                 userId = User.getUserInfo().userId;
                 sessionStorage.setItem('wxshare',true);
                 WxConfig.shareConfig();
-                OnFire.fire('wxshare');
+                // OnFire.fire('wxshare');
             });
         });
     }
