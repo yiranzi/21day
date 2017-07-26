@@ -70,7 +70,7 @@ const ListenCourse = React.createClass({
 
         //付费
         Tools.fireRaceCourse(sessionStorage.getItem('courseId')).then((value)=>{
-            if(value === 'pay'){
+            if(value.pay){
                 this.state.isPay = true;
                 this.setState({
                     isPay: true,

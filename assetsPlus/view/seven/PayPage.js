@@ -60,11 +60,11 @@ var PayPage = React.createClass({
         this.getUserId().then(()=>{
             //获取用户是否有报名记录
             Tools.fireRaceCourse(courseId).then((value)=>{
-                if(value === 'pay'){
+                if(value.pay){
                     this.setState({
                         hasPaid: true, //已报名
                     });
-                } else if(value === 'free'){
+                } else{
                     this.setState({
                         hasPaid: false, //未报名
                     });
@@ -77,7 +77,7 @@ var PayPage = React.createClass({
             outBool = true;
             OnFire.on('PAID_DONE', ()=>{
                 Tools.fireRaceCourse(courseId).then((value)=>{
-                    if(value === 'pay'){
+                    if(value.pay){
                         OnFire.fire('PAID_SUCCESS','normalPay');
                     } else {
                         outBool = false;

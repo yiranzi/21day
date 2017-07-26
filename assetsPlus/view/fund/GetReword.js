@@ -101,7 +101,7 @@ const GetReward = React.createClass({
                 this.setShareConfig('share');
                 //1是否是付费用户?
                 Tools.fireRaceCourse(sessionStorage.getItem('courseId')).then((value)=>{
-                    if(value === 'pay'){
+                    if(value.pay){
                         this.setState({
                             isPay: true,
                         });

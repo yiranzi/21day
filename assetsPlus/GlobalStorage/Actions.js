@@ -19,10 +19,11 @@ class Actions {
     static ifCourseSignUp(courseId) {
         let ajaxResult = {};
         //重置数据
+        console.log('delete');
         MyStorage.deleteCourseStatus(courseId);
         //根据不同的id调用接口
         switch (courseId) {
-            case '2':
+            case 2:
                 //判断是否是21报名(因为接口未统一)
                 Material.getJudgeFromServer21().done((result)=>{
                     if(typeof (result) === 'boolean') {

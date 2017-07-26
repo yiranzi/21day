@@ -34,7 +34,7 @@ const CourseSelect = React.createClass({
         sessionStorage.setItem('pathNow','关卡选择');
 
         Tools.fireRaceCourse(this.state.courseId).then((value)=>{
-            this.state.allowLesson = value;
+            this.state.allowLesson = value.pay;
             this.setState({allowLesson: this.state.allowLesson});
             this.init();
         });
@@ -134,7 +134,7 @@ const CourseSelect = React.createClass({
         };
         switch (this.state.allowLesson) {
             //如果是免费用户
-            case 'free':
+            case false:
                 courseStatus.reward = 'free-not-get';
                 //TODO 服务器的课程标签 如果是免费课
                 if (index === 0) {
@@ -160,7 +160,7 @@ const CourseSelect = React.createClass({
                 }
                 break;
             //如果是付费用户
-            case 'pay':
+            case true:
                 //先判定是否可以收听.
                 switch (course.status) {
                     case -1:
