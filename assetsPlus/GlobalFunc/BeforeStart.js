@@ -64,6 +64,7 @@ class BeforeStart {
     static getRedirect() {
         //重定向到main
         let redictUrl = '/main';
+        //有courseId 一定有其他的重定向(默认的)
         let goPath = MyStorage.getItem('goPath');
         if (goPath) {
             redictUrl = goPath;
