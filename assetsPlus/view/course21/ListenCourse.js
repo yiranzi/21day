@@ -423,20 +423,38 @@ const ListenCourse = React.createClass({
      * @returns {*}
      */
     renderFMBar(index, FMContent,count) {
-        let style = {
+        let style1 = {
             // left: worldPox * imgWidth,
-            // transition: 'left 2s'
-            // backgroundImage: `./assetsPlus/image/${GlobalConfig.getCourseName()}/fmbar-bg.png`,
+            // backgroundImage: `url(./assetsPlus/image/${GlobalConfig.getCourseName()}/fmbar-bg.png)`,
+            backgroundColor: '#FFF7E0',
+            // backgroundSize: 'cover',
+            borderTop: '3px solid #907660',
+            borderLeft: '3px solid #907660',
+            borderRight: '3px solid #907660',
             // transform: `translateX(${worldPox}00%)`
-        }
+        };
+        let style2 = {
+            // left: worldPox * imgWidth,
+            // backgroundImage: `url(./assetsPlus/image/${GlobalConfig.getCourseName()}/fmbar-bg.png)`,
+            backgroundColor: '#FFF7E0',
+            borderTop: '3px solid #907660',
+            borderLeft: '3px solid #907660',
+            borderRight: '3px solid #907660',
+            borderBottom: '3px solid #907660',
+            // transform: `translateX(${worldPox}00%)`
+        };
+        let buttonImgs = [`./assetsPlus/image/${GlobalConfig.getCourseName()}/btnPressed.png`,`./assetsPlus/image/${GlobalConfig.getCourseName()}/btnPlay.png`];
         return (<div key={count} className={this.state.currentPlaying === index ? 'audio-player-on' : 'audio-player-off'}>
             <AudioPlayer
-                bgImg = {style}
+                buttonImgs = {buttonImgs}
+                bgImg = {style1}
                 content = {FMContent}
                 playingIndex = {this.state.currentPlaying}//控制暂停按钮的逻辑11
                 audioIndex={index}
                 audioCallBack = {this.OnAudioButton}/>
             <AudioProgressBar
+                bgImg = {style2}
+                backColor = {['#907660','#907660','#907660','#FFF7E0']}
                 audioIndex={this.state.lessons[index].fmid} //控制播放哪个音频
                 playingIndex = {this.state.currentfmid}/>
         </div>)

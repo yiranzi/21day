@@ -7,7 +7,7 @@ var assetsFolder = './assetsPlus/';
 var buildFolder = '/buildPlus/';
 //webpack
 // var htmlFileName = "indexPlusTest.html";
-var htmlFileName = "indexPlus.html";
+var htmlFileName = "index7Plus.html";
 var path = __dirname + "/buildPlus";
 
 module.exports = {

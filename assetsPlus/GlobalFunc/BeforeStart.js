@@ -66,14 +66,16 @@ class BeforeStart {
         //重定向到main
         let redictUrl = '/main';
         // let redictUrl = '/courseSelect';
-        //有courseId 一定有其他的重定向(默认的)
-        //重定向进入需要制定方位...这里不会再次进行分流判断(节省了一个请求 但是逻辑上需要更加复杂了.每个界面都需要去判断是否合理)
-        //但是,需求是,可以通过goPath进行任意跳转...所以这里不应该进行判定.或者说,判定不应该影响跳转结果.这样可以省去每个界面
+
+
         let goPath = MyStorage.getItem('goPath');
+        if (!goPath) {
+            goPath = 'courseSelect';
+        }
+        let courseId = 2;
         if (goPath) {
             redictUrl = goPath;
             //如果有课程
-            let courseId = MyStorage.getItem('courseId');
             if(courseId) {
                 //1设置courseId
                 MyStorage.setCourseId(courseId);
