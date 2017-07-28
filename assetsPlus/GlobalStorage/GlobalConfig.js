@@ -6,7 +6,7 @@
 const courseIdList = [0,1,2];
 // const couseIdNameMap = new Map();
 // const couseIdName = {};
-
+// `./assetsPlus/image/${GlobalConfig.getCourseName()}/course_select_title.png`
 const courseInfo = {
     '-1':{
         shareTitle: '长投派,每天进步一点点的行动派',

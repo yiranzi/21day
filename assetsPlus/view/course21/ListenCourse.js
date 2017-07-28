@@ -423,8 +423,15 @@ const ListenCourse = React.createClass({
      * @returns {*}
      */
     renderFMBar(index, FMContent,count) {
+        let style = {
+            // left: worldPox * imgWidth,
+            // transition: 'left 2s'
+            // backgroundImage: `./assetsPlus/image/${GlobalConfig.getCourseName()}/fmbar-bg.png`,
+            // transform: `translateX(${worldPox}00%)`
+        }
         return (<div key={count} className={this.state.currentPlaying === index ? 'audio-player-on' : 'audio-player-off'}>
             <AudioPlayer
+                bgImg = {style}
                 content = {FMContent}
                 playingIndex = {this.state.currentPlaying}//控制暂停按钮的逻辑11
                 audioIndex={index}

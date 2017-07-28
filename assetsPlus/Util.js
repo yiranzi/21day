@@ -488,6 +488,9 @@ class Util {
      */
     static getShareTitle() {
         let courseId = sessionStorage.getItem('courseId');
+        if(!courseId) {
+            courseId = -1;
+        }
         return GlobalConfig.getCourseInfo(courseId).shareTitle;
     }
 
@@ -497,6 +500,9 @@ class Util {
      */
     static getShareDesc() {
         let courseId = sessionStorage.getItem('courseId');
+        if(!courseId) {
+            courseId = -1;
+        }
         return GlobalConfig.getCourseInfo(courseId).shareDesc;
     }
 
