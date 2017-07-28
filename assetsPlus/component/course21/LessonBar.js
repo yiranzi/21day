@@ -11,21 +11,26 @@ const LessonBar = React.createClass({
             index: this.props.index,
             day: [
                 '第一天',
-                '第儿天',
-                '壹',
-                '贰',
-                '叁',
-                '肆',
-                '伍',
-                '陆',
-                '柒',
-                '捌',
-                '玖',
-                '拾',
-                '壹',
-                '贰',
-                '叁',
-                '肆',
+                '第二天',
+                '第三天',
+                '第四天',
+                '第五天',
+                '第六天',
+                '第七天',
+                '第八天',
+                '第九天',
+                '第十天',
+                '第十一天',
+                '第十二天',
+                '第十三天',
+                '第十四天',
+                '第十五天',
+                '第十六天',
+                '第十七天',
+                '第十八天',
+                '第十九天',
+                '第二十天',
+                '第二一天',
             ],
             type: [
                 '未解锁!',
@@ -65,12 +70,15 @@ const LessonBar = React.createClass({
         //看不到
         if(this.props.content.courseStatus.see)
         {
-            return (<div className="column-container">
+            return (<div className="column-container" onClick={this.callBackFunc.bind(this,'goCourse')}>
+                {/*第几天*/}
                 <div className="bg-number"><h1>{this.state.day[this.props.index]}</h1></div>
                 {/*<div className="pic-container" onClick={this.callBackFunc.bind(this,'goReward')}>{this.renderReward()}</div>*/}
-                <div className="touch-range" onClick={this.callBackFunc.bind(this,'goCourse')}></div>
                 {/*{this.renderFinish()}*/}
+                {/*课程标题*/}
                 <span className="column-container-title"><h2>{content.title}</h2></span>
+                {/*小图标*/}
+                {this.renderTypeIcon()}
             </div>)
         } else {
             return(<img onClick={this.callBackFunc.bind(this,'goCourse')} className="bg-not-see" src = "./assetsPlus/image/course/tomorrow.png"/>)
@@ -84,6 +92,15 @@ const LessonBar = React.createClass({
             // </div>)
         }
 
+    },
+
+    renderTypeIcon() {
+        let icons =  [
+            `./assetsPlus/image/${GlobalConfig.getCourseName()}/linebar_icon_0.png`,
+            `./assetsPlus/image/${GlobalConfig.getCourseName()}/linebar_icon_1.png`,
+            `./assetsPlus/image/${GlobalConfig.getCourseName()}/linebar_icon_2.png`,
+            ]
+        return(<img className="column-container-icon" src={icons[this.props.content.type]}/>)
     },
 
 // {/*<span>{this.state.type[content.status + 1]}</span>*/}

@@ -216,7 +216,7 @@ const CourseSelect = React.createClass({
                     //     );
                     // }
                     arr.push(
-                        <div className="lesson-bar-fund">
+                        <div className="lesson-bar-course21">
                             <LessonBar  index = {i} content = {this.state.courseList[i]} cbfGoLesson = {this.cbfGoLesson} cbfSeeReward = {this.cbfSeeReward}></LessonBar>
                         </div>
                     );
@@ -316,7 +316,7 @@ const CourseSelect = React.createClass({
         console.log(course);
         let status = course.courseStatus;
         let dayId = this.state.courseList[index].id;
-        let type = course.type
+        let type = course.type;
         switch (status.enter) {
             // case 'free-enter':
             //     Material.postData('免费_试听_CourseSelect');
@@ -330,13 +330,16 @@ const CourseSelect = React.createClass({
             case 'pay':
                 switch (type) {
                     case 0:
+                        Tools.MyRouter('ListenCourse','/listenCourse/' + dayId);
                         break;
                     case 1:
+                        location.href = course.link;
                         break;
                     case 2:
+                        Tools.MyRouter('ListenCourse','/listenCourse/' + dayId);
                         break;
                 }
-                Tools.MyRouter('ListenCourse','/listenCourse/' + dayId);
+
                 break;
             case 'no-time':
                 window.dialogAlertComp.show('还没有开放课程哦','每天更新一课哦，耐心等一等吧！','知道啦',()=>{},()=>{},false);
