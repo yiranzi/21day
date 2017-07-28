@@ -290,6 +290,7 @@ class Util {
      * @parma eventParam 事件携带参数
      */
     static postCnzzData(eventName,eventParam){
+        return
         try {
             if( _czc && _czc.push ){
                 if(eventParam){

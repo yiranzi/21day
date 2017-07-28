@@ -48,7 +48,6 @@ class MyStorage {
         //报名成功后触发
         if(parseInt(sessionStorage.getItem('courseId')) === courseId) {
             if(dataResult.pay){
-                alert('付费');
                 sessionStorage.setItem('SisBuy','付费');
             } else {
                 sessionStorage.setItem('SisBuy','未付费');

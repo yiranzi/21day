@@ -44,7 +44,7 @@ $(document).ready(() => {
         if(test) {
             alert('请复制地址并在微信中打开');
             new Dimensions().init();
-            User.setUserIdTest('8588d5124d1541c0b8656d675cee761d');
+            User.setUserIdTest('8ad44530fc9f4054a4bfd3ec56bc833f');
             let goWhere = BeforeStart.init();
             ReactDom.render(<InnerRouter goWhere = {goWhere}/>, $('#root')[0]);
         } else {
