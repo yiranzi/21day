@@ -146,22 +146,36 @@ const CourseSelect = React.createClass({
     },
 
     renderTopBar(){
-        return(<div className="top-bar">
-            {this.renderIcon()}
+        return(<div className="top-bar margin-fix">
+            {/*{this.renderIcon()}*/}
+            {this.renderTitleIcon()}
+            {this.renderBeginReward()}
         </div>)
     },
 
-    renderIcon(){
-        let title=[
-            '毕业证书', '课程指导', '毕业礼物'];
-        let arr = [];
-        for (let i = 0; i<title.length; i++) {
-            arr.push(
-                <IconBar cbfCheckBar = {this.cbfCheckBar} index = {i} isView = {this.state.topBarStatus[i]} iconImg = {this.state.iconImg[i]} iconTitle={title[i]}/>
-            )
-        }
-        return arr;
+    renderTitleIcon() {
+        return(<img className="" src={`./assetsPlus/image/${GlobalConfig.getCourseName()}/course_select_title.png`}>
+
+        </img>)
     },
+
+    renderBeginReward() {
+        return(<img className="" style={{width: '100%'}} src={`./assetsPlus/image/${GlobalConfig.getCourseName()}/course_select_begin.png`} onClick={()=>{Tools.MyRouter('ListenCourse','/courseBegin/mine')}}>
+
+        </img>)
+    },
+
+    // renderIcon(){
+    //     let title=[
+    //         '毕业证书', '课程指导', '毕业礼物'];
+    //     let arr = [];
+    //     for (let i = 0; i<title.length; i++) {
+    //         arr.push(
+    //             <IconBar cbfCheckBar = {this.cbfCheckBar} index = {i} isView = {this.state.topBarStatus[i]} iconImg = {this.state.iconImg[i]} iconTitle={title[i]}/>
+    //         )
+    //     }
+    //     return arr;
+    // },
 
     cbfCheckBar(type) {
         switch (type) {

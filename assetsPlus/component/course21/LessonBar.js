@@ -53,7 +53,8 @@ const LessonBar = React.createClass({
     },
     renderBg() {
         if(this.props.content.courseStatus.see){
-            return(<div className="bar-background"></div>)
+            // return(<div className="bar-background"></div>)
+            return(<img className="bar-background" src={'./assetsPlus/image/course21/linebar.png'}></img>)
         }
 
     },
@@ -68,7 +69,7 @@ const LessonBar = React.createClass({
                 <div className="bg-number"><h1>{this.state.day[this.props.index]}</h1></div>
                 {/*<div className="pic-container" onClick={this.callBackFunc.bind(this,'goReward')}>{this.renderReward()}</div>*/}
                 <div className="touch-range" onClick={this.callBackFunc.bind(this,'goCourse')}></div>
-                {this.renderFinish()}
+                {/*{this.renderFinish()}*/}
                 <span className="column-container-title"><h2>{content.title}</h2></span>
             </div>)
         } else {

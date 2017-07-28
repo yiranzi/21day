@@ -14,6 +14,7 @@ const courseInfo = {
     },
 
     '2':{
+        name: 'course21',
         // payPicLength: 4,//报名页图片长度
         price: [9,3],//价格
         title: '21天训练营',//标题
@@ -22,6 +23,7 @@ const courseInfo = {
         shareDesc: '快来快来',//分享描述
     },
     '0':{
+        name: 'seven',
         price: [9,3],
         title: '7天训练营',
         router: '/seven',
@@ -29,6 +31,7 @@ const courseInfo = {
         shareDesc: '邀请你一起参加7天财商训练营',
     },
     '1':{
+        name: 'fund',
         price: [9,3],
         title: '基金课',
         router: '/fund',
@@ -71,10 +74,16 @@ class GlobalConfig {
         return courseInfo[courseId];
     }
 
+    static getCourseName() {
+        return this.getCourseInfo(sessionStorage.getItem('courseId')).name
+    }
+
     static getCourseIdList() {
         return courseIdList;
     }
 
 }
 
+
 module.exports = GlobalConfig;
+window.GlobalConfig = GlobalConfig;

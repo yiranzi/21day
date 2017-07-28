@@ -58,7 +58,12 @@ class MyStorage {
     }
 
     static getCourseStatus(courseId) {
-        return courseInfo[courseId].dataResult;
+        if(courseInfo[courseId]) {
+            return courseInfo[courseId].dataResult;
+        } else {
+            return null
+        }
+
     }
 
     static deleteCourseStatus(courseId) {

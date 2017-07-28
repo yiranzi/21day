@@ -1,4 +1,8 @@
 .course-list{
+  .margin-fix{
+    margin: 0 auto px2rem(18) auto;
+    width: px2rem(359);
+  }
   .show-group{
     text-align: center;
   }

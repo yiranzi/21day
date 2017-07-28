@@ -35,7 +35,7 @@ const FixedBg = React.createClass({
             )
         } else if(sessionStorage.getItem('courseId') === '2'){
             return(
-                <div className="bg-ground" style = {{backgroundColor: '#5298ea', width:Dimensions.getWindowWidth(), height: Dimensions.getWindowHeight()}}></div>
+                <div className="bg-ground" style = {{backgroundColor: '#FFE69B', width:Dimensions.getWindowWidth(), height: Dimensions.getWindowHeight()}}></div>
             )
         }else {
             return(<div className="bg-ground" style = {{backgroundColor: '#4498c7', width:Dimensions.getWindowWidth(), height: Dimensions.getWindowHeight()}}></div>
