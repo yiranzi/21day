@@ -31,10 +31,11 @@ if(startTime) {
     // totalTime = parseInt(totalTime);
 }
 startTime = sessionStorage.setItem('startTime',totalTime);
-window.dplus.track('FinishRes',{'TotalCost': totalTime});
+window.dplus.track('js加载完毕',{'TotalCost': totalTime});
+
 // alert('FinishRes' + totalTime);
 
-//初始化用户信息1
+//初始化用户信息1s
 // alert("bundle ready");
 User.initAccessInfo();
 $(document).ready(() => {

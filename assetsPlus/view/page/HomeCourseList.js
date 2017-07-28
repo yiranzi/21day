@@ -129,11 +129,16 @@ const HomeCourseList = React.createClass({
             //0保存上当前的课程ID
             if (value.pay) {
                 enterWhere = '/courseSelect';
+                sessionStorage.setItem('SisBuy','付费');
             } else {
                 enterWhere = '/payPage';
+                sessionStorage.setItem('SisBuy','未付费');
             }
             MyStorage.setCourseId(courseId);
+            //3设置默认分享
+            WxConfig.shareConfig();
             Loading.hideLoading();
+            //4设置跳转
             Tools.MyRouter('',enterWhere);
         });
 

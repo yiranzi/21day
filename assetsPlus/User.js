@@ -20,6 +20,10 @@ class User {
      */
     static getUserInfo() {
         return userInfo || {};
+        //改成异步
+        // Tools.fireRace(userInfo,"OAUTH_SUCCESS").then(()=>{
+        //     return userInfo || {};
+        // })
     }
 
 
@@ -30,7 +34,6 @@ class User {
      * 非微信浏览器不加载数据
      */
     static initAccessInfo() {
-        console.log(Util);
         if( !Util.isWeixin() ) {
             //QQ浏览器中不加载数据
             return;
@@ -152,7 +155,6 @@ class User {
         if( userInfo.nickName && userInfo.nickName.length > 10 ){
             userInfo.nickName = userInfo.nickName.substr(0, userInfo.nickName.length-6);
         }
-
         userInfo.headImage = data.headImage;
 
         userInfo.subscribe = data.subscribe;//是否关注公众号

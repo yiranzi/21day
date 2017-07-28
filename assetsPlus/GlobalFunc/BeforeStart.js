@@ -15,12 +15,13 @@ const Tools = require('../GlobalFunc/Tools');
 
 const Statistics = require('../GlobalFunc/Statistics');
 const GlobalConfig = require('../GlobalStorage/GlobalConfig');
+const Actions = require('../GlobalStorage/Actions');
+
 
 const Util = require('../Util');
 
 class BeforeStart {
     static init() {
-
         //0 初始化全局
         this.initGlobal();
 
@@ -65,14 +66,32 @@ class BeforeStart {
         //重定向到main
         let redictUrl = '/main';
         //有courseId 一定有其他的重定向(默认的)
+        //重定向进入需要制定方位...这里不会再次进行分流判断(节省了一个请求 但是逻辑上需要更加复杂了.每个界面都需要去判断是否合理)
+        //但是,需求是,可以通过goPath进行任意跳转...所以这里不应该进行判定.或者说,判定不应该影响跳转结果.这样可以省去每个界面
         let goPath = MyStorage.getItem('goPath');
         if (goPath) {
             redictUrl = goPath;
             //如果有课程
             let courseId = MyStorage.getItem('courseId');
             if(courseId) {
+                //1设置courseId
                 MyStorage.setCourseId(courseId);
-                //action在特定页面懒发起,这里只负责分发跳转.
+                //2获取课程支付信息
+                //action在特定页面懒发起,这里只负责分发跳转.(但是因为所有的跳转界面都需要这个数据,所以在这里进行处理)
+                Actions.ifCourseSignUp(courseId);
+                Tools.fireRaceCourse(courseId).then((value)=>{
+                    if(parseInt(sessionStorage.getItem('courseId')) === courseId) {
+                        if(value.pay){
+                            sessionStorage.setItem('SisBuy','付费');
+                        } else {
+                            sessionStorage.setItem('SisBuy','未付费');
+                        }
+                    }
+                });
+
+                //3设置默认分享
+                WxConfig.shareConfig();
+                //4设置跳转
                 // 举例/fund/getReward/
                 redictUrl = Tools.setCourseUrl(courseId) + '/' + redictUrl;
             }

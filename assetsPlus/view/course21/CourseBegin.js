@@ -16,6 +16,7 @@ const WxConfig = require('../../WxConfig');
 const Util = require('../../Util');
 
 const FixedBg = require('../../component/course/FixedBg');
+const Actions = require('../../GlobalStorage/Actions');
 
 const CourseBegin = React.createClass({
     getInitialState: function() {
@@ -64,9 +65,8 @@ const CourseBegin = React.createClass({
         } else {//查看自己的毕业证
             //获取班级群信息
             let courseId = sessionStorage.getItem('courseId');
-
-            Tools.updataCourseData(courseId).then((value)=>{
-                // alert('beginPage' + value.qqGroup);
+            Actions.ifCourseSignUp(courseId);
+            Tools.fireRaceCourse(courseId).then((value)=>{
                 this.setState({
                     signUpInfo: value,
                 });

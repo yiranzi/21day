@@ -22,11 +22,11 @@
     }
     .fund-status{
       position: absolute;
-      bottom: 80px;// 中间有条线
+      bottom: 65px;// 中间有条线
       background-color: white;
       font-size: px2rem(14);
       line-height: px2rem(36);
-      color: #5298EA;
+      color: #E29F66;
       display: flex;
       width: 100%;
       justify-content: space-around;
@@ -51,10 +51,40 @@
     position: relative;
     justify-content: space-around;
     flex-wrap: nowrap;
-    background-color: #5298EA;
+    background-color: #FFE49B;
     display: flex;
     align-items: center;
     height: 60px;
+    //.mid{
+    //  position: relative;
+    //  height: 100%;
+    //  width: 100%;
+    //  display: flex;
+    //  align-items: center;
+    //  justify-content: space-around;
+    //  .button{
+    //    //margin: auto;
+    //    position: relative;
+    //    width: 141px;
+    //    text-align: center;
+    //
+    //    img{
+    //      width: 141px;
+    //      position: absolute;
+    //      left: 0px;
+    //    }
+    //    span{
+    //      position: relative;
+    //      z-index: 10;
+    //      color: white;
+    //      line-height: 36px;
+    //      font-size: 14px;
+    //    }
+    //  }
+    //  img{
+    //    width: 36px;
+    //  }
+    //}
     .left{
       position: relative;
       width: 50%;
@@ -63,7 +93,7 @@
       align-items: center;
       justify-content: space-around;
       .button{
-        //margin: auto;
+        margin-left: 50px;
         position: relative;
         width: 141px;
         text-align: center;
@@ -73,11 +103,14 @@
           left: 0px;
         }
         span{
+          position: relative;
+          z-index: 10;
           color: white;
           line-height: 36px;
           font-size: 14px;
         }
       }
+
 
 
     }
@@ -90,6 +123,7 @@
       text-align: center;
       img{
         width: 36px;
+        margin-left: 50px;
       }
     }
   }

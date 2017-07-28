@@ -22,6 +22,7 @@ const FixedBg = require('../../component/course/FixedBg');
 const Tools = require('../../GlobalFunc/Tools');
 const WxConfig = require('../../WxConfig');
 const GlobalConfig = require('../../GlobalStorage/GlobalConfig');
+const Actions = require('../../GlobalStorage/Actions');
 
 var PayPage = React.createClass({
 
@@ -93,23 +94,27 @@ var PayPage = React.createClass({
                 }
                 // alert('startsend');
                 //先ajax更新这个数据(花费少量时间)
-                Tools.updataCourseData(courseId).then((value)=>{
+                Actions.ifCourseSignUp(courseId);
+                //action & get
+                //这边的结果完成后get
+                Tools.fireRaceCourse(courseId).then((value)=>{
                     // alert('start' + value.qqGroup);
                     if(value.pay){
-                        Statistics.postDplusData('支付按钮',[true]);
+                        Statistics.postDplusData('支付_回调',[true]);
                         // this.state.signUpInfo = value;
                         OnFire.fire('PAID_SUCCESS','normalPay');
                     } else {
-                        Statistics.postDplusData('支付按钮',[false]);
+                        Statistics.postDplusData('支付_回调',[false]);
                         outBool = false;
                     }
                 })
             });
             OnFire.on('PAID_SUCCESS',(payWay)=>{
+                alert('PAID_SUCCESS');
                 if (sessionStorage.getItem('courseId') !== courseId) {
                     return
                 }
-                Statistics.postDplusData('paySuccess');
+                Statistics.postDplusData('支付成功');
                 this.state.hasPaid = true;
                 this.setState({
                     // signUpInfo: this.state.signUpInfo,
@@ -263,6 +268,7 @@ var PayPage = React.createClass({
         // this.signUpNumber()
         //TODO 显示报名开课证(跳转)
         //TODo 上下线
+        alert('router');
         this.gotoBeginReward();
 
         // // 已关注公号的用户直接跳转关卡页面学习
@@ -324,6 +330,10 @@ var PayPage = React.createClass({
     bottomBar() {
         return(<div className="global-div-fixed">
             <div className="join-and-share">
+                {/*<div className="mid">*/}
+                    {/*{this.renderButtonSignUp()}*/}
+                    {/*{this.renderButtonShare()}*/}
+                {/*</div>*/}
                 <div className="left">
                     {this.renderButtonSignUp()}
                 </div>
@@ -358,12 +368,12 @@ var PayPage = React.createClass({
 
     onSeeReward () {
         //TODO 跳转到成就卡界面
-        Statistics.postDplusData('RewardButton');
+        Statistics.postDplusData('开课证_按钮');
         Tools.MyRouter('ListenCourse','/courseBegin/mine');
     },
 
     onButtonShare() {
-        Statistics.postDplusData('ShareButton');
+        Statistics.postDplusData('分享_按钮');
         window.dialogAlertComp.show('分享','快去分享给你的小伙伴吧。学姐说大家一起学习更能坚持下去哦！','知道啦',()=>{},'',false);
     },
 
@@ -371,7 +381,7 @@ var PayPage = React.createClass({
      * 按钮点击
      */
     clickHandler() {
-        let data= {}
+        let data= {};
         if(this.state.ifCanPaid) {
             data.result = true;
             this.payHandler();
@@ -379,7 +389,7 @@ var PayPage = React.createClass({
             data.result = false;
             window.dialogAlertComp.show('报名失败','出故障了.重新进入一下再试试，还不行的话可以报告管理员.手机号：15652778863','知道啦',()=>{},'',false);
         }
-        Statistics.postDplusData('PayButton',data);
+        Statistics.postDplusData('支付_按钮',data);
 
     },
 

@@ -21,11 +21,12 @@ class Actions {
         //重置数据
         console.log('delete');
         MyStorage.deleteCourseStatus(courseId);
+        courseId = parseInt(courseId);
         //根据不同的id调用接口
         switch (courseId) {
             case 2:
                 //判断是否是21报名(因为接口未统一)
-                Material.getJudgeFromServer21().done((result)=>{
+                Material.getJudgeFromServer21().then((result)=>{
                     if(typeof (result) === 'boolean') {
                         ajaxResult.pay = result;
                     } else {
@@ -43,7 +44,7 @@ class Actions {
                 break;
             default:
                 //判断是否是21报名(因为接口未统一)
-                Material.getJudgeFromServer(courseId).done((result)=>{
+                Material.getJudgeFromServer(courseId).then((result)=>{
                     if(typeof (result === 'boolean')) {
                         ajaxResult.pay = result;
                     } else {

@@ -12,20 +12,21 @@ class Tools {
     //返回一个get.
     //get为结果 或者 等待结果的promise
     static fireRace(result,eventName,courseId) {
-        let keyWord = eventName;
-        switch(eventName) {
-            case 'courseStatus':
-                keyWord = keyWord + courseId;
-                break;
-            default:
-                break;
-        }
+        // let keyWord = eventName;
+        // switch(eventName) {
+        //     case 'courseStatus':
+        //         keyWord = keyWord + courseId;
+        //         break;
+        //     default:
+        //         break;
+        // }
         return new Promise((resolve,reject)=>{
             if (result) {
                 console.log('get' + result);
                 resolve(result);
             } else {
                 OnFire.on(eventName, (value)=>{
+                    //不要使用这个返回值,只作为回调广播
                     resolve(value);
                 })
             }

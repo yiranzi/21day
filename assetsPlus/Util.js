@@ -261,15 +261,15 @@ class Util {
 
         Util.shareCommonHandler();
 
-        channel = channel || '';
-        if (from === '笔记卡高级分享') {
-            Material.postData('笔记卡_高级分享_getReward')
-        } else if (from === '笔记卡普通分享') {
-            Material.postData('笔记卡_普通分享_getReward')
-        } else if (!from) {
-            Material.postData('一般分享')
-        }
-        Material.postData('上线_分享成功');
+        // channel = channel || '';
+        // if (from === '笔记卡高级分享') {
+        //     Material.postData('笔记卡_高级分享_getReward')
+        // } else if (from === '笔记卡普通分享') {
+        //     Material.postData('笔记卡_普通分享_getReward')
+        // } else if (!from) {
+        //     Material.postData('一般分享')
+        // }
+        Statistics.postDplusData('分享成功');
         let seniorId = Util.getUrlPara('ictchannel');
         OnFire.fire('SHARE_SUCCESS');
     }

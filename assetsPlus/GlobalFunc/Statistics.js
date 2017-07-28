@@ -40,8 +40,37 @@ class Statistics {
         }
     }
 
+    static myRigister(key,value) {
+        if(!key || !value) {
+            console.log(key);
+            console.log('error!!!!!!!!!!!!!!!!!!');
+            return
+        }
+        if(typeof value === 'object'){
+            console.log(key);
+            console.log('error!!!!!!!!!!!!!!!!!!');
+            return
+        }
+        window.dplus.register({[key]: value});
+    }
+    //
+    // static myTrack(key,value) {
+    //     if(!key || !value) {
+    //         console.log('error');
+    //         return
+    //     }
+    //     window.dplus.track({[key]: value});
+    // }
 
     static setStaticData() {
+        //0设置uesrId
+        let userId = User.getUserInfo().userId;
+        Tools.fireRace(userId,"OAUTH_SUCCESS").then(()=>{
+            let userId = User.getUserInfo().userId;
+            sessionStorage.setItem('SuserId',userId);
+            this.myRigister('SuserId',userId);
+        });
+
         //1记录所有的逻辑变量
         for(let i = 0 ;i < paramCalc.length; i++) {
             let param = paramCalc[i];
@@ -106,7 +135,7 @@ class Statistics {
         for (let i = 0;i< saveStaParams.length; i++) {
             let key = saveStaParams[i];
             let value = sessionStorage.getItem(key);
-            window.dplus.register({[key]: value});
+            this.myRigister(key,value);
             console.log('设置了' + key + value);
         }
     }
@@ -123,10 +152,8 @@ class Statistics {
             if(!value) {
                 value = '空'
             }
-            window.dplus.register({[key]: value});
+            this.myRigister(key,value);
         }
-        console.log('here!!!!!!!!!');
-        console.log(test);
     }
 
 
@@ -136,25 +163,34 @@ class Statistics {
      * @param eventName
      * @param data
      */
-    static postDplusData(eventName,data) {
-        //测试
-        let testPathNow = sessionStorage.getItem('SpathNow');
-        console.log(testPathNow);
-        window.dplus.register({'SpathNow': testPathNow});
-        let userId = User.getUserInfo().userId;
+
+    static makeJsonData(data) {
         let result = {};
         let j = 0;
         if(data) {
             for(let i in data) {
-                let key = 'param' + j
+                let key = 'param' + j;
                 result[key] = data[i];
                 j++;
             }
         }
+        return result;
+    }
+
+    static postDplusData(eventName,data) {
+        let result = this.makeJsonData(data);
+        //测试
+        let userId = User.getUserInfo().userId;
         Tools.fireRace(userId,"OAUTH_SUCCESS").then(()=>{
             console.log('hava post DPlus ' + eventName);
+            console.log('hava post DPlus ' + result);
             this.GlobalStatis();
-            window.dplus.track(eventName,data);
+            if(result) {
+                window.dplus.track(eventName,result);
+            } else {
+                console.log(result)
+            }
+
         });
     }
 

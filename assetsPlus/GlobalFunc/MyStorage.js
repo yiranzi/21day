@@ -45,6 +45,15 @@ class MyStorage {
         //保存到全局
         courseInfo[courseId].dataResult = dataResult;
         // OnFire.fire("courseStatus",{courseId: courseId,status: status});
+        //报名成功后触发
+        if(parseInt(sessionStorage.getItem('courseId')) === courseId) {
+            if(dataResult.pay){
+                sessionStorage.setItem('SisBuy','付费');
+            } else {
+                sessionStorage.setItem('SisBuy','未付费');
+            }
+
+        }
         OnFire.fire("courseStatus" + courseId,dataResult);
     }
 
@@ -53,7 +62,6 @@ class MyStorage {
     }
 
     static deleteCourseStatus(courseId) {
-        console.log('delete');
         if(courseInfo[courseId]) {
             courseInfo[courseId].dataResult = null;
         } else {
@@ -96,7 +104,6 @@ class MyStorage {
     static setCourseId(courseId) {
         sessionStorage.setItem('courseId',courseId);
         sessionStorage.setItem('ScourseId',courseId);
-        WxConfig.shareConfig();
     }
 
     /**
@@ -119,6 +126,7 @@ class MyStorage {
      * @param pathNow 界面名称
      */
     static whenEnterPage(pathNow) {
+        console.log('你进入了' + pathNow);
         this.setPathNow(pathNow);
         Statistics.postDplusData('进入界面');
     }
