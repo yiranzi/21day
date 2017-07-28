@@ -77,21 +77,28 @@ var PayPage = React.createClass({
         while(!outBool) {
             outBool = true;
             OnFire.on('PAID_DONE', ()=>{
+                if (sessionStorage.getItem('courseId') !== courseId) {
+                    return
+                }
+                //先ajax更新这个数据(花费少量时间)
+                Actions.ifCourseSignUp(courseId);
+                //action & get
+                //这边的结果完成后get
                 Tools.fireRaceCourse(courseId).then((value)=>{
+                    // alert('start' + value.qqGroup);
                     if(value.pay){
-                        OnFire.fire('PAID_SUCCESS','normalPay');
+                        Statistics.postDplusData('支付_回调',[true]);
+                        this.state.hasPaid = true;
+                        this.setState({
+                            hasPaid: true, //已报名
+                        });
+                        this.state.hasPaid = true;
+                        this.checkSubscribe();
                     } else {
+                        Statistics.postDplusData('支付_回调',[false]);
                         outBool = false;
                     }
                 })
-            });
-            OnFire.on('PAID_SUCCESS',(payWay)=>{
-                Tools.postData('支付成功');
-                this.setState({
-                    hasPaid: true, //已报名
-                });
-                this.state.hasPaid = true;
-                this.checkSubscribe();
             });
         }
         //3设置下线置价格
@@ -169,16 +176,9 @@ var PayPage = React.createClass({
      * 按钮点击
      */
     clickHandler() {
-        if (this.state.hasSenior) {
-            Util.postCnzzData('下线_点击报名_payPage');
-            Material.postData('下线_点击报名_payPage');
-        } else {
-            Util.postCnzzData('人_点击报名_payPage');
-            Material.postData('人_点击报名_payPage');
-        }
+        Statistics.postDplusData('支付_按钮');
         this.payHandler();
     },
-
 
     /**
      * 支付动作
@@ -299,12 +299,7 @@ var PayPage = React.createClass({
     },
 
     freeLesson() {
-        // location.hash = '/select';
-        if (this.state.hasSenior) {
-            Material.postData('下线_点击试听_payPage');
-        } else {
-            Material.postData('人_点击试听_payPage');
-        }
+        Statistics.postDplusData('试听_按钮');
         Tools.MyRouter('ListenCourse','/listenCourse/1');
     }
 

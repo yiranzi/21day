@@ -75,34 +75,23 @@ var PayPage = React.createClass({
         while(!outBool) {
             outBool = true;
             OnFire.on('PAID_DONE', ()=>{
+                if (sessionStorage.getItem('courseId') !== courseId) {
+                    return
+                }
+                //先ajax更新这个数据(花费少量时间)
+                Actions.ifCourseSignUp(courseId);
+                //action & get
+                //这边的结果完成后get
                 Tools.fireRaceCourse(courseId).then((value)=>{
+                    // alert('start' + value.qqGroup);
                     if(value.pay){
-                        OnFire.fire('PAID_SUCCESS','normalPay');
+                        Statistics.postDplusData('支付_回调',[true]);
+                        this.afterPaySuccess();
                     } else {
+                        Statistics.postDplusData('支付_回调',[false]);
                         outBool = false;
                     }
                 })
-            });
-            OnFire.on('PAID_SUCCESS',(payWay)=>{
-                Tools.postData('支付成功');
-                //合伙人上报
-                if(this.state.hhrChannel) {
-                    if (User.getUserInfo().userId) {
-                        Material.postData(channel + '_支付成功_' + seniorId);
-                    } else {
-                        OnFire.on('OAUTH_SUCCESS', ()=>{
-                            //1.判断听课状态.
-                            Material.postData(channel + '_支付成功_' + seniorId);
-                        });
-                    }
-                }
-
-
-                this.setState({
-                    hasPaid: true, //已报名
-                });
-                this.state.hasPaid = true;
-                this.checkSubscribe();
             });
         }
         //判定特殊渠道
@@ -111,6 +100,27 @@ var PayPage = React.createClass({
         this.setIfCanPaid();
         //5请求倒计时和剩余人数
         this.signUpNumber();
+    },
+
+    afterPaySuccess() {
+        //合伙人上报
+        // if(this.state.hhrChannel) {
+        //     if (User.getUserInfo().userId) {
+        //         Material.postData(channel + '_支付成功_' + seniorId);
+        //     } else {
+        //         OnFire.on('OAUTH_SUCCESS', ()=>{
+        //             //1.判断听课状态.
+        //             Material.postData(channel + '_支付成功_' + seniorId);
+        //         });
+        //     }
+        // }
+
+        this.state.hasPaid = true;
+        this.setState({
+            hasPaid: true, //已报名
+        });
+        this.state.hasPaid = true;
+        this.checkSubscribe();
     },
 
     ifHhrChannel() {
@@ -134,14 +144,14 @@ var PayPage = React.createClass({
         if(this.state.hhrChannel) {
             this.state.ifCanPaid = true;
             //合伙人进入报名页上报
-            if (User.getUserInfo().userId) {
-                Material.postData(channel + '_进入页面_' + seniorId);
-            } else {
-                OnFire.on('OAUTH_SUCCESS', () => {
-                    //1.判断听课状态.
-                    Material.postData(channel + '_进入页面_' + seniorId);
-                });
-            }
+            // if (User.getUserInfo().userId) {
+            //     Material.postData(channel + '_进入页面_' + seniorId);
+            // } else {
+            //     OnFire.on('OAUTH_SUCCESS', () => {
+            //         //1.判断听课状态.
+            //         Material.postData(channel + '_进入页面_' + seniorId);
+            //     });
+            // }
             //区分优惠类型
             if(channel === 'typeB') {
                 Util.setPrice(630);
@@ -197,7 +207,9 @@ var PayPage = React.createClass({
      * 按钮点击
      */
     clickHandler() {
+        Statistics.postDplusData('支付_按钮');
         this.payHandler();
+
     },
 
     onWantJoinTap () {
@@ -306,7 +318,7 @@ var PayPage = React.createClass({
     },
 
     freeLesson() {
-        Statistics.postDplusData('点击试听');
+        Statistics.postDplusData('试听_按钮');
         Tools.MyRouter('ListenCourse','/listenCourse/10');
     }
 

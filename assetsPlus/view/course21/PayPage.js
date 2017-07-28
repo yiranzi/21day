@@ -88,11 +88,9 @@ var PayPage = React.createClass({
             outBool = true;
             //首先接收到付款结束.
             OnFire.on('PAID_DONE', ()=>{
-                console.log('get done');
                 if (sessionStorage.getItem('courseId') !== courseId) {
                     return
                 }
-                // alert('startsend');
                 //先ajax更新这个数据(花费少量时间)
                 Actions.ifCourseSignUp(courseId);
                 //action & get
@@ -101,27 +99,17 @@ var PayPage = React.createClass({
                     // alert('start' + value.qqGroup);
                     if(value.pay){
                         Statistics.postDplusData('支付_回调',[true]);
-                        // this.state.signUpInfo = value;
-                        OnFire.fire('PAID_SUCCESS','normalPay');
+                        this.state.hasPaid = true;
+                        this.setState({
+                            hasPaid: true, //已报名
+                        });
+                        this.state.hasPaid = true;
+                        this.checkSubscribe();
                     } else {
                         Statistics.postDplusData('支付_回调',[false]);
                         outBool = false;
                     }
                 })
-            });
-            OnFire.on('PAID_SUCCESS',(payWay)=>{
-                alert('PAID_SUCCESS');
-                if (sessionStorage.getItem('courseId') !== courseId) {
-                    return
-                }
-                Statistics.postDplusData('支付成功');
-                this.state.hasPaid = true;
-                this.setState({
-                    // signUpInfo: this.state.signUpInfo,
-                    hasPaid: true, //已报名
-                });
-                // alert('routerprepare');
-                this.checkSubscribe();
             });
         }
         //3设置下线和价格
@@ -268,7 +256,7 @@ var PayPage = React.createClass({
         // this.signUpNumber()
         //TODO 显示报名开课证(跳转)
         //TODo 上下线
-        alert('router');
+        // alert('router');
         this.gotoBeginReward();
 
         // // 已关注公号的用户直接跳转关卡页面学习

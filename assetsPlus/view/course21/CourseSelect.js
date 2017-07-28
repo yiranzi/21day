@@ -55,7 +55,7 @@ const CourseSelect = React.createClass({
     },
 
     componentWillMount() {
-        MyStorage.whenEnterPage('开课证');
+        MyStorage.whenEnterPage('课程列表页');
 
         let courseId = sessionStorage.getItem('courseId');
         Tools.fireRaceCourse(courseId).then((value)=>{
@@ -141,7 +141,7 @@ const CourseSelect = React.createClass({
 
         Statistics.postDplusData('列表页空白');
         arr.push(<p>您似乎未购买相关的课程，如果有疑问，请咨询客服QQ群：592596096</p>);
-        arr.push(<p onClick={()=>{Tools.MyRouter('','/payPage/')}}>点击我跳转报名页</p>)
+        arr.push(<p onClick={()=>{Tools.MyRouter('','/payPage/');Statistics.postDplusData('空白跳转报名');}}>点击我跳转报名页</p>)
         return(arr)
     },
 

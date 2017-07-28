@@ -336,14 +336,16 @@ class PayController {
             (res) => {
                 //标记请求支付完成
                 payPullingFlag = false;
+                //统一调用支付结束.重新发送请求判断支付状态.
+                OnFire.fire('PAID_DONE','normalPay');
                 // alert("支付完了:" + res.err_msg);
                 // 微信支付返回值不靠谱，详情查看：
                 // https://pay.weixin.qq.com/wiki/doc/api/jsapi.php?chapter=7_7&index=6
-                if( res.err_msg == "get_brand_wcpay_request:ok"  ) {
-                  OnFire.fire('PAID_SUCCESS','normalPay');
-                } else {
-                  OnFire.fire('PAID_DONE','normalPay');
-                }
+                // if( res.err_msg == "get_brand_wcpay_request:ok"  ) {
+                //   OnFire.fire('PAID_SUCCESS','normalPay');
+                // } else {
+                //   OnFire.fire('PAID_DONE','normalPay');
+                // }
             }
         );
     }
