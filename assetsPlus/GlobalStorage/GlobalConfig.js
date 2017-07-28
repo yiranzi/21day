@@ -2,6 +2,7 @@
  * Created by ichangtou on 2017/7/21.
  */
 //课程id表
+    //添加课程请增加 数组 和 课程信息
 const courseIdList = [0,1,2];
 // const couseIdNameMap = new Map();
 // const couseIdName = {};

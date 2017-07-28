@@ -6,7 +6,7 @@ const User = require('../../User');
 
 const Config = require('../../Config');
 const DoneToast = require('../../component/DoneToast');
-const LessonBar = require('../../component/fund/LessonBar');
+const LessonBar = require(`../../component/course21/LessonBar`);
 const FixedBg = require('../../component/course/FixedBg');
 const IconBar = require('../../component/course/IconBar');
 
@@ -299,8 +299,10 @@ const CourseSelect = React.createClass({
 
     //跳转到听课界面
     cbfGoLesson(course, index) {
+        console.log(course);
         let status = course.courseStatus;
         let dayId = this.state.courseList[index].id;
+        let type = course.type
         switch (status.enter) {
             // case 'free-enter':
             //     Material.postData('免费_试听_CourseSelect');
@@ -312,6 +314,14 @@ const CourseSelect = React.createClass({
             //     {location.hash = '/payPage';Material.postData('免费_跳转购买_CourseSelect');},'先不要',true);
             //     break;
             case 'pay':
+                switch (type) {
+                    case 0:
+                        break;
+                    case 1:
+                        break;
+                    case 2:
+                        break;
+                }
                 Tools.MyRouter('ListenCourse','/listenCourse/' + dayId);
                 break;
             case 'no-time':
