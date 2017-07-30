@@ -166,16 +166,16 @@ const CourseBegin = React.createClass({
         // WxConfig.shareConfig(shareTitle,desc,link);
     },
 
-    goSignUp(type) {
-        if(type === 0) {
-            Material.postData('下线_点击鼓励_getGraduated');
-            window.dialogAlertComp.show('小伙伴受到鼓励啦','你的鼓励会让TA再接再厉哦。','棒棒哒',()=>{},'',false);
-            this.setState({isButtonShow: 'true'});
-        } else {
-            Material.postData('下线_点击跳转_getGraduated');
-            location.hash = "/payPage";
-        }
-    },
+    // goSignUp(type) {
+    //     if(type === 0) {
+    //         Material.postData('下线_点击鼓励_getGraduated');
+    //         window.dialogAlertComp.show('小伙伴受到鼓励啦','你的鼓励会让TA再接再厉哦。','棒棒哒',()=>{},'',false);
+    //         this.setState({isButtonShow: 'true'});
+    //     } else {
+    //         Material.postData('下线_点击跳转_getGraduated');
+    //         location.hash = "/payPage";
+    //     }
+    // },
 
     // style = {fullbg}
     render() {
@@ -203,7 +203,7 @@ const CourseBegin = React.createClass({
                 {/*<img className="head" src="./assetsPlus/image/course21/share_payPage.png"/>*/}
                 <div className="title">
                     <p>
-                        <span className="name">欢迎 {this.state.senior.name} 同学</span><br/>
+                        <span className="name">{this.state.senior.name} 同学</span><br/>
                         {/*欢迎加入21天训练营<br/>*/}
                     </p>
                 </div>
@@ -273,6 +273,7 @@ const CourseBegin = React.createClass({
     },
 
     showQQInfo(type) {
+        Statistics.postDplusData('点击按钮栏_按钮',[type]);
         switch (type) {
             case 0:
                 window.dialogAlertComp.show('报名成功','赶紧关注公众号"长投"，每天陪你一起学习哟~','好勒，知道了！',this.gotoBeginReward,()=>{},false);

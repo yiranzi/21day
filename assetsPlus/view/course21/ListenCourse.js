@@ -61,7 +61,7 @@ const ListenCourse = React.createClass({
     },
 
     componentWillMount() {
-        MyStorage.whenEnterPage('听课页');
+        MyStorage.whenEnterPage('听课页',[this.props.params.dayId]);
 
         //登录
         Tools.fireRace(User.getUserInfo().userId,"OAUTH_SUCCESS").then(()=>{
@@ -92,10 +92,11 @@ const ListenCourse = React.createClass({
                     this.state.timer = true;
                 }, 1000);
             }
-            //
-            if(!this.state.allFinish){
-                OnFire.fire('Course_AutoMove');
-            }
+            //不需要自动滚动
+            // if(!this.state.allFinish){
+            //     OnFire.fire('Course_AutoMove');
+            // }
+
             //修改进度
             this.state.lessons[this.state.currentPlaying].process = true;
             let localLessons = this.state.lessons;
@@ -103,8 +104,7 @@ const ListenCourse = React.createClass({
             //发送修改1
             Material.finishWork(0, this.state.lessons[this.state.currentPlaying].fmid).always( (data) => {
             });
-
-            Util.postCnzzData("听完", this.state.lessons[this.state.currentPlaying].fmid);
+            Statistics.postDplusData('完成音频_事件',[this.state.lessons[this.state.currentPlaying].fmid]);
             //统计免费完成课程1的进度情况
             // if (!this.state.isPay && this.props.params.dayId === '1') {
             //     Material.postData('免费_完成音频7天_ListenCourse');
@@ -204,20 +204,6 @@ const ListenCourse = React.createClass({
     },
 
 
-
-    /**
-     * 设置分享内容
-     * @param fmid
-     * @param title
-     */
-    setShareConfig(fmid,title) {
-        let shareTitle = '小白理财FM《'+title+'》',
-            link = location.origin+location.pathname+
-                "?fmid="+fmid;
-
-        WxConfig.shareConfig(shareTitle,'',fmid,link);
-    },
-
     /**
      * 完成选择题
      * @param index 当前某一音频第几个选择题
@@ -262,7 +248,7 @@ const ListenCourse = React.createClass({
             this.setState({currentfmid: lesson.fmid});
             GlobalAudio.play(lesson.audio, lesson.fmid);
             this.preFetch();
-            Util.postCnzzData("播放", lesson.fmid);
+            Statistics.postDplusData('播放音频_事件',[lesson.fmid]);
         }
     },
 
@@ -279,7 +265,7 @@ const ListenCourse = React.createClass({
             <div id="fmView" className="fm-view">
                 <FixedBg />
                 <div className="fix-bg-space"></div>
-                <CourseProcessBar finishElement = {this.state.finishElement} totalElement = {this.state.totalElement}/>
+                {/*<CourseProcessBar finishElement = {this.state.finishElement} totalElement = {this.state.totalElement}/>*/}
                 {/*<span>当前点击的index{this.state.currentPlaying}</span>*/}
                 {/*<span>当前播放的fmid{this.state.currentfmid}</span>*/}
                 {/*<div>进入时,这门课程的状态时{this.props.location.query.name}</div>*/}

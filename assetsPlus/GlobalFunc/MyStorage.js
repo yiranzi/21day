@@ -130,10 +130,10 @@ class MyStorage {
      * 进入界面调用函数
      * @param pathNow 界面名称
      */
-    static whenEnterPage(pathNow) {
+    static whenEnterPage(pathNow,data) {
         console.log('你进入了' + pathNow);
         this.setPathNow(pathNow);
-        Statistics.postDplusData('进入界面');
+        Statistics.postDplusData('进入界面',data);
     }
 }
 

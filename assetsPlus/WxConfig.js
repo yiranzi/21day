@@ -68,7 +68,7 @@ class WxConfig {
                 userId = User.getUserInfo().userId;
                 sessionStorage.setItem('wxshare',true);
                 WxConfig.shareConfig();
-                // OnFire.fire('wxshare');
+                OnFire.fire('wxshare');
             });
         });
     }

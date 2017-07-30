@@ -93,7 +93,13 @@ class BeforeStart {
                 });
 
                 //3设置默认分享
-                WxConfig.shareConfig();
+                let shareTitle = GlobalConfig.getCourseInfo(courseId).shareTitle,
+                    link = Util.getShareLink(),
+                    desc = GlobalConfig.getCourseInfo(courseId).shareDesc;
+                link = link + '&goPath=' + 'payPage';
+                link = link + '&courseId=' + sessionStorage.getItem('courseId');
+                WxConfig.shareConfig(shareTitle,desc,link);
+
                 //4设置跳转
                 // 举例/fund/getReward/
                 redictUrl = Tools.setCourseUrl(courseId) + '/' + redictUrl;

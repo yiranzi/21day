@@ -36,7 +36,7 @@ window.dplus.track('js加载完毕',{'TotalCost': totalTime});
 // alert('FinishRes' + totalTime);
 
 //初始化用户信息
-// alert("bundle ready");
+// alert("bundle ready");1
 User.initAccessInfo();
 $(document).ready(() => {
     // alert("html ready");

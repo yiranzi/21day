@@ -17,10 +17,10 @@ const courseInfo = {
         name: 'course21',
         // payPicLength: 4,//报名页图片长度
         price: [9,3],//价格
-        title: '21天训练营',//标题
+        title: '21天训练营',
         router: '/course21',//默认路由前缀`
-        shareTitle: '21天训练营开开营',//分享标题
-        shareDesc: '快来快来',//分享描述
+        shareTitle: '超过10万+的人都追捧的理财入门课，还不快来吗？',//分享标题
+        shareDesc: '只要一顿早餐的钱，点击报名！',//分享描述
     },
     '0':{
         name: 'seven',

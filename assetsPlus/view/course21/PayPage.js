@@ -63,7 +63,7 @@ var PayPage = React.createClass({
     componentWillMount(){
         //设置分享
         let wxshare = sessionStorage.getItem('wxshare');
-        this.setShareConfig();
+        // this.setShareConfig();
         MyStorage.whenEnterPage('支付页面');
         //0获取当前的Id
         let courseId = sessionStorage.getItem('courseId');
@@ -119,14 +119,14 @@ var PayPage = React.createClass({
         this.signUpNumber();
     },
 
-    setShareConfig() {
-        let shareTitle = '我正在参加21天训练营',
-            link = Util.getShareLink(),
-            desc = '一起来参加';
-        link = link + '&goPath=' + 'payPage';
-        link = link + '&courseId=' + sessionStorage.getItem('courseId');
-        WxConfig.shareConfig(shareTitle,desc,link);
-    },
+    // setShareConfig() {
+    //     let shareTitle = '我正在参加21天训练营',
+    //         link = Util.getShareLink(),
+    //         desc = '一起来参加';
+    //     link = link + '&goPath=' + 'payPage';
+    //     link = link + '&courseId=' + sessionStorage.getItem('courseId');
+    //     WxConfig.shareConfig(shareTitle,desc,link);
+    // },
 
     ifHhrChannel() {
         let seniorId = Util.getUrlPara("ictchannel");
