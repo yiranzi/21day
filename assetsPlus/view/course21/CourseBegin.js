@@ -203,8 +203,8 @@ const CourseBegin = React.createClass({
                 {/*<img className="head" src="./assetsPlus/image/course21/share_payPage.png"/>*/}
                 <div className="title">
                     <p>
-                        <span className="name">{this.state.senior.name} 同学</span><br/>
-                        欢迎加入21天训练营<br/>
+                        <span className="name">欢迎 {this.state.senior.name} 同学</span><br/>
+                        {/*欢迎加入21天训练营<br/>*/}
                     </p>
                 </div>
             </div>

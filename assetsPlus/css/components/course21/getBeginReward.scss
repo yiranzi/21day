@@ -35,19 +35,20 @@
     font-size: 0;
     z-index: -100;
     .head{
-      margin: px2rem(140) auto px2rem(20) auto;
+      margin: px2rem(155) auto px2rem(20) auto;
       border-radius: 50%;
-      //border:2px solid #1CA6DF;
-      width: px2rem(80);
-      height: px2rem(80);
+      border:2px solid #E29F66;
+      width: px2rem(90);
+      height: px2rem(90);
     }
     .title{
       line-height: px2rem(25);
       color: #907660;
       font-size: px2rem(20);
       .name{
-        height: px2rem(25);
-        font-size: px2rem(40);
+        height: px2rem(28);
+        font-size: px2rem(18);
+        font-weight: 700;
       }
       .rank{
         height: px2rem(27);
@@ -55,9 +56,9 @@
         font-weight: bold;
       }
       p{
-        line-height: px2rem(30);
-        font-size: px2rem(22);
-        color: #5298ea;
+        line-height: px2rem(24);
+        font-size: px2rem(16);
+        color: #907660;
       }
     }
   }

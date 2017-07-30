@@ -46,12 +46,13 @@ var PayPage = React.createClass({
 
             showint:true,//初始剩余人数
 
-            endTime:[2017,7,25,9,0,0], // 截止时间
+            endTime:[], // 截止时间
 
 
             num: 0,
             time: 0,
             hhrChannel: false,
+            shareShow: false,
 
             //21天的报名信息
             // signUpInfo: {}
@@ -203,8 +204,10 @@ var PayPage = React.createClass({
                     ifCanPaid: true,
                 });
             }
+            let timeArray = Util.TimeToArray(result.endTime);
+            console.log('!!!!!!!!' + timeArray);
             this.setState({
-                endTime: [2017,7,25,9,0,0],
+                endTime: timeArray,
             });
 
         });
@@ -285,10 +288,21 @@ var PayPage = React.createClass({
         return arr;
     },
 
+    renderShareBg() {
+        console.log(this.state.shareShow)
+        if(!this.state.shareShow) {
+            return
+        }
+        return(<div className="paypage-modal">
+            <img onClick={()=>{this.setState({shareShow: false})}}src={`./assetsPlus/image/${GlobalConfig.getCourseName()}/paypage_share.png`}/>
+        </div>)
+    },
+
     render(){
         return (
             <div className="pay_page_course21">
                 <FixedBg/>
+                {this.renderShareBg()}
                 <div className={"intro-img"}>
                     {this.renderBg()}
                     <div className="fund-status">
@@ -316,7 +330,7 @@ var PayPage = React.createClass({
     },
 
     bottomBar() {
-        return(<div className="global-div-fixed">
+        return(<div className="global-div-absolute">
             <div className="join-and-share">
                 {/*<div className="mid">*/}
                     {/*{this.renderButtonSignUp()}*/}
@@ -362,7 +376,9 @@ var PayPage = React.createClass({
 
     onButtonShare() {
         Statistics.postDplusData('分享_按钮');
-        window.dialogAlertComp.show('分享','快去分享给你的小伙伴吧。学姐说大家一起学习更能坚持下去哦！','知道啦',()=>{},'',false);
+        this.setState({shareShow: true});
+        console.log('123123123123');
+        // window.dialogAlertComp.show('分享','快去分享给你的小伙伴吧。学姐说大家一起学习更能坚持下去哦！','知道啦',()=>{},'',false);
     },
 
     /**

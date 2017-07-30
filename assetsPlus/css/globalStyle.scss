@@ -19,6 +19,13 @@
   z-index: 999;
 }
 
+.global-div-absolute{
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  z-index: 999;
+}
+
 .global-empty-div{
   position: relative;
   height: px2rem(80);

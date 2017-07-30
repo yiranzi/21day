@@ -684,6 +684,39 @@ class Util {
 
         return  [days,hours,minutes,seconds]
     }
+    /**
+     * 倒计时
+     * @returns {string}
+     */
+    static TimeToArray(endTime){
+        //1转化
+        endTime = endTime.replace(/-/g,'/');
+        //2转化
+        let timeGet = new Date(endTime);
+        //3
+        let arr = [];
+        arr.push(timeGet.getFullYear());
+        arr.push(timeGet.getMonth() + 1);
+        arr.push(timeGet.getDate());
+        arr.push(timeGet.getHours());
+        arr.push(timeGet.getMinutes());
+        arr.push(timeGet.getSeconds());
+        return arr;
+    }
+
+    /**
+     * 获取倒计时
+     */
+    setRemainTime (endTime) {
+        endTime = endTime.replace(/-/g,'/');
+        let leftTime = new Date(endTime).getTime() - new Date().getTime()
+        let leftsecond = parseInt(leftTime/1000);
+        let seconds = Math.floor(leftsecond/(60*60*24));
+        let minutes = Math.floor((leftsecond - this.remainTime.day*24*60*60)/3600);
+        let hours = Math.floor((leftsecond - this.remainTime.day*24*60*60 - this.remainTime.hour*3600)/60);
+        let days = Math.floor(leftsecond - this.remainTime.day*24*60*60 - this.remainTime.hour*3600 - this.remainTime.minute*60);
+        return  [days,hours,minutes,seconds]
+    }
 
 
     // static timeout(years,month,strDates,hours,minutess,seconds){

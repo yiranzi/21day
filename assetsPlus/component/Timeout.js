@@ -31,43 +31,50 @@ var Timeout = React.createClass({
             days: time[0],
             hours: time[1],
             minutes: time[2],
-            seconds: time[3]
+            seconds: time[3],
+            finalDateSave:  f_time,
         };
     },
 
     componentWillMount() {
-        console.log('set time');
-        let f_time = this.props.finalDate;
-        let f_years = f_time[0];
-        let f_mounths = f_time[1];
-        let f_days = f_time[2];
-        let f_hours = f_time[3];
-        let f_minutes = f_time[4];
-        let f_seconds = f_time[5];
+        this.setTimer(true);
+    },
 
-        if (timer) {
-          clearInterval(timer);
-        }
-        timer = setInterval(()=>{
-            let time = Util.FormatTime(f_years,f_mounths,f_days,f_hours,f_minutes,f_seconds);
-            let days = time[0];
-            let hours = time[1];
-            let minutes = time[2];
-            let seconds = time[3];
-            if(days ==0 && hours ==0 && minutes ==0 && seconds ==0){
-                clearInterval();
-                // this.props.stopVote();
-                // this.props.timeout();
+    setTimer(type) {
+        if(type || this.state.finalDateSave !== this.props.finalDate) {
+            this.state.finalDateSave = this.props.finalDate;
+            console.log('set time');
+            let f_time = this.props.finalDate;
+            let f_years = f_time[0];
+            let f_mounths = f_time[1];
+            let f_days = f_time[2];
+            let f_hours = f_time[3];
+            let f_minutes = f_time[4];
+            let f_seconds = f_time[5];
+
+            if (timer) {
+                clearInterval(timer);
             }
+            timer = setInterval(()=>{
+                let time = Util.FormatTime(f_years,f_mounths,f_days,f_hours,f_minutes,f_seconds);
+                let days = time[0];
+                let hours = time[1];
+                let minutes = time[2];
+                let seconds = time[3];
+                if(days ==0 && hours ==0 && minutes ==0 && seconds ==0){
+                    clearInterval();
+                    // this.props.stopVote();
+                    // this.props.timeout();
+                }
 
-            this.setState({
-                days: days,
-                hours: hours,
-                minutes: minutes,
-                seconds: seconds,
-            });
-        },1000);
-
+                this.setState({
+                    days: days,
+                    hours: hours,
+                    minutes: minutes,
+                    seconds: seconds,
+                });
+            },1000);
+        }
     },
 
     componentWillUnmount() {
@@ -76,8 +83,14 @@ var Timeout = React.createClass({
         }
     },
 
+    calcTime() {
+        console.log('1111111111111111111111');
+        console.log(this.props.finalDate)
+    },
+
 
     render() {
+        this.setTimer();
         return (
             <span className="fund-status-time">
                 {(this.props.hasEnded) ?

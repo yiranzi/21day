@@ -431,6 +431,7 @@ const ListenCourse = React.createClass({
             borderTop: '3px solid #907660',
             borderLeft: '3px solid #907660',
             borderRight: '3px solid #907660',
+            borderRadius: '10px 10px 0 0'
             // transform: `translateX(${worldPox}00%)`
         };
         let style2 = {
@@ -441,11 +442,16 @@ const ListenCourse = React.createClass({
             borderLeft: '3px solid #907660',
             borderRight: '3px solid #907660',
             borderBottom: '3px solid #907660',
-            // transform: `translateX(${worldPox}00%)`
+            borderRadius: '0 0 10px 10px'
         };
+        let titleColor = {
+            color: '#907660',
+            fontWeight: '700'
+        }
         let buttonImgs = [`./assetsPlus/image/${GlobalConfig.getCourseName()}/btnPressed.png`,`./assetsPlus/image/${GlobalConfig.getCourseName()}/btnPlay.png`];
-        return (<div key={count} className={this.state.currentPlaying === index ? 'audio-player-on' : 'audio-player-off'}>
+        return (<div key={count} style = {{boxShadow: '0 0 0'}}className={this.state.currentPlaying === index ? 'audio-player-on' : 'audio-player-off'}>
             <AudioPlayer
+                titleColor = {titleColor}
                 buttonImgs = {buttonImgs}
                 bgImg = {style1}
                 content = {FMContent}
