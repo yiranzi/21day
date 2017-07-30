@@ -71,6 +71,38 @@
         .loading-title{
             color: white;
         }
+        .bg{
+            width: 100%;
+            height: 100%;
+        }
+        .logo-course{
+            position:fixed;
+            top: 50%;
+            left: 50%;
+            width: 100px;
+            height: 100px;
+            margin-top: -50px;
+            margin-left: -50px;
+            z-index: 50;
+            text-align: center;
+        }
+        .logo-course-contain{
+            position:absolute;
+
+            left:0; right:0; top:0; bottom:0;
+
+            margin:auto;
+            width: 100px;
+            height: 100px;
+        }
+
+        .loading-course-title{
+            text-align: center;
+            position: relative;
+            bottom: 150px;
+            color: #907660;
+            font-size: 20px;
+        }
     </style>
 </head>
 
@@ -85,13 +117,16 @@
 
 <!--DOM入口 -->
 <div id="root" style="height: 100%">
-    <div style="background-color: #4498c7;height: 100%;position: relative">
-        <div class="logo">
-            <img class="loading logo-contain" src="./assetsPlus/image/pai_logo_out.png"  >
-            <img class="logo-contain" src="./assetsPlus/image/pai_logo_inner.png">
+    <div style="background: #FFE49B;height: 100%;position: relative;font-size:0">
+        <img class="bg" src="./assetsPlus/image/course21/preLoading.png">
+        <div class="logo-course">
+            <img class="loading logo-course-contain" src="./assetsPlus/image/course21/preLoading_icon.png">
+            <!--<img class="loading logo-contain" src="./assetsPlus/image/pai_logo_out.png"  >-->
+            <!--<img class="logo-contain" src="./assetsPlus/image/pai_logo_inner.png">-->
         </div>
-        <p class="loading-title">长投派加载中</p>
+        <!--<p class="loading-title">长投派加载中</p>-->
     </div>
+    <p class="loading-course-title">21天训练营加载中...</p>
 </div>
 <!--style="position:relative;right:50%;width:100px; height:100px;"-->
 <div id="audio"></div>
@@ -118,7 +153,7 @@
 <!--<script src="http://192.168.0.190:8081/target/target-script-min.js#anonymous"></script>-->
 <!--每次提交代码前修改v的值，使代码生效更快-->
 <!--5.27线上版本-->
-<script src="buildPlus/bundle.bc2ce937.js?v=40"></script>
+<script src="buildPlus/bundle.282956f0.js?v=40"></script>
 <!--<script>alert(3)</script>-->
 </body>
 </html>
