@@ -23,8 +23,6 @@ let bannerTimer;//banner timer
 
 const HomeCourseList = React.createClass({
     getInitialState: function() {
-        // console.log('123');
-        //course lesson
         return {
             content: this.props.content,
             bannerIndex: 0,
@@ -47,14 +45,6 @@ const HomeCourseList = React.createClass({
         this.getCourseContent();
         //3 根据课程Id获取用户相关数据
         this.getCourseStatus();
-
-        let courseId = 2;
-        let path = GlobalConfig.getCourseInfo(courseId).router;
-
-        for(let i = 0;i<4 ;i++) {
-
-        }
-
     },
 
     preFetchBg(index,path) {
@@ -83,10 +73,15 @@ const HomeCourseList = React.createClass({
 
     //获取列表并初始化
     getCourseList() {
-        let courseList = this.state.courseList = GlobalConfig.getCourseIdList();
+        let courseList = GlobalConfig.getCourseIdList();
         for( let i = 0; i<courseList.length; i++) {
-            this.state.courseStatus[courseList[i]] = {};
+            if(courseList[i]!==2) {
+                console.log(courseList[i]);
+                this.state.courseStatus[courseList[i]] = {};
+                this.state.courseList.push(courseList[i]);
+            }
         }
+        this.setState({courseList: this.state.courseList})
     },
 
     getCourseContent() {
@@ -188,6 +183,7 @@ const HomeCourseList = React.createClass({
         let arr =[];
         let courseList = this.state.courseList;
         for(let i = 0;i<courseList.length;i++) {
+            console.log(courseList[i]);
             arr.push(<div className="course-content-line" key={i} onClick={this.goRouter.bind(this,courseList[i])}>
                 <img className="course-line-img" src={this.state.courseContent[i]}/>
             </div>)

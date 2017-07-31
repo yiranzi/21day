@@ -69,10 +69,40 @@ class BeforeStart {
 
 
         let goPath = MyStorage.getItem('goPath');
-        if (!goPath) {
+        // if (!goPath) {
+        //
+        // }
+        let courseId = MyStorage.getItem('courseId');
+        let getWhere = MyStorage.getItem('getWhere');
+        //判断特殊渠道(为特殊处理流程)
+        if(getWhere) {
             goPath = 'courseSelect';
+            courseId = 2;
+
+            redictUrl = goPath;
+            //如果有课程
+            if(courseId) {
+                //1设置courseId
+                MyStorage.setCourseId(courseId);
+                //2获取课程支付信息
+                let dataResult = {};
+                dataResult.pay = true;
+                MyStorage.setCourseStatus(courseId,dataResult);
+                sessionStorage.setItem('SisBuy','付费');
+                //3设置默认分享
+                let shareTitle = GlobalConfig.getCourseInfo(courseId).shareTitle,
+                    link = Util.getShareLink(),
+                    desc = GlobalConfig.getCourseInfo(courseId).shareDesc;
+                link = link + '&goPath=' + 'payPage';
+                link = link + '&courseId=' + sessionStorage.getItem('courseId');
+                WxConfig.shareConfig(shareTitle,desc,link);
+
+                //4设置跳转
+                // 举例/fund/getReward/
+                redictUrl = Tools.setCourseUrl(courseId) + '/' + redictUrl;
+            }
         }
-        let courseId = 2;
+        //判断
         if (goPath) {
             redictUrl = goPath;
             //如果有课程
@@ -104,10 +134,8 @@ class BeforeStart {
                 // 举例/fund/getReward/
                 redictUrl = Tools.setCourseUrl(courseId) + '/' + redictUrl;
             }
-        } else {
-            // 获取全部课程的购买.
-            // this.SetCoursePayStatus();
         }
+        //加上dayId
         let dayId = MyStorage.getItem('dayId');
         if(dayId){
             redictUrl = redictUrl + '/' + dayId;

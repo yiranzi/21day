@@ -145,6 +145,9 @@ const API_URL_GROUP = {
     'has_registered': '21enter/is-entered',
     //记录下线打开上线的分享链接
     'post_record_info': '21enter/parent-share/{parentId}',
+
+    //基金课
+    'get_qq_info':'ctplus/qq-details/{courseId}',
 };
 
 

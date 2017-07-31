@@ -933,6 +933,47 @@ class Material {
             })
         })
     }
+
+    static getGroupInfo(courseId) {
+        //接口合并未上线
+        // courseId = 1;
+
+        var User = require('./User');
+        const Util = require('./Util'),
+            apiUrl = Util.getAPIUrl('get_qq_info').replace("{courseId}",courseId);
+        let userInfo = User.getUserInfo();
+        const Tools = require('./GlobalFunc/Tools');
+        //改成异步
+        return new Promise((resolve,reject)=>{
+            Tools.fireRace(userInfo.userId,"OAUTH_SUCCESS").then(()=>{
+                let userInfo = User.getUserInfo();
+                let jqxhr = $.ajax(
+                    {
+                        url: apiUrl,
+                        type: 'get',
+                        cache: false,
+                        contentType: 'application/json;charset=utf-8',
+                        headers: {
+                            Accept: 'application/json'
+                        },
+                        beforeSend: (request)=>{
+                            request.setRequestHeader("X-iChangTou-Json-Api-Token", Util.getApiToken());
+                            request.setRequestHeader("X-iChangTou-Json-Api-User", userInfo.userId);
+                        }
+                    }
+                )
+                jqxhr.done((data)=>{
+                    resolve(data)
+                })
+                jqxhr.fail((data)=>{
+                    reject(data)
+                })
+            })
+        })
+    }
+
+
+
 }
 window.Material = Material;
 
