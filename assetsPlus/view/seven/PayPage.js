@@ -223,6 +223,7 @@ var PayPage = React.createClass({
     render(){
         return (
             <div className="pay_page_seven">
+                <FixedBg/>
                 <div className="top-banner">
                     <img src={'./assetsPlus/image/seven/payPage/banner_seven.jpg'}/>
                 </div>
