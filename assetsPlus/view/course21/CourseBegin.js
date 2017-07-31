@@ -59,7 +59,7 @@ const CourseBegin = React.createClass({
             this.setState({type: 'other'});
 
             Tools.fireRace(User.getUserInfo().userId,"OAUTH_SUCCESS").then(()=>{
-
+                this.state.senior.name = User.getUserInfo().nickName;
                 this.state.senior.headImg = User.getUserInfo().headImage;
                 this.setState({senior: this.state.senior});
                 Loading.hideLoading();
