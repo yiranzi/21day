@@ -84,21 +84,34 @@ class Material {
         const Util = require('./Util'),
             apiUrl = Util.getAPIUrl('get_judge_signup').replace('{courseId}',courseId);
         let userInfo = User.getUserInfo();
-        return $.ajax(
-            {
-                url: apiUrl,
-                type: 'put',
-                cache: false,
-                contentType: 'application/json;charset=utf-8',
-                headers: {
-                    Accept: 'application/json'
-                },
-                beforeSend: (request)=>{
-                    request.setRequestHeader("X-iChangTou-Json-Api-Token", Util.getApiToken());
-                    request.setRequestHeader("X-iChangTou-Json-Api-User", userInfo.userId);
-                }
-            }
-        )
+        const Tools = require('./GlobalFunc/Tools');
+        //改成异步
+        return new Promise((resolve,reject)=>{
+            Tools.fireRace(userInfo.userId,"OAUTH_SUCCESS").then(()=>{
+                let userInfo = User.getUserInfo();
+                let jqxhr = $.ajax(
+                    {
+                        url: apiUrl,
+                        type: 'put',
+                        cache: false,
+                        contentType: 'application/json;charset=utf-8',
+                        headers: {
+                            Accept: 'application/json'
+                        },
+                        beforeSend: (request)=>{
+                            request.setRequestHeader("X-iChangTou-Json-Api-Token", Util.getApiToken());
+                            request.setRequestHeader("X-iChangTou-Json-Api-User", userInfo.userId);
+                        }
+                    }
+                );
+                jqxhr.done((data)=>{
+                    resolve(data)
+                });
+                jqxhr.fail((data)=>{
+                    reject(data)
+                })
+            })
+        });
     }
 
     static getCanUserShareFreeSub (userId) {

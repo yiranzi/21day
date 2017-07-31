@@ -149,14 +149,14 @@ const AudioProgressBar = React.createClass({
                 {/*<span>这是编号{this.state.index}</span>*/}
                 <div className={this.state.isPlaying ? 'is-playing' : 'is-paused'}>
                     <div className="process-panel" onClick={this.progressClickHandler}>
-                        <div className="time-bar" style={{color: `${this.props.backColor[2]}`}}>
+                        <div className="time-bar" style= {this.props.backColor ? {color: `${this.props.backColor[2]}`} : {}}>
                             <span className="time player_position">{this.state.isPlaying && audio && audio.currentTime ? this.formatTime(audio.currentTime,0) : '00:00'}</span>
                             <span className="time">{' / '}</span>
                             <span className="time duration">{this.state.isPlaying && audio && audio.duration ? this.formatTime(audio.duration,1) : '00:00'}</span>
                         </div>
                         {this.renderMovingBar()}
                     </div>
-                    <div className="background-bar" style={{backgroundColor: `${this.props.backColor[1]}`}}></div>
+                    <div className="background-bar" style= {this.props.backColor ? {backgroundColor: `${this.props.backColor[1]}`} : {}}></div>
                 </div>
             </div>
 
@@ -164,11 +164,22 @@ const AudioProgressBar = React.createClass({
     },
 
     renderMovingBar () {
+        let myStyle = {};
+        if(this.props.backColor) {
+            myStyle = {
+                transform:' translate(0, 0)',
+                backgroundColor: `${this.props.backColor[0]}`}
+        } else {
+            myStyle = {
+                transform: ' translate(0, 0)',
+            }
+        }
+
         if (!this.state.isPlaying) {
             return ( <div className="progressbar player_progressbar" onClick={this.progressClickHandler}>
                 <div className="seekbar player_seekbar" style={{width: '100%'}}></div>
                 <div className="moving-bar" style={{width:"100%",maxWidth:"100%"}}>
-                    <div className="moving-ball" style={{transform:' translate(0, 0)', backgroundColor: `${this.props.backColor[0]}`}}></div>
+                    <div className="moving-ball" style={myStyle}></div>
                 </div>
             </div>);
         } else {
@@ -182,7 +193,7 @@ const AudioProgressBar = React.createClass({
                         onStart={this.dragTargetHandler}
                         onDrag={this.dragTargetHandler}
                         onStop={this.dropOverProgressHandler}>
-                        <div className="moving-ball" style={{transform:' translate(0, 0)', backgroundColor: `${this.props.backColor[0]}`}}></div>
+                        <div className="moving-ball" style={myStyle}></div>
                     </Draggable>
                     }
                 </div>
