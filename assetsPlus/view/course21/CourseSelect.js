@@ -117,10 +117,18 @@ const CourseSelect = React.createClass({
             </div>)
         } else if(this.state.allowLesson === false){
             //未开课数据
-                return(<div>
-                    <FixedBg/>
-                    {this.renderEmpty()}
-                </div>)
+            //     return(<div>
+            //         <FixedBg/>
+            //         {this.renderEmpty()}
+            //     </div>)
+            //二维码 开课
+            <div className="course-list">
+                <FixedBg/>
+                <div>
+                    {this.renderTopBar()}
+                    {this.renderCourseList()}
+                </div>
+            </div>
         } else{
             return(
                 //开课
@@ -160,7 +168,7 @@ const CourseSelect = React.createClass({
     },
 
     renderBeginReward() {
-        return(<img className="" style={{width: '100%'}} src={`./assetsPlus/image/${GlobalConfig.getCourseName()}/course_select_begin.png`} onClick={()=>{Tools.MyRouter('ListenCourse','/courseBegin/mine')}}>
+        return(<img className="" style={{width: '100%'}} src={`./assetsPlus/image/${GlobalConfig.getCourseName()}/course_select_begin.png`} onClick={()=>{Tools.MyRouter('ListenCourse','/courseBegin/select')}}>
 
         </img>)
     },

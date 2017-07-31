@@ -46,9 +46,9 @@ const CourseBegin = React.createClass({
     componentWillMount() {
         MyStorage.whenEnterPage('开课证');
         let userId;
-        let isMine = this.props.params.mine;
+        let type = this.props.params.type;
         //下线查看别人的成就卡
-        if (!isMine) {
+        if (type !== 'mine') {
             userId = Util.getUrlPara('ictchannel');
             // Tools.fireRace(User.getUserInfo().userId,"OAUTH_SUCCESS").then(()=>{
             //     Material.postData('下线_查看_getReward');
@@ -57,12 +57,21 @@ const CourseBegin = React.createClass({
             this.state.senior.userId = userId;
             this.state.senior.name = Util.getUrlPara('name');
             this.setState({type: 'other'});
+
+            Tools.fireRace(User.getUserInfo().userId,"OAUTH_SUCCESS").then(()=>{
+
+                this.state.senior.headImg = User.getUserInfo().headImage;
+                this.setState({senior: this.state.senior});
+                Loading.hideLoading();
+            });
+
             //TODO yiran 获得下线名字 这边名字会改成多个.并且成就卡那边也需要这个功能.
             // Material.getShareInfo(userId).always( (name)=>{
             //     this.setState({friendName: name});
             //     // this.setShareConfig();
             // });
-        } else {//查看自己的毕业证
+        } else {
+            //查看自己的毕业证
             //获取班级群信息
             let courseId = sessionStorage.getItem('courseId');
             Actions.ifCourseSignUp(courseId);
@@ -257,19 +266,25 @@ const CourseBegin = React.createClass({
         let arr = [];
         let imgs = ['./assetsPlus/image/course21/wx_payPage.png','./assetsPlus/image/course21/share_payPage.png','./assetsPlus/image/course21/qqGroup_payPage.png'];
         let fonts = ['每日作业','分享','找老师'];
-        if(this.state.type ==='mine') {
+        if(this.props.params.type === 'mine') {
             for(let i =0; i<3; i++) {
                 arr.push(<div className="button" onClick = {this.showQQInfo.bind(this,i)}>
                     <img src={imgs[i]}/>
                     <span>{fonts[i]}</span>
                 </div>)
             }
-            // arr.push((<div key={1} className="reward-button-graduated" onClick = {this.showQQInfo}>
-            //     <img className="button-img" src={'./assetsPlus/image/course/btnSignin.png'}/>
-            //     <p className="button-p">qq群</p>
-            // </div>));
-            return arr;
+        } else {
+            arr.push(<div className="button" onClick = {this.showQQInfo.bind(this,1)}>
+                <img src={imgs[1]}/>
+                <span>{fonts[1]}</span>
+            </div>)
         }
+
+        // arr.push((<div key={1} className="reward-button-graduated" onClick = {this.showQQInfo}>
+        //     <img className="button-img" src={'./assetsPlus/image/course/btnSignin.png'}/>
+        //     <p className="button-p">qq群</p>
+        // </div>));
+        return arr;
     },
 
     showQQInfo(type) {

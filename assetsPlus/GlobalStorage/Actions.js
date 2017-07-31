@@ -37,6 +37,8 @@ class Actions {
                         } else {
                             ajaxResult.pay = false;
                         }
+                        //二维码期间课程开放.
+                        ajaxResult.pay = true;
                     }
                     // saveMyStorage 保存到课程列表中
                     MyStorage.setCourseStatus(courseId,ajaxResult);
