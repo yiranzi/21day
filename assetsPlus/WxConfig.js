@@ -88,7 +88,13 @@ class WxConfig {
                 imgUrl = userInfo.headImage;
             }
 
-            link = link || Util.getShareLink();
+            // link = link || Util.getShareLink();
+            let originLink = Util.getShareLink();
+            if(link) {
+                link =  originLink + link;
+            } else {
+                link = originLink;
+            }
             desc = desc || Util.getShareDesc();
             title = title || Util.getShareTitle();
             // alert(link);
