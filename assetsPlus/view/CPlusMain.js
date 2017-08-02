@@ -49,7 +49,7 @@ const CPlus = React.createClass({
     componentWillMount() {
         // sessionStorage.removeItem('courseId');
         MyStorage.setCourseId('-1');
-        MyStorage.setPathNow('长投家');
+        MyStorage.whenEnterPage('main');
         this.getUserInfo();
     },
 

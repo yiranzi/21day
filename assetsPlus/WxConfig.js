@@ -67,7 +67,6 @@ class WxConfig {
             Tools.fireRace(userId,"OAUTH_SUCCESS").then(()=>{
                 userId = User.getUserInfo().userId;
                 sessionStorage.setItem('wxshare',true);
-                WxConfig.shareConfig();
                 OnFire.fire('wxshare');
             });
         });
@@ -76,9 +75,8 @@ class WxConfig {
     /**
      * 分享配置
      */
-    static shareConfig(title, desc,link,channel) {
-        //console.log('分享配置',title, desc,fmid,link);
-
+    static shareConfig(sharePage) {
+        let link,title,desc,channel;
         //这个保证了 1)有userId 2)ready之后
         let wxshare = sessionStorage.getItem('wxshare');
         Tools.fireRace(wxshare,"wxshare").then(()=>{
@@ -88,16 +86,16 @@ class WxConfig {
                 imgUrl = userInfo.headImage;
             }
 
-            // link = link || Util.getShareLink();
+            let courseId = sessionStorage.getItem('courseId');
+            //默认 or 界面跟多的分享?
+            let pathNow = sharePage ? sharePage : sessionStorage.getItem('pathNow');
+            let shareInfo = GlobalConfig.getShareInfo(courseId,pathNow);
+
+
             let originLink = Util.getShareLink();
-            if(link) {
-                link =  originLink + link;
-            } else {
-                link = originLink;
-            }
-            desc = desc || Util.getShareDesc();
-            title = title || Util.getShareTitle();
-            // alert(link);
+            link =  originLink + shareInfo.link;
+            desc =  shareInfo.desc;
+            title = shareInfo.title;
 
             if( !imgUrl ) {
                 imgUrl = 'https://h5test.ichangtou.com/minic/assetsPlus/image/logo.png';

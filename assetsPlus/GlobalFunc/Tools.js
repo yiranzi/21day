@@ -112,27 +112,31 @@ class Tools {
         // location.hash = path;
     // }
 
-    static setCourseUrl(courseId) {
-        return GlobalConfig.getCourseInfo(courseId).router;
-        // let courseUrl;
-        // switch (Number(courseId)) {
-        //     case 0:
-        //         courseUrl = '/seven';
-        //         break;
-        //     case 1:
-        //         courseUrl = '/fund';
-        //         break;
-        //     case 2:
-        //         courseUrl = '/course21';
-        //         break;
-        // }
-        // return courseUrl;
+    static setCourseUrl() {
+        let courseId = sessionStorage.getItem('courseId');
+        let first = GlobalConfig.getRouterInfo(courseId);
+        if(first !== null) {
+            first = '/' + first;
+        } else {
+            first = '';
+        }
+        return first;
     }
 
     static MyRouter(pathTo,pathUrl) {
-        let courseId = sessionStorage.getItem('courseId');
-        location.hash = this.setCourseUrl(courseId) + pathUrl;
+        let first = this.setCourseUrl();
+        let second = pathUrl;
+        location.hash = first + second;
     }
+
+    //之后使用新方法.
+    //替换前看下使用的情景
+    // static GoRouter(pathUrl) {
+    //     //获得 前缀
+    //     //获得后缀
+    //     let courseId = sessionStorage.getItem('courseId');
+    //     location.hash = this.setCourseUrl(courseId) + pathUrl;
+    // }
 }
 
 

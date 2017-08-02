@@ -19,9 +19,7 @@ const MineStatus = React.createClass({
     },
 
     componentWillMount() {
-        console.log('enter mine');
-        // this.getUserInfo();
-
+        MyStorage.whenEnterPage('homeinfo');
     },
 
     // getUserInfo() {

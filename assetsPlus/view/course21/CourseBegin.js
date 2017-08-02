@@ -44,7 +44,7 @@ const CourseBegin = React.createClass({
 
 
     componentWillMount() {
-        MyStorage.whenEnterPage('开课证');
+        MyStorage.whenEnterPage('reward0',[this.props.params.type]);
         let userId;
         let type = this.props.params.type;
         //下线查看别人的成就卡
@@ -90,15 +90,10 @@ const CourseBegin = React.createClass({
                 this.state.senior.name = User.getUserInfo().nickName;
                 this.state.senior.headImg = User.getUserInfo().headImage;
                 this.setState({senior: this.state.senior});
-                this.setShareConfig();
+                // this.setShareConfig();
                 Loading.hideLoading();
             });
         }
-    },
-
-    //重置分享链接
-    componentWillUnmount () {
-        WxConfig.shareConfig();
     },
 
     componentDidMount () {
@@ -156,24 +151,18 @@ const CourseBegin = React.createClass({
      * @param fmid
      * @param title
      */
-    setShareConfig() {
-        let shareTitle = '我正在参加21天训练营',
-            link = Util.getShareLink(),
-            desc = '一起来参加';
-        link = link + '&goPath=' + 'payPage';
-        link = link + '&courseId=' + sessionStorage.getItem('courseId');
-        WxConfig.shareConfig(shareTitle,desc,link);
-
-        //
-        // let senior = this.state.senior;
-        // let shareTitle = '我正在参加21天训练营',
-        //     link = Util.getShareLink(),
-        //     desc = '一起来参加';
-        // link = link + '&goPath=' + sessionStorage.getItem('pathNow');
-        // link = link + '&courseId=' + sessionStorage.getItem('courseId');
-        // link = link + '&name=' + senior.name;
-        // WxConfig.shareConfig(shareTitle,desc,link);
-    },
+    // setShareConfig() {
+    //     //开课证分享
+    //     let shareInfo = GlobalConfig.getShareInfo(sessionStorage.getItem('courseId'),'courseBegin');
+    //     let shareTitle = shareInfo.title,
+    //         link = shareInfo.link,
+    //         desc = shareInfo.desc;
+    //     link = link + '&goPath=' + 'courseBegin';
+    //     link = link + '&courseId=' + sessionStorage.getItem('courseId');
+    //     WxConfig.shareConfig(shareTitle,desc,link);
+    //
+    //     WxConfig.shareConfig('');
+    // },
 
     // goSignUp(type) {
     //     if(type === 0) {

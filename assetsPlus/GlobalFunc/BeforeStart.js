@@ -63,6 +63,7 @@ class BeforeStart {
     }
 
     static getRedirect() {
+        console.log('enterridict');
         //重定向到main
         let redictUrl = '/main';
         // let redictUrl = '/courseSelect';
@@ -75,32 +76,26 @@ class BeforeStart {
         let courseId = MyStorage.getItem('courseId');
         let getWhere = MyStorage.getItem('getWhere');
         //判断特殊渠道(为特殊处理流程)
-        if(getWhere) {
-            goPath = 'courseSelect';
-            courseId = 2;
-
-            redictUrl = goPath;
+        if(getWhere === 'autoPush') {
+            // goPath = 'courseSelect';
+            // courseId = 2;
+            // redictUrl = goPath;
             //如果有课程
-            if(courseId) {
-                //1设置courseId
-                MyStorage.setCourseId(courseId);
-                //2获取课程支付信息
-                let dataResult = {};
-                dataResult.pay = true;
-                MyStorage.setCourseStatus(courseId,dataResult);
-                sessionStorage.setItem('SisBuy','付费');
-                //3设置默认分享
-                let shareTitle = GlobalConfig.getCourseInfo(courseId).shareTitle,
-                    link = Util.getShareLink(),
-                    desc = GlobalConfig.getCourseInfo(courseId).shareDesc;
-                link = link + '&goPath=' + 'payPage';
-                link = link + '&courseId=' + sessionStorage.getItem('courseId');
-                WxConfig.shareConfig(shareTitle,desc,link);
+            // if(courseId) {
 
-                //4设置跳转
-                // 举例/fund/getReward/
-                redictUrl = Tools.setCourseUrl(courseId) + '/' + redictUrl;
-            }
+            //1设置courseId
+            MyStorage.setCourseId(courseId);
+            //2获取课程支付信息
+            let dataResult = {};
+            dataResult.pay = true;
+            MyStorage.setCourseStatus(courseId,dataResult);
+            sessionStorage.setItem('SisBuy','付费');
+            //3设置默认分享(特殊设置)
+
+            //4设置跳转
+            // 举例/fund/getReward/
+            // redictUrl = Tools.setCourseUrl(courseId) + '/' + redictUrl;
+
         }
         //判断
         if (goPath) {
@@ -123,16 +118,10 @@ class BeforeStart {
                 });
 
                 //3设置默认分享
-                let shareTitle = GlobalConfig.getCourseInfo(courseId).shareTitle,
-                    link = Util.getShareLink(),
-                    desc = GlobalConfig.getCourseInfo(courseId).shareDesc;
-                link = link + '&goPath=' + 'payPage';
-                link = link + '&courseId=' + sessionStorage.getItem('courseId');
-                WxConfig.shareConfig(shareTitle,desc,link);
 
                 //4设置跳转
                 // 举例/fund/getReward/
-                redictUrl = Tools.setCourseUrl(courseId) + '/' + redictUrl;
+                redictUrl = Tools.setCourseUrl() + '/' + redictUrl;
             }
         }
         //加上dayId
@@ -140,6 +129,7 @@ class BeforeStart {
         if(dayId){
             redictUrl = redictUrl + '/' + dayId;
         }
+        console.log(redictUrl);
         return redictUrl;
     }
 

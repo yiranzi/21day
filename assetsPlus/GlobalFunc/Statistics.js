@@ -136,7 +136,7 @@ class Statistics {
             let key = saveStaParams[i];
             let value = sessionStorage.getItem(key);
             this.myRigister(key,value);
-            console.log('设置了' + key + value);
+            // console.log('设置了' + key + value);
         }
     }
 
@@ -182,7 +182,6 @@ class Statistics {
         //测试
         let userId = User.getUserInfo().userId;
         Tools.fireRace(userId,"OAUTH_SUCCESS").then(()=>{
-            console.log('hava post DPlus ' + eventName);
             console.log('hava post DPlus ' + result);
             this.GlobalStatis();
             if(result) {

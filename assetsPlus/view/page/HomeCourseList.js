@@ -35,7 +35,7 @@ const HomeCourseList = React.createClass({
     },
 
     componentWillMount() {
-        MyStorage.whenEnterPage('长投家-课程页');
+        MyStorage.whenEnterPage('homelist');
         Loading.hideLoading();
         //0 设置页面默认分享
         // WxConfig.shareConfig(shareTitle,desc,link);
@@ -75,7 +75,7 @@ const HomeCourseList = React.createClass({
     getCourseList() {
         let courseList = GlobalConfig.getCourseIdList();
         for( let i = 0; i<courseList.length; i++) {
-            if(courseList[i]!==2) {
+            if(courseList[i]!==3) {
                 console.log(courseList[i]);
                 this.state.courseStatus[courseList[i]] = {};
                 this.state.courseList.push(courseList[i]);
@@ -131,7 +131,7 @@ const HomeCourseList = React.createClass({
             }
             MyStorage.setCourseId(courseId);
             //3设置默认分享
-            WxConfig.shareConfig();
+            // WxConfig.shareConfig();
             Loading.hideLoading();
             //4设置跳转
             Tools.MyRouter('',enterWhere);

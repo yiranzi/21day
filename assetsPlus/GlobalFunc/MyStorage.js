@@ -118,7 +118,7 @@ class MyStorage {
     static setPathNow(pathNow) {
         let pathOld = sessionStorage.getItem('pathNow');
         if(!pathOld) {
-            pathOld = '入口文件'
+            pathOld = 'entryJs'
         }
         sessionStorage.setItem('pathFrom',pathOld);
         sessionStorage.setItem('pathNow',pathNow);
@@ -127,12 +127,16 @@ class MyStorage {
     }
 
     /**
-     * 进入界面调用函数
+     * 进入界面调用函数.
+     * 用于统计和记录当前页面
      * @param pathNow 界面名称
      */
     static whenEnterPage(pathNow,data) {
+        pathNow = GlobalConfig.getRouterInfo(pathNow);
         console.log('你进入了' + pathNow);
         this.setPathNow(pathNow);
+        //每个界面默认设置分享
+        WxConfig.shareConfig();
         Statistics.postDplusData('进入界面',data);
     }
 }

@@ -19,7 +19,6 @@ class Actions {
     static ifCourseSignUp(courseId) {
         let ajaxResult = {};
         //重置数据
-        console.log('delete');
         MyStorage.deleteCourseStatus(courseId);
         courseId = parseInt(courseId);
         //根据不同的id调用接口
