@@ -200,7 +200,7 @@ const CourseBegin = React.createClass({
     },
 
     renderTitle() {
-        if( this.props.params.type === 'other') {
+        if( this.props.params.type !== 'mine') {
             return
         }
         let img = './assetsPlus/image/course21/begin_title.png';
@@ -210,7 +210,7 @@ const CourseBegin = React.createClass({
     },
 
     renderLineBar(index) {
-        if( this.props.params.type === 'other') {
+        if( this.props.params.type !== 'mine') {
             return
         }
         let imgs = ['./assetsPlus/image/course21/begin_qq_info.png','./assetsPlus/image/course21/begin_sign_up.png'];
