@@ -68,8 +68,7 @@ const GetReward = React.createClass({
     },
 
     componentWillMount() {
-        MyStorage.setPathNow('成就卡');
-
+        MyStorage.whenEnterPage('reward',[this.props.params.mine]);
         let userId;
         //判定是否有分享成就卡
         this.state.senior.courseId = Util.getUrlPara('dayId');
@@ -111,10 +110,6 @@ const GetReward = React.createClass({
         }
     },
 
-    componentWillUnmount () {
-        WxConfig.shareConfig();
-    },
-
     /**
      * 设置分享内容
      * @param fmid
@@ -122,15 +117,13 @@ const GetReward = React.createClass({
      */
     setShareConfig() {
         let senior = this.state.senior;
-        let shareTitle = '我是第'+ this.state.senior.rank+'名完成'+this.state.shareTitle[ this.state.senior.courseId - 1] + '课的人，快来看看我的成就卡吧！',
-            link = Util.getShareLink(),
-            desc = '快比比谁的财商更高吧?';
-        link = link + '&goPath=' + 'getReward';
-        link = link + '&courseId=' + sessionStorage.getItem('courseId');
-        link = link + '&dayId=' + senior.courseId;
-        link = link + '&name=' + senior.name;
-        link = link + '&rank=' + senior.rank;
-        WxConfig.shareConfig(shareTitle,desc,link);
+        let data = {
+            name: senior.name,
+            rank: senior.rank,
+            dayId: senior.courseId,
+            courseName: this.state.shareTitle[ senior.courseId - 1]
+        };
+        WxConfig.shareConfig('',data);
     },
 
 

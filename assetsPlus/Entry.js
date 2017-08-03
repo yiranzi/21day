@@ -41,10 +41,16 @@ User.initAccessInfo();
 $(document).ready(() => {
     // alert("html ready");
     if(!Util.isWeixin()){
+        console.log('!is note wx')
         if(test) {
+            console.log('is test wx')
             alert('请复制地址并在微信中打开');
             new Dimensions().init();
+            //1设置固定id
             User.setUserIdTest('8ad44530fc9f4054a4bfd3ec56bc833f');
+            //2设置分享
+            sessionStorage.setItem('wxshare',true);
+            sessionStorage.setItem('wxshare',true);
             let goWhere = BeforeStart.init();
             ReactDom.render(<InnerRouter goWhere = {goWhere}/>, $('#root')[0]);
         } else {

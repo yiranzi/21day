@@ -73,12 +73,19 @@ class WxConfig {
     }
 
     /**
-     * 分享配置
+     * 触发额外分享的对应编号
+     * 额外参数为自定义的分享链接参数
+     * @param sharePage
      */
-    static shareConfig(sharePage) {
+    static shareConfig(sharePage,data) {
+        console.log('setshare');
         let link,title,desc,channel;
         //这个保证了 1)有userId 2)ready之后
         let wxshare = sessionStorage.getItem('wxshare');
+        let params = data;
+        // for(let i = 1 ; i < arguments.length; i++) {
+        //     params.push(arguments[i]);
+        // }
         Tools.fireRace(wxshare,"wxshare").then(()=>{
             let imgUrl;
             let userInfo = User.getUserInfo();
@@ -89,7 +96,7 @@ class WxConfig {
             let courseId = sessionStorage.getItem('courseId');
             //默认 or 界面跟多的分享?
             let pathNow = sharePage ? sharePage : sessionStorage.getItem('pathNow');
-            let shareInfo = GlobalConfig.getShareInfo(courseId,pathNow);
+            let shareInfo = GlobalConfig.getShareInfo(courseId,pathNow,params);
 
 
             let originLink = Util.getShareLink();

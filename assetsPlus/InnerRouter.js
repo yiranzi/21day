@@ -43,6 +43,7 @@ const CPlusMain = require('./view/CPlusMain');
 
 let InnerRouter = React.createClass({
     render(){
+        // let routerInfo = GlobalConfig.getRouterInfo();
         return (
             <Router history={hashHistory}>
                 <Route path="/" component={App}>
@@ -51,11 +52,11 @@ let InnerRouter = React.createClass({
                     <IndexRedirect to={this.props.goWhere}/>
                     <Route path="/main" component={CPlusMain}/>
                     {/*基金课*/}
-                    <Route path ="/fund/payPage" component={PayPageFund}/>
-                    <Route path ="/fund/courseSelect" component={CourseSelectFund}/>
-                    <Route path ="/fund/listenCourse/:dayId" component={ListenCourseFund}/>
-                    <Route path="/fund/getReward/:dayId(/:mine)" component={GetRewardFund}/>
-                    <Route path="/fund/getGraduated(/:mine)" component={GetGraduatedFund}/>
+                    {/*<Route path =  {`/${routerInfo['1']}/${routerInfo['pay']}`} component={PayPageFund}/>*/}
+                    {/*<Route path =  {`/${routerInfo['1']}/${routerInfo['select']}`} component={CourseSelectFund}/>*/}
+                    {/*<Route path =  {`/${routerInfo['1']}/${routerInfo['listen']}/:dayId`} component={ListenCourseFund}/>*/}
+                    {/*<Route path =  {`/${routerInfo['1']}/${routerInfo['reward1']}(/:mine)`} component={GetRewardFund}/>*/}
+                    {/*<Route path =  {`/${routerInfo['1']}/${routerInfo['reward2']}(/:mine)`} component={GetGraduatedFund}/>*/}
                     {/*七天*/}
                     <Route path ="/seven/payPage" component={PayPageSeven}/>
                     <Route path ="/seven/courseSelect" component={CourseSelectSeven}/>
@@ -67,6 +68,11 @@ let InnerRouter = React.createClass({
                     <Route path="/course21/courseBegin/:type" component={CourseBegin21}/>
                     <Route path="/course21/courseSelect" component={CourseSelect21}/>
                     <Route path="/course21/listenCourse/:dayId" component={ListenCourse21}/>
+
+                    <Route path = {`/${ GlobalConfig.getRouterInfo(2)}/${ GlobalConfig.getRouterInfo('pay')}`} component={PayPage21}/>
+                    <Route path = {`/${ GlobalConfig.getRouterInfo(2)}/${ GlobalConfig.getRouterInfo('begin')}/:type`} component={CourseBegin21}/>
+                    <Route path = {`/${ GlobalConfig.getRouterInfo(2)}/${ GlobalConfig.getRouterInfo('select')}`} component={CourseSelect21}/>
+                    <Route path = {`/${ GlobalConfig.getRouterInfo(2)}/${ GlobalConfig.getRouterInfo('listen')}/:dayId`} component={ListenCourse21}/>
 
 
                     {/*<Route path="/payPage(/:free)" component={PayPage}/>*/}

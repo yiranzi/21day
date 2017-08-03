@@ -315,7 +315,7 @@ const ListenCourse = React.createClass({
 
     renderSignUp() {
         if (!this.state.isPay) {
-            return (<div className = "sign-up-button" onClick={this.goSign}>点击播放按钮听课！喜欢的话点击这里报名！</div>);
+            return (<div className = "sign-up-button" onClick={this.goSign}>火速报名！</div>);
         }
     },
 

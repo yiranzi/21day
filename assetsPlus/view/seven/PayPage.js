@@ -54,7 +54,7 @@ var PayPage = React.createClass({
 
 
     componentWillMount(){
-        MyStorage.whenEnterPage('支付页面');
+        MyStorage.whenEnterPage('pay');
         //0获取当前的Id
         let courseId = sessionStorage.getItem('courseId');
         //1获取用户名 获取报名信息

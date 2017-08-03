@@ -55,7 +55,7 @@ const CourseSelect = React.createClass({
     },
 
     componentWillMount() {
-        MyStorage.whenEnterPage('课程列表页');
+        MyStorage.whenEnterPage('select');
 
         let courseId = sessionStorage.getItem('courseId');
         Tools.fireRaceCourse(courseId).then((value)=>{
