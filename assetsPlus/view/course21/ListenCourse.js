@@ -18,6 +18,7 @@ const CourseProcessBar = require('../../component/course/CourseProcessBar');
 
 //diff
 const AudioPlayer = require('../../component/seven/AudioPlayer');
+const GiveScoreContain = require('../../component/course21/GiveScoreContain');
 
 
 const User = require('../../User');
@@ -270,7 +271,7 @@ const ListenCourse = React.createClass({
                 {/*<span>当前播放的fmid{this.state.currentfmid}</span>*/}
                 {/*<div>进入时,这门课程的状态时{this.props.location.query.name}</div>*/}
                 {this.renderLesson()}
-                {/*{this.passLessonRender()}*/}
+                {this.renderGiveScore()}
                 {/*{this.renderSignUp()}*/}
                 {/*{this.preLoadPic()}*/}
             </div>
@@ -317,6 +318,51 @@ const ListenCourse = React.createClass({
     //         <img src={'./assetsPlus/image/seven/bglight_b.png'}/>
     //     </div>)
     // },
+
+    cbfClick (index) {
+        console.log(index)
+    },
+
+    renderGiveScore() {
+        let images = [`./assetsPlus/image/${GlobalConfig.getCourseName()}/score_on.png`,`./assetsPlus/image/${GlobalConfig.getCourseName()}/score_off.png`];
+        let title = '评价';
+        let count = 5;
+        if (this.state.lessons.length === 0) {
+            return null;
+        }
+        if(!this.state.allFinish) {
+            this.state.allFinish = true;
+            return (<GiveScoreContain className = "get-reward-command"
+              images = {images}
+              title = {title}
+              count = {count}
+                                      cbfClick = {this.cbfClick}
+            />);
+        } else {
+            return (<GiveScoreContain className = "get-reward-command"
+                                      images = {images}
+                                      title = {title}
+                                      count = {count}
+                                      cbfClick = {this.cbfClick}
+            />);
+        }
+        // let lesson = this.state.lessons[this.state.lessons.length - 1].subs;
+        // 1完成全部选择题后
+        // if(lesson[lesson.length - 1].process === true) {
+            //1如果第一次通过 ,会有提示.
+            // return (<div className = "get-reward-command" onClick={this.goReward.bind(this,1)}>祝贺！完成本节！点击我领取成就卡！</div>);
+            // if(this.props.location.query.name !== '2') {
+            //     return (<div className = "get-reward-command" onClick={this.goReward.bind(this,1)}>祝贺！完成本节！点击我领取成就卡！</div>);
+            // } else {
+            //     //1如果已经通过 ,会有提示.
+            //     return (<div className = "get-reward-command" onClick={this.goReward.bind(this,2)}>查看我的成就卡！</div>);
+            // }
+            // if(!this.state.allFinish) {
+            //     this.state.allFinish = true;
+            //     return (<div className = "get-reward-command" onClick={this.goReward.bind(this,1)}>祝贺！完成本节！点击我领取成就卡！</div>);
+            // }
+        // }
+    },
 
     passLessonRender() {
         if (this.state.lessons.length === 0) {

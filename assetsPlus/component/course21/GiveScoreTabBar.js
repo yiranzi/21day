@@ -3,6 +3,7 @@
  */
 const React = require('react');
 const StarBox = require('../../component/course21/StarBox');
+
 // interface StateTypes {
 // status: String,
 //     //逻辑
@@ -16,7 +17,7 @@ const StarBox = require('../../component/course21/StarBox');
 //     styleDefault: Object,//默认
 // }
 
-const AbsTabBar = React.createClass({
+const GiveScoreTabBar = React.createClass({
     getInitialState: function() {
         // console.log('123');
         return {
@@ -58,7 +59,7 @@ const AbsTabBar = React.createClass({
     //根据回调带来的结果,确定按钮的样式.
     calcStatus(index) {
         //如果这个index 是被点击的那个
-        if(this.props.currentIndex === index && this.props.status === 'click') {
+        if( index <= this.props.currentIndex) {
             return 'click';
         } else {
             //如果这个index 什么都没触发
@@ -67,7 +68,7 @@ const AbsTabBar = React.createClass({
     }
 });
 
-module.exports = AbsTabBar;
+module.exports = GiveScoreTabBar;
 
 
 

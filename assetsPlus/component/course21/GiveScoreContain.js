@@ -28,13 +28,12 @@ const GiveScoreContain = React.createClass({
         return(<div className="give-score-contain">
             {this.renderTitle()}
             {this.renderTabBar()}
-            {this.renderBars()}
         </div>)
 
     },
 
     renderTitle() {
-        return<p>this.props.title</p>
+        return(<p>{this.props.title}</p>)
     },
 
     renderTabBar() {
@@ -50,6 +49,9 @@ const GiveScoreContain = React.createClass({
         };
         let defaultStyle = {
             padding: '0 20px 0 20px',
+            display: 'flex',
+            flexWrap: 'nowrap',
+            justifyContent: 'space-between',
         };
         return(<GiveScoreTabBar
             content = {content}
@@ -62,7 +64,8 @@ const GiveScoreContain = React.createClass({
     },
 
     cbfClick(index) {
-        this.setState({currentIndex: index})
+        console.log('123')
+        this.setState({currentIndex: index});
         this.props.cbfClick(index)
     }
 

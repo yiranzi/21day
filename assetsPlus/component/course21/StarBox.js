@@ -30,7 +30,7 @@ const AbstractBox = require('../../component/abstract/AbstractBox');
 
 const StarBox = React.createClass({
     render (){
-        let distance = 5
+        let distance = 0;
         let styleClick = {
             // color: 'white',
         }
@@ -49,9 +49,9 @@ const StarBox = React.createClass({
         };
 
         return(<AbstractBox
-                            styleClick = {}
+                            // styleClick = {}
                             styleDefault = {styleDefault}
-                            styleHover = {}
+                            // styleHover = {}
                             styleImage = {styleImage}
 
                             status = {this.props.status}
@@ -59,8 +59,7 @@ const StarBox = React.createClass({
                             cbfHover = {this.props.cbfHover}
                             index = {this.props.index}
                             content = {this.props.content}
-                            arrayIndex = {this.props.arrayIndex}>
-        </AbstractBox>)
+                            arrayIndex = {this.props.arrayIndex}/>)
     },
 
 });

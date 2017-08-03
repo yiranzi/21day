@@ -43,10 +43,7 @@ const AbstractBox = React.createClass({
 
     render (){
 
-        return(<div style={this.addStyleByStatus()}>
-            onClick={this.cbfClick}
-            onMouseOver={this.cbfHover}
-            onMouseOut = {this.cbfHoverOut}>
+        return(<div style={this.addStyleByStatus()} onClick={this.cbfClick} onMouseOver={this.cbfHover} onMouseOut = {this.cbfHoverOut}>
             {this.renderContent()}
             {/*<div style = {this.props.styleBox}*/}
 
@@ -59,9 +56,10 @@ const AbstractBox = React.createClass({
     },
 
     renderContent() {
-        let title = this.props.title;
-        let imageOn = this.props.imageOn;
-        let imageOff = this.props.imageOff;
+        let content = this.props.content
+        let title = content.title;
+        let imageOn = content.imageOn;
+        let imageOff = content.imageOff;
         //有两种图片的布局
         if(imageOn && imageOff) {
             return(<img style = {this.props.styleImage} src={this.props.status === 'click' ? imageOn : imageOff}/>)
