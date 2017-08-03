@@ -41,7 +41,6 @@ class MyStorage {
      */
 
     static setCourseStatus(courseId,dataResult) {
-        console.log('set');
         //保存到全局
         courseInfo[courseId].dataResult = dataResult;
         // OnFire.fire("courseStatus",{courseId: courseId,status: status});

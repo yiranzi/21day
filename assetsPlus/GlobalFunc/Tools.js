@@ -131,12 +131,13 @@ class Tools {
 
     //之后使用新方法.
     //替换前看下使用的情景
-    // static GoRouter(pathUrl) {
-    //     //获得 前缀
-    //     //获得后缀
-    //     let courseId = sessionStorage.getItem('courseId');
-    //     location.hash = this.setCourseUrl(courseId) + pathUrl;
-    // }
+    static GoRouter(pathUrl) {
+        //获得 前缀
+        let first = this.setCourseUrl();
+        //获得后缀
+        let second = '/' + GlobalConfig.getRouterInfo(pathUrl);
+        location.hash = first + second;
+    }
 }
 
 

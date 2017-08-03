@@ -37,6 +37,7 @@ class BeforeStart {
         this.getWhereChannel();
         //4 获取之后要跳转的连接
         let redictUrl = this.getRedirect();
+        console.log(redictUrl);
         //5 返回最终连接 跳转
         return redictUrl;
     }
@@ -47,7 +48,14 @@ class BeforeStart {
         //清空有影响的缓存
         // sessionStorage.removeItem('courseId');
         let totalTime = sessionStorage.getItem('startTime');
-        sessionStorage.clear();
+        //清空缓存,保留有用缓存
+        if(sessionStorage.getItem('wxshare')) {
+            sessionStorage.clear();
+            sessionStorage.setItem('wxshare',true)
+        } else {
+            sessionStorage.clear();
+        }
+
         sessionStorage.setItem('SstartTime',totalTime);
         console.log(totalTime);
         console.log('clear session');
@@ -97,6 +105,40 @@ class BeforeStart {
             // redictUrl = Tools.setCourseUrl(courseId) + '/' + redictUrl;
 
         }
+        //针对公众号的特殊判断
+        if(getWhere === 'ggh' && courseId === '2') {
+            // goPath = 'courseSelect';
+            // courseId = 2;
+            // redictUrl = goPath;
+            //如果有课程
+            // if(courseId) {
+
+            //1设置courseId
+            MyStorage.setCourseId(courseId);
+            //2获取课程支付信息
+            Actions.ifCourseSignUp(courseId);
+            //TODO
+            //并且可以开课
+            Tools.fireRaceCourse(courseId).then((value)=>{
+                console.log('get');
+                if(parseInt(sessionStorage.getItem('courseId')) === parseInt(courseId)) {
+                    if(value.pay){
+                        sessionStorage.setItem('SisBuy','付费');
+                        Tools.GoRouter('select');
+                    } else {
+                        sessionStorage.setItem('SisBuy','未付费');
+                        Tools.GoRouter('pay');
+                    }
+                }
+            });
+            //3设置默认分享(特殊设置)
+
+            //4设置跳转
+            // 举例/fund/getReward/
+            redictUrl = '/padding';
+            return redictUrl;
+
+        }
         //判断
         if (goPath) {
             redictUrl = goPath;
@@ -129,7 +171,7 @@ class BeforeStart {
         if(dayId){
             redictUrl = redictUrl + '/' + dayId;
         }
-        console.log(redictUrl);
+
         return redictUrl;
     }
 
