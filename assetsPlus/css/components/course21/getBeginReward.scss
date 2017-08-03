@@ -8,8 +8,50 @@
   //height: 100%;
   position: relative;
   top: 0;
-  padding-top: 10px;
+  padding: 10px 20px 0 20px;
+  //padding-bottom: 10px;
   //padding-bottom: px2rem(20);
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+
+  .line{
+    display: inline-block;
+    width: 100%;
+    margin-bottom: 15px;
+    img{
+      width: 100%;
+    }
+    .bottom-line{
+      margin: 10px 0 25px 0;
+      display: flex;
+      flex-wrap: nowrap;
+      justify-content: center;
+      .inner-line{
+        display: flex;
+        flex-wrap: nowrap;
+        justify-content: center;
+        font-size: 12px;
+        color: #907660;
+        align-items: center;
+        img{
+          margin-right: 15px;
+          width: 50px;
+        }
+      }
+      .button{
+        line-height: 50px;
+        color: #FFE49B;
+        width: 200px;
+        border-radius: 50px;
+        background-color: #907660;
+        font-size: 18px;
+
+      }
+    }
+  }
+
+
   .get-graduated-after {
     position: absolute;
     top: px2rem(40);
@@ -28,7 +70,7 @@
     position: relative;
     margin: auto;
     text-align: center;
-    width: px2rem(330);
+    width: 100%;
     height: px2rem(528);
 
     background-size: 100% 100%;

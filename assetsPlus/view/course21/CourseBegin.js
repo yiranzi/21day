@@ -33,7 +33,7 @@ const CourseBegin = React.createClass({
                 userId: '',
             },
             friendName: '',
-            myName: '',
+            // myName: '',
             isNoteCardDomShow: true,
             isButtonShow: false,
             randomInit: 3.45,
@@ -44,19 +44,12 @@ const CourseBegin = React.createClass({
 
 
     componentWillMount() {
-        MyStorage.whenEnterPage('reward0',[this.props.params.type]);
+        MyStorage.whenEnterPage('begin',[this.props.params.type]);
         let userId;
         let type = this.props.params.type;
-        //下线查看别人的成就卡
-        if (type !== 'mine') {
-            userId = Util.getUrlPara('ictchannel');
-            // Tools.fireRace(User.getUserInfo().userId,"OAUTH_SUCCESS").then(()=>{
-            //     Material.postData('下线_查看_getReward');
-            //     this.setState({myName: User.getUserInfo().nickName})
-            // });
-            this.state.senior.userId = userId;
-            this.state.senior.name = Util.getUrlPara('name');
-            this.setState({type: 'other'});
+        //选择界面查看成就卡
+        if (type === 'select') {
+            this.setState({type: 'select'});
 
             Tools.fireRace(User.getUserInfo().userId,"OAUTH_SUCCESS").then(()=>{
                 this.state.senior.name = User.getUserInfo().nickName;
@@ -70,7 +63,21 @@ const CourseBegin = React.createClass({
             //     this.setState({friendName: name});
             //     // this.setShareConfig();
             // });
-        } else {
+        } else if(type === 'other') {
+            this.setState({type: 'other'});
+            //下线
+            userId = Util.getUrlPara('ictchannel');
+            //获得上线头像/姓名并设置
+            Material.getUserAdvanceInfo(userId).done((result)=>{
+                this.state.senior.name = result.headImg;
+                this.state.senior.headImg = result.headImage;
+                this.setState({senior: this.state.senior});
+            })
+            this.state.senior.name = '测试代码123';
+            this.state.senior.headImg = '';
+            this.setState({senior: this.state.senior});
+
+        } else if(type === 'mine'){
             //查看自己的毕业证
             //获取班级群信息
             let courseId = sessionStorage.getItem('courseId');
@@ -179,19 +186,67 @@ const CourseBegin = React.createClass({
     render() {
         return(
             <div className="get-begin-course21">
-                {/*<div className="test">123</div>*/}
                 <FixedBg/>
-                {/*<div className="reward-pic" style={{backgroundImage:"url('./assetsPlus/image/course/noteCard.png')"}}>*/}
-                {/*<p className="note-card-project-title">14天基金定投训练营</p>*/}
-                {/*<p className="note-card-header">-{this.state.senior.rank}-</p>*/}
-                {/*</div>*/}
+                {this.renderTitle()}
+                {this.renderLineBar(0)}
+                {this.renderLineBar(1)}
                 {this.renderGraduatedBefore()}
-                {/*<img className="get-graduated-after" src={this.state.shareImgUrl}/>*/}
-                {/*{this.state.isNoteCardDomShow ? this.renderGraduated() : null}*/}
-                <div className="reward-button-graduated">{this.buttonRender()}</div>
+                <div className = 'line'>{this.buttomBarRender()}</div>
+                {/*8-3 按钮栏 变为垂直样式*/}
+                {/*<div className="reward-button-graduated">{this.buttonRender()}</div>*/}
 
             </div>
         )
+    },
+
+    renderTitle() {
+        if( this.props.params.type === 'other') {
+            return
+        }
+        let img = './assetsPlus/image/course21/begin_title.png';
+        return (<div className = 'line'>
+            <img src = {img}/>
+        </div>)
+    },
+
+    renderLineBar(index) {
+        if( this.props.params.type === 'other') {
+            return
+        }
+        let imgs = ['./assetsPlus/image/course21/begin_qq_info.png','./assetsPlus/image/course21/begin_sign_up.png'];
+        return (<div className = 'line' onClick = {this.showQQInfo.bind(this,index)}>
+            <img src = {imgs[index]}/>
+        </div>)
+    },
+
+    buttomBarRender() {
+        console.log('!!!!!!!!!title');
+        let type = this.props.params.type;
+
+        let arr = [];
+        let img = './assetsPlus/image/course21/share_payPage.png';
+        let fonts = ['我也要报名','分享给小伙伴显摆显摆'];
+
+        switch (type) {
+            case 'other':
+                //signup
+                arr.push(<div className="bottom-line" onClick={this.showQQInfo.bind(this, 3)}>
+                    <div className="button">
+                        <span>{fonts[0]}</span>
+                    </div>
+                </div>);
+                break;
+            default:
+                //share
+                arr.push(<div className="bottom-line" onClick={this.showQQInfo.bind(this, 2)}>
+                    <div className="inner-line">
+                        <img src={img}/>
+                        <span>{fonts[1]}</span>
+                    </div>
+                </div>)
+                break;
+        }
+        return arr
     },
 
     renderGraduatedBefore() {
@@ -246,48 +301,57 @@ const CourseBegin = React.createClass({
         )
     },
 
-    goCommand() {
-        //WA 1
-        window.dialogAlertComp.show('你是最棒的','真是厉害啊，好好庆祝一下自己的成就，晒晒自己的战绩吧！你会获得来自大家的赞赏和鼓励哦！','好哒师兄',()=>{},()=>{},false);
-    },
-
-    buttonRender() {
-        let arr = [];
-        let imgs = ['./assetsPlus/image/course21/wx_payPage.png','./assetsPlus/image/course21/share_payPage.png','./assetsPlus/image/course21/qqGroup_payPage.png'];
-        let fonts = ['每日作业','分享','找老师'];
-        if(this.props.params.type === 'mine') {
-            for(let i =0; i<3; i++) {
-                arr.push(<div className="button" onClick = {this.showQQInfo.bind(this,i)}>
-                    <img src={imgs[i]}/>
-                    <span>{fonts[i]}</span>
-                </div>)
-            }
-        } else {
-            arr.push(<div className="button" onClick = {this.showQQInfo.bind(this,1)}>
-                <img src={imgs[1]}/>
-                <span>{fonts[1]}</span>
-            </div>)
-        }
-
-        // arr.push((<div key={1} className="reward-button-graduated" onClick = {this.showQQInfo}>
-        //     <img className="button-img" src={'./assetsPlus/image/course/btnSignin.png'}/>
-        //     <p className="button-p">qq群</p>
-        // </div>));
-        return arr;
-    },
+    // buttonRender() {
+    //     let arr = [];
+    //     let imgs = ['./assetsPlus/image/course21/wx_payPage.png','./assetsPlus/image/course21/share_payPage.png','./assetsPlus/image/course21/qqGroup_payPage.png'];
+    //     let fonts = ['每日作业','分享','找老师'];
+    //     if(this.props.params.type === 'mine') {
+    //         for(let i =0; i<3; i++) {
+    //             arr.push(<div className="button" onClick = {this.showQQInfo.bind(this,i)}>
+    //                 <img src={imgs[i]}/>
+    //                 <span>{fonts[i]}</span>
+    //             </div>)
+    //         }
+    //     } else if(this.props.params.type === 'select'){
+    //         arr.push(<div className="button" onClick = {this.showQQInfo.bind(this,1)}>
+    //             <img src={imgs[1]}/>
+    //             <span>{fonts[1]}</span>
+    //         </div>)
+    //     } else if(this.props.params.type === 'other'){
+    //         arr.push(<div className="button" onClick = {this.showQQInfo.bind(this,3)}>
+    //             <img src={imgs[3]}/>
+    //             <span>{fonts[3]}报名</span>
+    //         </div>)
+    //     }
+    //
+    //     // arr.push((<div key={1} className="reward-button-graduated" onClick = {this.showQQInfo}>
+    //     //     <img className="button-img" src={'./assetsPlus/image/course/btnSignin.png'}/>
+    //     //     <p className="button-p">qq群</p>
+    //     // </div>));
+    //     return arr;
+    // },
 
     showQQInfo(type) {
-        Statistics.postDplusData('点击按钮栏_按钮',[type]);
+        let type2Name = {
+            '0': '关注',
+            '1': '分享',
+            '2': '社群',
+            '3': '下线跳转',
+        }
+        Statistics.postDplusData('点击按钮栏_按钮',[type2Name[type]]);
         switch (type) {
             case 0:
-                window.dialogAlertComp.show('报名成功','赶紧关注公众号"长投"，每天陪你一起学习哟~','好勒，知道了！',this.gotoBeginReward,()=>{},false);
-                break;
-            case 1:
-                window.dialogAlertComp.show('分享','快去分享给你的小伙伴吧。学姐说大家一起学习更能坚持下去哦！','知道啦',()=>{},'',false);
-                break;
-            case 2:
                 window.dialogAlertComp.show('加入QQ群（学习群务必加入）',`群号${this.state.signUpInfo.qqGroup},暗号${this.state.signUpInfo.secret}`,'点击加入',()=>
                 {location.href = this.state.signUpInfo.qqGroupUrl;},'我加过了',true);
+                break;
+            case 1:
+                window.dialogAlertComp.show('报名成功','赶紧关注公众号"长投"，每天陪你一起学习哟~','好勒，知道了！',this.gotoBeginReward,()=>{},false);
+                break;
+            case 2:
+                window.dialogAlertComp.show('分享','快去分享给你的小伙伴吧。学姐说大家一起学习更能坚持下去哦！','知道啦',()=>{},'',false);
+                break;
+            case 3:
+                Tools.GoRouter('pay');
                 break;
             default:
                 break

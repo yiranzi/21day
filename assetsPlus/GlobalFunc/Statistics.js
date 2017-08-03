@@ -62,6 +62,10 @@ class Statistics {
     //     window.dplus.track({[key]: value});
     // }
 
+
+    //保存到统计列表
+    //保存到sessin
+    //发送统计列表
     static setStaticData() {
         //0设置uesrId
         let userId = User.getUserInfo().userId;
@@ -101,8 +105,9 @@ class Statistics {
             let param = paramsAll[i];
             let getParams = Util.getUrlPara(param);
             saveStaParams.push('S'+param);
-            switch (getParams) {
+            switch (param) {
                 case 'ictchannel':
+                    console.log('set ict!!!!!!!!!!!!!!!!!!!!!!!!')
                     if(getParams) {
                         sessionStorage.setItem(param,getParams);
                         sessionStorage.setItem('S'+param,'下线');
