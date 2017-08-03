@@ -51,6 +51,7 @@ const CourseSelect = React.createClass({
             rewardImg: "./assetsPlus/image/course/indNote.png",
             qqStatus: 2,
             courseId: sessionStorage.getItem('courseId'),
+            groupInfo: {},
         };
     },
 
@@ -59,6 +60,12 @@ const CourseSelect = React.createClass({
 
         let courseId = sessionStorage.getItem('courseId');
         Tools.fireRaceCourse(courseId).then((value)=>{
+            if(value.qqGroup) {
+                this.state.groupInfo.qq = value.qqGroup;
+                this.state.groupInfo.link = value.qqGroupUrl;
+                this.state.groupInfo.secret = value.secret;
+                this.setState({groupInfo: this.state.groupInfo});
+            }
             this.state.allowLesson = value.pay;
             this.setState({allowLesson: this.state.allowLesson});
             this.init();
@@ -117,25 +124,26 @@ const CourseSelect = React.createClass({
             </div>)
         } else if(this.state.allowLesson === false){
             //未开课数据
-            //     return(<div>
-            //         <FixedBg/>
-            //         {this.renderEmpty()}
-            //     </div>)
-            //二维码 开课
-            <div className="course-list">
+            return(<div>
                 <FixedBg/>
-                <div>
-                    {this.renderTopBar()}
-                    {this.renderCourseList()}
-                </div>
-            </div>
+                {this.renderEmpty()}
+            </div>);
+            //二维码 开课
+            {/*<div className="course-select">*/}
+                {/*<FixedBg/>*/}
+                {/*<div>*/}
+                    {/*{this.renderTopBar()}*/}
+                    {/*{this.renderCourseList()}*/}
+                {/*</div>*/}
+            {/*</div>*/}
         } else{
             return(
                 //开课
-                <div className="course-list">
+                <div className="course-select">
                     <FixedBg/>
                     <div>
                         {this.renderTopBar()}
+                        {this.renderQQGroup()}
                         {this.renderCourseList()}
                     </div>
                 </div>
@@ -143,8 +151,12 @@ const CourseSelect = React.createClass({
         }
     },
 
+    renderQQGroup() {
+      return(<img className="qq-group" onClick = {this.showGroup} src={`./assetsPlus/image/${GlobalConfig.getCourseName()}/select_qq_group.png`}/>)
+    },
+
     renderEmpty() {
-        let arr = []
+        let arr = [];
         console.log('empty！！');
 
         Statistics.postDplusData('列表页空白');
@@ -185,20 +197,20 @@ const CourseSelect = React.createClass({
     //     return arr;
     // },
 
-    cbfCheckBar(type) {
-        switch (type) {
-            //毕业
-            case 0:
-                this.openGraduated();
-                break;
-            case 1:
-                this.showGroup();
-                break;
-            case 2:
-                this.openTreasure();
-                break;
-        }
-    },
+    // cbfCheckBar(type) {
+    //     switch (type) {
+    //         //毕业
+    //         case 0:
+    //             this.openGraduated();
+    //             break;
+    //         case 1:
+    //             this.showGroup();
+    //             break;
+    //         case 2:
+    //             this.openTreasure();
+    //             break;
+    //     }
+    // },
 
     renderCourseList() {
         let courseList = this.state.courseList;
@@ -252,6 +264,13 @@ const CourseSelect = React.createClass({
             }
             return arr
         }
+    },
+
+    showGroup() {
+        window.dialogAlertComp.show('加入学习社群',`基金课教学QQ群，手把手带你投资实战基金课。群暗号：${this.state.groupInfo.secret}（QQ群：${this.state.groupInfo.qq}）`, '点击加入', () => {
+            location.href = this.state.groupInfo.link;
+        }, '我加过了', true)
+
     },
 
     calcCourseStatus(course, index) {

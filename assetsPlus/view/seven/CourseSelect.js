@@ -75,7 +75,7 @@ const CourseSelect = React.createClass({
 
     render() {
         return(
-            <div className="course-list">
+            <div className="course-select">
                 <FixedBg/>
                 <div>
                     {this.renderTreasure()}

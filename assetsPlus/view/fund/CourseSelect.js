@@ -126,7 +126,7 @@ const CourseSelect = React.createClass({
             </div>)
         } else {
             return(
-                <div className="course-list">
+                <div className="course-select">
                     <FixedBg/>
                     <div>
                         {this.renderTopBar()}
