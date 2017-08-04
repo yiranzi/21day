@@ -57,7 +57,7 @@ const CourseSelect = React.createClass({
 
     componentWillMount() {
         MyStorage.whenEnterPage('select');
-
+        console.log('render ocurselist')
         let courseId = sessionStorage.getItem('courseId');
         Tools.fireRaceCourse(courseId).then((value)=>{
             if(value.qqGroup) {
@@ -82,7 +82,7 @@ const CourseSelect = React.createClass({
 
 
     getCourseList () {
-        Material.getCourseList(this.state.courseId).always( (data) => {
+        Material.getCourseList(this.state.courseId).then( (data) => {
             this.setState({courseList: data});
             let countUnlock = 0;
             let countPass = 0;

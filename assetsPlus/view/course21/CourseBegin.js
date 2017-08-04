@@ -41,6 +41,8 @@ const CourseBegin = React.createClass({
             randomInit: 3.45,
             useTime: [180,25,15,5],
             signUpInfo: {},
+            ifBgShowShare: false,
+            ifBgShowSign: false,
         };
     },
 
@@ -71,7 +73,7 @@ const CourseBegin = React.createClass({
             userId = Util.getUrlPara('ictchannel');
             //获得上线头像/姓名并设置
             Material.getUserAdvanceInfo(userId).done((result)=>{
-                this.state.senior.name = result.headImg;
+                this.state.senior.name = result.username;
                 this.state.senior.headImg = result.headImage;
                 this.setState({senior: this.state.senior});
             })
@@ -186,10 +188,28 @@ const CourseBegin = React.createClass({
 
     // style = {fullbg}
     render() {
+        let style = {
+            display: 'flex',
+            flexWrap: 'wrap',
+            justifyContent: 'center',
+            alignItems: 'center',
+            fontSize: '20px',
+            width: '100%',
+            height: '100%',
+            backgroundColor: 'rgba(144,118,96,0.9)'
+        };
+
         return(
             <div className="get-begin-course21">
                 <FixedBg/>
-                <ModalMask cbfClick = {()=>{this.setState({ifBgShow: false})}} isShow = {this.state.ifBgShow} imageBg = {`./assetsPlus/image/${GlobalConfig.getCourseName()}/paypage_share.png`}/>
+                <ModalMask type = {false} cbfClick = {this.cbfModalClick} isShow = {this.state.ifBgShowSign} imageBg = {`./assetsPlus/image/${GlobalConfig.getCourseName()}/paypage_share.png`}>
+                    <div style = {style}>
+                        <div>
+                            <img style={{width: '310px'}} src={`./assetsPlus/image/${GlobalConfig.getCourseName()}/wxSignCode.png`}/>
+                        </div>
+                    </div>
+                </ModalMask>
+                <ModalMask type = {true} cbfClick = {this.cbfModalClick} isShow = {this.state.ifBgShowShare} imageBg = {`./assetsPlus/image/${GlobalConfig.getCourseName()}/paypage_share.png`}/>
                 {this.renderTitle()}
                 {this.renderLineBar(0)}
                 {this.renderLineBar(1)}
@@ -200,6 +220,13 @@ const CourseBegin = React.createClass({
 
             </div>
         )
+    },
+
+    cbfModalClick() {
+        this.setState({
+            ifBgShowShare: false,
+            ifBgShowSign: false,
+        })
     },
 
     renderTitle() {
@@ -348,11 +375,11 @@ const CourseBegin = React.createClass({
                 {location.href = this.state.signUpInfo.qqGroupUrl;},'我加过了',true);
                 break;
             case 1:
-                window.dialogAlertComp.show('报名成功','赶紧关注公众号"长投"，每天陪你一起学习哟~','好勒，知道了！',this.gotoBeginReward,()=>{},false);
+                this.setState({ifBgShowSign: true});
                 break;
             case 2:
                 Statistics.postDplusData('分享_按钮');
-                this.setState({ifBgShow: true});
+                this.setState({ifBgShowShare: true});
                 break;
             case 3:
                 Tools.GoRouter('pay');

@@ -21,7 +21,7 @@ const courseInfo = {
         title: '21天训练营',
         //报名
         // payPicLength: 4,//报名页图片长度
-        price: [9,3],//价格
+        price: [9,6],//价格
         //分享
         shareTitle: '超过10万+的人都追捧的理财入门课，还不快来吗？',//分享标题
         shareDesc: '只要一顿早餐的钱，点击报名！',//分享描述

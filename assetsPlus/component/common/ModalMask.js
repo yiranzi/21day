@@ -8,6 +8,7 @@ const React = require('react');
 //isShow    是否显示
 //imageBg   全屏背景图
 //className 默认的样式.全屏图片/自定义蒙版+图片实现
+//type 两种模式
 // }
 
 const ModalMask = React.createClass({
@@ -38,7 +39,7 @@ const ModalMask = React.createClass({
 
         // return(<div style={style} onClick={this.cbfClick} onMouseOver={this.cbfHover} onMouseOut = {this.cbfHoverOut}>
         return(<div style={style} onClick={this.props.cbfClick}>
-            {this.renderBg()}
+            {this.props.type ? this.renderBg() : this.props.children}
             {/*{this.renderContent()}*/}
             {/*<div style = {this.props.styleBox}*/}
 

@@ -293,7 +293,7 @@ var PayPage = React.createClass({
         return (
             <div className="pay_page_course21">
                 <FixedBg/>
-                <ModalMask cbfClick = {()=>{this.setState({ifBgShow: false})}} isShow = {this.state.ifBgShow} imageBg = {`./assetsPlus/image/${GlobalConfig.getCourseName()}`}/>
+                <ModalMask type = {true} cbfClick = {()=>{this.setState({ifBgShow: false})}} isShow = {this.state.ifBgShow} imageBg = {`./assetsPlus/image/${GlobalConfig.getCourseName()}/paypage_share.png`}/>
                 <div className={"intro-img"}>
                     {this.renderBg()}
                     <div className="fund-status">

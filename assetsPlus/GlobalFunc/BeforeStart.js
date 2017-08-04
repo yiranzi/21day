@@ -92,6 +92,7 @@ class BeforeStart {
             // if(courseId) {
 
             //1设置courseId
+            redictUrl = 'courseSelect';
             MyStorage.setCourseId(courseId);
             //2获取课程支付信息
             let dataResult = {};
@@ -102,11 +103,10 @@ class BeforeStart {
 
             //4设置跳转
             // 举例/fund/getReward/
-            // redictUrl = Tools.setCourseUrl(courseId) + '/' + redictUrl;
+            redictUrl = Tools.setCourseUrl(courseId) + '/' + redictUrl;
 
-        }
-        //针对公众号的特殊判断
-        if(getWhere === 'ggh' && courseId === '2') {
+        } else if(getWhere === 'ggh' && courseId === '2') {
+            //针对公众号的特殊判断
             // goPath = 'courseSelect';
             // courseId = 2;
             // redictUrl = goPath;
@@ -124,7 +124,14 @@ class BeforeStart {
                 if(parseInt(sessionStorage.getItem('courseId')) === parseInt(courseId)) {
                     if(value.pay){
                         sessionStorage.setItem('SisBuy','付费');
-                        Tools.GoRouter('select');
+                        Material.getStartClassCourse21().then((result)=>{
+                            if(result) {
+                                Tools.GoRouter('select');
+                            } else {
+                                Tools.GoRouter('pay');
+                            }
+                        });
+
                     } else {
                         sessionStorage.setItem('SisBuy','未付费');
                         Tools.GoRouter('pay');
@@ -134,13 +141,13 @@ class BeforeStart {
             //3设置默认分享(特殊设置)
 
             //4设置跳转
-            // 举例/fund/getReward/
+            //公号判定支付/开课时间后才会跳转
             redictUrl = '/padding';
             return redictUrl;
 
-        }
-        //判断
-        if (goPath) {
+        } else if (goPath) {
+            //判断
+
             redictUrl = goPath;
             //如果有课程
             if(courseId) {

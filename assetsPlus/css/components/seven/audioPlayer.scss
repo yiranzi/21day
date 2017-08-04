@@ -6,32 +6,23 @@
   height: 8rem;
   opacity: 0.9;
   overflow: hidden;
+
+  display: flex;
+  flex-wrap: nowrap;
+  justify-content: flex-start;
+  align-items: center;
   .click-button{
-    width: px2rem(86);
-    height: px2rem(86);
-    //margin: auto;
-    //position: absolute;
-    //top: 0;
-    //left: 0;
-    //bottom: 0;
-    //right: 0;
+    width: px2rem(76);
+    height: px2rem(76);
+    margin-left: 20px;
     z-index: 100;
   }
   .title-top{
     font-size: px2rem(20);
-    margin: auto;
-    position: absolute;
-    top: 0;
-    left: 0;
-    bottom: 0;
-    right: 0;
     z-index: 999;
-    // color: #ffffff;
-    width: 200px;
-    height: 80px;
-    line-height: 80px;
     text-align: center;
-
+    width: 200px;
+    margin-left: 20px;
   }
   .title-bottom{
     font-size: px2rem(20);

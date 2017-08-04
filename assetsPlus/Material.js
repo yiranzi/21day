@@ -411,19 +411,31 @@ class Material {
 
         // let userInfo = User.getUserInfo();
         let apiUrl = Util.getAPIUrl('get_course_list').replace('{courseId}',courseId);
-
-        return $.ajax({
-            url: apiUrl,
-            type: 'get',
-            cache: false,
-            contentType: 'application/json;charset=utf-8',
-            headers: {
-                Accept:"application/json"
-            },
-            beforeSend: function(request) {
-                request.setRequestHeader("X-iChangTou-Json-Api-User", User.getUserInfo().userId);
-                request.setRequestHeader("X-iChangTou-Json-Api-Token", Util.getApiToken());
-            }
+        const Tools = require('./GlobalFunc/Tools');
+        let userInfo = User.getUserInfo();
+        //改成异步
+        return new Promise((resolve,reject)=>{
+            Tools.fireRace(userInfo.userId,"OAUTH_SUCCESS").then(()=>{
+                let jqxhr = $.ajax({
+                    url: apiUrl,
+                    type: 'get',
+                    cache: false,
+                    contentType: 'application/json;charset=utf-8',
+                    headers: {
+                        Accept:"application/json"
+                    },
+                    beforeSend: function(request) {
+                        request.setRequestHeader("X-iChangTou-Json-Api-User", User.getUserInfo().userId);
+                        request.setRequestHeader("X-iChangTou-Json-Api-Token", Util.getApiToken());
+                    }
+                });
+                jqxhr.done((data)=>{
+                    resolve(data)
+                });
+                jqxhr.fail((data)=>{
+                    reject(data)
+                });
+            });
         });
     }
 
@@ -984,6 +996,44 @@ class Material {
             })
         })
     }
+
+    /***
+     * 21天是否开课
+     */
+    static getStartClassCourse21() {
+        const Util = require('./Util');
+        const User = require('./User');
+
+        // let userInfo = User.getUserInfo();
+        let apiUrl = Util.getAPIUrl('start_class_21');
+        const Tools = require('./GlobalFunc/Tools');
+        let userInfo = User.getUserInfo();
+        //改成异步
+        return new Promise((resolve,reject)=>{
+            Tools.fireRace(userInfo.userId,"OAUTH_SUCCESS").then(()=>{
+                let jqxhr = $.ajax({
+                    url: apiUrl,
+                    type: 'get',
+                    cache: false,
+                    contentType: 'application/json;charset=utf-8',
+                    headers: {
+                        Accept:"application/json"
+                    },
+                    beforeSend: function(request) {
+                        request.setRequestHeader("X-iChangTou-Json-Api-User", User.getUserInfo().userId);
+                        request.setRequestHeader("X-iChangTou-Json-Api-Token", Util.getApiToken());
+                    }
+                });
+                jqxhr.done((data)=>{
+                    resolve(data)
+                });
+                jqxhr.fail((data)=>{
+                    reject(data)
+                });
+            });
+        });
+    }
+
 
 
 

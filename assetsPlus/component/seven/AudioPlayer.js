@@ -54,7 +54,8 @@ const AudioBar = React.createClass({
         return(
             <div onClick={this.controlHandler} className="audio-title-seven" style={this.props.bgImg}>
                 <img className="click-button" src={this.state.isPlaying ? buttonImgs[0] : buttonImgs[1]}/>
-                <p style={this.props.titleColor} className={this.state.isPlaying ? 'title-bottom':'title-top'}>{content.title}</p>
+                {/*<p style={this.props.titleColor} className={this.state.isPlaying ? 'title-bottom':'title-top'}>{content.title}</p>*/}
+                <p style={this.props.titleColor} className={'itle-top'}>{content.title}</p>
             </div>
         )
     },
