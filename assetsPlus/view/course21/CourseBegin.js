@@ -18,6 +18,8 @@ const Util = require('../../Util');
 const FixedBg = require('../../component/course/FixedBg');
 const Actions = require('../../GlobalStorage/Actions');
 
+const ModalMask = require('../../component/common/ModalMask');
+
 const CourseBegin = React.createClass({
     getInitialState: function() {
 
@@ -187,6 +189,7 @@ const CourseBegin = React.createClass({
         return(
             <div className="get-begin-course21">
                 <FixedBg/>
+                <ModalMask cbfClick = {()=>{this.setState({ifBgShow: false})}} isShow = {this.state.ifBgShow} imageBg = {`./assetsPlus/image/${GlobalConfig.getCourseName()}/paypage_share.png`}/>
                 {this.renderTitle()}
                 {this.renderLineBar(0)}
                 {this.renderLineBar(1)}
@@ -348,7 +351,8 @@ const CourseBegin = React.createClass({
                 window.dialogAlertComp.show('报名成功','赶紧关注公众号"长投"，每天陪你一起学习哟~','好勒，知道了！',this.gotoBeginReward,()=>{},false);
                 break;
             case 2:
-                window.dialogAlertComp.show('分享','快去分享给你的小伙伴吧。学姐说大家一起学习更能坚持下去哦！','知道啦',()=>{},'',false);
+                Statistics.postDplusData('分享_按钮');
+                this.setState({ifBgShow: true});
                 break;
             case 3:
                 Tools.GoRouter('pay');

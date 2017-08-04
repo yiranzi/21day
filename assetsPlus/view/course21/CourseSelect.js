@@ -267,7 +267,7 @@ const CourseSelect = React.createClass({
     },
 
     showGroup() {
-        window.dialogAlertComp.show('加入学习社群',`基金课教学QQ群，手把手带你投资实战基金课。群暗号：${this.state.groupInfo.secret}（QQ群：${this.state.groupInfo.qq}）`, '点击加入', () => {
+        window.dialogAlertComp.show('加入学习社群',`和小伙伴们分享今天学习到的知识吧。群暗号：${this.state.groupInfo.secret}（QQ群：${this.state.groupInfo.qq}）`, '点击加入', () => {
             location.href = this.state.groupInfo.link;
         }, '我加过了', true)
 
@@ -408,24 +408,24 @@ const CourseSelect = React.createClass({
     },
 
 
-    showGroup() {
-        let result = -1;
-
-        if(sessionStorage.getItem('hhr')) {
-            result = 0;
-            window.dialogAlertComp.show('加入学习社群','基金课教学QQ群，手把手带你投资实战基金课。群暗号：棉花（QQ群：592596096）','点击加入',()=>
-            {location.href = "https://jq.qq.com/?_wv=1027&k=4Bbmgn0";},'我加过了',true)
-        } else if (this.state.qqStatus === 1) {
-            result = 1;
-            window.dialogAlertComp.show('加入学习社群','基金课教学QQ群，手把手带你投资实战基金课。群暗号：棉花（QQ群：188416619）','点击加入',()=>
-            {location.href = "https://jq.qq.com/?_wv=1027&k=4AdZhRM";},'我加过了',true)
-        } else {
-            result = 2;
-            window.dialogAlertComp.show('加入学习社群','基金课教学QQ群，手把手带你投资实战基金课。群暗号：棉花（QQ群：188416619）','点击加入',()=>
-            {location.href = "https://jq.qq.com/?_wv=1027&k=4AdZhRM";},'我加过了',true)
-        }
-        Statistics.postDplusData('点击qq群');
-    },
+    // showGroup() {
+    //     let result = -1;
+    //
+    //     if(sessionStorage.getItem('hhr')) {
+    //         result = 0;
+    //         window.dialogAlertComp.show('加入学习社群','基金课教学QQ群，手把手带你投资实战基金课。群暗号：棉花（QQ群：592596096）','点击加入',()=>
+    //         {location.href = "https://jq.qq.com/?_wv=1027&k=4Bbmgn0";},'我加过了',true)
+    //     } else if (this.state.qqStatus === 1) {
+    //         result = 1;
+    //         window.dialogAlertComp.show('加入学习社群','基金课教学QQ群，手把手带你投资实战基金课。群暗号：棉花（QQ群：188416619）','点击加入',()=>
+    //         {location.href = "https://jq.qq.com/?_wv=1027&k=4AdZhRM";},'我加过了',true)
+    //     } else {
+    //         result = 2;
+    //         window.dialogAlertComp.show('加入学习社群','基金课教学QQ群，手把手带你投资实战基金课。群暗号：棉花（QQ群：188416619）','点击加入',()=>
+    //         {location.href = "https://jq.qq.com/?_wv=1027&k=4AdZhRM";},'我加过了',true)
+    //     }
+    //     Statistics.postDplusData('点击qq群');
+    // },
 
     openGraduated() {
         if (this.state.allLessonStatus === 'AllPass') {

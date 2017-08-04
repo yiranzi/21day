@@ -18,6 +18,7 @@ var DoneToast = require('../../component/DoneToast');
 const Timeout = require('../../component/Timeout');
 
 const FixedBg = require('../../component/course/FixedBg');
+const ModalMask = require('../../component/common/ModalMask');
 
 const Tools = require('../../GlobalFunc/Tools');
 const WxConfig = require('../../WxConfig');
@@ -52,7 +53,7 @@ var PayPage = React.createClass({
             num: 0,
             time: 0,
             hhrChannel: false,
-            shareShow: false,
+            ifBgShow: false,
 
             //21天的报名信息
             // signUpInfo: {}
@@ -288,21 +289,11 @@ var PayPage = React.createClass({
         return arr;
     },
 
-    renderShareBg() {
-        console.log(this.state.shareShow)
-        if(!this.state.shareShow) {
-            return
-        }
-        return(<div className="paypage-modal">
-            <img onClick={()=>{this.setState({shareShow: false})}}src={`./assetsPlus/image/${GlobalConfig.getCourseName()}/paypage_share.png`}/>
-        </div>)
-    },
-
     render(){
         return (
             <div className="pay_page_course21">
                 <FixedBg/>
-                {this.renderShareBg()}
+                <ModalMask cbfClick = {()=>{this.setState({ifBgShow: false})}} isShow = {this.state.ifBgShow} imageBg = {`./assetsPlus/image/${GlobalConfig.getCourseName()}`}/>
                 <div className={"intro-img"}>
                     {this.renderBg()}
                     <div className="fund-status">
@@ -376,7 +367,7 @@ var PayPage = React.createClass({
 
     onButtonShare() {
         Statistics.postDplusData('分享_按钮');
-        this.setState({shareShow: true});
+        this.setState({ifBgShow: true});
         console.log('123123123123');
         // window.dialogAlertComp.show('分享','快去分享给你的小伙伴吧。学姐说大家一起学习更能坚持下去哦！','知道啦',()=>{},'',false);
     },
@@ -394,7 +385,6 @@ var PayPage = React.createClass({
             window.dialogAlertComp.show('报名失败','出故障了.重新进入一下再试试，还不行的话可以报告管理员.手机号：15652778863','知道啦',()=>{},'',false);
         }
         Statistics.postDplusData('支付_按钮',data);
-
     },
 
 
