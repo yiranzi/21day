@@ -59,7 +59,7 @@ const CourseSelect = React.createClass({
 
 
     getCourseList () {
-        Material.getCourseList(this.state.courseId).always( (data) => {
+        Material.getCourseList(this.state.courseId).then( (data) => {
             this.setState({courseList: data});
             for( let process of this.state.courseList) {
                 if (process.status !== 2) {

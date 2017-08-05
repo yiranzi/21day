@@ -343,7 +343,7 @@ const ListenCourse = React.createClass({
                 clickStatus: false,
                 currentIndex: index,
             });
-            Statistics.postDplusData('评分',[this.props.params.dayId,index]);
+            Statistics.postDplusData('评分',[this.props.params.dayId,index + 1]);
         } else {
             window.dialogAlertComp.show('已经评分啦','您之前已评价，更多的学习体会和意见可以到QQ群里去分享哦，您的评价会让我们变得更好！','知道啦',()=>{},'',false);
         }
@@ -389,7 +389,7 @@ const ListenCourse = React.createClass({
                 />);
             }
             arr.push(<div style = {{textAlign: 'center',marginBottom: '10px'}}>
-                <img src = {`./assetsPlus/image/${GlobalConfig.getCourseName()}/share_paypage.png`} onClick={this.shareButton} style = {{width: '64px'}}/>
+                <img src = {`./assetsPlus/image/${GlobalConfig.getCourseName()}/share_payPage.png`} onClick={this.shareButton} style = {{width: '64px'}}/>
             </div>);
             return arr;
         }
