@@ -76,7 +76,7 @@ const routerInfo = {
     // 'graduated': 'getGraduated',
     'begin': 'courseBegin',
     'reward': 'getReward',
-    'gradua': 'getGraduated',
+    'graduate': 'getGraduated',
 };
 
 
@@ -165,6 +165,12 @@ class GlobalConfig {
                     title: '快看我的录取通知书！',
                     desc: '我在参加21天训练营',
                     link: `&goPath=${GlobalConfig.getRouterInfo('begin')}/other&courseId=${sessionStorage.getItem('courseId')}&getWhere=share`,
+                },
+                //开课证页面
+                'listenCourse': {
+                    title: '今天的学习任务我又搞定啦，你也和我一起参加吧！',
+                    desc: '我在参加21天训练营',
+                    link: `&goPath=${GlobalConfig.getRouterInfo('pay')}&courseId=${sessionStorage.getItem('courseId')}&getWhere=share`,
                 }
             },
         };

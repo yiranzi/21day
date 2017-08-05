@@ -92,7 +92,12 @@ class BeforeStart {
             // if(courseId) {
 
             //1设置courseId
-            redictUrl = 'courseSelect';
+            if(goPath) {
+                redictUrl = goPath
+            } else {
+                redictUrl = 'courseSelect';
+            }
+
             MyStorage.setCourseId(courseId);
             //2获取课程支付信息
             let dataResult = {};
@@ -106,7 +111,7 @@ class BeforeStart {
             redictUrl = Tools.setCourseUrl(courseId) + '/' + redictUrl;
 
         } else if(getWhere === 'ggh' && courseId === '2') {
-            //针对公众号的特殊判断
+            //针对公众号21天的特殊判断
             // goPath = 'courseSelect';
             // courseId = 2;
             // redictUrl = goPath;
