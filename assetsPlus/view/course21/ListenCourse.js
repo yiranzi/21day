@@ -58,6 +58,8 @@ const ListenCourse = React.createClass({
             },
             resPic: '',
             timer: true,
+            clickStatus: true,
+            currentIndex: -1,
         }
     },
 
@@ -93,11 +95,10 @@ const ListenCourse = React.createClass({
                     this.state.timer = true;
                 }, 1000);
             }
-            //不需要自动滚动
-            // if(!this.state.allFinish){
-            //     OnFire.fire('Course_AutoMove');
-            // }
-
+            //
+            if(!this.state.allFinish){
+                OnFire.fire('Course_AutoMove');
+            }
             //修改进度
             this.state.lessons[this.state.currentPlaying].process = true;
             let localLessons = this.state.lessons;
@@ -142,8 +143,13 @@ const ListenCourse = React.createClass({
             Loading.hideLoading();
             this.state.lessons = progressData;
             this.preFetch();
-            // this.fixProcess();
-            // this.calcInit();
+            this.fixProcess();
+            this.calcInit();
+            //自动滚到最下面
+            // if(!this.state.allFinish){
+            //     console.log('123')
+            //     window.scrollTo(0,500);
+            // }
             this.calcProcess();
             if (progressData) {
                 this.setState({
@@ -160,6 +166,9 @@ const ListenCourse = React.createClass({
         if(lastLesson[lastLesson.length - 1].process === true) {
             this.state.allFinish = true;
             this.setState({allFinish: this.state.allFinish});
+            this.setState({clickStatus: false});
+        } else {
+            this.setState({clickStatus: true});
         }
     },
 
@@ -168,9 +177,9 @@ const ListenCourse = React.createClass({
         let allLesson = this.state.lessons;
         for(let i = 0; i<allLesson.length; i++){
             this.state.totalElement++;
-            // if(allLesson[i].subs[allLesson[i].subs.length - 1].process === true) {
-            //     this.state.finishElement++;
-            // }
+            if(allLesson[i].subs[allLesson[i].subs.length - 1].process === true) {
+                this.state.finishElement++;
+            }
         }
         this.setState({
             totalElement:this.state.totalElement,
@@ -179,7 +188,6 @@ const ListenCourse = React.createClass({
     },
 
     fixProcess() {
-        return;
         //如果最后一课已经完成
         let allLesson = this.state.lessons;
         let lastLesson = allLesson[allLesson.length - 1].subs;
@@ -210,7 +218,6 @@ const ListenCourse = React.createClass({
      * @param index 当前某一音频第几个选择题
      */
     OnChoosePass(lessonIndex,index) {
-        return
         let questions = this.state.lessons[lessonIndex].subs;
         questions[index].process = true;
         let localLessons = this.state.lessons;
@@ -262,11 +269,22 @@ const ListenCourse = React.createClass({
         preStyle.visibility = this.state.previousIssue ?  'visible' : 'hidden';
         nextStyle.visibility = this.state.nextIssue ?  'visible' : 'hidden';
 
+        let styleDefault = {
+            width: '6px',
+            height: '50px',
+            backgroundColor: '#E29F66',
+            marginBottom: '10px',
+            borderRadius: '20px',
+        }
+
+        let styleChoose = {
+            backgroundColor: '#907660'
+        }
         return(
             <div id="fmView" className="fm-view">
                 <FixedBg />
                 <div className="fix-bg-space"></div>
-                {/*<CourseProcessBar finishElement = {this.state.finishElement} totalElement = {this.state.totalElement}/>*/}
+                <CourseProcessBar userSet = {true} styleDefault = {styleDefault} styleChoose = {styleChoose}finishElement = {this.state.finishElement} totalElement = {this.state.totalElement}/>
                 {/*<span>当前点击的index{this.state.currentPlaying}</span>*/}
                 {/*<span>当前播放的fmid{this.state.currentfmid}</span>*/}
                 {/*<div>进入时,这门课程的状态时{this.props.location.query.name}</div>*/}
@@ -296,9 +314,9 @@ const ListenCourse = React.createClass({
         index = index + 1;
         let audio = this.state.lessons[index];
         if (audio) {
-            let res = PreFetch.fetchRes(audio.pptUrl,0);
+            // let res = PreFetch.fetchRes(audio.pptUrl,0);
             let res2 = PreFetch.fetchRes(audio.audio,0);
-            res.then(res2);
+            // res.then(res2);
         }
     },
 
@@ -319,49 +337,66 @@ const ListenCourse = React.createClass({
     //     </div>)
     // },
 
-    cbfClick (index) {
-        console.log(index)
+    cbfScoreClick (index) {
+        if(this.state.clickStatus) {
+            this.setState({
+                clickStatus: false,
+                currentIndex: index,
+            });
+            Statistics.postDplusData('评分',[this.props.params.dayId,index]);
+        } else {
+            window.dialogAlertComp.show('已经评分啦','您之前已评价，更多的学习体会和意见可以到QQ群里去分享哦，您的评价会让我们变得更好！','知道啦',()=>{},'',false);
+        }
+        //打分
     },
 
     renderGiveScore() {
-        let images = [`./assetsPlus/image/${GlobalConfig.getCourseName()}/score_on.png`,`./assetsPlus/image/${GlobalConfig.getCourseName()}/score_off.png`];
-        let title = '评价';
-        let count = 5;
         if (this.state.lessons.length === 0) {
             return null;
         }
-        if(!this.state.allFinish) {
-            this.state.allFinish = true;
-            return (<GiveScoreContain className = "get-reward-command"
-              images = {images}
-              title = {title}
-              count = {count}
-                                      cbfClick = {this.cbfClick}
-            />);
-        } else {
-            return (<GiveScoreContain className = "get-reward-command"
-                                      images = {images}
-                                      title = {title}
-                                      count = {count}
-                                      cbfClick = {this.cbfClick}
-            />);
-        }
-        // let lesson = this.state.lessons[this.state.lessons.length - 1].subs;
-        // 1完成全部选择题后
-        // if(lesson[lesson.length - 1].process === true) {
-            //1如果第一次通过 ,会有提示.
-            // return (<div className = "get-reward-command" onClick={this.goReward.bind(this,1)}>祝贺！完成本节！点击我领取成就卡！</div>);
-            // if(this.props.location.query.name !== '2') {
-            //     return (<div className = "get-reward-command" onClick={this.goReward.bind(this,1)}>祝贺！完成本节！点击我领取成就卡！</div>);
+        let lesson = this.state.lessons[this.state.lessons.length - 1].subs;
+        //1完成全部选择题后
+        if(lesson[lesson.length - 1].process === true) {
+            let arr = [];
+            let images = [`./assetsPlus/image/${GlobalConfig.getCourseName()}/score_on.png`,`./assetsPlus/image/${GlobalConfig.getCourseName()}/score_off.png`];
+            let title = '给课程评个分吧！';
+            // if(this.state.clickStatus) {
+            //     title = '给课程评个分吧！'
             // } else {
-            //     //1如果已经通过 ,会有提示.
-            //     return (<div className = "get-reward-command" onClick={this.goReward.bind(this,2)}>查看我的成就卡！</div>);
+            //
             // }
-            // if(!this.state.allFinish) {
-            //     this.state.allFinish = true;
-            //     return (<div className = "get-reward-command" onClick={this.goReward.bind(this,1)}>祝贺！完成本节！点击我领取成就卡！</div>);
-            // }
-        // }
+            let count = 5;
+            if (this.state.lessons.length === 0) {
+                return null;
+            }
+            if(!this.state.allFinish) {
+                this.state.allFinish = true;
+                arr.push (<GiveScoreContain className = "get-reward-command"
+                                          images = {images}
+                                          title = {title}
+                                          count = {count}
+                                          currentIndex = {this.state.currentIndex}
+                                          cbfClick = {this.cbfScoreClick}
+                />);
+            } else {
+                title = '谢谢您的评价！';
+                arr.push (<GiveScoreContain className = "get-reward-command"
+                                          images = {images}
+                                          title = {title}
+                                          count = {count}
+                                          currentIndex = {this.state.currentIndex}
+                                          cbfClick = {this.cbfScoreClick}
+                />);
+            }
+            arr.push(<div style = {{textAlign: 'center',marginBottom: '10px'}}>
+                <img src = {`./assetsPlus/image/${GlobalConfig.getCourseName()}/share_paypage.png`} onClick={this.shareButton} style = {{width: '64px'}}/>
+            </div>);
+            return arr;
+        }
+    },
+
+    shareButton() {
+        window.dialogAlertComp.show('你最棒了！','恭喜你，你又完成了一课！快分享给你的朋友让他们为你加油吧！','知道啦',()=>{},'',false);
     },
 
     passLessonRender() {
@@ -418,34 +453,34 @@ const ListenCourse = React.createClass({
 
         OUT:
             for (let i = 0;i < lessons.length; i++) {
-                count = i;
-                arr.push(this.renderFMBar(i, lessons[i],count));
                 //如果满足...渲染FM.无条件渲染fm
-                // if(i === 0 || lessons[i-1].subs[(lessons[i-1].subs.length) - 1].process) {
-                //     arr.push(this.renderFMBar(i, lessons[i],count));
-                //     count++;
-                //     //如果fm听完
-                //     if(lessons[i].process){
-                //         let lessonQuestions = lessons[i].subs;
-                //         //循环某一节的所有的题目
-                //         for (let j = 0; j < lessonQuestions.length; j++){
-                //             //如果上一道题答对1
-                //             if( j === 0 || lessonQuestions[j-1].process) {
-                //                 //如果满足...渲染题目
-                //                 arr.push(this.renderChooseBar(lessonQuestions[j], i, j,count));
-                //                 count++;
-                //             } else break OUT;
-                //         }
-                //         //如果选择题都完成了1
-                //         if(lessonQuestions[lessonQuestions.length - 1].process && i !== lessons.length - 1) {
-                //             arr.push(<div className="lesson-column-line"></div>)
-                //             arr.push(<div style = {{backgroundImage: 'url("./assetsPlus/image/seven/DividingLine.png")'}} className="lesson-column-line-seven"></div>);
-                //
-                //             count++;
-                //         }
-                //     } else break OUT;
-                //
-                // }
+                if(i === 0 || lessons[i-1].subs[(lessons[i-1].subs.length) - 1].process) {
+                    arr.push(this.renderFMBar(i, lessons[i],count));
+                    count++;
+                    //如果fm听完
+                    if(lessons[i].process){
+                        let lessonQuestions = lessons[i].subs;
+                        //循环某一节的所有的题目
+                        for (let j = 0; j < lessonQuestions.length; j++){
+                            //如果上一道题答对1
+                            if( j === 0 || lessonQuestions[j-1].process) {
+                                //如果满足...渲染题目
+                                arr.push(this.renderChooseBar(lessonQuestions[j], i, j,count));
+                                count++;
+                            } else break OUT;
+                        }
+                        //如果选择题都完成了1
+                        if(lessonQuestions[lessonQuestions.length - 1].process && i !== lessons.length - 1) {
+                            arr.push(<div className="lesson-column-line-course21">
+                                <img src = {`./assetsPlus/image/${GlobalConfig.getCourseName()}/DividingLine.png`}></img>
+                            </div>);
+                            // arr.push(<div style = {{backgroundImage: `url(./assetsPlus/image/${GlobalConfig.getCourseName()}/DividingLine.png)`}} className="lesson-column-line-seven"></div>);
+
+                            count++;
+                        }
+                    } else break OUT;
+
+                }
             }
         return arr;
     },
