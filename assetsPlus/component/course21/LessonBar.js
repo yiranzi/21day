@@ -81,7 +81,7 @@ const LessonBar = React.createClass({
                 {this.renderTypeIcon()}
             </div>)
         } else {
-            return(<img onClick={this.callBackFunc.bind(this,'goCourse')} className="bg-not-see" src = "./assetsPlus/image/course/tomorrow.png"/>)
+            return(<img onClick={this.callBackFunc.bind(this,'goCourse')} className="bg-not-see" src = {`./assetsPlus/image/${GlobalConfig.getCourseName()}/tomorrow.png`}/>)
             // return (<div className="column-container" onClick={this.callBackFunc.bind(this,'goCourse')}>
             //     <div className="column-not-view">
             //         <h2>

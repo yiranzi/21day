@@ -267,9 +267,14 @@ const CourseSelect = React.createClass({
     },
 
     showGroup() {
-        window.dialogAlertComp.show('加入学习社群',`和小伙伴们分享今天学习到的知识吧。群暗号：${this.state.groupInfo.secret}（QQ群：${this.state.groupInfo.qq}）`, '点击加入', () => {
-            location.href = this.state.groupInfo.link;
-        }, '我加过了', true)
+        if(this.state.groupInfo.secret) {
+            window.dialogAlertComp.show('加入学习社群',`和小伙伴们分享今天学习到的知识吧。群暗号：${this.state.groupInfo.secret}（QQ群：${this.state.groupInfo.qq}）`, '点击加入', () => {
+                location.href = this.state.groupInfo.link;
+            }, '我加过了', true)
+        } else {
+            window.dialogAlertComp.show('加入学习社群',`和小伙伴们分享今天学习到的知识吧。`, '知道啦', null, '', false)
+        }
+
 
     },
 
@@ -374,7 +379,7 @@ const CourseSelect = React.createClass({
             default:
                 break;
         }
-        Statistics.postDplusData('点击听课',[index]);
+        Statistics.postDplusData('点击听课',[index,status.enter]);
     },
 
 

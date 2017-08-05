@@ -402,7 +402,6 @@ const ListenCourse = React.createClass({
                         }
                         //如果选择题都完成了1
                         if(lessonQuestions[lessonQuestions.length - 1].process && i !== lessons.length - 1) {
-                            arr.push(<div className="lesson-column-line"></div>)
                             arr.push(<div style = {{backgroundImage: 'url("./assetsPlus/image/seven/DividingLine.png")'}} className="lesson-column-line-seven"></div>);
 
                             count++;

@@ -8,6 +8,7 @@ const GiveScoreTabBar = require('../../component/course21/GiveScoreTabBar');
 //标题title
 //星星数量
 //cbfClick 点击回调
+//currentIndex
 // }
 
 const GiveScoreContain = React.createClass({
@@ -56,19 +57,12 @@ const GiveScoreContain = React.createClass({
         return(<GiveScoreTabBar
             content = {content}
             styleDefault = {defaultStyle}
-            currentIndex = {this.state.currentIndex}
+            currentIndex = {this.props.currentIndex}
             count={count}
-            cbfClick = {this.cbfClick}>
+            cbfClick = {this.props.cbfClick}>
         </GiveScoreTabBar>)
 
     },
-
-    cbfClick(index) {
-        console.log('123')
-        this.setState({currentIndex: index});
-        this.props.cbfClick(index)
-    }
-
 });
 
 module.exports = GiveScoreContain;
