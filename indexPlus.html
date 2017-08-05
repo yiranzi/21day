@@ -3,6 +3,11 @@
 
 <head>
     <script type="text/javascript">
+        //判断21天
+        if(location.href.indexOf('courseId=2') != -1 ) {
+            var courseType = 2;
+        }
+
         if(location.href.indexOf('h5.ichangtou.com') > 1 ) {
             console.log('master');
             !function(a,b){if(!b.__SV){var c,d,e,f;window.dplus=b,b._i=[],b.init=function(a,c,d){function g(a,b){var c=b.split(".");2==c.length&&(a=a[c[0]],b=c[1]),a[b]=function(){a.push([b].concat(Array.prototype.slice.call(arguments,0)))}}var h=b;for("undefined"!=typeof d?h=b[d]=[]:d="dplus",h.people=h.people||[],h.toString=function(a){var b="dplus";return"dplus"!==d&&(b+="."+d),a||(b+=" (stub)"),b},h.people.toString=function(){return h.toString(1)+".people (stub)"},e="disable track track_links track_forms register unregister get_property identify clear set_config get_config get_distinct_id track_pageview register_once track_with_tag time_event people.set people.unset people.delete_user".split(" "),f=0;f<e.length;f++)g(h,e[f]);b._i.push([a,c,d])},b.__SV=1.1,c=a.createElement("script"),c.type="text/javascript",c.charset="utf-8",c.async=!0,c.src="//w.cnzz.com/dplus.php?id=1263058956",d=a.getElementsByTagName("script")[0],d.parentNode.insertBefore(c,d)}}(document,window.dplus||[]),dplus.init("1263058956");
@@ -118,37 +123,61 @@
 
 <body>
 
+<!--&lt;!&ndash;预留&ndash;&gt;-->
+<!--<div style="background: #FFE49B;height: 100%;position: relative;font-size:0">-->
+<!--<img class="bg" src="./assetsPlus/image/course21/preLoading.png">-->
+<!--<div class="logo-course">-->
+<!--<img class="loading logo-course-contain" src="./assetsPlus/image/course21/preLoading_icon.png">-->
+<!--</div>-->
+<!--</div>-->
+<!--<p class="loading-course-title">21天训练营加载中...</p>-->
 
 
-<!--微信loading -->
+<!--&lt;!&ndash;预留&ndash;&gt;-->
+<!--<div style="background: #4498c7;height: 100%;position: relative;font-size:0">-->
+<!--<div class="logo">-->
+<!--<img class="loading logo-contain" src="./assetsPlus/image/pai_logo_out.png"  >-->
+<!--<img class="logo-contain" src="./assetsPlus/image/pai_logo_inner.png">-->
+<!--</div>-->
+<!--</div>-->
+<!--<p class="loading-course-title" style="color: white">长投派加载中...</p>-->
+
+<script>
+    if(courseType === 2) {
+        //21天
+        document.write(
+            '<div id="root" style="height: 100%">' +
+            '<div style="background: #FFE49B;height: 100%;position: relative;font-size:0">' +
+            '<img class="bg" src="./assetsPlus/image/course21/preLoading.png">' +
+            '<div class="logo-course">' +
+            '<img class="loading logo-course-contain" src="./assetsPlus/image/course21/preLoading_icon.png"></div>' +
+            '</div>' +
+            '<p class="loading-course-title">21天训练营加载中...</p>' +
+            '</div>'
+        )
+    } else {
+        //长投派
+        document.write(
+            '<div id="root" style="height: 100%">' +
+            '<div style="background-color: #4498c7;height: 100%;position: relative">' +
+            '<div class="logo">' +
+            '<img class="loading logo-contain" src="./assetsPlus/image/pai_logo_out.png">' +
+            '<img class="logo-contain" src="./assetsPlus/image/pai_logo_inner.png"></div>' +
+            '</div>' +
+            '<p class="loading-course-title" style="color: white">长投派加载中...</p>' +
+            '</div>'
+        )
+    }
+</script>
+
+
+<!--DOM入口-->
 <div class="weui_loading_toast" id="weLoader" style="display: none">
 </div>
 
 
-<!--DOM入口-->
 
-<div id="root" style="height: 100%">
-    <div style="background-color: #4498c7;height: 100%;position: relative">
-        <div class="logo">
-            <img class="loading logo-contain" src="./assetsPlus/image/pai_logo_out.png"  >
-            <img class="logo-contain" src="./assetsPlus/image/pai_logo_inner.png">
-        </div>
-        <p class="loading-course-title">长投派加载中</p>
-    </div>
-</div>
 
-<!--<div id="root" style="height: 100%">-->
-    <!--<div style="background: #FFE49B;height: 100%;position: relative;font-size:0">-->
-        <!--<img class="bg" src="./assetsPlus/image/course21/preLoading.png">-->
-        <!--<div class="logo-course">-->
-            <!--<img class="loading logo-course-contain" src="./assetsPlus/image/course21/preLoading_icon.png">-->
-            <!--&lt;!&ndash;<img class="loading logo-contain" src="./assetsPlus/image/pai_logo_out.png"  >&ndash;&gt;-->
-            <!--&lt;!&ndash;<img class="logo-contain" src="./assetsPlus/image/pai_logo_inner.png">&ndash;&gt;-->
-        <!--</div>-->
-        <!--&lt;!&ndash;<p class="loading-title">长投派加载中</p>&ndash;&gt;-->
-    <!--</div>-->
-    <!--<p class="loading-course-title">21天训练营加载中...</p>-->
-<!--</div>-->
 <!--style="position:relative;right:50%;width:100px; height:100px;"-->
 <div id="audio"></div>
 
@@ -165,9 +194,10 @@
 <div id="dialogAlert"></div>
 
 <script src="https://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+<script>console.log(courseType)</script>
 <!--<script src="http://192.168.0.190:8081/target/target-script-min.js#anonymous"></script>-->
 <!--每次提交代码前修改v的值，使代码生效更快-->
 <!--5.27线上版本-->
-<script src="buildPlus/bundle.208bd6c0.js?v=40"></script>
+<script src="buildPlus/bundle.4d120e2c.js?v=40"></script>
 </body>
 </html>

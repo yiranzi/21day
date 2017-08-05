@@ -115,13 +115,10 @@ const GetReward = React.createClass({
                                 this.setShareInfo(userId);
                                 //设置分享内容
                                 this.setShareConfig('freeChance');
-                            } else {
-                                this.setShareConfig('share')
                             }
                             Loading.hideLoading();
                         });
                     } else {
-                        this.setShareConfig('share');
                         Loading.hideLoading();
                     }
                 });
