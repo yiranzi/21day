@@ -79,6 +79,21 @@ const routerInfo = {
     'graduate': 'getGraduated',
 };
 
+const pageToName = {
+    //长投家页面
+    'main': '长投派',
+    'homelist': '长投派_课程列表界面',
+    'homeinfo': '长投派_个人信息界面',
+    'pay': '支付页面',
+    'listen': '听课页',
+    'select': '课程列表页',
+    // 'begin': 'courseBegin',
+    // 'graduated': 'getGraduated',
+    'begin': '开课证',
+    'reward': '成就卡',
+    'graduate': '毕业证页面',
+};
+
 
 class GlobalConfig {
     // static init() {

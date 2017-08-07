@@ -98,7 +98,6 @@ class BeforeStart {
                 redictUrl = 'courseSelect';
             }
 
-            MyStorage.setCourseId(courseId);
             //2获取课程支付信息
             let dataResult = {};
             dataResult.pay = true;
@@ -119,7 +118,6 @@ class BeforeStart {
             // if(courseId) {
 
             //1设置courseId
-            MyStorage.setCourseId(courseId);
             //2获取课程支付信息
             Actions.ifCourseSignUp(courseId);
             //TODO
@@ -157,7 +155,6 @@ class BeforeStart {
             //如果有课程
             if(courseId) {
                 //1设置courseId
-                MyStorage.setCourseId(courseId);
                 //2获取课程支付信息
                 //action在特定页面懒发起,这里只负责分发跳转.(但是因为所有的跳转界面都需要这个数据,所以在这里进行处理)
                 Actions.ifCourseSignUp(courseId);
@@ -183,6 +180,10 @@ class BeforeStart {
         if(dayId){
             redictUrl = redictUrl + '/' + dayId;
         }
+        if(!courseId) {
+            courseId = -1;
+        }
+        MyStorage.setCourseId(courseId);
 
         return redictUrl;
     }

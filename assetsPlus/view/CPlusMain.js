@@ -48,8 +48,7 @@ const CPlus = React.createClass({
 
     componentWillMount() {
         // sessionStorage.removeItem('courseId');
-        MyStorage.setCourseId('-1');
-        MyStorage.whenEnterPage('main');
+        // MyStorage.whenEnterPage('main');
         this.getUserInfo();
     },
 
