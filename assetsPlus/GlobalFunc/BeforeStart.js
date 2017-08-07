@@ -110,7 +110,7 @@ class BeforeStart {
             // 举例/fund/getReward/
             redictUrl = Tools.setCourseUrl(courseId) + '/' + redictUrl;
 
-        } else if(getWhere === 'ggh' && courseId === '2') {
+        } else if(getWhere && courseId === '2') {
             //针对公众号21天的特殊判断
             // goPath = 'courseSelect';
             // courseId = 2;
