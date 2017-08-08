@@ -61,7 +61,7 @@ const ListenCourse = React.createClass({
     },
 
     componentWillMount() {
-        sessionStorage.setItem('pathNow','听课');
+        MyStorage.whenEnterPage('listen',[this.props.params.dayId]);
 
         //登录
         Tools.fireRace(User.getUserInfo().userId,"OAUTH_SUCCESS").then(()=>{

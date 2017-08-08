@@ -47,6 +47,9 @@ const CPlus = React.createClass({
     },
 
     componentWillMount() {
+        //进入长投派界面 courseId 就设置为默认的-1
+        let courseId = -1;
+        MyStorage.setCourseId(courseId);
         // sessionStorage.removeItem('courseId');
         // MyStorage.whenEnterPage('main');
         this.getUserInfo();

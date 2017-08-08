@@ -62,9 +62,6 @@ var PayPage = React.createClass({
 
 
     componentWillMount(){
-        //设置分享
-        let wxshare = sessionStorage.getItem('wxshare');
-        // this.setShareConfig();
         MyStorage.whenEnterPage('pay');
         //0获取当前的Id
         let courseId = sessionStorage.getItem('courseId');

@@ -56,7 +56,7 @@ const CourseSelect = React.createClass({
     },
 
     componentWillMount() {
-        sessionStorage.setItem('pathNow','关卡选择');
+        MyStorage.whenEnterPage('select');
 
         let courseId = sessionStorage.getItem('courseId');
         Tools.fireRaceCourse(courseId).then((value)=>{

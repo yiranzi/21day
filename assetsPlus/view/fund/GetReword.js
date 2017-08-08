@@ -41,7 +41,7 @@ const GetReward = React.createClass({
     },
 
     componentWillMount() {
-        sessionStorage.setItem('pathNow','成就卡');
+        MyStorage.whenEnterPage('reward');
 
         Loading.showLoading('正在生成笔记卡');
         document.body.scrollTop = document.documentElement.scrollTop = 0;
@@ -131,10 +131,6 @@ const GetReward = React.createClass({
         Material.getShareInfo(userId || this.state.senior.userId,this.state.senior.courseId).always( (info)=>{
             this.setState({friendInfo: info});
         });
-    },
-
-    componentWillUnmount () {
-        WxConfig.shareConfig();
     },
 
     /**

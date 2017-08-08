@@ -72,10 +72,9 @@ const GetGraduated = React.createClass({
     },
 
     componentWillMount() {
-        sessionStorage.setItem('pathNow','毕业证');
+        MyStorage.whenEnterPage('graduate');
 
 
-        console.log('get reward');
         let userId;
         this.state.senior.rank = Util.getUrlPara('rank');
         let isMine = this.props.params.mine;

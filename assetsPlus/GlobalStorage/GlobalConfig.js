@@ -81,17 +81,18 @@ const routerInfo = {
 
 const pageToName = {
     //长投家页面
-    'main': '长投派',
-    'homelist': '长投派_课程列表界面',
-    'homeinfo': '长投派_个人信息界面',
-    'pay': '支付页面',
-    'listen': '听课页',
-    'select': '课程列表页',
+    'entryJs': '入口_文件',
+    'main': '长投派_页面',
+    'homelist': '长投派_课程列表_页面',
+    'homeinfo': '长投派_个人信息_页面',
+    'payPage': '支付_页面',
+    'listenCourse': '听课_页面',
+    'courseSelect': '课程列表_页面',
     // 'begin': 'courseBegin',
     // 'graduated': 'getGraduated',
-    'begin': '开课证',
-    'reward': '成就卡',
-    'graduate': '毕业证页面',
+    'courseBegin': '开课证_页面',
+    'getReward': '成就卡_页面',
+    'getGraduated': '毕业证_页面',
 };
 
 
@@ -213,6 +214,15 @@ class GlobalConfig {
             return result
         } else {
             return null;
+        }
+    }
+
+    static getRouterName(key) {
+        let result = pageToName[key];
+        if(result) {
+            return result
+        } else {
+            return key;
         }
     }
 

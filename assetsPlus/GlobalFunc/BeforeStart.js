@@ -59,7 +59,6 @@ class BeforeStart {
         sessionStorage.setItem('SstartTime',totalTime);
         console.log(totalTime);
         console.log('clear session');
-        MyStorage.setPathNow('入口文件');
 
         MyStorage.init();
     }

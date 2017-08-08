@@ -48,7 +48,13 @@ const CourseBegin = React.createClass({
 
 
     componentWillMount() {
-        MyStorage.whenEnterPage('begin',[this.props.params.type]);
+        // let type2Name = {
+        //     'select': '关注',
+        //     'other': '分享',
+        //     'mine': '社群',
+        // }
+        // MyStorage.whenEnterPage('begin',[type2Name[this.props.params.type]]);
+        MyStorage.whenEnterPage('begin');
         let userId;
         let type = this.props.params.type;
         //选择界面查看成就卡
@@ -362,6 +368,7 @@ const CourseBegin = React.createClass({
     // },
 
     showQQInfo(type) {
+        //中文上报的合适例子.目的是让数据接收者不需要再次计算.
         let type2Name = {
             '0': '关注',
             '1': '分享',

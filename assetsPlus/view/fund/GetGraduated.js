@@ -39,7 +39,7 @@ const GetGraduated = React.createClass({
 
 
     componentWillMount() {
-        sessionStorage.setItem('pathNow','毕业证');
+        MyStorage.whenEnterPage('graduate');
 
         console.log('get reward');
         let userId;

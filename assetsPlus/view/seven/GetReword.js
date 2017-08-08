@@ -68,7 +68,7 @@ const GetReward = React.createClass({
     },
 
     componentWillMount() {
-        MyStorage.whenEnterPage('reward',[this.props.params.mine]);
+        MyStorage.whenEnterPage('reward');
         let userId;
         //判定是否有分享成就卡
         this.state.senior.courseId = Util.getUrlPara('dayId');

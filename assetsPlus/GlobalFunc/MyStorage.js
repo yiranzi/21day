@@ -115,14 +115,18 @@ class MyStorage {
      * @param pathNow
      */
     static setPathNow(pathNow) {
-        let pathOld = sessionStorage.getItem('pathNow');
-        if(!pathOld) {
-            pathOld = 'entryJs'
+        console.log('set');
+        let pathLogicNow = GlobalConfig.getRouterInfo(pathNow);
+        let pathLogicOld = sessionStorage.getItem('pathNow');
+        if(!pathLogicOld) {
+            pathLogicOld = 'entryJs'
         }
-        sessionStorage.setItem('pathFrom',pathOld);
-        sessionStorage.setItem('pathNow',pathNow);
-        sessionStorage.setItem('SpathFrom',pathOld);
-        sessionStorage.setItem('SpathNow',pathNow);
+        sessionStorage.setItem('pathFrom',pathLogicOld);
+        sessionStorage.setItem('pathNow',pathLogicNow);
+        let pathOldName = GlobalConfig.getRouterName(pathLogicOld);
+        let pathNowName = GlobalConfig.getRouterName(pathLogicNow);
+        sessionStorage.setItem('SpathFrom',pathOldName);
+        sessionStorage.setItem('SpathNow',pathNowName);
     }
 
     /**
@@ -131,7 +135,7 @@ class MyStorage {
      * @param pathNow 界面名称
      */
     static whenEnterPage(pathNow,data) {
-        pathNow = GlobalConfig.getRouterInfo(pathNow);
+
         console.log('你进入了' + pathNow);
         this.setPathNow(pathNow);
         //每个界面默认设置分享
