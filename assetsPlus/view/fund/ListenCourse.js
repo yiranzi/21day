@@ -85,7 +85,7 @@ const ListenCourse = React.createClass({
 
         //音频完成监听
         OnFire.on('AUDIO_END',()=>{
-            if (this.state.currentPlaying<0) {
+            if (this.state.currentPlaying<0 || sessionStorage.getItem('courseId') !== '1') {
                 return null;
             }
             //终止多余的其你去
@@ -112,7 +112,7 @@ const ListenCourse = React.createClass({
             Statistics.postDplusData('完成_音频',[this.state.lessons[this.state.currentPlaying].fmid]);
             if (this.state.isPay && this.props.params.dayId !== '10') {
                 //统计第一次完成音频.作为留存起点
-                let key = first_finish_vedio + sessionStorage.getItem('courseId');
+                let key = 'first_finish_vedio' + sessionStorage.getItem('courseId');
                 if (!localStorage.getItem(key)) {
                     console.log('first!!!!!!!!!!!!!!!');
                     Statistics.postDplusData('第一次_完成_音频');

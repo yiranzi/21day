@@ -22,7 +22,6 @@ class Tools {
         // }
         return new Promise((resolve,reject)=>{
             if (result) {
-                console.log('get' + result);
                 resolve(result);
             } else {
                 OnFire.on(eventName, (value)=>{

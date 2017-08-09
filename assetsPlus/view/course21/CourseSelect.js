@@ -180,9 +180,7 @@ const CourseSelect = React.createClass({
     },
 
     renderBeginReward() {
-        Statistics.postDplusData('点击_开课证_按钮');
-        return(<img className="" style={{width: '100%'}} src={`./assetsPlus/image/${GlobalConfig.getCourseName()}/course_select_begin.png`} onClick={()=>{Tools.MyRouter('ListenCourse','/courseBegin/select')}}>
-
+        return(<img className="" style={{width: '100%'}} src={`./assetsPlus/image/${GlobalConfig.getCourseName()}/course_select_begin.png`} onClick={()=>{Tools.MyRouter('ListenCourse','/courseBegin/select');Statistics.postDplusData('点击_开课证_按钮');}}>
         </img>)
     },
 
