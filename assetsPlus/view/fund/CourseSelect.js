@@ -398,6 +398,7 @@ const CourseSelect = React.createClass({
         window.dialogAlertComp.show('加入学习社群',`基金课教学QQ群，手把手带你投资实战基金课。群暗号：${this.state.groupInfo.secret}（QQ群：${this.state.groupInfo.qq}）`, '点击加入', () => {
             location.href = this.state.groupInfo.link;
         }, '我加过了', true)
+        Statistics.postDplusData('点击_社群_按钮');
         // if(sessionStorage.getItem('hhr')) {
         //     window.dialogAlertComp.show(`加入学习社群','基金课教学QQ群，手把手带你投资实战基金课。群暗号：棉花（QQ群：${this.state.groupNumber}）`,'点击加入',()=>
         //     {location.href = "https://jq.qq.com/?_wv=1027&k=4Bbmgn0";},'我加过了',true)
@@ -427,8 +428,7 @@ const CourseSelect = React.createClass({
         } else {
             window.dialogAlertComp.show('还不能领取毕业证哦！','按时完成14天的训练之后，就可以顺利领取毕业证啦。','我会加油的',()=>{},'',false);
         }
-
-
+        Statistics.postDplusData('点击_毕业证_按钮', [this.state.allLessonStatus]);
     },
 
     openTreasure() {
@@ -465,6 +465,7 @@ const CourseSelect = React.createClass({
         } else {
             window.dialogAlertComp.show('毕业宝箱等着你！', '按时完成14天的训练之后，才可以领取毕业宝箱噢。', '我会加油的',()=>{},'',false);
         }
+        Statistics.postDplusData('点击_宝箱_按钮', [this.state.allLessonStatus]);
     }
 });
 

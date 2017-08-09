@@ -276,7 +276,7 @@ const CourseSelect = React.createClass({
         } else {
             window.dialogAlertComp.show('加入学习社群',`和小伙伴们分享今天学习到的知识吧。`, '知道啦', null, '', false)
         }
-        Statistics.postDplusData('点击_课程_列表',[index,status.enter]);
+        Statistics.postDplusData('点击_社群_按钮');
 
     },
 

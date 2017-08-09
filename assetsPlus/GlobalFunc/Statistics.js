@@ -187,7 +187,7 @@ class Statistics {
         //测试
         let userId = User.getUserInfo().userId;
         Tools.fireRace(userId,"OAUTH_SUCCESS").then(()=>{
-            console.log('hava post DPlus '+ eventName);
+            console.log(eventName + 'hava post DPlus ' + data);
             this.GlobalStatis();
             if(result) {
                 window.dplus.track(eventName,result);

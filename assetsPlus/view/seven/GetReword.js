@@ -77,7 +77,7 @@ const GetReward = React.createClass({
         if (this.state.senior.courseId && !isMine) {
             userId = Util.getUrlPara('ictchannel');
             Tools.fireRace(User.getUserInfo().userId,"OAUTH_SUCCESS").then(()=>{
-                Material.postData('下线_查看_getReward');
+                // Material.postData('下线_查看_getReward');
                 this.setState({myName: User.getUserInfo().nickName})
             });
             this.state.senior.userId = userId;
@@ -90,7 +90,7 @@ const GetReward = React.createClass({
             this.setState({type: 'other'});
         } else {//查看自己的
             Tools.fireRace(User.getUserInfo().userId,"OAUTH_SUCCESS").then(()=>{
-                Material.postData('上线_进入_getReward');
+                // Material.postData('上线_进入_getReward');
                 userId = User.getUserInfo().userId;
                 //获得课程的Id
                 let courseId = this.props.params.dayId;
@@ -133,6 +133,7 @@ const GetReward = React.createClass({
 
     // + '&code=' + Util.getUrlPara('code')
     goSignUp() {
+        Statistics.postDplusData('点击_报名_按钮');
         Tools.MyRouter('',"/payPage");
     },
 
@@ -174,8 +175,9 @@ const GetReward = React.createClass({
     },
 
     goCommand() {
-        Util.postCnzzData("成就页面点击分享");
-        Material.postData('上线_点击_getReward');
+        // Util.postCnzzData("成就页面点击分享");
+        // Material.postData('上线_点击_getReward');
+        Statistics.postDplusData('点击_分享_按钮');
         window.dialogAlertComp.show('快快分享你的进步吧','点击右上角三个点点，分享到你的朋友圈吧！','好哒师兄',()=>{},()=>{},false);
     },
 

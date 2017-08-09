@@ -86,8 +86,8 @@ const MineStatus = React.createClass({
     },
 
     subClick(index) {
-        Statistics.postDplusData('点击_按钮栏',[index]);
-        window.dialogAlertComp.show('即将开启','新鲜的内容正在精心准备中，敬请期待！','知道啦',()=>{},'',false);
+        Statistics.postDplusData('点击_内容_导航栏',[index]);
+        // window.dialogAlertComp.show('即将开启','新鲜的内容正在精心准备中，敬请期待！','知道啦',()=>{},'',false);
     }
 });
 

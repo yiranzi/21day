@@ -109,11 +109,18 @@ const ListenCourse = React.createClass({
             Material.finishWork(0, this.state.lessons[this.state.currentPlaying].fmid).always( (data) => {
             });
 
-            Util.postCnzzData("听完", this.state.lessons[this.state.currentPlaying].fmid);
-            //统计免费完成课程1的进度情况
-            if (!this.state.isPay && this.props.params.dayId === '10') {
-                Material.postData('免费_完成音频基金课_ListenCourse');
+            Statistics.postDplusData('完成_音频',[this.state.lessons[this.state.currentPlaying].fmid]);
+            if (this.state.isPay && this.props.params.dayId !== '10') {
+                //统计第一次完成音频.作为留存起点
+                let key = first_finish_vedio + sessionStorage.getItem('courseId');
+                if (!localStorage.getItem(key)) {
+                    console.log('first!!!!!!!!!!!!!!!');
+                    Statistics.postDplusData('第一次_完成_音频');
+                    localStorage.setItem(key,true);
+                }
             }
+
+
         });
 
         //自动滚动监听
@@ -207,13 +214,13 @@ const ListenCourse = React.createClass({
             for (let lesson of allLesson) {
                 if(lesson.process!==true){
 
-                    Util.postCnzzData("修复音频数据" + lesson.fmid + '/' + User.getUserInfo().userId);
+                    // Util.postCnzzData("修复音频数据" + lesson.fmid + '/' + User.getUserInfo().userId);
                     Material.finishWork(0, lesson.fmid);
                 }
                 for(let choose of lesson.subs){
                     if(choose.process!==true){
                         //发送修改1
-                        Util.postCnzzData("修复作业数据" + choose.subjectid + '/' + User.getUserInfo().userId);
+                        // Util.postCnzzData("修复作业数据" + choose.subjectid + '/' + User.getUserInfo().userId);
                         Material.finishWork(1, choose.subjectid);
                     }
                 }
@@ -252,7 +259,7 @@ const ListenCourse = React.createClass({
         });
         this.state.finishElement++;
         this.setState({finishElement: this.state.finishElement});
-        Material.postData('免费_完成选择题_ListenCourse');
+        // Material.postData('免费_完成选择题_ListenCourse');
     },
 
     /**
@@ -281,6 +288,7 @@ const ListenCourse = React.createClass({
             this.setState({currentfmid: lesson.fmid});
             GlobalAudio.play(lesson.audio, lesson.fmid);
             this.preFetch();
+            Statistics.postDplusData('点击_播放_按钮',[lesson.fmid]);
             // setTimeout(function(){
             //     console.log('start reFetch');
             //     console.log(this);
@@ -290,7 +298,7 @@ const ListenCourse = React.createClass({
             //         this.setState({preFetchBool: false})
             //     }, 3000);
             // }, 3000);
-            Util.postCnzzData("播放", lesson.fmid);
+            // Util.postCnzzData("播放", lesson.fmid);
         }
     },
 
@@ -363,7 +371,8 @@ const ListenCourse = React.createClass({
     },
 
     goSign() {
-        Material.postData('免费_跳转报名_ListenCourse');
+        // Material.postData('免费_跳转报名_ListenCourse');
+        Statistics.postDplusData('点击_报名_按钮');
         Tools.MyRouter('PayPage','/payPage');
     },
 
@@ -403,10 +412,10 @@ const ListenCourse = React.createClass({
         if (type === 1) {
             this.fixProcess();
             if (!this.state.isPay) {
-                Material.postData('免费_完成课程' + this.props.params.dayId +'_ListenCourse');
+                // Material.postData('免费_完成课程' + this.props.params.dayId +'_ListenCourse');
             }
         } else {
-            Util.postCnzzData("再次点击成就卡");
+            // Util.postCnzzData("再次点击成就卡");
         }
         let url = '/getReward/' + this.props.params.dayId + '/mine';
         Tools.MyRouter('GetReward',url);

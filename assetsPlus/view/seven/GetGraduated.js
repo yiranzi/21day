@@ -83,7 +83,7 @@ const GetGraduated = React.createClass({
         if (this.state.senior.rank && !isMine) {
             userId = Util.getUrlPara('ictchannel');
             Tools.fireRace(User.getUserInfo().userId,"OAUTH_SUCCESS").then(()=>{
-                Material.postData('下线_查看_getReward');
+                // Material.postData('下线_查看_getReward');
                 this.setState({myName: User.getUserInfo().nickName})
             });
             this.state.senior.userId = userId;
@@ -102,7 +102,7 @@ const GetGraduated = React.createClass({
             });
         } else {//查看自己的毕业证
             Tools.fireRace(User.getUserInfo().userId,"OAUTH_SUCCESS").then(()=>{
-                Material.postData('上线_进入_getGraduated');
+                // Material.postData('上线_进入_getGraduated');
                 Material.getCourseShareInfo(User.getUserInfo().userId).always( (name)=>{
                     this.setState({friendName: name});
                 });
@@ -150,12 +150,12 @@ const GetGraduated = React.createClass({
 
     // + '&code=' + Util.getUrlPara('code')
     goSignUp() {
-        Util.postCnzzData("成就页面报名");
+        // Util.postCnzzData("成就页面报名");
         if (User.getUserInfo().userId) {
-            Material.postData('下线_点击_getGraduated');
+            // Material.postData('下线_点击_getGraduated');
         } else {
             OnFire.on('OAUTH_SUCCESS',()=>{
-                Material.postData('下线_点击_getGraduated');
+                // Material.postData('下线_点击_getGraduated');
             });
         }
         let upId = this.state.senior.userId;
@@ -173,13 +173,15 @@ const GetGraduated = React.createClass({
     getCourse(upId,myName) {
         Material.FreeShareSignUp(upId,myName).always( (result)=>{
             if (result.whether) {
-                Util.postCnzzData("毕业-成功领取");
+                Statistics.postDplusData('点击_领取免费课_按钮');
+                // Util.postCnzzData("毕业-成功领取");
                 window.dialogAlertComp.show('已经成功领取','你已经领取啦','去课堂看看',()=>{
                     location.hash = "/paypage/1"
                 },'待会再看',true);
 
             } else {
-                Util.postCnzzData("毕业-也被领取跳转报名");
+                Statistics.postDplusData('点击_报名_按钮');
+                // Util.postCnzzData("毕业-也被领取跳转报名");
                 location.hash = "/paypage";
             }
         });
@@ -214,8 +216,9 @@ const GetGraduated = React.createClass({
     },
 
     goCommand() {
-        Util.postCnzzData("成就页面点击分享");
-        Material.postData('上线_点击_getGraduated');
+        Statistics.postDplusData('点击_分享_按钮',[this.state.friendName.message]);
+        // Util.postCnzzData("成就页面点击分享");
+        // Material.postData('上线_点击_getGraduated');
         if(this.state.friendName.message === '') {
             Util.postCnzzData("毕业-赠送朋友提示");
             window.dialogAlertComp.show('赠送课程给你的朋友','点击右上角三个点点，分享免费7天训练营名额给你的好友吧。','好哒师兄',()=>{},()=>{},false);

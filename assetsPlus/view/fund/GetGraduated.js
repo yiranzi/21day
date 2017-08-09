@@ -50,7 +50,7 @@ const GetGraduated = React.createClass({
         if (this.state.senior.rank && !isMine) {
             userId = Util.getUrlPara('ictchannel');
             Tools.fireRace(User.getUserInfo().userId,"OAUTH_SUCCESS").then(()=>{
-                Material.postData('下线_查看_getReward');
+                // Material.postData('下线_查看_getReward');
                 this.setState({myName: User.getUserInfo().nickName})
             });
             this.state.senior.userId = userId;
@@ -66,7 +66,7 @@ const GetGraduated = React.createClass({
         } else {//查看自己的毕业证
             userId = User.getUserInfo().userId;
             Tools.fireRace(User.getUserInfo().userId,"OAUTH_SUCCESS").then(()=>{
-                Material.postData('上线_进入_getGraduated');
+                // Material.postData('上线_进入_getGraduated');
                 // Material.getShareInfo(userId).always( (name)=>{
                 //     this.setState({friendName: name});
                 // });
@@ -156,12 +156,13 @@ const GetGraduated = React.createClass({
     },
 
     goSignUp(type) {
+        Statistics.postDplusData('点击_报名_按钮',[type]);
         if(type === 0) {
-            Material.postData('下线_点击鼓励_getGraduated');
+            // Material.postData('下线_点击鼓励_getGraduated');
             window.dialogAlertComp.show('小伙伴受到鼓励啦','你的鼓励会让TA再接再厉哦。','棒棒哒',()=>{},'',false);
             this.setState({isButtonShow: 'true'});
         } else {
-            Material.postData('下线_点击跳转_getGraduated');
+            // Material.postData('下线_点击跳转_getGraduated');
             location.hash = "/payPage";
         }
     },
@@ -225,7 +226,7 @@ const GetGraduated = React.createClass({
     },
 
     goCommand() {
-        //WA 1
+        Statistics.postDplusData('点击_分享_按钮');
         window.dialogAlertComp.show('你是最棒的','真是厉害啊，好好庆祝一下自己的成就，晒晒自己的战绩吧！你会获得来自大家的赞赏和鼓励哦！','好哒师兄',()=>{},()=>{},false);
     },
 

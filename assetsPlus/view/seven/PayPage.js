@@ -87,6 +87,7 @@ var PayPage = React.createClass({
                 Tools.fireRaceCourse(courseId).then((value)=>{
                     // alert('start' + value.qqGroup);
                     if(value.pay){
+                        Statistics.postDplusData('报名_成功');
                         Statistics.postDplusData('支付_回调',[true]);
                         this.state.hasPaid = true;
                         this.setState({
@@ -95,6 +96,7 @@ var PayPage = React.createClass({
                         this.state.hasPaid = true;
                         this.checkSubscribe();
                     } else {
+                        Statistics.postDplusData('报名_失败');
                         Statistics.postDplusData('支付_回调',[false]);
                         outBool = false;
                     }
@@ -176,7 +178,7 @@ var PayPage = React.createClass({
      * 按钮点击
      */
     clickHandler() {
-        Statistics.postDplusData('支付_按钮');
+        Statistics.postDplusData('点击_报名_按钮');
         this.payHandler();
     },
 
@@ -300,7 +302,7 @@ var PayPage = React.createClass({
     },
 
     freeLesson() {
-        Statistics.postDplusData('试听_按钮');
+        Statistics.postDplusData('点击_试听_按钮');
         Tools.MyRouter('ListenCourse','/listenCourse/1');
     }
 

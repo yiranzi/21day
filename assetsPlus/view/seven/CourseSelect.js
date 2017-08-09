@@ -234,11 +234,11 @@ const CourseSelect = React.createClass({
         let courseId = this.state.courseList[index].id;
         switch (status.enter) {
             case 'free-enter':
-                Material.postData('免费_试听_CourseSelect');
+                // Material.postData('免费_试听_CourseSelect');
                 Tools.MyRouter('ListenCourse','/listenCourse/' + courseId);
                 break;
             case 'free-no-pay':
-                Material.postData('免费_禁止_CourseSelect');
+                // Material.postData('免费_禁止_CourseSelect');
                 window.dialogAlertComp.show('7天财商训练营','每天更新一课，为你量身定做的理财指南课程，只需要7天，带着你财商涨涨涨！','去看看',()=>
                 {location.hash = '/payPage';Material.postData('免费_跳转购买_CourseSelect');},'先不要',true);
                 break;
@@ -252,6 +252,7 @@ const CourseSelect = React.createClass({
                 console.log('error' + status.enter);
                 break;
         }
+        Statistics.postDplusData('点击_课程_列表',[index,status.enter]);
 
         // if (this.state.allowLesson === 'PAY') {
         //     location.hash = '/course/' + courseId;
@@ -300,6 +301,7 @@ const CourseSelect = React.createClass({
                 console.log('error' + status.reward);
                 break;
         }
+        Statistics.postDplusData('点击_成就卡_按钮',[status.reward]);
         // let status = course.status;
         // switch (status) {
         //     case 2:
@@ -422,6 +424,7 @@ const CourseSelect = React.createClass({
     showGroup() {
         window.dialogAlertComp.show('快来加入7天学习群','在群里可以分享到理财干货，更有师兄直播讲课答疑哦！快来吧','点击加群',()=>
         {location.href = "https://jq.qq.com/?_wv=1027&k=49fUv5j";},'先不要',true)
+        Statistics.postDplusData('点击_社群_按钮');
     },
 
     openGraduated() {
@@ -435,6 +438,8 @@ const CourseSelect = React.createClass({
                 window.dialogAlertComp.show('还不能领取毕业证哦！','你还没有完成全部课程呢，要都通过才行哦。','好的',()=>{},'',false);
             }
         });
+        Statistics.postDplusData('点击_毕业证_按钮');
+
     },
 
     openTreasure() {
@@ -452,13 +457,13 @@ const CourseSelect = React.createClass({
                         //弹出打开宝箱的界面1
                         if(data.status)
                         {
-                            Util.postCnzzData("成功领取宝箱");
+                            // Util.postCnzzData("成功领取宝箱");
                             this.state.treasure.haveOpen = true;
                             window.dialogAlertComp.show('领取了50金币！','使用长投FM去积分商城兑换奖励吧！','去看看',()=>{
-                                Util.postCnzzData("宝箱跳转FM");
+                                // Util.postCnzzData("宝箱跳转FM");
                                 location.href = "https://h5.ichangtou.com/h5/fm/index.html#/mall";},'等一等',true);
                         } else {
-                            Util.postCnzzData("失败领取宝箱",data.msg);
+                            // Util.postCnzzData("失败领取宝箱",data.msg);
                             window.dialogAlertComp.show(data.msg,'领取失败了','我知道了',()=>{},()=>{},false);
                         }
                     })
@@ -471,6 +476,7 @@ const CourseSelect = React.createClass({
             //还没有到第七天
             window.dialogAlertComp.show('毕业宝箱等着你！','完成7天的训练后，才可以领取毕业证和宝箱噢。加油！','我会加油的',()=>{},()=>{},false);
         }
+        Statistics.postDplusData('点击_宝箱_按钮');
     }
 });
 

@@ -113,7 +113,7 @@ const HomeCourseList = React.createClass({
     },
 
     goRouter(courseId) {
-        Statistics.postDplusData('pai课程点击',[courseId]);
+        Statistics.postDplusData('点击_课程_列表',[courseId]);
         //当抓到courseId后都需要一系列操作
         //设置微信
         //设置id
@@ -174,7 +174,7 @@ const HomeCourseList = React.createClass({
 
     cbfClickBanner(index) {
         let courseId = index % 2;
-        Material.postData('Banner' + courseId);
+        Statistics.postDplusData('点击_课程_横幅',[index]);
         this.goRouter(courseId);
     },
 

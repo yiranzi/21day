@@ -58,11 +58,11 @@ const GetReward = React.createClass({
             });
             userId = Util.getUrlPara('ictchannel');
             if (User.getUserInfo().userId) {
-                Material.postData('下线_进入笔记卡_getReward');
+                // Material.postData('下线_进入笔记卡_getReward');
                 this.setState({myName: User.getUserInfo().nickName})
             } else {
                 OnFire.on('OAUTH_SUCCESS',()=>{
-                    Material.postData('下线_进入笔记卡_getReward');
+                    // Material.postData('下线_进入笔记卡_getReward');
                     this.setState({myName: User.getUserInfo().nickName})
                 });
             }
@@ -85,7 +85,7 @@ const GetReward = React.createClass({
             Loading.hideLoading()
         } else {    //查看自己的
             userId = User.getUserInfo().userId;
-            Material.postData('上线_进入笔记卡_getReward');
+            // Material.postData('上线_进入笔记卡_getReward');
             let courseId = this.props.params.dayId;
             this.setState({type: 'mine', userInfo: User.getUserInfo()});
             this.state.type = 'mine';
@@ -185,20 +185,21 @@ const GetReward = React.createClass({
 
     //上线点击
     goCommand() {
-        Util.postCnzzData("笔记卡页面点击我要分享");
-        Material.postData('上线_点击我要分享_getReward');
+        // Util.postCnzzData("笔记卡页面点击我要分享");
+        // Material.postData('上线_点击我要分享_getReward');
+        Statistics.postDplusData('点击_分享_按钮');
         window.dialogAlertComp.show('快快分享你的进步吧','点击右上角三个点点，分享到你的朋友圈吧！','好哒师兄',()=>{},()=>{},false);
     },
 
     //下线点击
     goSignUp() {
         //todo 数据统计 下线点击
-        Util.postCnzzData("笔记卡页面点击按钮");
+        // Util.postCnzzData("笔记卡页面点击按钮");
         if (User.getUserInfo().userId) {
-            Material.postData('下线_点击按钮_getReward');
+            // Material.postData('下线_点击按钮_getReward');
         } else {
             OnFire.on('OAUTH_SUCCESS',()=>{
-                Material.postData('下线_点击按钮_getReward');
+                // Material.postData('下线_点击按钮_getReward');
             });
         }
 
@@ -211,7 +212,7 @@ const GetReward = React.createClass({
                     if (User.getUserInfo().userId) {
                         Material.GetFreeShareLesson(this.state.senior.userId,this.state.senior.courseId).done(
                             data => {
-                                data ?  Material.postData('下线_领取免费课_getReward') : ''
+                                data ?  Statistics.postDplusData('点击_领取免费课_按钮') : ''
                             }
                         )
 
@@ -219,7 +220,7 @@ const GetReward = React.createClass({
                         OnFire.on('OAUTH_SUCCESS',()=>{
                             Material.GetFreeShareLesson(this.state.senior.userId,this.state.senior.courseId).done(
                                 data => {
-                                    data ? Material.postData('下线_领取免费课_getReward') : ''
+                                    data ? Statistics.postDplusData('点击_领取免费课_按钮') : ''
                                 }
                             )
 
@@ -231,7 +232,9 @@ const GetReward = React.createClass({
                 Tools.MyRouter('','/listenCourse/10');
             }
         } else {      //如果是普通链接
+            Statistics.postDplusData('点击_试听_按钮');
             Tools.MyRouter('','/listenCourse/10');
+
         }
     },
 
