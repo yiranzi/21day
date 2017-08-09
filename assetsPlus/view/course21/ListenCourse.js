@@ -106,11 +106,13 @@ const ListenCourse = React.createClass({
             //发送修改1
             Material.finishWork(0, this.state.lessons[this.state.currentPlaying].fmid).always( (data) => {
             });
-            Statistics.postDplusData('完成音频_事件',[this.state.lessons[this.state.currentPlaying].fmid]);
-            //统计免费完成课程1的进度情况
-            // if (!this.state.isPay && this.props.params.dayId === '1') {
-            //     Material.postData('免费_完成音频7天_ListenCourse');
-            // }
+            Statistics.postDplusData('完成_音频',[this.state.lessons[this.state.currentPlaying].fmid]);
+            //统计第一次完成音频.作为留存起点
+            if (!localStorage.getItem('first_finish_vedio')) {
+                console.log('first!!!!!!!!!!!!!!!');
+                Statistics.postDplusData('第一次_完成_音频');
+                localStorage.setItem('first_finish_vedio',true);
+            }
         });
 
         //自动滚动监听
@@ -256,7 +258,7 @@ const ListenCourse = React.createClass({
             this.setState({currentfmid: lesson.fmid});
             GlobalAudio.play(lesson.audio, lesson.fmid);
             this.preFetch();
-            Statistics.postDplusData('播放音频_事件',[lesson.fmid]);
+            Statistics.postDplusData('点击_播放_按钮',[lesson.fmid]);
         }
     },
 
@@ -343,7 +345,7 @@ const ListenCourse = React.createClass({
                 clickStatus: false,
                 currentIndex: index,
             });
-            Statistics.postDplusData('评分',[this.props.params.dayId,index + 1]);
+            Statistics.postDplusData('点击_评分_按钮',[this.props.params.dayId,index + 1]);
         } else {
             window.dialogAlertComp.show('已经评分啦','您之前已评价，更多的学习体会和意见可以到QQ群里去分享哦，您的评价会让我们变得更好！','知道啦',()=>{},'',false);
         }
@@ -396,6 +398,7 @@ const ListenCourse = React.createClass({
     },
 
     shareButton() {
+        Statistics.postDplusData('点击_分享_按钮');
         window.dialogAlertComp.show('你最棒了！','恭喜你，你又完成了一课！快分享给你的朋友让他们为你加油吧！','知道啦',()=>{},'',false);
     },
 

@@ -97,6 +97,7 @@ var PayPage = React.createClass({
                 Tools.fireRaceCourse(courseId).then((value)=>{
                     // alert('start' + value.qqGroup);
                     if(value.pay){
+                        Statistics.postDplusData('报名_成功');
                         Statistics.postDplusData('支付_回调',[true]);
                         this.state.hasPaid = true;
                         this.setState({
@@ -105,6 +106,7 @@ var PayPage = React.createClass({
                         this.state.hasPaid = true;
                         this.checkSubscribe();
                     } else {
+                        Statistics.postDplusData('报名_失败');
                         Statistics.postDplusData('支付_回调',[false]);
                         outBool = false;
                     }
@@ -358,12 +360,12 @@ var PayPage = React.createClass({
 
     onSeeReward () {
         //TODO 跳转到成就卡界面
-        Statistics.postDplusData('开课证_按钮');
+        Statistics.postDplusData('点击_开课证_按钮');
         Tools.MyRouter('ListenCourse','/courseBegin/mine');
     },
 
     onButtonShare() {
-        Statistics.postDplusData('分享_按钮');
+        Statistics.postDplusData('点击_分享_按钮');
         this.setState({ifBgShow: true});
         console.log('123123123123');
         // window.dialogAlertComp.show('分享','快去分享给你的小伙伴吧。学姐说大家一起学习更能坚持下去哦！','知道啦',()=>{},'',false);
@@ -381,7 +383,7 @@ var PayPage = React.createClass({
             data.result = false;
             window.dialogAlertComp.show('报名失败','出故障了.重新进入一下再试试，还不行的话可以报告管理员.手机号：15652778863','知道啦',()=>{},'',false);
         }
-        Statistics.postDplusData('支付_按钮',data);
+        Statistics.postDplusData('点击_报名_按钮',data);
     },
 
 

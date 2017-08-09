@@ -82,7 +82,7 @@ class BeforeStart {
         // }
         let courseId = MyStorage.getItem('courseId');
         let getWhere = MyStorage.getItem('getWhere');
-        //判断特殊渠道(为特殊处理流程)
+        //判断特殊渠道(推送必然可以听课.(需要扫码))
         if(getWhere === 'autoPush') {
             // goPath = 'courseSelect';
             // courseId = 2;
@@ -108,16 +108,8 @@ class BeforeStart {
             // 举例/fund/getReward/
             redictUrl = Tools.setCourseUrl(courseId) + '/' + redictUrl;
 
-        } else if(getWhere && courseId === '2') {
-            //针对公众号21天的特殊判断
-            // goPath = 'courseSelect';
-            // courseId = 2;
-            // redictUrl = goPath;
-            //如果有课程
-            // if(courseId) {
-
-            //1设置courseId
-            //2获取课程支付信息
+        } else if(getWhere === 'ggh' && courseId === '2') {
+            //针对公众号21天入口.需要根据用户判断界面
             Actions.ifCourseSignUp(courseId);
             //TODO
             //并且可以开课

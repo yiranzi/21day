@@ -369,26 +369,29 @@ const CourseBegin = React.createClass({
 
     showQQInfo(type) {
         //中文上报的合适例子.目的是让数据接收者不需要再次计算.
-        let type2Name = {
-            '0': '关注',
-            '1': '分享',
-            '2': '社群',
-            '3': '下线跳转',
-        }
-        Statistics.postDplusData('点击按钮栏_按钮',[type2Name[type]]);
+        // let type2Name = {
+        //     '0': '关注',
+        //     '1': '分享',
+        //     '2': '社群',
+        //     '3': '下线跳转',
+        // }
+        // Statistics.postDplusData('点击按钮栏_按钮',[type2Name[type]]);
         switch (type) {
             case 0:
+                Statistics.postDplusData('点击_社群_按钮');
                 window.dialogAlertComp.show('加入QQ群（学习群务必加入）',`群号${this.state.signUpInfo.qqGroup},暗号${this.state.signUpInfo.secret}`,'点击加入',()=>
                 {location.href = this.state.signUpInfo.qqGroupUrl;},'我加过了',true);
                 break;
             case 1:
+                Statistics.postDplusData('点击_关注_按钮');
                 this.setState({ifBgShowSign: true});
                 break;
             case 2:
-                Statistics.postDplusData('分享_按钮');
+                Statistics.postDplusData('点击_分享_按钮');
                 this.setState({ifBgShowShare: true});
                 break;
             case 3:
+                Statistics.postDplusData('点击_报名_按钮');
                 Tools.GoRouter('pay');
                 break;
             default:

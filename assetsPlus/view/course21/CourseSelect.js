@@ -180,6 +180,7 @@ const CourseSelect = React.createClass({
     },
 
     renderBeginReward() {
+        Statistics.postDplusData('点击_开课证_按钮');
         return(<img className="" style={{width: '100%'}} src={`./assetsPlus/image/${GlobalConfig.getCourseName()}/course_select_begin.png`} onClick={()=>{Tools.MyRouter('ListenCourse','/courseBegin/select')}}>
 
         </img>)
@@ -267,6 +268,7 @@ const CourseSelect = React.createClass({
     },
 
     showGroup() {
+
         if(this.state.groupInfo.secret) {
             window.dialogAlertComp.show('加入学习社群',`和小伙伴们分享今天学习到的知识吧。群暗号：${this.state.groupInfo.secret}（QQ群：${this.state.groupInfo.qq}）`, '点击加入', () => {
                 location.href = this.state.groupInfo.link;
@@ -274,7 +276,7 @@ const CourseSelect = React.createClass({
         } else {
             window.dialogAlertComp.show('加入学习社群',`和小伙伴们分享今天学习到的知识吧。`, '知道啦', null, '', false)
         }
-
+        Statistics.postDplusData('点击_课程_列表',[index,status.enter]);
 
     },
 
@@ -379,7 +381,7 @@ const CourseSelect = React.createClass({
             default:
                 break;
         }
-        Statistics.postDplusData('点击听课',[index,status.enter]);
+        Statistics.postDplusData('点击_课程_列表',[index,status.enter]);
     },
 
 
@@ -409,7 +411,7 @@ const CourseSelect = React.createClass({
             default:
                 break;
         }
-        Statistics.postDplusData('成就卡跳转',[status.reward]);
+        Statistics.postDplusData('点击_成就卡_按钮',[status.reward]);
     },
 
 
@@ -449,7 +451,7 @@ const CourseSelect = React.createClass({
         } else {
             window.dialogAlertComp.show('还不能领取毕业证哦！','按时完成14天的训练之后，就可以顺利领取毕业证啦。','我会加油的',()=>{},'',false);
         }
-        Statistics.postDplusData('点击毕业证', [this.state.allLessonStatus]);
+        Statistics.postDplusData('点击_毕业证_按钮', [this.state.allLessonStatus]);
     },
 
     openTreasure() {
@@ -483,7 +485,7 @@ const CourseSelect = React.createClass({
         } else {
             window.dialogAlertComp.show('毕业宝箱等着你！', '按时完成14天的训练之后，才可以领取毕业宝箱噢。', '我会加油的',()=>{},'',false);
         }
-        Statistics.postDplusData('点击宝箱', [this.state.allLessonStatus]);
+        Statistics.postDplusData('点击_宝箱_按钮', [this.state.allLessonStatus]);
     }
 });
 

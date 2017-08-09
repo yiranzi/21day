@@ -336,17 +336,18 @@ const CourseSelect = React.createClass({
 
     //跳转到听课界面
     cbfGoLesson(course, index) {
+
         let status = course.courseStatus;
         let courseId = this.state.courseList[index].id;
         switch (status.enter) {
             case 'free-enter':
-                Material.postData('免费_试听_CourseSelect');
+                // Material.postData('免费_试听_CourseSelect');
                 Tools.MyRouter('ListenCourse','/listenCourse/' + courseId);
                 break;
             case 'free-no-pay':
-                Material.postData('免费_禁止_CourseSelect');
+                // Material.postData('免费_禁止_CourseSelect');
                 window.dialogAlertComp.show('7天财商训练营','每天更新一课，为你量身定做的理财指南课程，只需要7天，带着你财商涨涨涨！','去看看',()=>
-                {location.hash = '/payPage';Material.postData('免费_跳转购买_CourseSelect');},'先不要',true);
+                {location.hash = '/payPage'},'先不要',true);
                 break;
             case 'pay':
                 Tools.MyRouter('ListenCourse','/listenCourse/' + courseId);
@@ -358,6 +359,7 @@ const CourseSelect = React.createClass({
                 console.log('error' + status.enter);
                 break;
         }
+        Statistics.postDplusData('点击_课程_列表',[status.enter]);
     },
 
 
@@ -388,6 +390,7 @@ const CourseSelect = React.createClass({
                 console.log('error' + status.reward);
                 break;
         }
+        Statistics.postDplusData('点击_成就卡_按钮',[status.reward]);
     },
 
 
@@ -442,13 +445,13 @@ const CourseSelect = React.createClass({
                     Material.openTreasure().always((data) => {
                         //弹出打开宝箱的界面1
                         if (data.status) {
-                            Util.postCnzzData("成功领取宝箱");
+                            // Util.postCnzzData("成功领取宝箱");
                             window.dialogAlertComp.show('领取了'+data.content+'金币！', '使用长投FM去积分商城兑换奖励吧！', '去看看', () => {
-                                Util.postCnzzData("宝箱跳转FM");
+                                // Util.postCnzzData("宝箱跳转FM");
                                 location.href = "https://h5.ichangtou.com/h5/fm/index.html#/mall";
                             }, '等一等', true);
                         } else {
-                            Util.postCnzzData("失败领取宝箱", data.msg);
+                            // Util.postCnzzData("失败领取宝箱", data.msg);
                             window.dialogAlertComp.show(data.msg, '领取失败了', '我知道了', () => {
                             }, () => {
                             }, false);
