@@ -1,6 +1,8 @@
 /**
  * Created by lip on 2016/6/3.
  */
+//v810
+
 var $ = window.$ = require('jquery');
 var React = require('react');
 var ReactDom = require('react-dom');
