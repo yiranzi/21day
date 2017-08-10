@@ -143,6 +143,17 @@ const GetGraduated = React.createClass({
         WxConfig.shareConfig(shareTitle,desc,link);
     },
 
+    setShareConfig() {
+        let senior = this.state.senior;
+        let data = {
+            name: senior.name,
+            rank: senior.rank,
+            dayId: senior.courseId,
+            courseName: this.state.shareTitle[ senior.courseId - 1]
+        };
+        WxConfig.shareConfig('',data);
+    },
+
 
     handleClick() {
         location.hash = "/select";

@@ -67,7 +67,7 @@ class PayController {
         payPullingFlag = false;
     }
 
-    static wechatPay() {
+    static wechatPay(orderInfo) {
         console.log('wechatPay');
         if( payPullingFlag ) {
             //如果正在拉取支付数据，阻止，避免重复请求
@@ -87,7 +87,7 @@ class PayController {
         if( QRCodePay.isNeedQRCodePay() ) {
             //订阅号微信的IOS用户要使用扫码支付
             console.log('获取通用订单');
-            PayController.getOrder(null, 0, true);
+            PayController.getOrder(null, 0, true,orderInfo);
 
         }else {
             PayController.getOrder();
@@ -137,9 +137,18 @@ class PayController {
      * @param sum   价格(如不传，默认用全局的COURSE_SUM)
      * @param isNative 是否是扫码支付
      */
-    static getOrder(userInfo, sum, isNative) {
+    static getOrder(userInfo, sum, isNative, orderInfo) {
+
         if( payPullingFlag ) {
             return;
+        }
+        //期数信息
+        let period;
+        if(orderInfo) {
+            period = orderInfo;
+            if(sessionStorage.getItem('courseId') === 1000 ) {
+                period = '1';
+            }
         }
 
         userInfo = userInfo || window.User.getUserInfo();
@@ -195,7 +204,7 @@ class PayController {
                                     // itemId: Util.getCurrentBatch(),
                                     itemId: 1,//基金课,应该改成全局
                                     mchantType: 11, //商品类型 21days
-                                    misc: '',
+                                    misc: period,
                                     price: sum
                                 }
                             ]
@@ -229,6 +238,58 @@ class PayController {
                     }
                 );
                 break;
+            case GlobalConfig.getBetaInfo().courseId:
+                jsonData = JSON.stringify(
+                    {
+                        "body":'基金课报名' ,
+                        "deal": {
+                            "items": [
+                                {
+                                    // dealType: 1, //交易类型
+                                    // itemId: Util.getCurrentBatch(),
+                                    // mchantType: 5, //商品类型 21days
+                                    // misc: Util.getUrlPara('dingyuehao')||'0'+'@'+seniorId+'@'+teacherId,
+                                    // price: sum,
+                                    dealType: 103, //交易类型
+                                    // itemId: Util.getCurrentBatch(),
+                                    itemId: GlobalConfig.getBetaInfo().courseId,//基金课,应该改成全局
+                                    mchantType: 11, //商品类型 21days
+                                    misc: period,
+                                    price: sum
+                                }
+                            ]
+                        },
+                        "openId": userInfo.payOpenId && userInfo.payOpenId.toString(),
+                        "sum": sum
+                    }
+                );
+                break;
+            case '3':
+                jsonData = JSON.stringify(
+                    {
+                        "body":'基金课报名' ,
+                        "deal": {
+                            "items": [
+                                {
+                                    // dealType: 1, //交易类型
+                                    // itemId: Util.getCurrentBatch(),
+                                    // mchantType: 5, //商品类型 21days
+                                    // misc: Util.getUrlPara('dingyuehao')||'0'+'@'+seniorId+'@'+teacherId,
+                                    // price: sum,
+                                    dealType: 103, //交易类型
+                                    // itemId: Util.getCurrentBatch(),
+                                    itemId: 3,//基金课,应该改成全局
+                                    mchantType: 11, //商品类型 21days
+                                    misc: period,
+                                    price: sum
+                                }
+                            ]
+                        },
+                        "openId": userInfo.payOpenId && userInfo.payOpenId.toString(),
+                        "sum": sum
+                    }
+                );
+                break;
             default:
                 break;
         }
@@ -240,7 +301,6 @@ class PayController {
         payPullingFlag = true;
         //显示loading界面
         Loading.showLoading('请求微信支付');
-
         $.ajax({
             url: apiUrl,
             data: jsonData,

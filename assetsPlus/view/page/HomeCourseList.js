@@ -60,7 +60,7 @@ const HomeCourseList = React.createClass({
     preFetchRes(courseId) {
         //针对这门课预加载.测试
         if(courseId === 2) {
-            let path = GlobalConfig.getCourseInfo(courseId).name;
+            let path = GlobalConfig.getCourseName();
             this.preFetchBg(-1,path);
         }
 
@@ -76,7 +76,7 @@ const HomeCourseList = React.createClass({
     getCourseList() {
         let courseList = GlobalConfig.getCourseIdList();
         for( let i = 0; i<courseList.length; i++) {
-            if(courseList[i]!==2 && courseList[i]<100) {
+            if( courseList[i] === '0' || courseList[i] === '1' ) {
                 console.log(courseList[i]);
                 this.state.courseStatus[courseList[i]] = {};
                 this.state.courseList.push(courseList[i]);
@@ -184,7 +184,6 @@ const HomeCourseList = React.createClass({
         let arr =[];
         let courseList = this.state.courseList;
         for(let i = 0;i<courseList.length;i++) {
-            console.log(courseList[i]);
             arr.push(<div className="course-content-line" key={i} onClick={this.goRouter.bind(this,courseList[i])}>
                 <img className="course-line-img" src={this.state.courseContent[i]}/>
             </div>)

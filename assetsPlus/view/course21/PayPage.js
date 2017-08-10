@@ -280,8 +280,7 @@ var PayPage = React.createClass({
     renderBg() {
         let arr =[];
         for(let i = 0;i<4;i++) {
-            let courseId = sessionStorage.getItem('courseId');
-            let path = GlobalConfig.getCourseInfo(courseId).name;
+            let path = GlobalConfig.getCourseName();
             let url = `./assetsPlus/image/${path}/join-content-${i}.png`;
             arr.push(<img src={url}/>)
         }

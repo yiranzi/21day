@@ -15,6 +15,10 @@ var App = require('./component/App');
 // const GetReward = require('./component/course/GetReword');
 // const GetGraduated = require('./component/course/GetGraduated');
 
+//beta模板课程
+const PayPageBeta = require('./view/courseBeta/PayPage');
+const CourseSelectBeta = require('./view/courseBeta/CourseSelect');
+const ListenCourseBeta = require('./view/courseBeta/ListenCourse');
 
 const PayPageFund = require('./view/fund/PayPage');
 const CourseSelectFund = require('./view/fund/CourseSelect');
@@ -37,6 +41,8 @@ const ListenCourse21 = require('./view/course21/ListenCourse');
 
 //股票课
 const PayPageStock0 = require('./view/stock0/PayPage');
+const CourseSelectStock0 = require('./view/stock0/CourseSelect');
+const ListenCourseStock0 = require('./view/stock0/ListenCourse');
 
 
 
@@ -90,7 +96,14 @@ let InnerRouter = React.createClass({
                     <Route path = {`/${ GlobalConfig.getRouterInfo(2)}/${ GlobalConfig.getRouterInfo('listen')}/:dayId`} component={ListenCourse21}/>
 
                     {/*股票课*/}
-                    <Route path = {`/${ GlobalConfig.getCourseInfo(1003).name}/${ GlobalConfig.getRouterInfo('pay')}`} component={PayPageStock0}/>
+                    <Route path = {`/${ GlobalConfig.getCourseInfo(3).name}/${ GlobalConfig.getRouterInfo('pay')}`} component={PayPageStock0}/>
+                    <Route path = {`/${ GlobalConfig.getCourseInfo(3).name}/${ GlobalConfig.getRouterInfo('select')}`} component={CourseSelectStock0}/>
+                    <Route path = {`/${ GlobalConfig.getCourseInfo(3).name}/${ GlobalConfig.getRouterInfo('listen')}/:dayId`} component={ListenCourseStock0}/>
+
+                    {/*Beta课程*/}
+                    <Route path = {`/${ GlobalConfig.getCourseInfo(GlobalConfig.getBetaInfo().courseId).name}/${ GlobalConfig.getRouterInfo('pay')}`} component={PayPageBeta}/>
+                    <Route path = {`/${ GlobalConfig.getCourseInfo(GlobalConfig.getBetaInfo().courseId).name}/${ GlobalConfig.getRouterInfo('select')}`} component={CourseSelectBeta}/>
+                    <Route path = {`/${ GlobalConfig.getCourseInfo(GlobalConfig.getBetaInfo().courseId).name}/${ GlobalConfig.getRouterInfo('listen')}/:dayId`} component={ListenCourseBeta}/>
 
                     {/*<Route path="/payPage(/:free)" component={PayPage}/>*/}
                     {/*<Route path="/select" component={CourseSelect}/>*/}

@@ -84,7 +84,7 @@ const ListenCourse = React.createClass({
         //音频完成监听
         OnFire.on('AUDIO_END',()=>{
 
-            if (this.state.currentPlaying<0 || sessionStorage.getItem('courseId') !== '2') {
+            if (this.state.currentPlaying<0 || sessionStorage.getItem('courseId') !== (GlobalConfig.getBetaInfo().courseId).toString()) {
                 return null;
             }
             //终止多余的其你去

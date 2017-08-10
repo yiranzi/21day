@@ -149,6 +149,7 @@ const API_URL_GROUP = {
 
     //基金课
     'get_qq_info':'ctplus/qq-details/{courseId}',
+    'get_start_class_info':'ctplus/getstarttime/{courseId}',
 };
 
 

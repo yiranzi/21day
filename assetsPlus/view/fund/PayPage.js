@@ -102,7 +102,24 @@ var PayPage = React.createClass({
         this.setIfCanPaid();
         //5请求倒计时和剩余人数
         this.signUpNumber();
+        //6获取开课时间
+        this.getStartClassInfo(courseId);
     },
+
+    getStartClassInfo(courseId) {
+        //获得课程
+        Material.getStartClassInfo(courseId).then((data)=>{
+            this.setState({periodInfo: data});
+        });
+        //查询时间
+
+        //报名的时候可以选择时间.(或者默认第一个时间)
+
+        //报名的时候传上去这个时间
+
+    },
+
+
 
     afterPaySuccess() {
         //合伙人上报

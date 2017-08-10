@@ -78,7 +78,6 @@ class WxConfig {
      * @param sharePage
      */
     static shareConfig(sharePage,data) {
-        console.log('setshare');
         let link,title,desc,channel;
         //这个保证了 1)有userId 2)ready之后
         let wxshare = sessionStorage.getItem('wxshare');

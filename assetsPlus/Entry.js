@@ -47,7 +47,7 @@ $(document).ready(() => {
             alert('请复制地址并在微信中打开');
             new Dimensions().init();
             //1设置固定id
-            User.setUserIdTest('8ad44530fc9f4054a4bfd3ec56bc833f');
+            User.setUserIdTest('9d00b607f691432dbab277e028f7fe64');
             //2设置分享
             sessionStorage.setItem('wxshare',true);
             sessionStorage.setItem('wxshare',true);

@@ -1034,6 +1034,51 @@ class Material {
         });
     }
 
+    //获取开课信息
+    static getStartClassInfo(courseId) {
+        let url = Util.getAPIUrl('get_start_class_info').replace("{courseId}",courseId);
+        let type = 'get';
+        return (this.ajaxSomeUrl(url,type));
+    }
+
+    static ajaxSomeUrl(url,type) {
+        //接口合并未上线
+        // courseId = 1;
+
+        var User = require('./User');
+        const Util = require('./Util'),
+            apiUrl = url;
+        let userInfo = User.getUserInfo();
+        const Tools = require('./GlobalFunc/Tools');
+        //改成异步
+        return new Promise((resolve,reject)=>{
+            Tools.fireRace(userInfo.userId,"OAUTH_SUCCESS").then(()=>{
+                let userInfo = User.getUserInfo();
+                let jqxhr = $.ajax(
+                    {
+                        url: apiUrl,
+                        type: type,
+                        cache: false,
+                        contentType: 'application/json;charset=utf-8',
+                        headers: {
+                            Accept: 'application/json'
+                        },
+                        beforeSend: (request)=>{
+                            request.setRequestHeader("X-iChangTou-Json-Api-Token", Util.getApiToken());
+                            request.setRequestHeader("X-iChangTou-Json-Api-User", userInfo.userId);
+                        }
+                    }
+                );
+                jqxhr.done((data)=>{
+                    resolve(data)
+                });
+                jqxhr.fail((data)=>{
+                    reject(data)
+                })
+            })
+        })
+    }
+
 
 
 

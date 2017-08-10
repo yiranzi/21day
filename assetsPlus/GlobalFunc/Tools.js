@@ -112,8 +112,7 @@ class Tools {
     // }
 
     static setCourseUrl() {
-        let courseId = sessionStorage.getItem('courseId');
-        let first = GlobalConfig.getCourseInfo(courseId).name;
+        let first = GlobalConfig.getCourseName();
         if(first !== null) {
             first = '/' + first;
         } else {
@@ -130,12 +129,16 @@ class Tools {
 
     //之后使用新方法.
     //替换前看下使用的情景
-    static GoRouter(pathUrl) {
+    static GoRouter(pathUrl,param) {
         //获得 前缀
         let first = this.setCourseUrl();
         //获得后缀
         let second = '/' + GlobalConfig.getRouterInfo(pathUrl);
-        location.hash = first + second;
+        let third = '';
+        if (param) {
+            third = param
+        }
+        location.hash = first + second + third;
     }
 }
 

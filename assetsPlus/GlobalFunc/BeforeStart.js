@@ -122,7 +122,7 @@ class BeforeStart {
                             if(result) {
                                 Tools.GoRouter('select');
                             } else {
-                                Tools.GoRouter('pay');
+                                Tools.GoRouter('begin','/mine');
                             }
                         });
 
@@ -139,7 +139,33 @@ class BeforeStart {
             redictUrl = '/padding';
             return redictUrl;
 
-        } else if (goPath) {
+        } else if (courseId === GlobalConfig.getBetaInfo().courseId) {
+            //针对股票课beta
+            Actions.ifCourseSignUp(courseId);
+            //TODO
+            //并且可以开课
+            Tools.fireRaceCourse(courseId).then((value)=>{
+                console.log('get');
+                if(parseInt(sessionStorage.getItem('courseId')) === parseInt(courseId)) {
+                    if(value.pay){
+                        sessionStorage.setItem('SisBuy','付费');
+                        Tools.GoRouter('select');
+                    } else {
+                        sessionStorage.setItem('SisBuy','未付费');
+                        Tools.GoRouter('pay');
+                    }
+                }
+            });
+            //3设置默认分享(特殊设置)
+
+            //4设置跳转
+            //公号判定支付/开课时间后才会跳转
+            redictUrl = '/padding';
+            return redictUrl;
+
+        }
+
+            else if (goPath) {
             //判断
 
             redictUrl = goPath;

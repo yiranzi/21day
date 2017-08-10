@@ -2,8 +2,8 @@
  * Created by ichangtou on 2017/7/21.
  */
 //课程id表
-    //1添加课程请增加 数组 和 课程信息 和 分享
-const courseIdList = [0,1,2,1003];
+    //1添加课程请增加 课程信息 和 分享 和路由表
+// const courseIdList = [0,1,2,1003];
 //随便写的临时的
 // const couseIdNameMap = new Map();
 // const couseIdName = {};
@@ -62,13 +62,23 @@ const courseInfo = {
         shareTitle: '14天带你躺赢基金定投！一天10分钟，手把手教你！',
         shareDesc: '宝宝618不再担心没钱买买买啦',
     },
-    '1003':{
+    '3':{
         name: 'stock0',
         price: [59,59],
         title: '股票课',
     },
+    '1003':{
+        name: 'courseBeta',
+        price: [5.9,5.9],
+        title: 'beta',
+    },
 };
 
+const betaInfo = {
+    courseId: '1003',
+};
+
+//为了配置路由
 const routerInfo = {
     '-1': '',
     '0': 'seven',
@@ -88,6 +98,7 @@ const routerInfo = {
     'graduate': 'getGraduated',
 };
 
+//为了数据上报
 const pageToName = {
     //长投家页面
     'entryJs': '入口_文件',
@@ -106,34 +117,6 @@ const pageToName = {
 
 
 class GlobalConfig {
-    // static init() {
-    //     couseIdNameMap.set("0", "seven");
-    //     couseIdNameMap.set("1", "fund");
-    //     couseIdNameMap.set("2", "course21");
-    //
-    //     let value = '';
-    //     for(let i = 0; i<courseIdList.length; i++) {
-    //         switch (i) {
-    //             case 0:
-    //                 value = 'seven';
-    //                 break;
-    //             case 1:
-    //                 value = 'fund';
-    //                 break;
-    //             case 2:
-    //                 value = 'course21';
-    //                 break;
-    //         }
-    //         couseIdName[i] = value;
-    //     }
-    //
-    // }
-
-    // static getCourseName(courseId) {
-    //     return couseIdName[courseId];
-    // }
-
-
     /**
      *
      * @param courseId 课程编号
@@ -156,22 +139,36 @@ class GlobalConfig {
                     link: ''
                 }
             },
+            '1003': {
+                //默认到报名页
+                'default': {
+                    title: '我是股票课内测版',
+                    desc: '欢迎参加股票课',
+                    link: `&goPath=${GlobalConfig.getRouterInfo('pay')}&courseId=${sessionStorage.getItem('courseId')}&getWhere=share`,
+                },
+            },
             '0': {
                 'default': {
                     title: '和我一起提高财商吧',
                     desc: '邀请你一起参加7天财商训练营',
-                    link: ''
+                    link: `&goPath=${GlobalConfig.getRouterInfo('pay')}&courseId=${sessionStorage.getItem('courseId')}&getWhere=share`
                 },
                 'getReward': {
                     title: `我是第${params.rank}名完成${params.courseName}课的人，快来看看我的成就卡吧！`,
                     desc: '快比比谁的财商更高吧?',
                     link: `&goPath=${GlobalConfig.getRouterInfo('reward')}&courseId=${sessionStorage.getItem('courseId')}&name=${params.name}&rank=${params.rank}&dayId=${params.dayId}&getWhere=share`
+                },
+                'getGraduated': {
+                    title: `经过7天的学习，我成为第${params.rank}个完成财商训练营的人！`,
+                    desc: '快来看看我的毕业证！?',
+                    link: `&goPath=${GlobalConfig.getRouterInfo('graduate')}&courseId=${sessionStorage.getItem('courseId')}&name=${params.name}&rank=${params.rank}&dayId=${params.dayId}&getWhere=share`
                 }
             },
             '1': {
                 'default': {
                     title: '14天带你躺赢基金定投！一天10分钟，手把手教你！',
                     desc: '宝宝618不再担心没钱买买买啦',
+                    link: `&goPath=${GlobalConfig.getRouterInfo('pay')}&courseId=${sessionStorage.getItem('courseId')}&getWhere=share`
                 },
                 'getReward': {
                     title: '',
@@ -198,7 +195,7 @@ class GlobalConfig {
                     link: `&goPath=${GlobalConfig.getRouterInfo('pay')}&courseId=${sessionStorage.getItem('courseId')}&getWhere=share`,
                 }
             },
-            '1003': {
+            '3': {
                 //默认到报名页
                 'default': {
                     title: '我是股票课',
@@ -247,15 +244,27 @@ class GlobalConfig {
         }
     }
 
+    //获取课程名称(实际上等同于先取出来课程信息.在读取名字.但是统一这边获取.)
     static getCourseName() {
         return this.getCourseInfo(sessionStorage.getItem('courseId')).name
     }
 
+    static getBetaInfo() {
+        return betaInfo;
+    }
+
     static getCourseIdList() {
         let courseIdList = [];
+
         for (let i in courseInfo) {
-            courseIdList.push(i);
+            if(i !== '-1') {
+                console.log(i);
+                courseIdList.push(i);
+            }
+
         }
+        console.log('!!!!!!!!!!!!!!!!!!!!');
+        console.log(courseIdList);
         return courseIdList;
     }
 }
