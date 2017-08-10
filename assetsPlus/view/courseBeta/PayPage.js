@@ -90,11 +90,13 @@ var PayPage = React.createClass({
                 if (sessionStorage.getItem('courseId') !== courseId) {
                     return
                 }
+                Loading.showLoading('获取报名信息...');
                 //先ajax更新这个数据(花费少量时间)
                 Actions.ifCourseSignUp(courseId);
                 //action & get
                 //这边的结果完成后get
                 Tools.fireRaceCourse(courseId).then((value)=>{
+                    Loading.hideLoading();
                     // alert('start' + value.qqGroup);
                     if(value.pay){
                         Statistics.postDplusData('报名_成功');
@@ -252,7 +254,6 @@ var PayPage = React.createClass({
      * 检测购买后是否关注公号
      */
     checkSubscribe () {
-        let isSubscribed = User.getUserInfo().subscribe;
 
         //TODO 加qq群号.的弹窗.
         // 重新请求.

@@ -25,6 +25,7 @@ const FixedBg = React.createClass({
     },
     // style = {fullbg}
     render() {
+        console.log('calc bg');
         if(sessionStorage.getItem('courseId') === '1') {
             return(
                 <div className="bg-ground" style = {{backgroundImage: 'url("./assetsPlus/image/fund/join-bg.jpg")', width:Dimensions.getWindowWidth(), height: Dimensions.getWindowHeight()}}></div>
@@ -36,6 +37,10 @@ const FixedBg = React.createClass({
         } else if(sessionStorage.getItem('courseId') === '2'){
             return(
                 <div className="bg-ground" style = {{backgroundColor: '#FFE69B', width:Dimensions.getWindowWidth(), height: Dimensions.getWindowHeight()}}></div>
+            )
+        }else if(sessionStorage.getItem('courseId') === GlobalConfig.getBetaInfo().courseId.toString()){
+            return(
+                <div className="bg-ground" style = {{backgroundImage: `url("./assetsPlus/image/${GlobalConfig.getCourseName()}/join-bg.jpg")`, width:Dimensions.getWindowWidth(), height: Dimensions.getWindowHeight()}}></div>
             )
         }else {
             return(<div className="bg-ground" style = {{backgroundColor: '#4498c7', width:Dimensions.getWindowWidth(), height: Dimensions.getWindowHeight()}}></div>

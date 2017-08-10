@@ -76,7 +76,7 @@ const HomeCourseList = React.createClass({
     getCourseList() {
         let courseList = GlobalConfig.getCourseIdList();
         for( let i = 0; i<courseList.length; i++) {
-            if( courseList[i] === '0' || courseList[i] === '1' ) {
+            if( courseList[i] === '0' || courseList[i] === '1' || courseList[i] === '2') {
                 console.log(courseList[i]);
                 this.state.courseStatus[courseList[i]] = {};
                 this.state.courseList.push(courseList[i]);

@@ -140,43 +140,39 @@ const GetReward = React.createClass({
      */
     setShareConfig(type) {
         let senior = this.state.senior;
-        let shareTitle;
-        let link = Util.getShareLink();
+        let data = {}
         let course = courseInfo.find(
             course => {
                 return course.id === parseInt(senior.courseId)
             }
         )
-        let desc;
         switch (type) {
             //分享当日免费课(高级分享)
             case 'freeChance':
-                shareTitle = '今天我是第'+ this.state.senior.rank+'名，Get到了“'+ course.dayTitle + '”！这是我赢得的免费学习课！';
-                desc = '';
-                link = link + '&goPath=' + 'getReward';
-                link = link + '&courseId=' + sessionStorage.getItem('courseId');
-                link = link + '&dayId=' + senior.courseId;
-                link = link + '&name=' + senior.name;
-                link = link + '&rank=' + senior.rank;
-                link = link + '&freeLesson=true';
-                WxConfig.shareConfig(shareTitle,desc,link,'笔记卡高级分享');
+                data = {
+                    name: senior.name,
+                    rank: senior.rank,
+                    dayId: senior.courseId,
+                    freeLesson: true,
+                    dayTitle: course.dayTitle,
+                };
+                WxConfig.shareConfig('getRewardFree',data);
+                // WxConfig.shareConfig(shareTitle,desc,link,'笔记卡高级分享');
                 break;
             //普通分享
             case 'share':
-                senior = this.state.senior;
-                shareTitle = '今天我第'+ this.state.senior.rank+'名，Get到了“'+ course.dayTitle + '”！快看我的成就卡！';
-                desc = '';
-                link = link + '&goPath=' + 'getReward';
-                link = link + '&courseId=' + sessionStorage.getItem('courseId');
-                link = link + '&dayId=' + senior.courseId;
-                link = link + '&name=' + senior.name;
-                link = link + '&rank=' + senior.rank;
-                WxConfig.shareConfig(shareTitle,desc,link,'笔记卡普通分享');
+                data = {
+                    name: senior.name,
+                    rank: senior.rank,
+                    dayId: senior.courseId,
+                    dayTitle: course.dayTitle,
+                };
+                WxConfig.shareConfig('',data);
+                // WxConfig.shareConfig(shareTitle,desc,link,'笔记卡普通分享');
                 break;
             default:
                 console.log('error')
         }
-        console.log('share is' + link);
     },
 
     // handleClick() {

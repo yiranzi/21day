@@ -160,8 +160,8 @@ class GlobalConfig {
                 },
                 'getGraduated': {
                     title: `经过7天的学习，我成为第${params.rank}个完成财商训练营的人！`,
-                    desc: '快来看看我的毕业证！?',
-                    link: `&goPath=${GlobalConfig.getRouterInfo('graduate')}&courseId=${sessionStorage.getItem('courseId')}&name=${params.name}&rank=${params.rank}&dayId=${params.dayId}&getWhere=share`
+                    desc: '快来看看我的毕业证！',
+                    link: `&goPath=${GlobalConfig.getRouterInfo('graduate')}&courseId=${sessionStorage.getItem('courseId')}&name=${params.name}&rank=${params.rank}&getWhere=share`
                 }
             },
             '1': {
@@ -171,8 +171,21 @@ class GlobalConfig {
                     link: `&goPath=${GlobalConfig.getRouterInfo('pay')}&courseId=${sessionStorage.getItem('courseId')}&getWhere=share`
                 },
                 'getReward': {
-                    title: '',
-                    desc: '',
+                    title: `今天我第${params.rank}名，Get到了“${params.dayTitle}”！快看我的成就卡！`,
+                    desc: '基金定投很简单',
+                    link: `&goPath=${GlobalConfig.getRouterInfo('reward')}&courseId=${sessionStorage.getItem('courseId')}&name=${params.name}&rank=${params.rank}&dayId=${params.dayId}&getWhere=share`
+
+                },
+                'getRewardFree': {
+                    title: `今天我是第${params.rank}名，Get到了“${params.dayTitle}”！这是我赢得的免费学习课！`,
+                    desc: '先到先得哦!',
+                    link: `&goPath=${GlobalConfig.getRouterInfo('reward')}&courseId=${sessionStorage.getItem('courseId')}&name=${params.name}&rank=${params.rank}&dayId=${params.dayId}&freeLesson=${params.freeLesson}&getWhere=share`
+
+                },
+                'getGraduated': {
+                    title: `经过14天的学习，我成为第${params.rank}个完成基金训练营的人！`,
+                    desc: '快来为我点个赞吧！',
+                    link: `&goPath=${GlobalConfig.getRouterInfo('graduate')}&courseId=${sessionStorage.getItem('courseId')}&name=${params.name}&rank=${params.rank}&getWhere=share`
                 }
             },
             '2': {
@@ -230,7 +243,7 @@ class GlobalConfig {
         if(result) {
             return result
         } else {
-            return null;
+            return 'payPage';
         }
     }
 

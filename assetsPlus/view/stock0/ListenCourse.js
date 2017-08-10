@@ -111,7 +111,7 @@ const ListenCourse = React.createClass({
             //统计第一次完成音频.作为留存起点
             let key = 'first_finish_vedio' + sessionStorage.getItem('courseId');
             if (!localStorage.getItem(key)) {
-                Statistics.postDplusData('第一次_完成_音频');
+                Statistics.postDplusData('第一次_完成_音频',[this.state.lessons[this.state.currentPlaying].fmid]);
                 localStorage.setItem(key,true);
             }
         });

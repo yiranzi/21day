@@ -138,21 +138,13 @@ const GetGraduated = React.createClass({
         // })
     },
 
-    /**
-     * 设置分享内容1
-     * @param fmid
-     * @param title
-     */
     setShareConfig() {
         let senior = this.state.senior;
-        let shareTitle = '经过14天的学习，我成为第'+ this.state.senior.rank+'个完成基金训练营的人！',
-            link = Util.getShareLink(),
-            desc = '快来为我点个赞吧！';
-        link = link + '&goPath=' + 'getReward';
-        link = link + '&courseId=' + sessionStorage.getItem('courseId');
-        link = link + '&name=' + senior.name;
-        link = link + '&rank=' + senior.rank;
-        WxConfig.shareConfig(shareTitle,desc,link);
+        let data = {
+            name: senior.name,
+            rank: senior.rank,
+        };
+        WxConfig.shareConfig('',data);
     },
 
     goSignUp(type) {

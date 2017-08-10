@@ -110,7 +110,7 @@ const ListenCourse = React.createClass({
                 let key = 'first_finish_vedio' + sessionStorage.getItem('courseId');
                 if (!localStorage.getItem(key)) {
                     console.log('first!!!!!!!!!!!!!!!');
-                    Statistics.postDplusData('第一次_完成_音频');
+                    Statistics.postDplusData('第一次_完成_音频',[this.state.lessons[this.state.currentPlaying].fmid]);
                     localStorage.setItem(key,true);
                 }
             }
@@ -207,20 +207,6 @@ const ListenCourse = React.createClass({
         }
     },
 
-
-
-    /**
-     * 设置分享内容
-     * @param fmid
-     * @param title
-     */
-    setShareConfig(fmid,title) {
-        let shareTitle = '小白理财FM《'+title+'》',
-            link = location.origin+location.pathname+
-                "?fmid="+fmid;
-
-        WxConfig.shareConfig(shareTitle,'',fmid,link);
-    },
 
     /**
      * 完成选择题

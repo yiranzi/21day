@@ -11,7 +11,7 @@ const Util = require('../../Util');
 //component
 const GlobalAudio = require('../../component/GlobalAudio');
 const AudioProgressBar = require('../../component/audioPlayer/AudioProgressBar');
-const ChooseBar = require('../../component/seven/ChooseBar');
+const ChooseBar = require('../../component/fund/ChooseBar');
 const FixedBg = require('../../component/course/FixedBg');
 const CourseProcessBar = require('../../component/course/CourseProcessBar');
 
@@ -111,7 +111,7 @@ const ListenCourse = React.createClass({
             //统计第一次完成音频.作为留存起点
             let key = 'first_finish_vedio' + sessionStorage.getItem('courseId');
             if (!localStorage.getItem(key)) {
-                Statistics.postDplusData('第一次_完成_音频');
+                Statistics.postDplusData('第一次_完成_音频',[this.state.lessons[this.state.currentPlaying].fmid]);
                 localStorage.setItem(key,true);
             }
         });
@@ -272,29 +272,18 @@ const ListenCourse = React.createClass({
         preStyle.visibility = this.state.previousIssue ?  'visible' : 'hidden';
         nextStyle.visibility = this.state.nextIssue ?  'visible' : 'hidden';
 
-        let styleDefault = {
-            width: '6px',
-            height: '50px',
-            backgroundColor: '#E29F66',
-            marginBottom: '10px',
-            borderRadius: '20px',
-        }
-
-        let styleChoose = {
-            backgroundColor: '#907660'
-        }
         return(
             <div id="fmView" className="fm-view">
                 <FixedBg />
                 <div className="fix-bg-space"></div>
-                <CourseProcessBar userSet = {true} styleDefault = {styleDefault} styleChoose = {styleChoose}finishElement = {this.state.finishElement} totalElement = {this.state.totalElement}/>
+                {/*{this.renderTitle()}*/}
+                <CourseProcessBar finishElement = {this.state.finishElement} totalElement = {this.state.totalElement}/>
                 {/*<span>当前点击的index{this.state.currentPlaying}</span>*/}
                 {/*<span>当前播放的fmid{this.state.currentfmid}</span>*/}
                 {/*<div>进入时,这门课程的状态时{this.props.location.query.name}</div>*/}
                 {this.renderLesson()}
-                {this.renderGiveScore()}
+                {/*{this.passLessonRender()}*/}
                 {/*{this.renderSignUp()}*/}
-                {/*{this.preLoadPic()}*/}
             </div>
         )
     },
@@ -321,6 +310,14 @@ const ListenCourse = React.createClass({
             let res2 = PreFetch.fetchRes(audio.audio,0);
             // res.then(res2);
         }
+    },
+
+
+    renderTitle(){
+        return(<div className="bg-title" style={{backgroundImage:"url('./assetsPlus/image/course/courseTitle.png')"}}>
+            <h1>{this.state.courseTitle.title}</h1>
+            <p>{this.state.courseTitle.subTitle}</p>
+        </div>)
     },
 
     renderSignUp() {
@@ -477,7 +474,7 @@ const ListenCourse = React.createClass({
                         //如果选择题都完成了1
                         if(lessonQuestions[lessonQuestions.length - 1].process && i !== lessons.length - 1) {
                             arr.push(<div className="lesson-column-line-course21">
-                                <img src = {`./assetsPlus/image/${GlobalConfig.getCourseName()}/DividingLine.png`}></img>
+                                <img style={{width: '100%'}} src = {`./assetsPlus/image/${GlobalConfig.getCourseName()}/DividingLine.png`}></img>
                             </div>);
                             // arr.push(<div style = {{backgroundImage: `url(./assetsPlus/image/${GlobalConfig.getCourseName()}/DividingLine.png)`}} className="lesson-column-line-seven"></div>);
 
@@ -495,48 +492,71 @@ const ListenCourse = React.createClass({
      * @returns {*}
      */
     renderFMBar(index, FMContent,count) {
-        let style1 = {
-            // left: worldPox * imgWidth,
-            // backgroundImage: `url(./assetsPlus/image/${GlobalConfig.getCourseName()}/fmbar-bg.png)`,
-            backgroundColor: '#FFF7E0',
-            // backgroundSize: 'cover',
-            borderTop: '3px solid #907660',
-            borderLeft: '3px solid #907660',
-            borderRight: '3px solid #907660',
-            borderRadius: '10px 10px 0 0'
-            // transform: `translateX(${worldPox}00%)`
-        };
-        let style2 = {
-            // left: worldPox * imgWidth,
-            // backgroundImage: `url(./assetsPlus/image/${GlobalConfig.getCourseName()}/fmbar-bg.png)`,
-            backgroundColor: '#FFF7E0',
-            borderTop: '3px solid #907660',
-            borderLeft: '3px solid #907660',
-            borderRight: '3px solid #907660',
-            borderBottom: '3px solid #907660',
-            borderRadius: '0 0 10px 10px'
-        };
-        let titleColor = {
-            color: '#907660',
-            fontWeight: '700'
-        }
-        let buttonImgs = [`./assetsPlus/image/${GlobalConfig.getCourseName()}/btnPressed.png`,`./assetsPlus/image/${GlobalConfig.getCourseName()}/btnPlay.png`];
-        return (<div key={count} style = {{boxShadow: '0 0 0'}}className={this.state.currentPlaying === index ? 'audio-player-on' : 'audio-player-off'}>
+        let buttonImgs = ['./assetsPlus/image/seven/btnPressed.png','./assetsPlus/image/seven/btnPlay.png'];
+        return (<div key={count} className={this.state.currentPlaying === index ? 'audio-player-on' : 'audio-player-off'}>
             <AudioPlayer
-                titleColor = {titleColor}
                 buttonImgs = {buttonImgs}
-                bgImg = {style1}
                 content = {FMContent}
                 playingIndex = {this.state.currentPlaying}//控制暂停按钮的逻辑11
                 audioIndex={index}
+                currentPlaying = {this.state.currentPlaying === index ? true : false}
                 audioCallBack = {this.OnAudioButton}/>
+
             <AudioProgressBar
-                bgImg = {style2}
-                backColor = {['#907660','#907660','#907660','#FFF7E0']}
                 audioIndex={this.state.lessons[index].fmid} //控制播放哪个音频
                 playingIndex = {this.state.currentfmid}/>
         </div>)
     },
+
+    // /**
+    //  * 渲染播放音频列表
+    //  * @returns {*}
+    //  */
+    // renderFMBar(index, FMContent,count) {
+    //     let style1 = {
+    //         // left: worldPox * imgWidth,
+    //         // backgroundImage: `url(./assetsPlus/image/${GlobalConfig.getCourseName()}/fmbar-bg.png)`,
+    //         backgroundColor: '#FFF7E0',
+    //         // backgroundSize: 'cover',
+    //         borderTop: '3px solid #907660',
+    //         borderLeft: '3px solid #907660',
+    //         borderRight: '3px solid #907660',
+    //         borderRadius: '10px 10px 0 0'
+    //         // transform: `translateX(${worldPox}00%)`
+    //     };
+    //     let style2 = {
+    //         // left: worldPox * imgWidth,
+    //         // backgroundImage: `url(./assetsPlus/image/${GlobalConfig.getCourseName()}/fmbar-bg.png)`,
+    //         backgroundColor: '#FFF7E0',
+    //         borderTop: '3px solid #907660',
+    //         borderLeft: '3px solid #907660',
+    //         borderRight: '3px solid #907660',
+    //         borderBottom: '3px solid #907660',
+    //         borderRadius: '0 0 10px 10px'
+    //     };
+    //     let titleColor = {
+    //         color: '#907660',
+    //         fontWeight: '700'
+    //     }
+    //     let buttonImgs = [`./assetsPlus/image/${GlobalConfig.getCourseName()}/btnPressed.png`,`./assetsPlus/image/${GlobalConfig.getCourseName()}/btnPlay.png`];
+    //     return (<div key={count} style = {{boxShadow: '0 0 0'}}className={this.state.currentPlaying === index ? 'audio-player-on' : 'audio-player-off'}>
+    //         <AudioPlayer
+    //             titleColor = {titleColor}
+    //             buttonImgs = {buttonImgs}
+    //             bgImg = {style1}
+    //             content = {FMContent}
+    //             playingIndex = {this.state.currentPlaying}//控制暂停按钮的逻辑11
+    //             audioIndex={index}
+    //             audioCallBack = {this.OnAudioButton}/>
+    //         <AudioProgressBar
+    //             bgImg = {style2}
+    //             backColor = {['#907660','#907660','#907660','#FFF7E0']}
+    //             audioIndex={this.state.lessons[index].fmid} //控制播放哪个音频
+    //             playingIndex = {this.state.currentfmid}/>
+    //     </div>)
+    // },
+
+
 
     /**
      * 渲染选择题

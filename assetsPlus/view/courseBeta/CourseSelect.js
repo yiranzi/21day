@@ -6,7 +6,7 @@ const User = require('../../User');
 
 const Config = require('../../Config');
 const DoneToast = require('../../component/DoneToast');
-const LessonBar = require('../../component/fund/LessonBar');
+const LessonBar = require('../../component/courseBeta/LessonBar');
 const FixedBg = require('../../component/course/FixedBg');
 const IconBar = require('../../component/course/IconBar');
 
@@ -67,9 +67,6 @@ const CourseSelect = React.createClass({
     },
 
     init() {
-        if (!User.getUserInfo().subscribe) {
-            DoneToast.show('赶紧关注公众号"长投"，"长投"，"长投"，每天陪你一起学习哟~');
-        }
         //0.获取听课列表
         this.getCourseList();
         //1.获取qq群信息
@@ -365,6 +362,7 @@ const CourseSelect = React.createClass({
 
     //点击成就卡回调函数
     cbfSeeReward(course, index) {
+        return;
         let status = course.courseStatus;
         let courseId = this.state.courseList[index].id;
         switch (status.reward) {

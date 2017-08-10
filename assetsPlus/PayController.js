@@ -238,10 +238,10 @@ class PayController {
                     }
                 );
                 break;
-            case GlobalConfig.getBetaInfo().courseId:
+            case GlobalConfig.getBetaInfo().courseId.toString():
                 jsonData = JSON.stringify(
                     {
-                        "body":'基金课报名' ,
+                        "body":'股票课测试报名' ,
                         "deal": {
                             "items": [
                                 {
