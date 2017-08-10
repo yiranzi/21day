@@ -28,10 +28,14 @@ class MyStorage {
         // for(let i = 0; i<max+1; i++) {
         //     courseInfo[courseList[i]] = {};
         // }
-
-        for(let i = 0; i< GlobalConfig.getCourseIdList().length; i++) {
-            courseInfo[i] = {};
+        let courseList = GlobalConfig.getCourseIdList();
+        for(let i = 0; i< courseList.length; i++) {
+            courseInfo[courseList[i]] = {};
         }
+        //
+        // for(let i = 0; i< GlobalConfig.getCourseIdList().length; i++) {
+        //     courseInfo[i] = {};
+        // }
     }
 
     /**

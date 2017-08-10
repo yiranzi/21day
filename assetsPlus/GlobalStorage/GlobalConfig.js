@@ -2,8 +2,9 @@
  * Created by ichangtou on 2017/7/21.
  */
 //课程id表
-    //添加课程请增加 数组 和 课程信息
-const courseIdList = [0,1,2];
+    //1添加课程请增加 数组 和 课程信息 和 分享
+const courseIdList = [0,1,2,1003];
+//随便写的临时的
 // const couseIdNameMap = new Map();
 // const couseIdName = {};
 // `./assetsPlus/image/${GlobalConfig.getCourseName()}/course_select_title.png`
@@ -60,6 +61,11 @@ const courseInfo = {
         router: '/fund',
         shareTitle: '14天带你躺赢基金定投！一天10分钟，手把手教你！',
         shareDesc: '宝宝618不再担心没钱买买买啦',
+    },
+    '1003':{
+        name: 'stock0',
+        price: [59,59],
+        title: '股票课',
     },
 };
 
@@ -192,6 +198,14 @@ class GlobalConfig {
                     link: `&goPath=${GlobalConfig.getRouterInfo('pay')}&courseId=${sessionStorage.getItem('courseId')}&getWhere=share`,
                 }
             },
+            '1003': {
+                //默认到报名页
+                'default': {
+                    title: '我是股票课',
+                    desc: '只要一顿早餐的钱，点击报名！',
+                    link: `&goPath=${GlobalConfig.getRouterInfo('pay')}&courseId=${sessionStorage.getItem('courseId')}&getWhere=share`,
+                },
+            },
         };
 
         let getCourseDefault = shareInfo[courseId];
@@ -206,11 +220,14 @@ class GlobalConfig {
         return finalResult;
     }
 
+    //获得课程配置常量
     static getCourseInfo(courseId) {
         // let nameKey = couseIdNameMap.get(courseId);
         return courseInfo[courseId];
     }
 
+
+    //常用名换router路径
     static getRouterInfo(key) {
         let result = routerInfo[key];
         if(result) {
@@ -220,6 +237,7 @@ class GlobalConfig {
         }
     }
 
+    //数据上报的字典对应
     static getRouterName(key) {
         let result = pageToName[key];
         if(result) {
@@ -234,6 +252,10 @@ class GlobalConfig {
     }
 
     static getCourseIdList() {
+        let courseIdList = [];
+        for (let i in courseInfo) {
+            courseIdList.push(i);
+        }
         return courseIdList;
     }
 }

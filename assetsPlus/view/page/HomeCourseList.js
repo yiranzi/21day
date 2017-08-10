@@ -53,13 +53,14 @@ const HomeCourseList = React.createClass({
         } else {
             index++;
         }
-        let url = `./assetsPlus/image${path}/join-content-${index}.png`;
+        let url = `./assetsPlus/image/${path}/join-content-${index}.png`;
         PreFetch.fetchSerialRes(url).then(this.preFetchBg.bind(this,index,path));
     },
 
     preFetchRes(courseId) {
+        //针对这门课预加载.测试
         if(courseId === 2) {
-            let path = GlobalConfig.getCourseInfo(courseId).router;
+            let path = GlobalConfig.getCourseInfo(courseId).name;
             this.preFetchBg(-1,path);
         }
 
@@ -75,11 +76,11 @@ const HomeCourseList = React.createClass({
     getCourseList() {
         let courseList = GlobalConfig.getCourseIdList();
         for( let i = 0; i<courseList.length; i++) {
-            // if(courseList[i]!==2) {
+            if(courseList[i]!==2 && courseList[i]<100) {
                 console.log(courseList[i]);
                 this.state.courseStatus[courseList[i]] = {};
                 this.state.courseList.push(courseList[i]);
-            // }
+            }
         }
         this.setState({courseList: this.state.courseList})
     },

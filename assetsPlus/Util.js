@@ -490,25 +490,25 @@ class Util {
      * 获取分享标题
      * @returns {string}
      */
-    static getShareTitle() {
-        let courseId = sessionStorage.getItem('courseId');
-        if(!courseId) {
-            courseId = -1;
-        }
-        return GlobalConfig.getCourseInfo(courseId).shareTitle;
-    }
+    // static getShareTitle() {
+    //     let courseId = sessionStorage.getItem('courseId');
+    //     if(!courseId) {
+    //         courseId = -1;
+    //     }
+    //     return GlobalConfig.getCourseInfo(courseId).shareTitle;
+    // }
 
-    /**
-     * 获取分享描述
-     * @returns {*}
-     */
-    static getShareDesc() {
-        let courseId = sessionStorage.getItem('courseId');
-        if(!courseId) {
-            courseId = -1;
-        }
-        return GlobalConfig.getCourseInfo(courseId).shareDesc;
-    }
+    // /**
+    //  * 获取分享描述
+    //  * @returns {*}
+    //  */
+    // static getShareDesc() {
+    //     let courseId = sessionStorage.getItem('courseId');
+    //     if(!courseId) {
+    //         courseId = -1;
+    //     }
+    //     return GlobalConfig.getCourseInfo(courseId).shareDesc;
+    // }
 
     // /**
     //  * 获取普通的标题

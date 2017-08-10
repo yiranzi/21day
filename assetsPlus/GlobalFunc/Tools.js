@@ -113,7 +113,7 @@ class Tools {
 
     static setCourseUrl() {
         let courseId = sessionStorage.getItem('courseId');
-        let first = GlobalConfig.getRouterInfo(courseId);
+        let first = GlobalConfig.getCourseInfo(courseId).name;
         if(first !== null) {
             first = '/' + first;
         } else {
