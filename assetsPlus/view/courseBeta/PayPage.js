@@ -232,7 +232,7 @@ var PayPage = React.createClass({
         console.log('click');
         if(User.getUserInfo().userId){
             //微信支付
-            PayController.wechatPay();
+            PayController.wechatPay(1);
         }else{
             this.scrollToTop();
             window.dialogAlertComp.show('提示','重新进入一下再试试，还不行的话可以报告管理员.手机号：15652778863','知道啦',()=>{},'',false);

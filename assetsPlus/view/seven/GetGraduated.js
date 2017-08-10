@@ -144,7 +144,7 @@ const GetGraduated = React.createClass({
 
 
     handleClick() {
-        location.hash = "/select";
+        Tools.GoRouter('select') ;
     },
 
     // + '&code=' + Util.getUrlPara('code')

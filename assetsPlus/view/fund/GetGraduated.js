@@ -41,7 +41,6 @@ const GetGraduated = React.createClass({
     componentWillMount() {
         MyStorage.whenEnterPage('graduate');
 
-        console.log('get reward');
         let userId;
         this.state.senior.rank = Util.getUrlPara('rank');
         let isMine = this.props.params.mine;
@@ -89,13 +88,8 @@ const GetGraduated = React.createClass({
         this.state.randomInit = (this.state.useTime[0] + (15 - this.state.senior.rank % 15) * this.state.randomInit ).toFixed(2);
     },
 
-    //重置分享链接
-    componentWillUnmount () {
-        WxConfig.shareConfig();
-    },
 
     componentDidMount () {
-        console.log('didmount');
         const element = document.getElementById('need-draw');
         const width = element.offsetWidth;
         const height = element.offsetHeight;
@@ -120,12 +114,12 @@ const GetGraduated = React.createClass({
                                 base64 => {
                                     this.setState({
                                         shareImgUrl: base64,
-                                        // isNoteCardDomShow: false
+                                        isNoteCardDomShow: false
                                     });
                                     Loading.hideLoading()
                                 }
                             )
-                        },1000)
+                        },200)
                     });
                 });
             }
@@ -155,7 +149,7 @@ const GetGraduated = React.createClass({
             this.setState({isButtonShow: 'true'});
         } else {
             // Material.postData('下线_点击跳转_getGraduated');
-            location.hash = "/payPage";
+            Tools.GoRouter('payPage');
         }
     },
 
@@ -197,7 +191,8 @@ const GetGraduated = React.createClass({
         return(
             <div>
                 <div id = 'need-draw' className="get-graduated" style = {{backgroundImage: 'url("./assetsPlus/image/course/graduated.png")'}}>
-                    <img className="head" src={this.state.senior.headImg}/>
+                    {/*<img className="head" src={this.state.senior.headImg}/>*/}
+                    <div className="head"></div>
                     <div className="title">
                         <p>
                             14天，<span className="name">{this.state.senior.name}</span>同学<br/>

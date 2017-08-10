@@ -90,7 +90,7 @@ class PayController {
             PayController.getOrder(null, 0, true,orderInfo);
 
         }else {
-            PayController.getOrder();
+            PayController.getOrder(null,null,false,orderInfo);
         }
 
     }
@@ -146,9 +146,6 @@ class PayController {
         let period;
         if(orderInfo) {
             period = orderInfo;
-            if(sessionStorage.getItem('courseId') === 1000 ) {
-                period = '1';
-            }
         }
 
         userInfo = userInfo || window.User.getUserInfo();
