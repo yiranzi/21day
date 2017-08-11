@@ -164,6 +164,14 @@ const ListenCourse = React.createClass({
 
     calcInit() {
         let allLesson = this.state.lessons;
+        if(allLesson.length === 1) {
+            // if(allLesson[0].process) {
+            //     this.setState({clickStatus: false});
+            // } else {
+            //     this.setState({clickStatus: true});
+            // }
+            return
+        };
         let lastLesson = allLesson[allLesson.length - 1].subs;
         //1完成全部选择题后
         if(lastLesson[lastLesson.length - 1].process === true) {
@@ -178,6 +186,9 @@ const ListenCourse = React.createClass({
     //计算进度
     calcProcess() {
         let allLesson = this.state.lessons;
+        if(allLesson.length === 1) {
+            return;
+        }
         for(let i = 0; i<allLesson.length; i++){
             this.state.totalElement++;
             if(allLesson[i].subs[allLesson[i].subs.length - 1].process === true) {
@@ -193,6 +204,9 @@ const ListenCourse = React.createClass({
     fixProcess() {
         //如果最后一课已经完成
         let allLesson = this.state.lessons;
+        if(allLesson.length === 1) {
+            return;
+        }
         let lastLesson = allLesson[allLesson.length - 1].subs;
         //1完成全部选择题后
         if(lastLesson[lastLesson.length - 1].process === true) {
@@ -458,6 +472,10 @@ const ListenCourse = React.createClass({
 
         OUT:
             for (let i = 0;i < lessons.length; i++) {
+                if(lessons.length === 1) {
+                    arr.push(this.renderFMBar(i, lessons[i],count));
+                    break;
+                }
                 //如果满足...渲染FM.无条件渲染fm
                 if(i === 0 || lessons[i-1].subs[(lessons[i-1].subs.length) - 1].process) {
                     arr.push(this.renderFMBar(i, lessons[i],count));

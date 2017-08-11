@@ -1,7 +1,8 @@
 /**
  * Created by lip on 2016/6/3.
  */
-//v810
+//v811
+//v2.2
 
 var $ = window.$ = require('jquery');
 var React = require('react');
@@ -49,8 +50,8 @@ $(document).ready(() => {
             alert('请复制地址并在微信中打开');
             new Dimensions().init();
             //1设置固定id
-            // User.setUserIdTest('9d00b607f691432dbab277e028f7fe64');
-            User.setUserIdTest('1f695351270d463181ab67d0cba12d9a');//自己的
+            User.setUserIdTest('9d00b607f691432dbab277e028f7fe64');
+            // User.setUserIdTest('1f695351270d463181ab67d0cba12d9a');//自己的
             //2设置分享
             sessionStorage.setItem('wxshare',true);
             sessionStorage.setItem('wxshare',true);
