@@ -69,7 +69,7 @@ const courseInfo = {
     },
     '1003':{
         name: 'courseBeta',
-        price: [5.9,5.9],
+        price: [69,69],
         title: 'beta',
     },
 };
@@ -142,8 +142,8 @@ class GlobalConfig {
             '1003': {
                 //默认到报名页
                 'default': {
-                    title: '我是股票课内测版',
-                    desc: '欢迎参加股票课',
+                    title: '邀请你参加最新的股票课内测版',
+                    desc: '欢迎小伙伴多多参与',
                     link: `&goPath=${GlobalConfig.getRouterInfo('pay')}&courseId=${sessionStorage.getItem('courseId')}&getWhere=share`,
                 },
             },

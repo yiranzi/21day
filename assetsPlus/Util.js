@@ -42,7 +42,7 @@ const CHARGE_INDEX = 0; //收费部分下标（0~N）
 
 const CURRENT_BATCH = 1; //当前期数
 const END_TIME = [2017,6,16,9,0,0]; // TODO roy 截止时间，需要和后台同步
-const USER_NUMBER = 500; // TODO roy 活动报名总人数
+const USER_NUMBER = 50; // TODO roy 活动报名总人数
 
 let coursePayPrice;
 

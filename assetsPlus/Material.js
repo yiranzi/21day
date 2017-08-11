@@ -382,10 +382,12 @@ class Material {
      * @returns {*}
      */
     static getRegistered() {
+        console.log('123123123')
+        let courseId = sessionStorage.getItem('courseId');
         const Util = require('./Util');
         const User = require('./User');
 
-        let apiUrl = Util.getAPIUrl('get_registered').replace('{courseId}',COURSE_ID);
+        let apiUrl = Util.getAPIUrl('get_registered').replace('{courseId}',courseId);
 
         return $.ajax({
             url: apiUrl,

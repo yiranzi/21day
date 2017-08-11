@@ -91,28 +91,30 @@ var PayPage = React.createClass({
                     return
                 }
                 Loading.showLoading('获取报名信息...');
-                //先ajax更新这个数据(花费少量时间)
-                Actions.ifCourseSignUp(courseId);
-                //action & get
-                //这边的结果完成后get
-                Tools.fireRaceCourse(courseId).then((value)=>{
-                    Loading.hideLoading();
-                    // alert('start' + value.qqGroup);
-                    if(value.pay){
-                        Statistics.postDplusData('报名_成功');
-                        Statistics.postDplusData('支付_回调',[true]);
-                        this.state.hasPaid = true;
-                        this.setState({
-                            hasPaid: true, //已报名
-                        });
-                        this.state.hasPaid = true;
-                        this.checkSubscribe();
-                    } else {
-                        Statistics.postDplusData('报名_失败');
-                        Statistics.postDplusData('支付_回调',[false]);
-                        outBool = false;
-                    }
-                })
+                //报名后片刻插表
+                setTimeout(()=>{
+                    //先ajax更新这个数据(花费少量时间)
+                    Actions.ifCourseSignUp(courseId);
+                    //action & get
+                    //这边的结果完成后get
+                    Tools.fireRaceCourse(courseId).then((value)=>{
+                        Loading.hideLoading();
+                        // alert('start' + value.qqGroup);
+                        if(value.pay){
+                            Statistics.postDplusData('报名_成功');
+                            Statistics.postDplusData('支付_回调',[true]);
+                            this.state.hasPaid = true;
+                            this.setState({
+                                hasPaid: true, //已报名
+                            });
+                            this.checkSubscribe();
+                        } else {
+                            Statistics.postDplusData('报名_失败');
+                            Statistics.postDplusData('支付_回调',[false]);
+                            outBool = false;
+                        }
+                    })
+                },500);
             });
         }
         //3设置下线和价格
@@ -181,12 +183,12 @@ var PayPage = React.createClass({
      * 请求剩余报名人数和报名时间是否截止
      */
     signUpNumber(){
-        Material.getRegistered21().done((result) =>{
+        Material.getRegistered().done((result) =>{
             console.log(result);
             //设置报名时间
             result.time = false;// 一定可以报名
             //设置剩余人数
-            let restNum = Util.getUserNumber() - result.leftQuota;
+            let restNum = Util.getUserNumber() - result.number;
             if(!result.time && (restNum > 0)) {
                 this.state.ifCanPaid = true;
             }
@@ -206,7 +208,8 @@ var PayPage = React.createClass({
                     ifCanPaid: true,
                 });
             }
-            let timeArray = Util.TimeToArray(result.endTime);
+            // let timeArray = Util.TimeToArray(result.endTime);
+            let timeArray = [2017,8,16,9,0,0];
             console.log('!!!!!!!!' + timeArray);
             this.setState({
                 endTime: timeArray,
@@ -290,74 +293,47 @@ var PayPage = React.createClass({
 
     render(){
         return (
-            <div className="pay_page_course21">
+            <div className="pay_page_fund">
                 <FixedBg/>
-                <ModalMask type = {true} cbfClick = {()=>{this.setState({ifBgShow: false})}} isShow = {this.state.ifBgShow} imageBg = {`./assetsPlus/image/${GlobalConfig.getCourseName()}/paypage_share.png`}/>
-                <div className={"intro-img"}>
-                    {this.renderBg()}
-                    <div className="fund-status">
-                        <Timeout hasEnded={this.state.time} finalDate={this.state.endTime}/>
-                        <span className="fund-status-number">剩余名额：{this.state.ifCanPaid ? this.state.num : 0}</span>
+                <div className="fund-join-page">
+                    <img src= {`./assetsPlus/image/${GlobalConfig.getCourseName()}/join-title.png`} alt="" className="fund-join-title"/>
+                    <div className="fund-join-content-box">
+                        <img src={`./assetsPlus/image/${GlobalConfig.getCourseName()}/join-content.png`} alt="" className="fund-join-content"/>
+                        <div className="fund-status">
+                            <Timeout hasEnded={this.state.time} finalDate={this.state.endTime}/>
+                            <span className="fund-status-number">剩余名额：{this.state.ifCanPaid ? this.state.num : 0}</span>
+                        </div>
                     </div>
+                    {this.bottomBar()}
+                    <div className="global-empty-div" style={{height: 70}}></div>
                 </div>
-                {this.bottomBar()}
-
-
-                {/*<div className="fund-join-page">*/}
-                    {/*/!*<img src="./assetsPlus/image/fund/join-title.png" alt="" className="fund-join-title"/>*!/*/}
-                    {/*<div className="fund-join-content-box">*/}
-                        {/*<img src="./assetsPlus/image/course21/join-content.png" alt="" className="fund-join-content"/>*/}
-                        {/*<div className="fund-status">*/}
-                            {/*<Timeout hasEnded={this.state.time} finalDate={this.state.endTime}/>*/}
-                            {/*<span className="fund-status-number">剩余名额：{this.state.ifCanPaid ? this.state.num : 0}</span>*/}
-                        {/*</div>*/}
-                    {/*</div>*/}
-
-                    {/*<div className="global-empty-div" style={{height: 70}}>123</div>*/}
-                {/*</div>*/}
             </div>
         )
     },
 
     bottomBar() {
-        return(<div className="global-div-absolute">
-            <div className="join-and-share">
-                {/*<div className="mid">*/}
-                    {/*{this.renderButtonSignUp()}*/}
-                    {/*{this.renderButtonShare()}*/}
-                {/*</div>*/}
-                <div className="left">
-                    {this.renderButtonSignUp()}
-                </div>
-                <div className="right" onClick={this.onButtonShare}>
-                    {this.renderButtonShare()}
-                </div>
+        return(<div className="global-div-fixed">
+            <div className="fund-join-btns">
+                {/*{this.buttonLesson()}*/}
+                {this.buttonSignUp()}
             </div>
         </div>)
     },
 
-    renderButtonSignUp() {
-        if(!this.state.hasPaid){
-            //报名按钮
-            return(
-                <div className="button" onClick={this.clickHandler}>
-                    <img src={'./assetsPlus/image/course21/button_payPage.png'}/>
-                    <span>{this.state.hasSenior ? "分享优惠价" : "我要报名"}（{this.state.buttonPrice}元）</span>
-                </div>);
-            //查看毕业证按钮
+    buttonLesson() {
+        return(<span className="btn try" onClick={this.freeLesson}>试听</span>)
+    },
+
+    buttonSignUp() {
+        if(this.state.ifCanPaid){
+            return(<span className="btn join" style = {{lineHeight: '60px',width: '100%'}} onClick={this.clickHandler}>{this.state.hasSenior ? "分享优惠价" : "我要报名"}（{this.state.buttonPrice}元）</span>)
+        } else if(this.state.hasPaid){
+            return(<span className="btn join" style = {{lineHeight: '60px',width: '100%'}} onClick={this.goCourseSelect}><span style={{lineHeight: '2.8rem'}}>这就去听课</span></span>)
         } else {
-            return(
-                <div className="button" onClick={this.goCourseSelect}>
-                    <img src={'./assetsPlus/image/course21/button_payPage.png'}/>
-                    <span >这就去听课</span>
-                </div>);
+            return(<span className="btn join" style = {{lineHeight: '60px',width: '100%'}}><span style={{lineHeight: '2.8rem'}}>敬请期待新的股票课</span></span>)
         }
-    },
 
-    renderButtonShare() {
-        return(<img src={'./assetsPlus/image/course21/share_payPage.png'}/>)
     },
-
     goCourseSelect () {
         //TODO 跳转到成就卡界面
         Statistics.postDplusData('点击_开课证_按钮');
