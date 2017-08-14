@@ -184,7 +184,7 @@ var PayPage = React.createClass({
             //设置报名时间
             result.time = false;// 一定可以报名
             //设置剩余人数
-            let restNum = Util.getUserNumber() - result.leftQuota;
+            let restNum = result.leftQuota;
             if(!result.time && (restNum > 0)) {
                 this.state.ifCanPaid = true;
             }

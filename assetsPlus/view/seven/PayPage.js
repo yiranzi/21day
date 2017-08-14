@@ -19,6 +19,8 @@ const FixedBg = require('../../component/course/FixedBg');
 const Tools = require('../../GlobalFunc/Tools');
 const MassageBoard = require('../../component/common/MessageBoard');
 
+const Actions = require('../../GlobalStorage/Actions');
+
 var PayPage = React.createClass({
 
     getInitialState(){
@@ -152,7 +154,7 @@ var PayPage = React.createClass({
      */
     signUpNumber(){
         Material.getRegistered().done((result) => {
-            let restNum = Util.getUserNumber() - result.number;
+            let restNum = 500 - result.number;
             if (restNum <= 0){
                 this.setState({
                     num: 0,
