@@ -1043,6 +1043,82 @@ class Material {
         return (this.ajaxSomeUrl(url,type));
     }
 
+    //获取开课信息
+    static getHomeworkByDay(dayId) {
+        let url = Util.getAPIUrl('get-day-homework').replace("{dayId}",dayId);
+        let type = 'get';
+        return (this.ajaxSomeUrl(url,type));
+    }
+
+    //获取开课信息
+    static postHomeworkAnswerById(itemIdArray,answerArray) {
+
+        let answers = [];
+        for(let i = 0; i < itemIdArray.length; i++) {
+            answers[i] = {};
+            answers[i].answer = answerArray[i];
+            answers[i].questionId = itemIdArray[i];
+        }
+
+        let url = Util.getAPIUrl('post-day-homework');
+        var User = require('./User');
+        const Tools = require('./GlobalFunc/Tools');
+        let userInfo = User.getUserInfo();
+        return new Promise((resolve,reject)=>{
+            let answersInner = answers;
+            Tools.fireRace(userInfo.userId,"OAUTH_SUCCESS").then(()=>{
+                //批量提交
+                let jsonData = JSON.stringify({
+                    userId: userInfo.userId,
+                    answers: answersInner,
+                });
+                this.ajaxPostSomeUrl(url,jsonData).then((data)=>{
+                    resolve(data);
+                });
+            });
+        })
+
+    }
+
+    static ajaxPostSomeUrl(url,json) {
+        //接口合并未上线
+        // courseId = 1;
+
+        var User = require('./User');
+        const Util = require('./Util'),
+            apiUrl = url;
+        let userInfo = User.getUserInfo();
+        const Tools = require('./GlobalFunc/Tools');
+        //改成异步
+        return new Promise((resolve,reject)=>{
+            Tools.fireRace(userInfo.userId,"OAUTH_SUCCESS").then(()=>{
+                let userInfo = User.getUserInfo();
+                let jqxhr = $.ajax(
+                    {
+                        data: json,
+                        url: apiUrl,
+                        type: 'post',
+                        cache: false,
+                        contentType: 'application/json;charset=utf-8',
+                        headers: {
+                            Accept: 'application/json'
+                        },
+                        beforeSend: (request)=>{
+                            request.setRequestHeader("X-iChangTou-Json-Api-Token", Util.getApiToken());
+                            request.setRequestHeader("X-iChangTou-Json-Api-User", userInfo.userId);
+                        }
+                    }
+                );
+                jqxhr.done((data)=>{
+                    resolve(data)
+                });
+                jqxhr.fail((data)=>{
+                    reject(data)
+                })
+            })
+        })
+    }
+
     static ajaxSomeUrl(url,type) {
         //接口合并未上线
         // courseId = 1;

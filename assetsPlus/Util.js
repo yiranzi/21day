@@ -146,6 +146,8 @@ const API_URL_GROUP = {
     //记录下线打开上线的分享链接
     'post_record_info': '21enter/parent-share/{parentId}',
     'start_class_21': '21enter/whether/class-begin',
+    'get-day-homework': '21homework/get-homework/{dayId}',//获取作业信息
+    'post-day-homework': '21homework/submit-homework',//获取作业信息
 
     //基金课
     'get_qq_info':'ctplus/qq-details/{courseId}',

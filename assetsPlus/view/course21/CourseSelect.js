@@ -238,9 +238,9 @@ const CourseSelect = React.createClass({
                     );
 
                     //如果有题目
-                    if (true) {
+                    if (courseList[i].homework) {
                         //得到题目id
-                        arr.push( <div className="lesson-bar-course21" style = {{height: '45px'}} onClick={this.cbfGoHomeWork.bind(this,1)}>
+                        arr.push( <div className="lesson-bar-course21" style = {{height: '45px'}} onClick={this.cbfGoHomeWork.bind(this,i)}>
                             <img style = {{width: '100%'}} src={`./assetsPlus/image/${GlobalConfig.getCourseName()}/course_select_begin.png`} />
                         </div>)
                     }
@@ -368,8 +368,9 @@ const CourseSelect = React.createClass({
 
 
     cbfGoHomeWork(index) {
+        let dayId = this.state.courseList[index].id;
         Statistics.postDplusData('点击_作业_列表',[index,status.enter]);
-        Tools.GoRouter('homework','/' + index );
+        Tools.GoRouter('homework','/' + dayId );
     },
 
     //跳转到听课界面
