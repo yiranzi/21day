@@ -28,6 +28,8 @@ const PreFetch = require('../../GlobalFunc/PreFetch');
 
 const Tools = require('../../GlobalFunc/Tools');
 
+const MassageBoard = require('../../component/common/MessageBoard');
+
 var isMoving = 0;
 
 const ListenCourse = React.createClass({
@@ -409,8 +411,10 @@ const ListenCourse = React.createClass({
             arr.push(<div style = {{textAlign: 'center',marginBottom: '10px'}}>
                 <img src = {`./assetsPlus/image/${GlobalConfig.getCourseName()}/share_payPage.png`} onClick={this.shareButton} style = {{width: '64px'}}/>
             </div>);
-            return arr;
+
         }
+        arr.push(<MassageBoard userLists = {this.state.userComments}/>)
+        return arr;
     },
 
     shareButton() {

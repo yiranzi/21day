@@ -91,7 +91,7 @@ const CourseBegin = React.createClass({
 
     render() {
         return(
-            <div className="home-work-21">
+            <div style = {{backgroundColor: '#FFE69B'}}className="home-work-21">
                 <FixedBg/>
                 <div className="content">
                     <div className="title">{this.renderTitle()}</div>
@@ -160,7 +160,7 @@ const CourseBegin = React.createClass({
         let commentStyle = {
             position: 'relative',
             border: '2px solid #907660',
-            width: '353px',
+            width: '100%',
             height: '237px',
             borderRadius: '10px',
             backgroundColor: '#FFF7E0',
@@ -230,7 +230,8 @@ const CourseBegin = React.createClass({
             answerArray.push(answer);
         }
         Material.postHomeworkAnswerById(itemIdArray,answerArray).then((data)=>{
-            console.log(data)
+            window.dialogAlertComp.show('提交成功','您已提交，老师会尽早为您批改的！','知道啦',()=>{},'',false);
+            this.setState({homeWorkStatus: doing});
         });
 
     },
