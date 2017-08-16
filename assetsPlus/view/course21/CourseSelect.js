@@ -16,8 +16,6 @@ const Tools = require('../../GlobalFunc/Tools');
 
 
 const CourseSelect = React.createClass({
-
-
     getInitialState: function() {
         return {
             courseList: {},
@@ -57,7 +55,6 @@ const CourseSelect = React.createClass({
 
     componentWillMount() {
         MyStorage.whenEnterPage('select');
-        console.log('render ocurselist')
         let courseId = sessionStorage.getItem('courseId');
         Tools.fireRaceCourse(courseId).then((value)=>{
             if(value.qqGroup) {
@@ -240,6 +237,19 @@ const CourseSelect = React.createClass({
                         </div>
                     );
 
+                    //如果有题目
+                    if (true) {
+                        //得到题目id
+                        arr.push( <div className="lesson-bar-course21" style = {{height: '45px'}} onClick={this.cbfGoHomeWork.bind(this,1)}>
+                            <img style = {{width: '100%'}} src={`./assetsPlus/image/${GlobalConfig.getCourseName()}/course_select_begin.png`} />
+                        </div>)
+                    }
+                    //设定题目
+                        //数据
+                        //样式
+                        //操作
+                    //渲染题目
+
                 } else break;
                 // switch (courseStatus) {
                 //     //没有达到听课时间
@@ -276,6 +286,19 @@ const CourseSelect = React.createClass({
         }
         Statistics.postDplusData('点击_社群_按钮');
 
+    },
+
+    renderHomeWork() {
+
+    },
+
+    addCourseStatus() {
+        let courseStatus = {
+            see: false,
+            enter: '',
+            allFinish: false,
+            reward: 'not-get',
+        };
     },
 
     calcCourseStatus(course, index) {
@@ -343,9 +366,14 @@ const CourseSelect = React.createClass({
         return courseStatus.see;
     },
 
+
+    cbfGoHomeWork(index) {
+        Statistics.postDplusData('点击_作业_列表',[index,status.enter]);
+        Tools.GoRouter('homework','/' + index );
+    },
+
     //跳转到听课界面
     cbfGoLesson(course, index) {
-        console.log(course);
         let status = course.courseStatus;
         let dayId = this.state.courseList[index].id;
         let type = course.type;

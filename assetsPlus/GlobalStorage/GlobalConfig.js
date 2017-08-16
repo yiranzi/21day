@@ -96,6 +96,7 @@ const routerInfo = {
     'begin': 'courseBegin',
     'reward': 'getReward',
     'graduate': 'getGraduated',
+    'homework': 'homeWork',
 };
 
 //为了数据上报
@@ -113,6 +114,7 @@ const pageToName = {
     'courseBegin': '开课证_页面',
     'getReward': '成就卡_页面',
     'getGraduated': '毕业证_页面',
+    'homework': '简答题_页面',
 };
 
 

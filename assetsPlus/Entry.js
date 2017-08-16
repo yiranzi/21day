@@ -1,8 +1,8 @@
 /**
  * Created by lip on 2016/6/3.
  */
-//v811
-//v2.2
+//v815.10
+//v2.1
 
 var $ = window.$ = require('jquery');
 var React = require('react');
@@ -50,10 +50,10 @@ $(document).ready(() => {
             alert('请复制地址并在微信中打开');
             new Dimensions().init();
             //1设置固定id
-            User.setUserIdTest('9d00b607f691432dbab277e028f7fe64');
+            // User.setUserIdTest('9d00b607f691432dbab277e028f7fe64');
             // User.setUserIdTest('1f695351270d463181ab67d0cba12d9a');//自己的
+            User.setUserIdTest('8ad44530fc9f4054a4bfd3ec56bc833f');//自己的测试
             //2设置分享
-            sessionStorage.setItem('wxshare',true);
             sessionStorage.setItem('wxshare',true);
             let goWhere = BeforeStart.init();
             ReactDom.render(<InnerRouter goWhere = {goWhere}/>, $('#root')[0]);

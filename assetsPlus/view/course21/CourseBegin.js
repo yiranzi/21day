@@ -83,7 +83,7 @@ const CourseBegin = React.createClass({
                 this.state.senior.headImg = result.headImage;
                 this.setState({senior: this.state.senior});
             })
-            this.state.senior.name = '测试代码123';
+            this.state.senior.name = '';
             this.state.senior.headImg = '';
             this.setState({senior: this.state.senior});
 
@@ -194,38 +194,81 @@ const CourseBegin = React.createClass({
 
     // style = {fullbg}
     render() {
-        let style = {
-            display: 'flex',
-            flexWrap: 'wrap',
-            justifyContent: 'center',
-            alignItems: 'center',
-            fontSize: '20px',
-            width: '100%',
-            height: '100%',
-            backgroundColor: 'rgba(144,118,96,0.9)'
-        };
-
+        // let style = {
+        //     display: 'flex',
+        //     flexWrap: 'wrap',
+        //     justifyContent: 'center',
+        //     alignItems: 'center',
+        //     fontSize: '20px',
+        //     width: '100%',
+        //     height: '100%',
+        //     backgroundColor: 'rgba(144,118,96,0.9)'
+        // };
         return(
             <div className="get-begin-course21">
                 <FixedBg/>
-                <ModalMask type = {false} cbfClick = {this.cbfModalClick} isShow = {this.state.ifBgShowSign} imageBg = {`./assetsPlus/image/${GlobalConfig.getCourseName()}/paypage_share.png`}>
-                    <div style = {style}>
-                        <div>
-                            <img style={{width: '310px'}} src={`./assetsPlus/image/${GlobalConfig.getCourseName()}/wxSignCode.png`}/>
-                        </div>
-                    </div>
-                </ModalMask>
+                {/*扫二维码*/}
+                {/*<ModalMask type = {false} cbfClick = {this.cbfModalClick} isShow = {this.state.ifBgShowSign} imageBg = {`./assetsPlus/image/${GlobalConfig.getCourseName()}/paypage_share.png`}>*/}
+                    {/*<div style = {style}>*/}
+                        {/*<div>*/}
+                            {/*<img style={{width: '310px'}} src={`./assetsPlus/image/${GlobalConfig.getCourseName()}/wxSignCode.png`}/>*/}
+                        {/*</div>*/}
+                    {/*</div>*/}
+                {/*</ModalMask>*/}
+
+                {/*{this.renderLineBar(0)}*/}
+                {/*{this.renderLineBar(1)}*/}
                 <ModalMask type = {true} cbfClick = {this.cbfModalClick} isShow = {this.state.ifBgShowShare} imageBg = {`./assetsPlus/image/${GlobalConfig.getCourseName()}/paypage_share.png`}/>
-                {this.renderTitle()}
-                {this.renderLineBar(0)}
-                {this.renderLineBar(1)}
-                {this.renderGraduatedBefore()}
-                <div className = 'line'>{this.buttomBarRender()}</div>
+
                 {/*8-3 按钮栏 变为垂直样式*/}
                 {/*<div className="reward-button-graduated">{this.buttonRender()}</div>*/}
-
+                {this.renderContentByType()}
             </div>
         )
+    },
+
+    renderContentByType() {
+        let arr = [];
+        switch(this.props.params.type) {
+            case 'mine':
+                arr.push(this.renderAfterSignUp());
+                break;
+            case 'other':
+                arr.push(this.renderGraduatedPage());
+                break;
+            case 'select':
+                arr.push(this.renderGraduatedPage());
+                break;
+        }
+        return arr;
+    },
+
+
+    renderAfterSignUp() {
+        let imgs = [`./assetsPlus/image/${GlobalConfig.getCourseName()}/begin_course_info.png`,`./assetsPlus/image/${GlobalConfig.getCourseName()}/qq-icon.png`];
+        let arr = [];
+        arr.push(this.renderTitle());
+        arr.push(<div className = 'line'>
+            <img src = {imgs[0]}/>
+        </div>);
+        arr.push(<div className="bottom-line" onClick = {()=>{location.href = this.state.signUpInfo.qqGroupUrl;}}>
+            <p>暗号:<strong>{this.state.signUpInfo.secret}</strong></p>
+            <div className = 'qq-line'>
+                <img src = {imgs[1]}/>
+                <span>加入QQ群:<strong> {this.state.signUpInfo.qqGroup} </strong></span>
+                <span className="big"></span>
+            </div>
+            <p className="small">获取学习资料\老师指导</p>
+        </div>);
+        return arr;
+    },
+
+    renderGraduatedPage() {
+        let arr = [];
+
+        arr.push(this.renderGraduatedBefore());
+        arr.push(<div className = 'line'>{this.buttomBarRender()}</div>);
+        return(arr);
     },
 
     cbfModalClick() {

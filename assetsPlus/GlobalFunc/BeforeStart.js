@@ -108,7 +108,10 @@ class BeforeStart {
             // 举例/fund/getReward/
             redictUrl = Tools.setCourseUrl(courseId) + '/' + redictUrl;
 
-        } else if(getWhere === 'ggh' && courseId === '2') {
+            // https://h5test.ichangtou.com/minic/indexPlus.html?courseId=2&goPath=payPage&getWhere=queen
+
+        // } else if(getWhere === 'ggh' && courseId === '2') {
+        } else if(courseId === '2') {
             //针对公众号21天入口.需要根据用户判断界面
             Actions.ifCourseSignUp(courseId);
             //TODO

@@ -38,6 +38,7 @@ const PayPage21 = require('./view/course21/PayPage');
 const CourseBegin21 = require('./view/course21/CourseBegin');
 const CourseSelect21 = require('./view/course21/CourseSelect');
 const ListenCourse21 = require('./view/course21/ListenCourse');
+const HomeWork21 = require('./view/course21/HomeWork');
 
 //股票课
 const PayPageStock0 = require('./view/stock0/PayPage');
@@ -94,6 +95,7 @@ let InnerRouter = React.createClass({
                     <Route path = {`/${ GlobalConfig.getRouterInfo(2)}/${ GlobalConfig.getRouterInfo('begin')}/:type`} component={CourseBegin21}/>
                     <Route path = {`/${ GlobalConfig.getRouterInfo(2)}/${ GlobalConfig.getRouterInfo('select')}`} component={CourseSelect21}/>
                     <Route path = {`/${ GlobalConfig.getRouterInfo(2)}/${ GlobalConfig.getRouterInfo('listen')}/:dayId`} component={ListenCourse21}/>
+                    <Route path = {`/${ GlobalConfig.getCourseInfo(2).name}/${ GlobalConfig.getRouterInfo('homework')}/:dayId`} component={HomeWork21}/>
 
                     {/*股票课*/}
                     <Route path = {`/${ GlobalConfig.getCourseInfo(3).name}/${ GlobalConfig.getRouterInfo('pay')}`} component={PayPageStock0}/>

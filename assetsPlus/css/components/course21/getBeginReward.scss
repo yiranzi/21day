@@ -15,7 +15,38 @@
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  color: green;
+  height: 100%;
+  align-items: flex-start;
+  flex-direction: row;
+  .bottom-line{
+    font-size: 20px;
+    color: #907660;
+    width: 90%;
+    .qq-line{
+      display: flex;
+      align-items: center;
+      background-color: #FFF7E0;
+      border: 3px solid #907660;
+      height: 60px;
+      border-radius: 30px;
+      width: 100%;
+      margin: auto;
+      img{
+        margin-left: 40px;
+        width: 30px;
+      }
+      span{
+        margin-left: 10px;
+      }
+    }
+    .small{
+      font-size: 10px;
+    }
+
+    .big{
+      bold: 700;
+    }
+  }
   .line{
     display: inline-block;
     width: 100%;

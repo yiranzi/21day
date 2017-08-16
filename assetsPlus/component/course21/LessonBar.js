@@ -73,8 +73,6 @@ const LessonBar = React.createClass({
             return (<div className="column-container" onClick={this.callBackFunc.bind(this,'goCourse')}>
                 {/*第几天*/}
                 <div className="bg-number"><h1>{this.state.day[this.props.index]}</h1></div>
-                {/*<div className="pic-container" onClick={this.callBackFunc.bind(this,'goReward')}>{this.renderReward()}</div>*/}
-                {/*{this.renderFinish()}*/}
                 {/*课程标题*/}
                 <span className="column-container-title"><h2>{content.title}</h2></span>
                 {/*小图标*/}
@@ -84,14 +82,6 @@ const LessonBar = React.createClass({
             return(<div>
                 <img onClick={this.callBackFunc.bind(this,'goCourse')} className="bg-not-see" src = {`./assetsPlus/image/${GlobalConfig.getCourseName()}/tomorrow.png`}/>
             </div>)
-            // return (<div className="column-container" onClick={this.callBackFunc.bind(this,'goCourse')}>
-            //     <div className="column-not-view">
-            //         <h2>
-            //             {content.title}
-            //         </h2>
-            //         {this.renderFreeNextDay()}
-            //     </div>
-            // </div>)
         }
 
     },
@@ -171,17 +161,16 @@ const LessonBar = React.createClass({
     },
 
     //渲染finish
-    renderFinish() {
-        // return <img onClick={this.callBackFunc.bind(this,'goReward')} className="column-type" src={'./assetsPlus/image/course/indFinished.png'}/>
-        if( this.props.content.courseStatus.allFinish) {
-            return <img onClick={this.callBackFunc.bind(this,'goReward')} className="column-type" src={'./assetsPlus/image/fund/indFinished.png'}/>
-        } else {
-            if (this.props.content.courseStatus.enter === 'free-enter') {
-                return(<p className = "free-lesson">免费收听</p>)
-            }
-            // return <div className="space-pic"></div>
-        }
-    }
+    // renderFinish() {
+    //     if( this.props.content.courseStatus.allFinish) {
+    //         return <img onClick={this.callBackFunc.bind(this,'goReward')} className="column-type" src={'./assetsPlus/image/fund/indFinished.png'}/>
+    //     } else {
+    //         if (this.props.content.courseStatus.enter === 'free-enter') {
+    //             return(<p className = "free-lesson">免费收听</p>)
+    //         }
+    //         // return <div className="space-pic"></div>
+    //     }
+    // }
 });
 
 module.exports = LessonBar;
