@@ -95,14 +95,34 @@ const CourseBegin = React.createClass({
                 <FixedBg/>
                 <div className="content">
                     <div className="title">{this.renderTitle()}</div>
-                    <div className = 'answer-area'>
+                    <div style = {this.state.homeWorkStatus === 'doing' ? {opacity: '0.2'} : {}} className = 'answer-area'>
                         {this.renderHomeWorkList()}
                     </div>
-                    <div onClick = {this.GetCommentClick}>提交</div>
+                    <div>{this.renderSubmit()}</div>
+
                 </div>
             </div>
-
             )
+    },
+
+    renderSubmit() {
+        let txt = '';
+        switch(this.state.homeWorkStatus) {
+            case 'undo':
+                txt = '提交';
+                break;
+            case 'doing':
+                txt = '已提交';
+                break;
+            case 'done':
+                txt = '已提交';
+                break;
+            default:
+                break;
+        }
+        if(this.state.homeWorkStatus) {
+            return(<span className="submit" onClick = {this.GetCommentClick.bind(this,this.state.homeWorkStatus)}>{txt}</span>)
+        }
     },
 
     renderTitle() {
@@ -123,10 +143,15 @@ const CourseBegin = React.createClass({
         for(let i = 0 ;i < contents.length; i++) {
             console.log(i);
             content = contents[i];
-            arr.push(<p className="title">{`作业${titles[i]}`}</p>);
-            arr.push(<p className="question">{content.question}</p>);
+            arr.push(<div  className = 'area'>
+                <div  className = 'question-area'>
+                    <p className="title">{`作业${titles[i]}`}</p>
+                    <p className="question">{content.question}</p>
+                </div>
+                {this.renderTextArea(i)}
+            </div>)
+
             // arr.push(this.renderTextArea(content.answer,i))
-            arr.push(this.renderTextArea(i))
         }
         return arr;
     },
@@ -134,11 +159,11 @@ const CourseBegin = React.createClass({
     renderTextArea(index) {
         let commentStyle = {
             position: 'relative',
-            border: '1px solid red',
+            border: '2px solid #907660',
             width: '353px',
             height: '237px',
-            borderRadius: '15px',
-            backgroundColor: 'yellow',
+            borderRadius: '10px',
+            backgroundColor: '#FFF7E0',
             padding: '5px',
         };
         return (<div style = {commentStyle}>
@@ -152,8 +177,7 @@ const CourseBegin = React.createClass({
         let score = contents[index].score;
         let scoreStyle = {
             position: 'absolute',
-            width: '35.3px',
-            height: '23.7px',
+            width: '102px',
             bottom: '0',
             right: '0'
 
@@ -164,22 +188,35 @@ const CourseBegin = React.createClass({
     },
 
     //提交按钮
-    GetCommentClick() {
+    GetCommentClick(type) {
         console.log('click');
-        let current = 0;
-        //判定全部填入信息
-        for(current ;current < this.state.textContents.length; current++) {
-            if(this.state.textContents[current] === null) {
+        switch(type) {
+            case 'undo':
+                let current = 0;
+                //判定全部填入信息
+                for(current ;current < this.state.textContents.length; current++) {
+                    if(this.state.textContents[current] === null) {
+                        break;
+                    }
+                }
+                if(current === this.state.textContents.length) {
+                    this.postAnswer();
+                    //提交
+                } else {
+                    console.log('empty');
+                    //没填满
+                }
                 break;
-            }
+            case 'doing':
+                window.dialogAlertComp.show('已提交,耐心等等哦','您已提交，老师会尽早为您批改的！','知道啦',()=>{},'',false);
+                break;
+            case 'done':
+                window.dialogAlertComp.show('已批改','对成绩还满意吗？点击右上角分享给好友让他们也来一起吧！','知道啦',()=>{},'',false);
+                break;
+            default:
+                break;
         }
-        if(current === this.state.textContents.length) {
-            this.postAnswer();
-            //提交
-        } else {
-            console.log('empty');
-            //没填满
-        }
+
     },
 
     postAnswer() {
