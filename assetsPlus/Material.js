@@ -1052,7 +1052,6 @@ class Material {
 
     //获取开课信息
     static postHomeworkAnswerById(itemIdArray,answerArray) {
-
         let answers = [];
         for(let i = 0; i < itemIdArray.length; i++) {
             answers[i] = {};
@@ -1078,6 +1077,42 @@ class Material {
             });
         })
 
+    }
+
+    //提交评论
+    static postCommentByDayId(dayId,answer) {
+        let url = Util.getAPIUrl('post-comment');
+        let data = {
+            comment: answer,
+            dayId: dayId,
+        }
+        data = JSON.stringify(data);
+        return (this.ajaxPostSomeUrl(url,data));
+    }
+
+    //提交喜欢
+    static postLikeCommment(dayId,commentId) {
+        let type = 'post';
+        let url = Util.getAPIUrl('choose-like-comment').replace('{commentId}',commentId).replace('{dayId}',dayId);
+        return (this.ajaxSomeUrl(url,type));
+    }
+
+    //提交喜欢
+    static DeleteDislikeCommment(dayId,commentId) {
+        let type = 'delete';
+        let url = Util.getAPIUrl('choose-dislike-comment').replace('{commentId}',commentId).replace('{dayId}',dayId);
+        return (this.ajaxSomeUrl(url,type));
+    }
+
+
+
+    //获取评论信息
+    static getCommentInfo(dayId) {
+        let pageIndex = 1;
+        let pageSize = 20;
+        let url = Util.getAPIUrl('get-comment').replace('{dayId}',dayId).replace('{pageSize}',pageSize).replace('{pageIndex}',pageIndex);
+        let type = 'get';
+        return (this.ajaxSomeUrl(url,type));
     }
 
     static ajaxPostSomeUrl(url,json) {

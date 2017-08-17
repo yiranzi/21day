@@ -148,6 +148,10 @@ const API_URL_GROUP = {
     'start_class_21': '21enter/whether/class-begin',
     'get-day-homework': '21homework/get-homework/{dayId}',//获取作业信息
     'post-day-homework': '21homework/submit-homework',//获取作业信息
+    'post-comment': '21homework/submit-comment',//提交作业信息
+    'get-comment': '21homework/comment/{dayId}/{pageIndex}/{pageSize}',//提交作业信息
+    'choose-like-comment': '21homework/comment-like/{commentId}/{dayId}',//点赞
+    'choose-dislike-comment': '21homework/cancel-comment-like/{commentId}/{dayId}',//点赞
 
     //基金课
     'get_qq_info':'ctplus/qq-details/{courseId}',

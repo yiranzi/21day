@@ -28,7 +28,7 @@ const PreFetch = require('../../GlobalFunc/PreFetch');
 
 const Tools = require('../../GlobalFunc/Tools');
 
-const MassageBoard = require('../../component/common/MessageBoard');
+const MassageBoard = require('../../component/course21/MessageBoard');
 const AbsCommentBox = require('../../component/abstract/AbsCommentBox');
 
 var isMoving = 0;
@@ -73,6 +73,7 @@ const ListenCourse = React.createClass({
             showScoreStatus: false,
             currentIndex: -1,
             renderType: 'null',
+            userComments: [],
         }
     },
 
@@ -184,8 +185,49 @@ const ListenCourse = React.createClass({
                     lessons: this.state.lessons,
                 });
             }
+            this.getComment();
         });
     },
+
+    getComment(data) {
+        let courseId = this.props.params.dayId;
+        if(data) {
+            this.state.userComments[0].unshift(data);
+            this.setState({userComments: this.state.userComments})
+        } else {
+            Material.getCommentInfo(courseId).then((result)=>{
+                this.state.userComments.push(result);
+                this.setState({userComments: this.state.userComments})
+            })
+        }
+
+    },
+
+    cbfLike(pageIndex,lineIndex) {
+        let dayId = this.props.params.dayId;
+        let userComment = this.state.userComments[pageIndex][lineIndex]
+        let commentId = userComment.id;
+        let isLike = userComment.isLike;
+        userComment.isLike = !isLike;
+
+        //如果喜欢,点击后取消
+        if(isLike) {
+            userComment.likeQty = userComment.likeQty - 1;
+            Material.DeleteDislikeCommment(dayId,commentId).then((data)=>{
+                console.log(data)
+            })
+        } else {
+            userComment.likeQty = userComment.likeQty + 1;
+            Material.postLikeCommment(dayId,commentId).then((data)=>{
+                console.log(data)
+            })
+        }
+        this.setState({ userComments:  this.state.userComments});
+
+        //1发送请求
+        //2更新数据
+    },
+
 
     //0判断类型
     setRenderType() {
@@ -258,8 +300,8 @@ const ListenCourse = React.createClass({
     calcProcess() {
         let allLesson = this.state.lessons;
         //初始化
-        this.state.totalElement = 0
-        this.state.finishElement = 0
+        this.state.totalElement = 0;
+        this.state.finishElement = 0;
         for(let i = 0; i<allLesson.length; i++){
             this.state.totalElement++;
             if (this.state.renderType === 'question') {
@@ -376,7 +418,7 @@ const ListenCourse = React.createClass({
                     {/*提交评论*/}
                     {this.renderComment()}
                     {/*评论取余*/}
-                    {/*<MassageBoard userLists = {this.state.userComments}/>*/}
+                    <MassageBoard cbfLike = {this.cbfLike} userLists = {this.state.userComments}/>
                     {/*{this.renderSignUp()}*/}
                     {/*{this.preLoadPic()}*/}
                 </div>
@@ -402,10 +444,15 @@ const ListenCourse = React.createClass({
 
     //提交按钮
     postComment() {
+        console.log('123123123');
+        let dayId = this.props.params.dayId;
+        let comment = this.state.inputTxt;
         if(this.state.inputTxt === '') {
             window.dialogAlertComp.show('多写写内容哦','您的评论师兄也会关注到呢!多写一些吧!','知道啦',()=>{},'',false);
         } else {
-            Material.postHomeworkAnswerById(itemIdArray,answerArray).then((data)=>{
+            Material.postCommentByDayId(dayId,comment).then((data)=>{
+                console.log(data);
+                this.getComment(data);
                 window.dialogAlertComp.show('提交成功','您已提交！喜欢这节课吗？把它分享给更多的小伙伴吧！','知道啦',()=>{},'',false);
             });
         }
