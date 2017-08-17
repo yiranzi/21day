@@ -29,8 +29,17 @@ const PreFetch = require('../../GlobalFunc/PreFetch');
 const Tools = require('../../GlobalFunc/Tools');
 
 const MassageBoard = require('../../component/common/MessageBoard');
+const AbsCommentBox = require('../../component/abstract/AbsCommentBox');
 
 var isMoving = 0;
+
+/*
+    区分了选择题类和非选择题类.
+    并且根据区分优化了
+    计算进度
+    计算评分
+    使用这个版本开发
+ */
 
 const ListenCourse = React.createClass({
 
@@ -61,7 +70,9 @@ const ListenCourse = React.createClass({
             resPic: '',
             timer: true,
             clickStatus: true,
+            showScoreStatus: false,
             currentIndex: -1,
+            renderType: 'null',
         }
     },
 
@@ -105,7 +116,12 @@ const ListenCourse = React.createClass({
             //修改进度
             this.state.lessons[this.state.currentPlaying].process = true;
             let localLessons = this.state.lessons;
-            this.setState({lessons: localLessons});
+            this.setState({lessons: localLessons},()=>{
+                //如果是单独音频类型
+                if(this.state.renderType !== 'question') {
+                    this.calcProcess();
+                }
+            });
             //发送修改1
             Material.finishWork(0, this.state.lessons[this.state.currentPlaying].fmid).always( (data) => {
             });
@@ -146,9 +162,16 @@ const ListenCourse = React.createClass({
 
         Material.getCourseProgress(courseId).always((progressData) => {
             Loading.hideLoading();
+            if(progressData.length === 0) {
+                return
+            }
             this.state.lessons = progressData;
+            //1设定有无选择题
+            this.setRenderType();
             this.preFetch();
+            //3修复进度
             this.fixProcess();
+            //2判定AllFinish
             this.calcInit();
             //自动滚到最下面
             // if(!this.state.allFinish){
@@ -164,38 +187,97 @@ const ListenCourse = React.createClass({
         });
     },
 
+    //0判断类型
+    setRenderType() {
+        let allLesson = this.state.lessons;
+        if(allLesson[allLesson.length - 1].subs) {
+            this.state.renderType = 'question';
+        } else {
+            this.state.renderType = 'no-question';
+        }
+        this.setState({renderType: this.state.renderType})
+    },
+
+    //1初始化
     calcInit() {
         let allLesson = this.state.lessons;
-        if(allLesson.length === 1) {
-            // if(allLesson[0].process) {
-            //     this.setState({clickStatus: false});
-            // } else {
-            //     this.setState({clickStatus: true});
-            // }
-            return
-        };
-        let lastLesson = allLesson[allLesson.length - 1].subs;
-        //1完成全部选择题后
-        if(lastLesson[lastLesson.length - 1].process === true) {
+        let lastLesson = allLesson[allLesson.length - 1];
+        let lastProcess = {};
+        if(this.state.renderType === 'question') {
+            lastProcess = lastLesson.subs[lastLesson.subs.length - 1].process;
+        } else {
+            lastProcess = lastLesson.process;
+        }
+        if(lastProcess === true) {
             this.state.allFinish = true;
             this.setState({allFinish: this.state.allFinish});
             this.setState({clickStatus: false});
+            this.setState({showScoreStatus: false});
         } else {
             this.setState({clickStatus: true});
+            this.setState({showScoreStatus: true});
         }
     },
 
-    //计算进度
+    //3修复音频
+    fixProcess() {
+        let allLesson = this.state.lessons;
+        if (this.state.allFinish) {
+            if (this.state.renderType === 'question') {
+                for (let lesson of allLesson) {
+                    //音频
+                    if (lesson.process !== true) {
+
+                        // Util.postCnzzData("修复音频数据" + lesson.fmid + '/' + User.getUserInfo().userId);
+                        Material.finishWork(0, lesson.fmid);
+                    }
+                    //选择题
+                    for (let choose of lesson.subs) {
+                        if (choose.process !== true) {
+                            //发送修改1
+                            // Util.postCnzzData("修复作业数据" + choose.subjectid + '/' + User.getUserInfo().userId);
+                            Material.finishWork(1, choose.subjectid);
+                        }
+                    }
+                }
+            } else {
+                //音频
+                for (let lesson of allLesson) {
+                    if (lesson.process !== true) {
+
+                        // Util.postCnzzData("修复音频数据" + lesson.fmid + '/' + User.getUserInfo().userId);
+                        Material.finishWork(0, lesson.fmid);
+                    }
+                }
+            }
+
+        }
+    },
+
+    //4计算进度
     calcProcess() {
         let allLesson = this.state.lessons;
-        if(allLesson.length === 1) {
-            return;
-        }
+        //初始化
+        this.state.totalElement = 0
+        this.state.finishElement = 0
         for(let i = 0; i<allLesson.length; i++){
             this.state.totalElement++;
-            if(allLesson[i].subs[allLesson[i].subs.length - 1].process === true) {
-                this.state.finishElement++;
+            if (this.state.renderType === 'question') {
+                if(allLesson[i].subs[allLesson[i].subs.length - 1].process === true) {
+                    this.state.finishElement++;
+                }
+            } else {
+                if(allLesson[i].process === true) {
+                    this.state.finishElement++;
+                }
             }
+
+        }
+        if(this.state.totalElement === this.state.finishElement) {
+            this.state.allFinish = true;
+            this.setState({
+                allFinish: this.state.allFinish,
+            })
         }
         this.setState({
             totalElement:this.state.totalElement,
@@ -203,33 +285,6 @@ const ListenCourse = React.createClass({
         })
     },
 
-    fixProcess() {
-        //如果最后一课已经完成
-        let allLesson = this.state.lessons;
-        if(allLesson.length === 1) {
-            return;
-        }
-        let lastLesson = allLesson[allLesson.length - 1].subs;
-        //1完成全部选择题后
-        if(lastLesson[lastLesson.length - 1].process === true) {
-            for (let lesson of allLesson) {
-                if(lesson.process!==true){
-
-                    // Util.postCnzzData("修复音频数据" + lesson.fmid + '/' + User.getUserInfo().userId);
-                    Material.finishWork(0, lesson.fmid);
-                }
-                for(let choose of lesson.subs){
-                    if(choose.process!==true){
-                        //发送修改1
-                        // Util.postCnzzData("修复作业数据" + choose.subjectid + '/' + User.getUserInfo().userId);
-                        Material.finishWork(1, choose.subjectid);
-                    }
-                }
-            }
-        } else {
-            return;
-        }
-    },
 
 
     /**
@@ -240,12 +295,13 @@ const ListenCourse = React.createClass({
         let questions = this.state.lessons[lessonIndex].subs;
         questions[index].process = true;
         let localLessons = this.state.lessons;
-        this.setState({lessons: localLessons});
+        this.setState({lessons: localLessons},()=>{
+            this.calcProcess();
+        });
         //发送修改1
         Material.finishWork(1, this.state.lessons[lessonIndex].subs[index].subjectid).always( (data) => {
         });
-        this.state.finishElement++;
-        this.setState({finishElement: this.state.finishElement});
+
         // Material.postData('免费_完成选择题_ListenCourse');
     },
 
@@ -294,25 +350,69 @@ const ListenCourse = React.createClass({
             backgroundColor: '#E29F66',
             marginBottom: '10px',
             borderRadius: '20px',
-        }
+        };
 
         let styleChoose = {
             backgroundColor: '#907660'
+        };
+        if (this.state.renderType === 'null') {
+            return(
+                <div id="fmView" className="fm-view">
+                    <FixedBg />
+                </div>
+            )
+        } else {
+            return(
+                <div id="fmView" className="fm-view">
+                    <FixedBg />
+                    <div className="fix-bg-space"></div>
+                    <CourseProcessBar userSet = {true} styleDefault = {styleDefault} styleChoose = {styleChoose} finishElement = {this.state.finishElement} totalElement = {this.state.totalElement}/>
+                    {/*<span>当前点击的index{this.state.currentPlaying}</span>*/}
+                    {/*<span>当前播放的fmid{this.state.currentfmid}</span>*/}
+                    {/*<div>进入时,这门课程的状态时{this.props.location.query.name}</div>*/}
+                    {this.renderLesson()}
+                    {/*打分*/}
+                    {this.renderGiveScore()}
+                    {/*提交评论*/}
+                    {this.renderComment()}
+                    {/*评论取余*/}
+                    {/*<MassageBoard userLists = {this.state.userComments}/>*/}
+                    {/*{this.renderSignUp()}*/}
+                    {/*{this.preLoadPic()}*/}
+                </div>
+            )
         }
-        return(
-            <div id="fmView" className="fm-view">
-                <FixedBg />
-                <div className="fix-bg-space"></div>
-                <CourseProcessBar userSet = {true} styleDefault = {styleDefault} styleChoose = {styleChoose}finishElement = {this.state.finishElement} totalElement = {this.state.totalElement}/>
-                {/*<span>当前点击的index{this.state.currentPlaying}</span>*/}
-                {/*<span>当前播放的fmid{this.state.currentfmid}</span>*/}
-                {/*<div>进入时,这门课程的状态时{this.props.location.query.name}</div>*/}
-                {this.renderLesson()}
-                {this.renderGiveScore()}
-                {/*{this.renderSignUp()}*/}
-                {/*{this.preLoadPic()}*/}
-            </div>
-        )
+
+    },
+
+    renderTextArea() {
+        let commentStyle = {
+            position: 'relative',
+            border: '2px solid #907660',
+            width: '100%',
+            height: '237px',
+            borderRadius: '10px',
+            backgroundColor: '#FFF7E0',
+            padding: '5px',
+        };
+        return (<div style = {commentStyle}>
+            <AbsCommentBox index = {0} defaultTxt = {'点击输入文字123...'} currentContent = {this.state.inputTxt} status = {true} cbfOnChange = {this.cbfOnChange}></AbsCommentBox>
+        </div>)
+    },
+
+    //提交按钮
+    postComment() {
+        if(this.state.inputTxt === '') {
+            window.dialogAlertComp.show('多写写内容哦','您的评论师兄也会关注到呢!多写一些吧!','知道啦',()=>{},'',false);
+        } else {
+            Material.postHomeworkAnswerById(itemIdArray,answerArray).then((data)=>{
+                window.dialogAlertComp.show('提交成功','您已提交！喜欢这节课吗？把它分享给更多的小伙伴吧！','知道啦',()=>{},'',false);
+            });
+        }
+    },
+
+    cbfOnChange(index,value) {
+        this.setState({inputTxt: value})
     },
 
     //预加载资源
@@ -371,49 +471,40 @@ const ListenCourse = React.createClass({
     },
 
     renderGiveScore() {
-        if (this.state.lessons.length === 0) {
-            return null;
-        }
-        let lesson = this.state.lessons[this.state.lessons.length - 1].subs;
         //1完成全部选择题后
-        if(lesson[lesson.length - 1].process === true) {
-            let arr = [];
+        let arr = [];
+        if(this.state.showScoreStatus && this.state.allFinish) {
             let images = [`./assetsPlus/image/${GlobalConfig.getCourseName()}/score_on.png`,`./assetsPlus/image/${GlobalConfig.getCourseName()}/score_off.png`];
-            let title = '给课程评个分吧！';
-            // if(this.state.clickStatus) {
-            //     title = '给课程评个分吧！'
-            // } else {
-            //
-            // }
-            let count = 5;
-            if (this.state.lessons.length === 0) {
-                return null;
-            }
-            if(!this.state.allFinish) {
-                this.state.allFinish = true;
-                arr.push (<GiveScoreContain className = "get-reward-command"
-                                          images = {images}
-                                          title = {title}
-                                          count = {count}
-                                          currentIndex = {this.state.currentIndex}
-                                          cbfClick = {this.cbfScoreClick}
-                />);
+            let title = '';
+            if(this.state.clickStatus) {
+                title = '给课程评个分吧！';
             } else {
                 title = '谢谢您的评价！';
-                arr.push (<GiveScoreContain className = "get-reward-command"
-                                          images = {images}
-                                          title = {title}
-                                          count = {count}
-                                          currentIndex = {this.state.currentIndex}
-                                          cbfClick = {this.cbfScoreClick}
-                />);
             }
+            let count = 5;
+            arr.push (<GiveScoreContain className = "get-reward-command"
+                                      images = {images}
+                                      title = {title}
+                                      count = {count}
+                                      currentIndex = {this.state.currentIndex}
+                                      cbfClick = {this.cbfScoreClick}
+            />);
+        }
+        return arr;
+    },
+
+    renderComment() {
+        let arr = [];
+        if(this.state.allFinish) {
             arr.push(<div style = {{textAlign: 'center',marginBottom: '10px'}}>
                 <img src = {`./assetsPlus/image/${GlobalConfig.getCourseName()}/share_payPage.png`} onClick={this.shareButton} style = {{width: '64px'}}/>
             </div>);
-
+            arr.push(this.renderDivLine());
+            arr.push(<div className="comment-line">
+                {this.renderTextArea()}
+                <img src = {`./assetsPlus/image/${GlobalConfig.getCourseName()}/comment-submit.png`} onClick = {this.postComment}/>
+            </div>)
         }
-        arr.push(<MassageBoard userLists = {this.state.userComments}/>)
         return arr;
     },
 
@@ -422,55 +513,52 @@ const ListenCourse = React.createClass({
         window.dialogAlertComp.show('你最棒了！','恭喜你，你又完成了一课！快分享给你的朋友让他们为你加油吧！','知道啦',()=>{},'',false);
     },
 
-    passLessonRender() {
-        if (this.state.lessons.length === 0) {
-            return null;
-        }
-        let lesson = this.state.lessons[this.state.lessons.length - 1].subs;
-        //1完成全部选择题后
-        if(lesson[lesson.length - 1].process === true) {
-            //1如果第一次通过 ,会有提示.
-            // return (<div className = "get-reward-command" onClick={this.goReward.bind(this,1)}>祝贺！完成本节！点击我领取成就卡！</div>);
-            // if(this.props.location.query.name !== '2') {
-            //     return (<div className = "get-reward-command" onClick={this.goReward.bind(this,1)}>祝贺！完成本节！点击我领取成就卡！</div>);
-            // } else {
-            //     //1如果已经通过 ,会有提示.
-            //     return (<div className = "get-reward-command" onClick={this.goReward.bind(this,2)}>查看我的成就卡！</div>);
-            // }
-            if(!this.state.allFinish) {
-                this.state.allFinish = true;
-                return (<div className = "get-reward-command" onClick={this.goReward.bind(this,1)}>祝贺！完成本节！点击我领取成就卡！</div>);
-            } else {
-                //1如果已经通过 ,会有提示.
-                return (<div className = "get-reward-command" onClick={this.goReward.bind(this,2)}>查看我的成就卡！</div>);
-            }
-        }
-    },
+    // passLessonRender() {
+    //     if (this.state.lessons.length === 0) {
+    //         return null;
+    //     }
+    //     let lesson = this.state.lessons[this.state.lessons.length - 1].subs;
+    //     //1完成全部选择题后
+    //     if(lesson[lesson.length - 1].process === true) {
+    //         //1如果第一次通过 ,会有提示.
+    //         // return (<div className = "get-reward-command" onClick={this.goReward.bind(this,1)}>祝贺！完成本节！点击我领取成就卡！</div>);
+    //         // if(this.props.location.query.name !== '2') {
+    //         //     return (<div className = "get-reward-command" onClick={this.goReward.bind(this,1)}>祝贺！完成本节！点击我领取成就卡！</div>);
+    //         // } else {
+    //         //     //1如果已经通过 ,会有提示.
+    //         //     return (<div className = "get-reward-command" onClick={this.goReward.bind(this,2)}>查看我的成就卡！</div>);
+    //         // }
+    //         if(!this.state.allFinish) {
+    //             this.state.allFinish = true;
+    //             return (<div className = "get-reward-command" onClick={this.goReward.bind(this,1)}>祝贺！完成本节！点击我领取成就卡！</div>);
+    //         } else {
+    //             //1如果已经通过 ,会有提示.
+    //             return (<div className = "get-reward-command" onClick={this.goReward.bind(this,2)}>查看我的成就卡！</div>);
+    //         }
+    //     }
+    // },
 
-    goReward(type) {
-        console.log(type);
-        if (type === 1) {
-            this.fixProcess();
-            if (!this.state.isPay) {
-                // Material.postData('免费_完成课程' + this.props.params.dayId +'_ListenCourse');
-            }
-        } else {
-            // Util.postCnzzData("再次点击成就卡");
-        }
-        let url = '/getReward/' + this.props.params.dayId + '/mine';
-        Tools.MyRouter('GetReward',url);
-    },
+    // goReward(type) {
+    //     console.log(type);
+    //     if (type === 1) {
+    //         this.fixProcess();
+    //         if (!this.state.isPay) {
+    //             // Material.postData('免费_完成课程' + this.props.params.dayId +'_ListenCourse');
+    //         }
+    //     } else {
+    //         // Util.postCnzzData("再次点击成就卡");
+    //     }
+    //     let url = '/getReward/' + this.props.params.dayId + '/mine';
+    //     Tools.MyRouter('GetReward',url);
+    // },
 
     /**
      * 渲染听课列表
      * @returns {*}
      */
     renderLesson() {
-        let lessons = this.state.lessons;
-        if (lessons.length === 0) {
-            return null;
-        }
 
+        let lessons = this.state.lessons;
         let arr = [];
         let count = 0;
 
@@ -486,25 +574,28 @@ const ListenCourse = React.createClass({
                     count++;
                     //如果fm听完
                     if(lessons[i].process){
-                        let lessonQuestions = lessons[i].subs;
-                        //循环某一节的所有的题目
-                        for (let j = 0; j < lessonQuestions.length; j++){
-                            //如果上一道题答对1
-                            if( j === 0 || lessonQuestions[j-1].process) {
-                                //如果满足...渲染题目
-                                arr.push(this.renderChooseBar(lessonQuestions[j], i, j,count));
+                        //如果是有选择题的
+                        if(this.state.renderType === 'question') {
+                            let lessonQuestions = lessons[i].subs;
+                            //循环某一节的所有的题目
+                            for (let j = 0; j < lessonQuestions.length; j++){
+                                //如果上一道题答对1
+                                if( j === 0 || lessonQuestions[j-1].process) {
+                                    //如果满足...渲染题目
+                                    arr.push(this.renderChooseBar(lessonQuestions[j], i, j,count));
+                                    count++;
+                                } else break OUT;
+                            }
+                            //如果选择题都完成了1
+                            if(lessonQuestions[lessonQuestions.length - 1].process && i !== lessons.length - 1) {
+                                arr.push(this.renderDivLine());
                                 count++;
-                            } else break OUT;
-                        }
-                        //如果选择题都完成了1
-                        if(lessonQuestions[lessonQuestions.length - 1].process && i !== lessons.length - 1) {
-                            arr.push(<div className="lesson-column-line-course21">
-                                <img src = {`./assetsPlus/image/${GlobalConfig.getCourseName()}/DividingLine.png`}></img>
-                            </div>);
-                            // arr.push(<div style = {{backgroundImage: `url(./assetsPlus/image/${GlobalConfig.getCourseName()}/DividingLine.png)`}} className="lesson-column-line-seven"></div>);
-
+                            }
+                        } else {
+                            arr.push(this.renderDivLine());
                             count++;
                         }
+
                     } else break OUT;
 
                 }
@@ -571,6 +662,15 @@ const ListenCourse = React.createClass({
             return <ChooseBar  key={count} lessonIndex = {lessonIndex} index = {questionIndex} question={questions} passCallBack = {this.OnChoosePass}/>
         }
     },
+
+    //渲染分隔符
+    renderDivLine() {
+        return(<div className="lesson-column-line-course21">
+            <img src = {`./assetsPlus/image/${GlobalConfig.getCourseName()}/DividingLine.png`}></img>
+        </div>)
+    },
+
+
 
 });
 

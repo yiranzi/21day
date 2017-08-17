@@ -76,8 +76,6 @@ const CourseBegin = React.createClass({
             for(let i = 0 ; i < value.questions.length; i++) {
                 if(value.questions[i].answer) {
                     this.state.textContents[i] = value.questions[i].answer;
-                } else {
-                    this.state.textContents[i] = '输入作业';
                 }
             }
             this.setState({
@@ -167,7 +165,7 @@ const CourseBegin = React.createClass({
             padding: '5px',
         };
         return (<div style = {commentStyle}>
-            <AbsCommentBox index = {index} currentContent = {this.state.textContents[index]} status = {this.state.commentDisabled} cbfOnChange = {this.cbfOnChange}></AbsCommentBox>
+            <AbsCommentBox index = {index} defaultTxt = {'点击输入文字...'}currentContent = {this.state.textContents[index]} status = {this.state.commentDisabled} cbfOnChange = {this.cbfOnChange}></AbsCommentBox>
             {this.renderScore(index)}
         </div>)
     },
@@ -231,7 +229,7 @@ const CourseBegin = React.createClass({
         }
         Material.postHomeworkAnswerById(itemIdArray,answerArray).then((data)=>{
             window.dialogAlertComp.show('提交成功','您已提交，老师会尽早为您批改的！','知道啦',()=>{},'',false);
-            this.setState({homeWorkStatus: doing});
+            this.setState({homeWorkStatus: 'doing'});
         });
 
     },

@@ -111,6 +111,34 @@ class BeforeStart {
             // https://h5test.ichangtou.com/minic/indexPlus.html?courseId=2&goPath=payPage&getWhere=queen
 
         // } else if(getWhere === 'ggh' && courseId === '2') {
+        } else if(getWhere === 'share') {
+            redictUrl = goPath;
+            if(!redictUrl) {
+                redictUrl = 'payPage';
+            } else {
+                redictUrl = '/' + redictUrl;
+            }
+            //如果有课程
+            //针对公众号21天入口.需要根据用户判断界面
+            Actions.ifCourseSignUp(courseId);
+            //TODO
+            //并且可以开课
+            Tools.fireRaceCourse(courseId).then((value)=>{
+                console.log('get');
+                if(parseInt(sessionStorage.getItem('courseId')) === parseInt(courseId)) {
+                    if(value.pay){
+                        sessionStorage.setItem('SisBuy','付费');
+                    } else {
+                        sessionStorage.setItem('SisBuy','未付费');
+                    }
+                    Tools.MyRouter('',redictUrl);
+                }
+            });
+            //3设置默认分享(特殊设置)
+
+            //4设置跳转
+            //公号判定支付/开课时间后才会跳转
+            return '/padding';
         } else if(courseId === '2') {
             //针对公众号21天入口.需要根据用户判断界面
             Actions.ifCourseSignUp(courseId);
@@ -166,11 +194,8 @@ class BeforeStart {
             redictUrl = '/padding';
             return redictUrl;
 
-        }
-
-            else if (goPath) {
+        } else if (goPath) {
             //判断
-
             redictUrl = goPath;
             //如果有课程
             if(courseId) {

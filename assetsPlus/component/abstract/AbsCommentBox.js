@@ -9,6 +9,7 @@ const React = require('react');
 // index    //评论框Id
 //disabled  //是否可用
 //currentContent //显示内容
+//defaultTxt //默认内容
 // }
 
 const AbsCommentBox = React.createClass({
