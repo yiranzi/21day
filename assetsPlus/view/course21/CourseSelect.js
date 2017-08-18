@@ -238,10 +238,10 @@ const CourseSelect = React.createClass({
                     );
 
                     //如果有题目
-                    if (courseList[i].homework === 'Y') {
+                    if (courseList[i].homework === 'Y' && courseList[i].courseStatus.see) {
                         //得到题目id
                         arr.push( <div className="lesson-bar-course21" style = {{height: '45px'}} onClick={this.cbfGoHomeWork.bind(this,i)}>
-                            <img style = {{width: '100%'}} src={`./assetsPlus/image/${GlobalConfig.getCourseName()}/course_select_begin.png`} />
+                            <img style = {{width: '100%'}} src={`./assetsPlus/image/${GlobalConfig.getCourseName()}/homework-line.png`} />
                         </div>)
                     }
                     //设定题目

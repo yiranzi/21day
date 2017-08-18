@@ -171,6 +171,9 @@ const CourseBegin = React.createClass({
     },
 
     renderScore(index) {
+        if(this.state.homeWorkStatus !== 'done') {
+            return
+        }
         let contents = this.state.homeWorkList;
         let score = contents[index].score;
         let scoreStyle = {
@@ -180,9 +183,9 @@ const CourseBegin = React.createClass({
             right: '0'
 
         };
-        if(score) {
-            return(<img style = {scoreStyle} src={ `./assetsPlus/image/${GlobalConfig.getCourseName()}/homework_score_${score}.png`}/>)
-        }
+        let scorePic = [1,2,3,5];
+        console.log(scorePic[score]);
+        return(<img style = {scoreStyle} src={ `./assetsPlus/image/${GlobalConfig.getCourseName()}/homework_score_${scorePic[score]}.png`}/>)
     },
 
     //提交按钮
@@ -229,7 +232,8 @@ const CourseBegin = React.createClass({
         }
         Material.postHomeworkAnswerById(itemIdArray,answerArray).then((data)=>{
             window.dialogAlertComp.show('提交成功','您已提交，老师会尽早为您批改的！','知道啦',()=>{},'',false);
-            this.setState({homeWorkStatus: 'doing'});
+            this.setState({homeWorkStatus: 'doing',
+                commentDisabled: false});
         });
 
     },

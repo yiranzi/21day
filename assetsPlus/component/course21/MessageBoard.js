@@ -39,8 +39,8 @@ const messageBoard = React.createClass({
     // style = {fullbg}
     render() {
         return(
-            <div className="message-board">
-                <div className="list">
+            <div className="message-board" style={this.props.defaultStyle.bgColor}>
+                <div className="list" >
                     {this.renderList()}
                 </div>
             </div>
@@ -66,16 +66,16 @@ const messageBoard = React.createClass({
     renderLine(i,j) {
         let userMessage = this.props.userLists[i][j];
         // userMessage.likeCount = 12123;
-        return(<div className="user-message">
+        return(<div className="user-message" style={this.props.defaultStyle.borderBottom}>
             <img className="head-image" src={userMessage.headImage}/>
-            <div className="user-info">
+            <div className="user-info" style = {this.props.defaultStyle.textMargin}>
                 <p className="name">{userMessage.nickeName}</p>
                 <p className="data">{userMessage.createTime}</p>
                 <p className="message">{userMessage.comment}</p>
             </div>
             <div className="like" onClick = {this.cbfLike.bind(this,i,j)}>
-                <img src={userMessage.isLike ?  `./assetsPlus/image/${GlobalConfig.getCourseName()}/comment-like-on.png` : `./assetsPlus/image/${GlobalConfig.getCourseName()}/comment-like-off.png`}/>
-                <span>{userMessage.likeQty}</span>
+                <img style = {this.props.defaultStyle.likeSize.img} src={userMessage.isLike ?  `./assetsPlus/image/${GlobalConfig.getCourseName()}/comment-like-on.png` : `./assetsPlus/image/${GlobalConfig.getCourseName()}/comment-like-off.png`}/>
+                <span style = {this.props.defaultStyle.likeSize.font}>{userMessage.likeQty}</span>
             </div>
 
         </div>)

@@ -232,7 +232,7 @@ const ListenCourse = React.createClass({
     //0判断类型
     setRenderType() {
         let allLesson = this.state.lessons;
-        if(allLesson[allLesson.length - 1].subs) {
+        if(allLesson[allLesson.length - 1].subs.length !== 0) {
             this.state.renderType = 'question';
         } else {
             this.state.renderType = 'no-question';
@@ -397,6 +397,26 @@ const ListenCourse = React.createClass({
         let styleChoose = {
             backgroundColor: '#907660'
         };
+        let styleMassageBoard = {
+            bgColor: {
+              backgroundColor: 'transparent',
+                color: '#907660'
+            },
+            textMargin: {
+                marginLeft: '20px'
+            },
+            borderBottom: {
+                borderStyle: 'none'
+            },
+            likeSize: {
+                img: {
+                    width: '30px',
+                },
+                font: {
+                    fontSize: '18px'
+                }
+            }
+        }
         if (this.state.renderType === 'null') {
             return(
                 <div id="fmView" className="fm-view">
@@ -418,7 +438,7 @@ const ListenCourse = React.createClass({
                     {/*提交评论*/}
                     {this.renderComment()}
                     {/*评论取余*/}
-                    <MassageBoard cbfLike = {this.cbfLike} userLists = {this.state.userComments}/>
+                    <MassageBoard defaultStyle = {styleMassageBoard} cbfLike = {this.cbfLike} userLists = {this.state.userComments}/>
                     {/*{this.renderSignUp()}*/}
                     {/*{this.preLoadPic()}*/}
                 </div>
@@ -431,8 +451,8 @@ const ListenCourse = React.createClass({
         let commentStyle = {
             position: 'relative',
             border: '2px solid #907660',
-            width: '100%',
-            height: '237px',
+            width: '304px',
+            height: '38px',
             borderRadius: '10px',
             backgroundColor: '#FFF7E0',
             padding: '5px',
@@ -453,6 +473,7 @@ const ListenCourse = React.createClass({
             Material.postCommentByDayId(dayId,comment).then((data)=>{
                 console.log(data);
                 this.getComment(data);
+                this.setState({inputTxt: ''});
                 window.dialogAlertComp.show('提交成功','您已提交！喜欢这节课吗？把它分享给更多的小伙伴吧！','知道啦',()=>{},'',false);
             });
         }
@@ -549,7 +570,7 @@ const ListenCourse = React.createClass({
             arr.push(this.renderDivLine());
             arr.push(<div className="comment-line">
                 {this.renderTextArea()}
-                <img src = {`./assetsPlus/image/${GlobalConfig.getCourseName()}/comment-submit.png`} onClick = {this.postComment}/>
+                <img style = {{width: '38px',height:'38px'}} src = {`./assetsPlus/image/${GlobalConfig.getCourseName()}/comment-submit.png`} onClick = {this.postComment}/>
             </div>)
         }
         return arr;
@@ -604,19 +625,18 @@ const ListenCourse = React.createClass({
      * @returns {*}
      */
     renderLesson() {
-
         let lessons = this.state.lessons;
         let arr = [];
         let count = 0;
 
         OUT:
             for (let i = 0;i < lessons.length; i++) {
-                if(lessons.length === 1) {
-                    arr.push(this.renderFMBar(i, lessons[i],count));
-                    break;
-                }
+                // if(lessons.length === 1) {
+                //     arr.push(this.renderFMBar(i, lessons[i],count));
+                //     break;
+                // }
                 //如果满足...渲染FM.无条件渲染fm
-                if(i === 0 || lessons[i-1].subs[(lessons[i-1].subs.length) - 1].process) {
+                // if(i === 0 || lessons[i-1].subs[(lessons[i-1].subs.length) - 1].process) {
                     arr.push(this.renderFMBar(i, lessons[i],count));
                     count++;
                     //如果fm听完
@@ -639,13 +659,16 @@ const ListenCourse = React.createClass({
                                 count++;
                             }
                         } else {
-                            arr.push(this.renderDivLine());
+                            //如果不是最后一个
+                            if(i !== lessons.length - 1) {
+                                arr.push(this.renderDivLine());
+                            }
                             count++;
                         }
 
                     } else break OUT;
 
-                }
+                // }
             }
         return arr;
     },

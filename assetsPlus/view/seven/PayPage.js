@@ -300,7 +300,20 @@ var PayPage = React.createClass({
     },
 
     renderMessage() {
+        // let styleMassageBoard = {
+        //     bgColor: {
+        //         backgroundColor: 'white',
+        //         color: '#4498C7',
+        //     },
+        //     textMargin: {
+        //         marginLeft: '10px',
+        //     },
+        //     borderBottom: {
+        //         borderBottom: '2px solid #4498C7',
+        //     }
+        // }
         return(<MassageBoard userLists = {this.state.userComments}/>)
+        // return(<MassageBoard defaultStyle = {styleMassageBoard} cbfLike = {()=>{}} userLists = {this.state.userComments}/>)
     },
 
     freeLesson() {
