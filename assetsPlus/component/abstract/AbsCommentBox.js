@@ -15,6 +15,7 @@ const React = require('react');
 const AbsCommentBox = React.createClass({
     getInitialState: function() {
         return {
+            focusStatus: false
             // calcCommentBool: this.props.getCommentBool,
             // textAreaContent: this.props.currentContent,
         };
@@ -34,9 +35,34 @@ const AbsCommentBox = React.createClass({
             backgroundColor: 'inherit',
         };
         // this.calcCommentBool();
-        return(<textarea onChange = {this.handleChange} style={defaultStyle} value = {this.props.currentContent}>
+        if(this.props.status) {
+            return(<textarea onFocus={this.onFocusHandle} onBlur={this.onBlurHandle} onChange = {this.handleChange} style={defaultStyle} value = {this.thisCalcDefaultValue()}>
                     </textarea>);
+        } else {
+            return(<textarea onFocus={this.onFocusHandle} disabled onChange = {this.handleChange} style={defaultStyle} value = {this.thisCalcDefaultValue()}>
+                    </textarea>);
+        }
+
     },
+
+    onFocusHandle() {
+        console.log(this.props.index + true);
+        this.setState({focusStatus: true})
+    },
+
+    onBlurHandle() {
+        console.log(this.props.index + false);
+        this.setState({focusStatus: false})
+    },
+
+    thisCalcDefaultValue() {
+        if(this.props.defaultTxt && !this.state.focusStatus && !this.props.currentContent) {
+            return this.props.defaultTxt
+        } else {
+            return this.props.currentContent
+        }
+    },
+
 
     handleChange() {
         //如果可以编辑

@@ -152,6 +152,7 @@ const API_URL_GROUP = {
     'get-comment': '21homework/comment/{dayId}/{pageIndex}/{pageSize}',//提交作业信息
     'choose-like-comment': '21homework/comment-like/{commentId}/{dayId}',//点赞
     'choose-dislike-comment': '21homework/cancel-comment-like/{commentId}/{dayId}',//点赞
+    'post-user-info': '21homework/submit-qqinfo',//提交用户信息
 
     //基金课
     'get_qq_info':'ctplus/qq-details/{courseId}',

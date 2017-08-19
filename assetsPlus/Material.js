@@ -1050,6 +1050,13 @@ class Material {
         return (this.ajaxSomeUrl(url,type));
     }
 
+    //提交
+    static postUserInfo(data) {
+        let url = Util.getAPIUrl('post-user-info');
+        data = JSON.stringify(data);
+        return (this.ajaxPostSomeUrl(url,data));
+    }
+
     //获取开课信息
     static postHomeworkAnswerById(itemIdArray,answerArray) {
         let answers = [];

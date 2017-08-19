@@ -50,6 +50,7 @@ const CourseSelect = React.createClass({
             qqStatus: 2,
             courseId: sessionStorage.getItem('courseId'),
             groupInfo: {},
+            homeWorkStatus: [],
         };
     },
 
@@ -80,35 +81,55 @@ const CourseSelect = React.createClass({
 
     getCourseList () {
         Material.getCourseList(this.state.courseId).then( (data) => {
-            this.setState({courseList: data});
-            let countUnlock = 0;
-            let countPass = 0;
-            let countTotle = this.state.courseList.length - 1;
-            let result = 0;
-            for ( let i = 1; i < this.state.courseList.length; i++ ){
-                result = this.state.courseList[i].status;
-                if (result !== -1) {
-                    countUnlock++;
-                }
-                if (result === 2) {
-                    countPass++;
-                }
+            this.state.courseList = data;
+            this.setState({courseList: this.state.courseList});
+            this.getHomeWorkStatus()
+        })
+    },
+
+    //获取作业状态
+    getHomeWorkStatus() {
+        let courseList = this.state.courseList;
+        let dayIdArrays = [];
+        let promiseArray = [];
+        for(let i = 0; i < courseList.length; i++) {
+            if(courseList[i].homework === 'Y' && (courseList[i].status).toString() !== '-1') {
+                dayIdArrays.push(courseList[i].id);
             }
-            if( countUnlock === countTotle ) {
-                this.state.allLessonStatus = 'AllEnter';
-                this.state.topBarStatus[0] = true;
-                this.setState({topBarStatus: this.state.topBarStatus});
+        }
+        for (let i = 0;i < dayIdArrays.length; i++) {
+            console.log('123')
+            promiseArray.push(Material.getHomeworkByDay(dayIdArrays[i]))
+        }
+        this.popArray(promiseArray);
+    },
+
+    popArray(promiseArray) {
+        let promise = promiseArray.pop();
+        let resultNumber = 0;
+        promise.then((result)=>{
+            switch (result.status) {
+                case 'unfinished':
+                    resultNumber = 0;
+                    break;
+                case 'nocorrections':
+                    resultNumber = 1;
+                    break;
+                case 'correcting':
+                    resultNumber = 2;
+                    break;
+                default:
+                    resultNumber = 0;
+                    break;
             }
-            if( countPass === countTotle ) {
-                this.state.allLessonStatus = 'AllPass';
-                this.state.topBarStatus[2] = true;
-                this.setState({topBarStatus: this.state.topBarStatus});
+            this.state.homeWorkStatus.unshift(resultNumber);
+            this.setState({homeWorkStatus: this.state.homeWorkStatus});
+            if(promiseArray.length!==0) {
+                this.popArray(promiseArray);
+            } else {
+                console.log(this.state.homeWorkStatus);
             }
-            console.log(countPass);
-            if(countPass > 3) {
-                console.log(countPass);
-                this.state.qqStatus = 1;
-            }
+
         })
     },
 
@@ -209,14 +230,17 @@ const CourseSelect = React.createClass({
     // },
 
     renderCourseList() {
+        console.log('render123')
         let courseList = this.state.courseList;
         let arr = [];
+        let homeWorkCount = 0;
         if(!courseList || courseList.length === 0 ){
             return null;
         } else {
             for (let i = 0; i < courseList.length; i++) {
                 //计算出来状态,并赋值.
                 let result = this.calcCourseStatus(courseList[i], i);
+                //如果上一个能看.这个还可以渲染.
                 if ( i === 0 || this.state.courseList[i-1].courseStatus.see === true){
                     // if (result) {
                     //     arr.push(
@@ -241,8 +265,9 @@ const CourseSelect = React.createClass({
                     if (courseList[i].homework === 'Y' && courseList[i].courseStatus.see) {
                         //得到题目id
                         arr.push( <div className="lesson-bar-course21" style = {{height: '45px'}} onClick={this.cbfGoHomeWork.bind(this,i)}>
-                            <img style = {{width: '100%'}} src={`./assetsPlus/image/${GlobalConfig.getCourseName()}/homework-line.png`} />
-                        </div>)
+                            <img style = {{width: '100%'}} src={`./assetsPlus/image/${GlobalConfig.getCourseName()}/homework_line_${this.state.homeWorkStatus[homeWorkCount] ? this.state.homeWorkStatus[homeWorkCount] : 0}.png`} />
+                        </div>);
+                        homeWorkCount++;
                     }
                     //设定题目
                         //数据

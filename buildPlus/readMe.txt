@@ -2,6 +2,12 @@ file:///D:/ictProject/ictPlus/indexPlus.html?h5.ichangtou.com&courseId=2?getWher
 
 file:///D:/ictProject/ictPlus/indexPlus.html?courseId=2&getWhere=share&goPath=courseSelect
 
+鼓励师
+https://h5test.ichangtou.com/minic/indexPlusWork.html
+
+投放
+https://h5test.ichangtou.com/minic/indexPlus.html?courseId=2&getWhere=share&goPath=payPage
+
 file:///D:/ictProject/ictPlus/indexPlus.html?courseId=2&getWhere=share&goPath=listenCourse/31
 
 https://h5test.ichangtou.com/minic/indexPlus.html?courseId=2&goPath=courseSelect&getWhere=share

@@ -74,6 +74,7 @@ const ListenCourse = React.createClass({
             currentIndex: -1,
             renderType: 'null',
             userComments: [],
+            inputTxt: '',
         }
     },
 
@@ -458,7 +459,7 @@ const ListenCourse = React.createClass({
             padding: '5px',
         };
         return (<div style = {commentStyle}>
-            <AbsCommentBox index = {0} defaultTxt = {'点击输入文字123...'} currentContent = {this.state.inputTxt} status = {true} cbfOnChange = {this.cbfOnChange}></AbsCommentBox>
+            <AbsCommentBox index = {0} defaultTxt = {'写下对课程的评价吧!'} currentContent = {this.state.inputTxt} status = {true} cbfOnChange = {this.cbfOnChange}></AbsCommentBox>
         </div>)
     },
 
@@ -468,7 +469,7 @@ const ListenCourse = React.createClass({
         let dayId = this.props.params.dayId;
         let comment = this.state.inputTxt;
         if(this.state.inputTxt === '') {
-            window.dialogAlertComp.show('多写写内容哦','您的评论师兄也会关注到呢!多写一些吧!','知道啦',()=>{},'',false);
+            window.dialogAlertComp.show('多写写内容哦','别急着提交评论，再写一些吧，小伙伴们都期待着你呢！','知道啦',()=>{},'',false);
         } else {
             Material.postCommentByDayId(dayId,comment).then((data)=>{
                 console.log(data);
