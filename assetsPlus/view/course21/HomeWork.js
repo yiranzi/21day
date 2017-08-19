@@ -20,6 +20,7 @@ const Actions = require('../../GlobalStorage/Actions');
 
 const ModalMask = require('../../component/common/ModalMask');
 const AbsCommentBox = require('../../component/abstract/AbsCommentBox');
+const CommentBox = require('../../component/common/CommentBox');
 
 const CourseBegin = React.createClass({
     getInitialState: function() {
@@ -30,7 +31,23 @@ const CourseBegin = React.createClass({
             homeWorkList: {},
             homeWorkStatus: '',
             textContents: [],
+            userInfoInput: [],//输入用户信息
         };
+    },
+
+    initUserInfo() {
+        let userGroupInfo = localStorage.getItem('userGroupInfo');
+        if(userGroupInfo) {
+            userGroupInfo = JSON.parse(userGroupInfo);
+            this.state.userInfoInput.push(userGroupInfo.qq);
+            this.state.userInfoInput.push(userGroupInfo.qqNickname);
+            this.state.userInfoInput.push(userGroupInfo.groupId);
+        } else {
+            for(let i = 0 ; i< 3; i++) {
+                this.state.userInfoInput.push('')
+            }
+        }
+        this.setState({userInfoInput: this.state.userInfoInput});
     },
 
 
@@ -44,6 +61,7 @@ const CourseBegin = React.createClass({
         MyStorage.whenEnterPage('homework');
         //1获取作业信息
         this.getHomeWorkList();
+        this.initUserInfo();
     },
 
     getHomeWorkList() {
@@ -76,6 +94,8 @@ const CourseBegin = React.createClass({
             for(let i = 0 ; i < value.questions.length; i++) {
                 if(value.questions[i].answer) {
                     this.state.textContents[i] = value.questions[i].answer;
+                } else {
+                    this.state.textContents[i] = ''
                 }
             }
             this.setState({
@@ -91,17 +111,88 @@ const CourseBegin = React.createClass({
         return(
             <div style = {{backgroundColor: '#FFE69B'}}className="home-work-21">
                 <FixedBg/>
-                <div className="content">
-                    <div className="title">{this.renderTitle()}</div>
+                {this.state.homeWorkStatus !== '' && <div className="content">
+                    {/*<div className="title">{this.renderTitle()}</div>*/}
                     <div style = {this.state.homeWorkStatus === 'doing' ? {opacity: '0.2'} : {}} className = 'answer-area'>
                         {this.renderHomeWorkList()}
                     </div>
+                    <div>{this.renderUserInfo()}</div>
                     <div>{this.renderSubmit()}</div>
+                </div>}
 
-                </div>
             </div>
             )
     },
+
+    renderUserInfo() {
+        if(this.state.homeWorkStatus !== 'undo') {
+            return
+        }
+        let arr =[];
+        let defaultTxt = ['QQ号码','QQ昵称','组号'];
+        let outStyle = {
+            display: 'flex',
+            justifyContent: 'center',
+            marginBottom: '20px',
+        };
+        let defaultStyle = {
+            width: '271px',
+            height: '36px',
+        };
+        for(let i = 0; i<this.state.userInfoInput.length; i++) {
+            arr.push(<CommentBox
+                defaultStyle = {defaultStyle}
+                index = {i}
+                defaultTxt = {defaultTxt[i]}
+                currentContent = {this.state.userInfoInput[i]}
+                status = {this.state.commentDisabled}
+                cbfOnChange = {this.userInfoOnChange}
+                outStyle = {outStyle}/>)
+        }
+        return(arr)
+    },
+
+    userInfoOnChange(index,comment) {
+        console.log(index);
+        console.log(comment);
+        this.state.userInfoInput[index] = comment;
+        this.setState({userInfoInput: this.state.userInfoInput})
+    },
+
+
+    postUserInfo() {
+        let current = 0;
+        //判定全部填入信息
+        for(current ;current < this.state.userInfoInput.length; current++) {
+            if(this.state.userInfoInput[current] === '') {
+                break;
+            }
+        }
+        if(current === this.state.userInfoInput.length) {
+            let jsonData = {
+                qqNickname: this.state.userInfoInput[1],
+                qq: this.state.userInfoInput[0],
+                groupId: this.state.userInfoInput[2],
+            };
+            // let jsonData = {
+            //     qqNickname: '12333333333',
+            //     qq: '123333333333',
+            //     groupId: '12333333333333',
+            // };
+            jsonData = JSON.stringify(jsonData);
+            //覆盖用户信息
+            localStorage.setItem('userGroupInfo',jsonData);
+            //提交信息
+            let promise = Material.postUserInfo(jsonData);
+            return promise
+        } else {
+            window.dialogAlertComp.show('QQ信息不完整','为了让班班看到你的成绩,要填写好QQ信息哦','知道啦',()=>{},'',false);
+            return new Promise((resolve, reject) => {
+                reject(false)
+            })
+        }
+    },
+
 
     renderSubmit() {
         let txt = '';
@@ -110,7 +201,7 @@ const CourseBegin = React.createClass({
                 txt = '提交';
                 break;
             case 'doing':
-                txt = '已提交';
+                txt = '作业正在批改';
                 break;
             case 'done':
                 txt = '已提交';
@@ -118,8 +209,8 @@ const CourseBegin = React.createClass({
             default:
                 break;
         }
-        if(this.state.homeWorkStatus) {
-            return(<span className="submit" onClick = {this.GetCommentClick.bind(this,this.state.homeWorkStatus)}>{txt}</span>)
+        if(this.state.homeWorkStatus && this.state.homeWorkStatus!=='done') {
+            return(<span style = {this.state.homeWorkStatus === 'doing' ? {width: '300px'} : {}} className="submit" onClick = {this.GetCommentClick.bind(this,this.state.homeWorkStatus)}>{txt}</span>)
         }
     },
 
@@ -165,7 +256,7 @@ const CourseBegin = React.createClass({
             padding: '5px',
         };
         return (<div style = {commentStyle}>
-            <AbsCommentBox index = {index} defaultTxt = {'点击输入文字...'}currentContent = {this.state.textContents[index]} status = {this.state.commentDisabled} cbfOnChange = {this.cbfOnChange}></AbsCommentBox>
+            <AbsCommentBox index = {index} defaultTxt = {'点击输入文字...'} currentContent = {this.state.textContents[index]} status = {this.state.commentDisabled} cbfOnChange = {this.cbfOnChange}></AbsCommentBox>
             {this.renderScore(index)}
         </div>)
     },
@@ -190,20 +281,26 @@ const CourseBegin = React.createClass({
 
     //提交按钮
     GetCommentClick(type) {
-        console.log('click');
         switch(type) {
             case 'undo':
                 let current = 0;
                 //判定全部填入信息
                 for(current ;current < this.state.textContents.length; current++) {
-                    if(this.state.textContents[current] === null) {
+                    if(this.state.textContents[current] === '') {
                         break;
                     }
                 }
                 if(current === this.state.textContents.length) {
-                    this.postAnswer();
-                    //提交
+                    console.log('postUserInfo');
+                    //先提交用户信息
+                    this.postUserInfo().then((data)=>{
+                        this.postAnswer();
+                        console.log(data);
+                    }).catch((reason)=>{
+                        console.log(reason);
+                    })
                 } else {
+                    window.dialogAlertComp.show('信息不完整','信息不完整,请填写完整','知道啦',()=>{},'',false);
                     console.log('empty');
                     //没填满
                 }

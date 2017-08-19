@@ -230,7 +230,7 @@ const CourseSelect = React.createClass({
     // },
 
     renderCourseList() {
-        console.log('render123')
+
         let courseList = this.state.courseList;
         let arr = [];
         let homeWorkCount = 0;
@@ -262,7 +262,7 @@ const CourseSelect = React.createClass({
                     );
 
                     //如果有题目
-                    if (courseList[i].homework === 'Y' && courseList[i].courseStatus.see) {
+                    if (courseList[i].homework === 'Y' && courseList[i].courseStatus.see && sessionStorage.getItem('testType') === 'have' ) {
                         //得到题目id
                         arr.push( <div className="lesson-bar-course21" style = {{height: '45px'}} onClick={this.cbfGoHomeWork.bind(this,i)}>
                             <img style = {{width: '100%'}} src={`./assetsPlus/image/${GlobalConfig.getCourseName()}/homework_line_${this.state.homeWorkStatus[homeWorkCount] ? this.state.homeWorkStatus[homeWorkCount] : 0}.png`} />

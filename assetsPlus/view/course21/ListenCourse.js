@@ -75,6 +75,7 @@ const ListenCourse = React.createClass({
             renderType: 'null',
             userComments: [],
             inputTxt: '',
+            showBoard: false,
         }
     },
 
@@ -398,9 +399,42 @@ const ListenCourse = React.createClass({
         let styleChoose = {
             backgroundColor: '#907660'
         };
+
+        if (this.state.renderType === 'null') {
+            return(
+                <div id="fmView" className="fm-view">
+                    <FixedBg />
+                </div>
+            )
+        } else {
+            return(
+                <div id="fmView" className="fm-view" style={{backgroundColor: '#FFE69B'}}>
+                    <FixedBg />
+                    <div className="fix-bg-space"></div>
+                    <CourseProcessBar userSet = {true} styleDefault = {styleDefault} styleChoose = {styleChoose} finishElement = {this.state.finishElement} totalElement = {this.state.totalElement}/>
+                    {/*<span>当前点击的index{this.state.currentPlaying}</span>*/}
+                    {/*<span>当前播放的fmid{this.state.currentfmid}</span>*/}
+                    {/*<div>进入时,这门课程的状态时{this.props.location.query.name}</div>*/}
+                    {this.renderLesson()}
+                    {/*打分*/}
+                    {this.renderGiveScore()}
+                    {/*提交评论*/}
+                    {this.renderComment()}
+                    {this.renderMassageBoard()}
+                    {/*评论取余*/}
+                    {/*{this.renderSignUp()}*/}
+                    {/*{this.preLoadPic()}*/}
+                </div>
+            )
+        }
+
+    },
+
+    renderMassageBoard() {
+        console.log('1231!!!!!!!!!!!!!!!!!!!!!');
         let styleMassageBoard = {
             bgColor: {
-              backgroundColor: 'transparent',
+                backgroundColor: 'transparent',
                 color: '#907660'
             },
             textMargin: {
@@ -417,35 +451,15 @@ const ListenCourse = React.createClass({
                     fontSize: '18px'
                 }
             }
+        };
+        if(this.state.allFinish) {
+            setTimeout(()=>{
+                this.setState({showBoard: true})
+            },1000)
         }
-        if (this.state.renderType === 'null') {
-            return(
-                <div id="fmView" className="fm-view">
-                    <FixedBg />
-                </div>
-            )
-        } else {
-            return(
-                <div id="fmView" className="fm-view">
-                    <FixedBg />
-                    <div className="fix-bg-space"></div>
-                    <CourseProcessBar userSet = {true} styleDefault = {styleDefault} styleChoose = {styleChoose} finishElement = {this.state.finishElement} totalElement = {this.state.totalElement}/>
-                    {/*<span>当前点击的index{this.state.currentPlaying}</span>*/}
-                    {/*<span>当前播放的fmid{this.state.currentfmid}</span>*/}
-                    {/*<div>进入时,这门课程的状态时{this.props.location.query.name}</div>*/}
-                    {this.renderLesson()}
-                    {/*打分*/}
-                    {this.renderGiveScore()}
-                    {/*提交评论*/}
-                    {this.renderComment()}
-                    {/*评论取余*/}
-                    <MassageBoard defaultStyle = {styleMassageBoard} cbfLike = {this.cbfLike} userLists = {this.state.userComments}/>
-                    {/*{this.renderSignUp()}*/}
-                    {/*{this.preLoadPic()}*/}
-                </div>
-            )
+        if(this.state.showBoard) {
+            return(<MassageBoard defaultStyle = {styleMassageBoard} cbfLike = {this.cbfLike} userLists = {this.state.userComments}/>)
         }
-
     },
 
     renderTextArea() {
@@ -471,11 +485,11 @@ const ListenCourse = React.createClass({
         if(this.state.inputTxt === '') {
             window.dialogAlertComp.show('多写写内容哦','别急着提交评论，再写一些吧，小伙伴们都期待着你呢！','知道啦',()=>{},'',false);
         } else {
+            window.dialogAlertComp.show('提交成功','您已提交！喜欢这节课吗？把它分享给更多的小伙伴吧！','知道啦',()=>{},'',false);
+            this.setState({inputTxt: ''});
             Material.postCommentByDayId(dayId,comment).then((data)=>{
                 console.log(data);
                 this.getComment(data);
-                this.setState({inputTxt: ''});
-                window.dialogAlertComp.show('提交成功','您已提交！喜欢这节课吗？把它分享给更多的小伙伴吧！','知道啦',()=>{},'',false);
             });
         }
     },
@@ -658,7 +672,7 @@ const ListenCourse = React.createClass({
                             if(lessonQuestions[lessonQuestions.length - 1].process && i !== lessons.length - 1) {
                                 arr.push(this.renderDivLine());
                                 count++;
-                            }
+                            } else break OUT;
                         } else {
                             //如果不是最后一个
                             if(i !== lessons.length - 1) {

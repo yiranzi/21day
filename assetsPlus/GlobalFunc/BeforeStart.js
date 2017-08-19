@@ -70,6 +70,9 @@ class BeforeStart {
     }
 
     static getRedirect() {
+        //初始化.
+        sessionStorage.setItem('testType','have-not');
+
         console.log('enterridict');
         //重定向到main
         let redictUrl = '/main';
@@ -83,7 +86,8 @@ class BeforeStart {
         let courseId = MyStorage.getItem('courseId');
         let getWhere = MyStorage.getItem('getWhere');
         //判断特殊渠道(推送必然可以听课.(需要扫码))
-        if(getWhere === 'autoPush') {
+        if(getWhere === 'autoPushHigh') {
+            console.log('已废弃');
             // goPath = 'courseSelect';
             // courseId = 2;
             // redictUrl = goPath;
@@ -145,7 +149,14 @@ class BeforeStart {
             //TODO
             //并且可以开课
             Tools.fireRaceCourse(courseId).then((value)=>{
-                console.log('get');
+                console.log(value);
+                if(value && value.qqGroup) {
+                    if (value.qqGroup === '537596931') {
+                        sessionStorage.setItem('testType','have');
+                    } else {
+                        sessionStorage.setItem('testType','have-not');
+                    }
+                }
                 if(parseInt(sessionStorage.getItem('courseId')) === parseInt(courseId)) {
                     if(value.pay){
                         sessionStorage.setItem('SisBuy','付费');

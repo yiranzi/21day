@@ -1053,7 +1053,6 @@ class Material {
     //提交
     static postUserInfo(data) {
         let url = Util.getAPIUrl('post-user-info');
-        data = JSON.stringify(data);
         return (this.ajaxPostSomeUrl(url,data));
     }
 
