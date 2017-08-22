@@ -5,26 +5,15 @@ const React = require('react');
 
 
 // interface StateTypes {
-//
-//     index: number,//设置index的接口.(设置了就不会改变的,不应该放在state中)
-//          content:内容包
-//         status: String,//表示按钮的状态.
-//         cbfClick: Function,//点击事件回调接口
-//         // cbfHover: Function,
-//         // cbfPress: Function,
-//         //数据
-//         title: String,//可选标题
-//         imageOn: String//背景图片
-//         imageOff: String//背景图片
-//     //样式
-//     styleBox: Object,//定义操作相应区域样式(大小)的接口
-//         styleClick: Object,
-//         styleHover: Object,
-//         stylePress: Object,
-//         styleDefault: Object,
-//styleImage
-//
-//
+//          index: number,//设置index的接口
+//          arrayIndex: Array,//父组件传递的记录点击的数组
+//          content:内容包{title: imageOn: imageOff}
+//          status: String,//表示按钮的状态.
+//          cbfClick: Function,//点击事件回调接口
+//          styleDefault: Object,
+//          styleClick: Object,
+//          styleHover: Object,
+//          styleImage: Object,
 // }
 
 const AbstractBox = React.createClass({
@@ -44,7 +33,7 @@ const AbstractBox = React.createClass({
     render (){
 
         return(<div style={this.addStyleByStatus()} onClick={this.cbfClick} onMouseOver={this.cbfHover} onMouseOut = {this.cbfHoverOut}>
-            {this.renderContent()}
+            {this.props.children ? this.props.children :this.renderContent()}
             {/*<div style = {this.props.styleBox}*/}
 
             {/*{this.props.title}*/}
@@ -56,13 +45,15 @@ const AbstractBox = React.createClass({
     },
 
     renderContent() {
-        let content = this.props.content
+        let content = this.props.content;
         let title = content.title;
         let imageOn = content.imageOn;
         let imageOff = content.imageOff;
         //有两种图片的布局
         if(imageOn && imageOff) {
             return(<img style = {this.props.styleImage} src={this.props.status === 'click' ? imageOn : imageOff}/>)
+        } else {
+            return(<span>{content.title}</span>)
         }
     },
 

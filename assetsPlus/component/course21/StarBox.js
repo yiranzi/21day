@@ -59,7 +59,9 @@ const StarBox = React.createClass({
                             cbfHover = {this.props.cbfHover}
                             index = {this.props.index}
                             content = {this.props.content}
-                            arrayIndex = {this.props.arrayIndex}/>)
+                            arrayIndex = {this.props.arrayIndex}>
+            {/*<img style = {styleImage} src={this.props.status === 'click' ? this.props.content.imageOn : this.props.content.imageOff}/>*/}
+        </AbstractBox>)
     },
 
 });
