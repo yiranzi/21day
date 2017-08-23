@@ -41,8 +41,13 @@ const CPlus = React.createClass({
                 ['./assetsPlus/image/home/tabbar0_0.png','./assetsPlus/image/home/tabbar0_1.png'],
                 ['./assetsPlus/image/home/tabbar1_0.png','./assetsPlus/image/home/tabbar1_1.png'],
             ],
-            userAdvanceInfo: {}
-
+            userAdvanceInfo: {},
+            modalType: 'null',
+            userExpInfo: {
+                max: 0,
+                current: 0,
+                level: -1,
+            },
         };
     },
 
@@ -62,9 +67,22 @@ const CPlus = React.createClass({
             Material.getUserAdvanceInfo(userId).done((result)=>{
                 this.state.userAdvanceInfo = result;
                 this.setState({userAdvanceInfo: this.state.userAdvanceInfo});
-            })
+            });
+            this.initExp();
         });
     },
+
+    initExp() {
+        console.log('get');
+        Tools.fireRaceExp().then((value)=>{
+            console.log('get');
+            this.state.userExpInfo = value;
+            this.setState({userExpInfo: value});
+            //计算经验值
+            // this.calcRenderExp();
+        });
+    },
+
     initTabbar() {
         let tabs = this.state.tabs;
         let picUrl = './assetsPlus/image/home/tabbar';
@@ -77,9 +95,10 @@ const CPlus = React.createClass({
 
     //渲染
     render() {
+        console.log('render!!!!!!!!!!!');
         return(
             <div className="ict-main">
-                <FixedBg/>
+                <FixedBg cbfClick = {this.modalClick} modalType = {this.state.modalType}/>
                 {/*top*/}
                 {/*mid*/}
                 {this.renderMid()}
@@ -87,6 +106,27 @@ const CPlus = React.createClass({
                 {this.renderTabbar()}
             </div>
         )
+    },
+
+    modalClick(type) {
+        console.log('modalClick');
+        this.setState({modalType: 'null'});
+        switch (type) {
+            case 'null':
+                break;
+            case 'getExp':
+                console.log('getExp');
+                this.state.userExpInfo = GlobalExp.getLevelUpStack();
+                this.setState({userExpInfo: this.state.userExpInfo});
+                break;
+            case 'levelUp':
+                this.state.userExpInfo = GlobalExp.getLevelUpStack();
+                this.setState({userExpInfo: this.state.userExpInfo});
+                break;
+            default:
+                break;
+        }
+
     },
 
     renderMid() {
@@ -107,8 +147,13 @@ const CPlus = React.createClass({
         return(<HomeCourseList></HomeCourseList>)
     },
 
+    cbfModalChange(type) {
+        this.setState({modalType: type})
+    },
+
     renderMineStatus() {
-        return(<MineStatus userAdvanceInfo ={this.state.userAdvanceInfo}></MineStatus>)
+        console.log(this.state.userExpInfo);
+        return(<MineStatus cbfModalChange = {this.cbfModalChange} userExpInfo = {this.state.userExpInfo} userAdvanceInfo ={this.state.userAdvanceInfo}></MineStatus>)
     },
 
     //路由跳转

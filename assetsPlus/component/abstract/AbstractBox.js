@@ -46,6 +46,9 @@ const AbstractBox = React.createClass({
 
     renderContent() {
         let content = this.props.content;
+        if(!content) {
+            return
+        }
         let title = content.title;
         let imageOn = content.imageOn;
         let imageOff = content.imageOff;
@@ -84,17 +87,26 @@ const AbstractBox = React.createClass({
     },
 
     cbfHover() {
+        if(!this.props.styleHover) {
+            return
+        }
         let index = this.props.index;
         this.setState({localStatus: 'hover'});
         // this.props.cbfHover(index)
     },
 
     cbfHoverOut() {
+        if(!this.props.styleHover) {
+            return
+        }
         this.setState({localStatus: 'default'});
         // this.props.cbfHoverOut(index)
     },
 
     cbfClick() {
+        if(!this.props.styleClick) {
+            return
+        }
         let index = this.props.index;
         let arrayIndex = this.props.arrayIndex;
         this.props.cbfClick(index,arrayIndex);

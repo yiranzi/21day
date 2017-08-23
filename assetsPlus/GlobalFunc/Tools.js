@@ -32,6 +32,22 @@ class Tools {
         })
     }
 
+    //获取经验值信息
+    static fireRaceExp() {
+        let keyWord = 'getExpInfo';
+        //down
+        let getExpInfo = GlobalExp.getExpInfo();
+        return new Promise((resolve,reject)=>{
+            if (getExpInfo) {
+                resolve(getExpInfo);
+            } else {
+                OnFire.on(keyWord, (value)=>{
+                    resolve(value);
+                })
+            }
+        })
+    }
+
     //获取课程进度
     static fireRaceCourse(courseId) {
         let keyWord = 'courseStatus';

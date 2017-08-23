@@ -5,6 +5,7 @@ const React = require('react');
 
 // interface StateTypes {
 //cbfClick  点击背景任意位置回调
+//cbfOkClick    确定回调
 //isShow    是否显示
 //imageBg   全屏背景图
 //className 默认的样式.全屏图片/自定义蒙版+图片实现
@@ -26,6 +27,7 @@ const ModalMask = React.createClass({
     // },
 
     render (){
+        console.log(this.props);
         if(!this.props.isShow) {
             return (<div></div>);
         }
@@ -39,6 +41,7 @@ const ModalMask = React.createClass({
 
         // return(<div style={style} onClick={this.cbfClick} onMouseOver={this.cbfHover} onMouseOut = {this.cbfHoverOut}>
         return(<div style={style} onClick={this.props.cbfClick}>
+
             {this.props.type ? this.renderBg() : this.props.children}
             {/*{this.renderContent()}*/}
             {/*<div style = {this.props.styleBox}*/}
@@ -56,7 +59,7 @@ const ModalMask = React.createClass({
             width: '100%',
             height: '100%',
         };
-        return(<img style={style}src={this.props.imageBg}></img>)
+        return(<img style={style} src={this.props.imageBg}></img>)
     },
 
     renderContent() {

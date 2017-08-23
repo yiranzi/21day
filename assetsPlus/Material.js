@@ -1116,9 +1116,48 @@ class Material {
     static getCommentInfo(dayId) {
         let pageIndex = 1;
         let pageSize = 20;
-        let url = Util.getAPIUrl('get-comment').replace('{dayId}',dayId).replace('{pageSize}',pageSize).replace('{pageIndex}',pageIndex);
+        let url = Util.getAPIUrl('get-comment');
         let type = 'get';
         return (this.ajaxSomeUrl(url,type));
+    }
+
+    //获取经验
+    static getExpInfo(dayId) {
+        let url = Util.getAPIUrl('get-user-exp');
+        let type = 'get';
+        // return (this.ajaxSomeUrl(url,type));
+        return (this.testAjax(0));
+    }
+
+    //获取经验
+    static putSignUp(dayId) {
+        let url = Util.getAPIUrl('get-user-exp');
+        let type = 'get';
+        // return (this.ajaxSomeUrl(url,type));
+        return (this.testAjax(1));
+    }
+
+    static testAjax(type) {
+        let data;
+        return new Promise((resolve,reject)=>{
+            switch (type) {
+                case 0:
+                    data = {
+                        level: 1,
+                        levelExp: 60,
+                        userExp: 20,
+                    };
+                    break;
+                case 1:
+                    data = {
+                        value: 200,
+                    }
+                    break;
+                default:
+                    break;
+            }
+            resolve(data)
+        })
     }
 
     static ajaxPostSomeUrl(url,json) {

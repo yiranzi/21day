@@ -9,18 +9,29 @@
 const React = require('react');
 const Material = require('../../Material');
 const Tools = require('../../GlobalFunc/Tools');
+const ProcessBarContain = require('../../component/Complex/ProcessBar/ProcessBarContain');
 
 const MineStatus = React.createClass({
     getInitialState: function() {
         // console.log('123');
         return {
-            subTitle: ['我的资产','金币交易所','我的优惠券','成就屋']
+            subTitle: ['我的资产','金币交易所','我的优惠券','成就屋'],
+            localExpInfo: {
+            },
+            currentExp: 20,
+            kValue: 1,
+            dTime: 0,
         };
     },
 
     componentWillMount() {
         MyStorage.whenEnterPage('homeinfo');
+        //下拉经验值
+        // this.initExp();
+
     },
+
+
 
     // getUserInfo() {
     //     let userId = User.getUserInfo().userId;
@@ -32,14 +43,96 @@ const MineStatus = React.createClass({
     //     });
     // },
 
+    
+
+
+    //渲染前计算
+    calcExp() {
+        this.state.kValue = this.state.localExpInfo.current/this.state.localExpInfo.max;
+        return this.state.kValue;
+        // this.setState({
+        //     kValue: this.state.kValue,
+        // });
+
+    },
+
+    //这种在渲染循环里的东西很容易造成bug
+    //设置父组件会让子组件再次渲染.会再次调用父组件
+    calcLevelUp() {
+        if(this.state.localExpInfo.levelUp) {
+            setTimeout(()=>{
+                this.props.cbfModalChange('levelUp');
+                console.log('level up')
+            },this.state.dTime * 1100)
+        } else {
+            setTimeout(()=>{
+                console.log('up finish')
+            },this.state.dTime * 1100)
+        }
+    },
+
+    //渲染变化时间
+    calcDTime() {
+        console.log('calcDTime');
+        if(this.state.localExpInfo.level > -1) {
+            let distance = this.props.userExpInfo.current - this.state.localExpInfo.current;
+            //速度 = 长度/时间
+            let v = this.state.localExpInfo.max/2;
+            this.state.dTime = distance/v;
+            this.state.localExpInfo = JSON.parse(JSON.stringify(this.props.userExpInfo));
+            return this.state.dTime;
+            // this.setState({dTime: this.state.dTime});
+            // this.setState({localExpInfo: this.state.localExpInfo});
+        } else {
+            this.state.localExpInfo = JSON.parse(JSON.stringify(this.props.userExpInfo));
+            // this.setState({dTime: 0,
+            //     localExpInfo: this.state.localExpInfo})
+            return 0
+        }
+
+
+    },
+
+
+
     // style = {fullbg}
     render() {
         return(
             <div className="mine-status">
+                {this.renderSignUp()}
+                {this.renderExpProcess()}
                 {this.topInfo()}
                 {this.midInfo()}
             </div>
         )
+    },
+
+    renderSignUp() {
+        return(<div onClick = {this.signUp}>签到加经验</div>)
+    },
+
+    signUp() {
+        console.log('click');
+        GlobalExp.expUpEvent('signUp').then(()=>{
+            //1弹出获取经验弹窗
+            this.props.cbfModalChange('getExp');
+        }, ()=>{alert('失败');})
+    },
+
+    calcRenderExp() {
+        this.calcDTime();
+        this.calcExp();
+        this.calcLevelUp();
+    },
+
+    renderExpProcess() {
+        this.calcRenderExp();
+        return(<div>
+            <span>{this.state.localExpInfo.level}</span>
+            <ProcessBarContain kValue = {this.state.kValue}
+                               dTime = {this.state.dTime}/>
+
+        </div>);
     },
 
     topInfo() {
@@ -55,6 +148,7 @@ const MineStatus = React.createClass({
             </div>
         </div>)
     },
+
 
     renderSex(type) {
         let arr = [];

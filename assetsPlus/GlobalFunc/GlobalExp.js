@@ -5,13 +5,14 @@
 const WxConfig = require('../WxConfig');
 const OnFire = require('onfire.js');
 const GlobalConfig = require('../GlobalStorage/GlobalConfig');
+const Actions = require('../GlobalStorage/Actions');
 
 
 //课程信息
-let courseInfo = {};
 let expTotal = 0;
 let expInfo ={};
 let expList = [60,180,370,700];
+let levelUpStack = [];
 //课程Id列表
 // let courseList = [0,1,2];
 
@@ -20,25 +21,10 @@ let expList = [60,180,370,700];
 //2这里面用来保存变量数据.主要就是set和get
 //3这里还负责保存后的广播.
 
-class MyStorage {
+class GlobalExp {
     static init() {
-        // let max = 0;
-        // for(let i = 0; i<courseList.length; i++) {
-        //     if(courseList[i]>max) {
-        //         max = courseList[i];
-        //     }
-        // }
-        // for(let i = 0; i<max+1; i++) {
-        //     courseInfo[courseList[i]] = {};
-        // }
-        let courseList = GlobalConfig.getCourseIdList();
-        for(let i = 0; i< courseList.length; i++) {
-            courseInfo[courseList[i]] = {};
-        }
-        //
-        // for(let i = 0; i< GlobalConfig.getCourseIdList().length; i++) {
-        //     courseInfo[i] = {};
-        // }
+        //发送拉取的请求
+        Actions.getUesrExpInfo();
     }
 
     static setExpInfo(valueObj) {
@@ -51,9 +37,42 @@ class MyStorage {
         expInfo.level = valueObj.level;
         expInfo.max = valueObj.levelExp;
         expInfo.current = valueObj.userExp;
+        expInfo.levelUp = false;
         OnFire.fire("getExpInfo",expInfo);
     }
 
+    static expUpEvent(type) {
+        // let expData = {};
+        return new Promise((resolve,reject)=>{
+            switch (type) {
+                case 'signUp':
+                    //0增长经验的触发事件
+                    Material.putSignUp().then((data)=>{
+                        //1将经验变化值保存
+                        this.putExpUp(data.value);
+                        resolve(true);
+                        //遍历去除
+                    },()=>{
+                        reject(false);
+                    });
+                    break;
+                default:
+                    reject(false);
+                    console.log('abc');
+                    break;
+            }
+
+        })
+
+    }
+
+    static getLevelUpStack() {
+        let json = levelUpStack.shift();
+        json = JSON.parse(JSON.stringify(json));
+        return json;
+    }
+
+    //将升级过程储存
     static putExpUp(value) {
         let lastExp = value;
         let gap = expInfo.max - expInfo.current;
@@ -64,22 +83,28 @@ class MyStorage {
         };
         let upArray = [];
         while(lastExp > gap){
+            let localExpInfo = {};
             //设置上当前的
-            expInfo.current = expInfo.max;
-            upArray.push(expInfo);
+            localExpInfo.level = expInfo.level;
+            localExpInfo.max = expInfo.max;
+            localExpInfo.current = expInfo.max;
+            //设置上升级
+            localExpInfo.levelUp = true;
+            upArray.push(localExpInfo);
             //计算下一次
             lastExp = lastExp - gap;
             expInfo.level = expInfo.level + 1;
-            expInfo.max = expList[expInfo.level];
+            expInfo.max = expList[expInfo.level - 1];
             expInfo.current = 0;
+            expInfo.levelUp = false;
             gap = expInfo.max - expInfo.current;
         }
-        expInfo.current = gap;
-        if(upArray.length === 0) {
-            upArray.push(expInfo);
-        }
+        expInfo.current = expInfo.current  + lastExp;
+        //保存最后一次
+        upArray.push(expInfo);
+        levelUpStack = upArray;
         //返回全部的obj
-        return upArray;
+        return levelUpStack;
     }
 
     static calcExp() {
@@ -104,7 +129,8 @@ class MyStorage {
     }
 
     static getExpInfo() {
-        return expInfo;
+        let json = JSON.parse(JSON.stringify(expInfo));
+        return json;
     }
 
     /**
@@ -218,4 +244,4 @@ class MyStorage {
 }
 
 // module.exports = MyStorage;
-window.MyStorage = MyStorage;
+window.GlobalExp = GlobalExp;

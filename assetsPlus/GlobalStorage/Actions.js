@@ -62,6 +62,12 @@ class Actions {
         }
     }
 
+    static getUesrExpInfo() {
+        Material.getExpInfo().then((result)=>{
+            GlobalExp.setExpInfo(result);
+        });
+    }
+
     //down 想要的时候试图获取
     //get 监听这个广播
     //action 如果调用的时候没有(*)

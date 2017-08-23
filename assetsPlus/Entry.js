@@ -21,6 +21,7 @@ var DialogAlert = require('./component/DialogAlert');
 var InnerRouter = require('./InnerRouter');
 var BeforeStart = require('./GlobalFunc/BeforeStart');
 var MyStorage = require('./GlobalFunc/MyStorage');
+var GlobalExp = require('./GlobalFunc/GlobalExp');
 
 let test = true;
 
