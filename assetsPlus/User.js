@@ -25,7 +25,18 @@ class User {
         //     return userInfo || {};
         // })
     }
-
+    /**
+     * 获取用户信息
+     * @returns {*}
+     */
+    static listenUserInfoLoaded() {
+        window.addEventListener('_dove_FetchEvent', function() {
+            const data = JSON.parse(window.sessionStorage.getItem('wx-user-info'))
+            User.setUserInfo(data)
+            WxConfig.shareConfig()
+            window.removeEventListener('_dove_FetchEvent')
+        }, true)
+    }
 
 
 
