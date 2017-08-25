@@ -21,6 +21,7 @@ var DialogAlert = require('./component/DialogAlert');
 var InnerRouter = require('./InnerRouter');
 var BeforeStart = require('./GlobalFunc/BeforeStart');
 var MyStorage = require('./GlobalFunc/MyStorage');
+var GlobalExp = require('./GlobalFunc/GlobalExp');
 
 let test = false;
 
@@ -44,9 +45,9 @@ User.initAccessInfo();
 $(document).ready(() => {
     // alert("html ready");
     if(!Util.isWeixin()){
-        console.log('!is note wx')
-        if(test) {
-            console.log('is test wx')
+        console.log('!is note wx');
+        if(location.href.indexOf('ictProject') > 1 ) {
+            console.log('is test wx');
             alert('请复制地址并在微信中打开');
             new Dimensions().init();
             //1设置固定id
