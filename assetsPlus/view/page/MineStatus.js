@@ -150,14 +150,15 @@ const MineStatus = React.createClass({
             GlobalExp.expUpEvent('signUp').then((value)=>{
                 //1弹出获取经验弹窗
                 if(value) {
+                    Statistics.postDplusData('点击_签到',[true]);
                     this.props.cbfModalChange('getExp',value);
                     this.props.cbfSignUp();
+                } else {
+                    Statistics.postDplusData('点击_签到',[false]);
                 }
-            },()=>{
-                //返回false.后台签到失败
-                window.dialogAlertComp.show('签到失败','您今天已经签过到啦','知道啦',()=>{},'',false);
             })
         } else {
+            Statistics.postDplusData('点击_签到',[false]);
             window.dialogAlertComp.show('明天再来吧','您今天已经签过到啦','知道啦',()=>{},'',false);
         }
 
