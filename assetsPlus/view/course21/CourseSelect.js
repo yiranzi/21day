@@ -83,7 +83,7 @@ const CourseSelect = React.createClass({
         Material.getCourseList(this.state.courseId).then( (data) => {
             this.state.courseList = data;
             this.setState({courseList: this.state.courseList});
-            this.getHomeWorkStatus()
+            // this.getHomeWorkStatus()
         })
     },
 
