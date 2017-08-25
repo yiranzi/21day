@@ -2,7 +2,7 @@
  * Created by lip on 2016/6/3.
  */
 //v815.10
-//v2.2
+//v2.3
 
 var $ = window.$ = require('jquery');
 var React = require('react');

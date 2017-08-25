@@ -135,6 +135,31 @@ const FixedBg = React.createClass({
                 </ModalMask>);
                 break;
             default:
+                // style.justifyContent = 'flex-start';
+                // arr.push(<ModalMask cbfClick = {this.props.cbfClick.bind(this,this.props.modalType)} isShow = {true}>
+                //     {/*<p>123123123</p>*/}
+                //     {/*<div>*/}
+                //         {/*<div className="out-div">*/}
+                //             {/*<img className="image-font" src={`./assetsPlus/image/exp_level_up_font.png`}/>*/}
+                //             {/*<img className="inner-image" src={GlobalExp.getExpModalInfo().headImage}/>*/}
+                //             {/*<img className="out-image" src={`./assetsPlus/image/exp_level_up.png`}/>*/}
+                //         {/*</div>*/}
+                //     {/*</div>*/}
+                //     <div className="level-up-info" style = {style}>
+                //         <div className="head-image">
+                //             <div className="out-div">
+                //                 <img className="image-font" src={`./assetsPlus/image/exp_level_up_font.png`}/>
+                //                 <img className="inner-image" src={GlobalExp.getExpModalInfo().headImage}/>
+                //                 <img className="out-image" src={`./assetsPlus/image/exp_level_up.png`}/>
+                //             </div>
+                //         </div>
+                //         <div className="txt-line" >
+                //             <p>恭喜你升到了</p>
+                //             <span className="level-icon">Lv{GlobalExp.getExpModalInfo().level}</span>
+                //         </div>
+                //         <img className="sure-button" src={`./assetsPlus/image/exp_modal_yes.png`}/>
+                //     </div>
+                // </ModalMask>);
                 break;
         }
         return arr;
