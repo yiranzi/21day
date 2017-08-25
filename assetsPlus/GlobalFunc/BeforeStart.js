@@ -61,7 +61,6 @@ class BeforeStart {
         console.log('clear session');
 
         MyStorage.init();
-        console.log('init');
         GlobalExp.init();
         //获取经验信息的接口.
     }

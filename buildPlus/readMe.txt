@@ -8,7 +8,7 @@ file:///D:/ictProject/ictPlus/indexPlus.html?courseId=2&goPath=listenCourse/35&g
 https://h5test.ichangtou.com/minic/indexPlusWork.html
 
 投放
-https://h5test.ichangtou.com/minic/indexPlus.html?courseId=2&getWhere=test1
+https://h5test.ichangtou.com/minic/indexPlus.html?courseId=2&getWhere=share&goPath=ListenCourse/33&dayId=1
 
 file:///D:/ictProject/ictPlus/indexPlus.html?courseId=2&getWhere=share&goPath=listenCourse/31
 

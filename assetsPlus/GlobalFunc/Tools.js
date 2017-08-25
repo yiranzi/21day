@@ -38,7 +38,7 @@ class Tools {
         //down
         let getExpInfo = GlobalExp.getExpInfo();
         return new Promise((resolve,reject)=>{
-            if (getExpInfo) {
+            if (getExpInfo.level) {
                 resolve(getExpInfo);
             } else {
                 OnFire.on(keyWord, (value)=>{
