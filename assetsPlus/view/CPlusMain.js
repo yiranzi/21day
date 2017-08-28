@@ -48,6 +48,8 @@ const CPlus = React.createClass({
                 current: 0,
                 level: -1,
             },
+            saveUpdataInfo: {},
+            userSignUpStatus: false,
         };
     },
 
@@ -67,8 +69,22 @@ const CPlus = React.createClass({
             Material.getUserAdvanceInfo(userId).done((result)=>{
                 this.state.userAdvanceInfo = result;
                 this.setState({userAdvanceInfo: this.state.userAdvanceInfo});
+                //保存用户头像
+                GlobalExp.setExpModalInfo('获得经验',result.headImage);
             });
+
             this.initExp();
+            this.initUserSign();
+        });
+    },
+
+    //获取用户签到信息
+    initUserSign() {
+        Material.getSignUpStatus().then((result)=>{
+            result = !result;
+            console.log(result);
+            this.state.userSignUpStatus = result;
+            this.setState({userSignUpStatus: this.state.userSignUpStatus});
         });
     },
 
@@ -104,8 +120,24 @@ const CPlus = React.createClass({
                 {this.renderMid()}
                 {/*bottom*/}
                 {this.renderTabbar()}
+                {this.renderSignUpPop()}
             </div>
         )
+    },
+
+    renderSignUpPop() {
+        let style = {
+            width: '36px',
+            height: '40px',
+            position: 'fixed',
+            right: '74px',
+            bottom: '50px',
+            zIndex: '100',
+        };
+        if(!this.state.userSignUpStatus) {
+            return
+        }
+        return(<img onClick = {this.cbfTabClick.bind(this,1)} style = {style} src={`./assetsPlus/image/sign_up_pop.png`}/>)
     },
 
     modalClick(type) {
@@ -120,7 +152,7 @@ const CPlus = React.createClass({
                 this.setState({userExpInfo: this.state.userExpInfo});
                 break;
             case 'levelUp':
-                this.state.userExpInfo = GlobalExp.getLevelUpStack();
+                this.state.userExpInfo = JSON.parse(JSON.stringify(this.state.saveUpdataInfo));
                 this.setState({userExpInfo: this.state.userExpInfo});
                 break;
             default:
@@ -147,13 +179,28 @@ const CPlus = React.createClass({
         return(<HomeCourseList></HomeCourseList>)
     },
 
-    cbfModalChange(type) {
-        this.setState({modalType: type})
+    cbfModalChange(type,value) {
+        this.setState({modalType: type,});
+        if(type === 'levelUp') {
+            this.state.saveUpdataInfo = GlobalExp.getLevelUpStack();
+            let local =  JSON.parse(JSON.stringify(this.state.saveUpdataInfo));
+            local.current = this.state.userExpInfo.max;
+            local.levelUp = false;
+            this.setState({
+                userExpInfo: local,
+            })
+            //提前获取 并保存到临时上 修改后设置props.
+            //之后再从临时的去下. 修改后设置props.
+        }
     },
 
     renderMineStatus() {
-        console.log(this.state.userExpInfo);
-        return(<MineStatus cbfModalChange = {this.cbfModalChange} userExpInfo = {this.state.userExpInfo} userAdvanceInfo ={this.state.userAdvanceInfo}></MineStatus>)
+        return(<MineStatus cbfSignUp = {this.cbfSignUp} canSignUp = {this.state.userSignUpStatus} cbfModalChange = {this.cbfModalChange} userExpInfo = {this.state.userExpInfo} userAdvanceInfo ={this.state.userAdvanceInfo}></MineStatus>)
+    },
+
+    cbfSignUp() {
+        //签到完成
+        this.setState({userSignUpStatus: false})
     },
 
     //路由跳转

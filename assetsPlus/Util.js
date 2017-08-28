@@ -154,7 +154,11 @@ const API_URL_GROUP = {
     'choose-dislike-comment': '21homework/cancel-comment-like/{commentId}/{dayId}',//点赞
     'post-user-info': '21homework/submit-qqinfo',//提交用户信息
 
-    'get-user-exp': 'ctplus/exp/user-info',//提交用户信息
+    'get-user-exp': 'ctplus/exp/user-level',//获得用户等级信息
+    'put-sign-in': 'ctplus/exp/sign-in',//用户签到
+
+    'get-sign-status': 'ctplus/exp/sign-in-status',//获得用户签到信息
+
 
     //基金课
     'get_qq_info':'ctplus/qq-details/{courseId}',
@@ -351,6 +355,17 @@ class Util {
      */
     static getAPIUrl(type) {
         return Util.getAPIDomain() + API_URL_GROUP[type];
+    }
+
+    static getTestAPI(url) {
+        if(Config.environment) {
+            return url
+        } else {
+            let a = 'geek.ichangtou.com';
+            let b = 'pai-test.ichangtou.com';
+            return url.replace(a,b);
+        }
+
     }
 
     /**

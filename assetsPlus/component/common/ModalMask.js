@@ -39,10 +39,32 @@ const ModalMask = React.createClass({
             top: 0,
         };
 
-        // return(<div style={style} onClick={this.cbfClick} onMouseOver={this.cbfHover} onMouseOut = {this.cbfHoverOut}>
-        return(<div style={style} onClick={this.props.cbfClick}>
+        let styleClick = {
+            position: 'fixed',
+            width: '100%',
+            height: '100%',
+            top: 0,
+            zIndex: '-1',
+        };
 
+        // let style = {
+        //     display: 'flex',
+        //     flexWrap: 'wrap',
+        //     justifyContent: 'center',
+        //     alignItems: 'center',
+        //     fontSize: '20px',
+        //     width: '100%',
+        //     height: '100%',
+        //     backgroundColor: 'rgba(144,118,96,0.9)'
+        // };
+
+        // return(<div style={style} onClick={this.cbfClick} onMouseOver={this.cbfHover} onMouseOut = {this.cbfHoverOut}>
+        return(<div onClick={this.props.cbfClick} style={style } >
+            {/*<div className="click" style = {styleClick} onClick={this.props.cbfClick}></div>*/}
             {this.props.type ? this.renderBg() : this.props.children}
+            {/*正确写法*/}
+            {/*{this.props.imageBg ? this.renderBg() : this.props.children}*/}
+
             {/*{this.renderContent()}*/}
             {/*<div style = {this.props.styleBox}*/}
 

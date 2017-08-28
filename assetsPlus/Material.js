@@ -1121,20 +1121,32 @@ class Material {
         return (this.ajaxSomeUrl(url,type));
     }
 
-    //获取经验
-    static getExpInfo(dayId) {
+    //Get用户经验
+    static getExpInfo() {
         let url = Util.getAPIUrl('get-user-exp');
+        url = Util.getTestAPI(url);
         let type = 'get';
-        // return (this.ajaxSomeUrl(url,type));
-        return (this.testAjax(0));
+        return (this.ajaxSomeUrl(url,type));
+        // return (this.testAjax(0));
     }
 
-    //获取经验
-    static putSignUp(dayId) {
-        let url = Util.getAPIUrl('get-user-exp');
+    //Put用户签到,获得经验
+    static putSignUp() {
+        let url = Util.getAPIUrl('put-sign-in');
+
+        url = Util.getTestAPI(url);
+        let type = 'put';
+        return (this.ajaxSomeUrl(url,type));
+        // return (this.testAjax(1));
+    }
+
+    //get用户签到否?
+    static getSignUpStatus() {
+        let url = Util.getAPIUrl('get-sign-status');
+        url = Util.getTestAPI(url);
         let type = 'get';
-        // return (this.ajaxSomeUrl(url,type));
-        return (this.testAjax(1));
+        return (this.ajaxSomeUrl(url,type));
+        // return (this.testAjax(2));
     }
 
     static testAjax(type) {
@@ -1152,6 +1164,9 @@ class Material {
                     data = {
                         value: 200,
                     }
+                    break;
+                case 2:
+                    data = true;
                     break;
                 default:
                     break;

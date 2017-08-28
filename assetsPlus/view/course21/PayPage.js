@@ -294,12 +294,13 @@ var PayPage = React.createClass({
                 <ModalMask type = {true} cbfClick = {()=>{this.setState({ifBgShow: false})}} isShow = {this.state.ifBgShow} imageBg = {`./assetsPlus/image/${GlobalConfig.getCourseName()}/paypage_share.png`}/>
                 <div className={"intro-img"}>
                     {this.renderBg()}
-                    <div className="fund-status">
-                        <Timeout hasEnded={this.state.time} finalDate={this.state.endTime}/>
-                        <span className="fund-status-number">剩余名额：{this.state.ifCanPaid ? this.state.num : 0}</span>
-                    </div>
+                    {/*<div className="fund-status">*/}
+                        {/*<Timeout hasEnded={this.state.time} finalDate={this.state.endTime}/>*/}
+                        {/*<span className="fund-status-number">剩余名额：{this.state.ifCanPaid ? this.state.num : 0}</span>*/}
+                    {/*</div>*/}
                 </div>
-                {this.bottomBar()}
+                {/*{this.bottomBar()}*/}
+                {this.bottomPay()}
 
 
                 {/*<div className="fund-join-page">*/}
@@ -316,6 +317,15 @@ var PayPage = React.createClass({
                 {/*</div>*/}
             </div>
         )
+    },
+
+    bottomPay() {
+        return(<div className="global-div-fixed" onClick={this.clickHandler}>
+            <div className="button-pay">
+                {`立即学习（${this.state.buttonPrice}元）`}
+            </div>
+
+        </div>)
     },
 
     bottomBar() {

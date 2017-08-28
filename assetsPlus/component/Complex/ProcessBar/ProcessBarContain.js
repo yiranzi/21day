@@ -11,7 +11,7 @@ class ProcessBarContain extends React.Component{
     constructor() {
         super();
         this.state = {
-            outWidth: 200,
+            outWidth: 129,
         }
     }
 
@@ -28,9 +28,10 @@ class ProcessBarContain extends React.Component{
 
     renderProcessBarOut() {
         let styleDefault = {
+            borderRadius: '5px',
             width: `${this.state.outWidth}px`,
-            height: '5px',
-            backgroundColor: 'red',
+            height: '14px',
+            backgroundColor: '#347499',
             display: 'flex',
             flexWrap: 'no-wrap',
             alignItems: 'center',

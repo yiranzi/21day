@@ -45,6 +45,8 @@ const PayPageStock0 = require('./view/stock0/PayPage');
 const CourseSelectStock0 = require('./view/stock0/CourseSelect');
 const ListenCourseStock0 = require('./view/stock0/ListenCourse');
 
+const InitPage = require('./view/page/InitPage');
+
 
 
 const CPlusMain = require('./view/CPlusMain');
@@ -59,6 +61,7 @@ let InnerRouter = React.createClass({
                     {/*共有*/}
                     <IndexRedirect to={this.props.goWhere}/>
                     <Route path="/main" component={CPlusMain}/>
+                    <Route path="/initPage" component={InitPage}/>
                     {/*基金课*/}
                     <Route path = {`/${ GlobalConfig.getRouterInfo(1)}/${ GlobalConfig.getRouterInfo('pay')}`} component={PayPageFund}/>
                     <Route path = {`/${ GlobalConfig.getRouterInfo(1)}/${ GlobalConfig.getRouterInfo('select')}`} component={CourseSelectFund}/>

@@ -2,7 +2,7 @@
  * Created by lip on 2016/6/3.
  */
 //v815.10
-//v2.1
+//v2.3
 
 var $ = window.$ = require('jquery');
 var React = require('react');
@@ -23,7 +23,7 @@ var BeforeStart = require('./GlobalFunc/BeforeStart');
 var MyStorage = require('./GlobalFunc/MyStorage');
 var GlobalExp = require('./GlobalFunc/GlobalExp');
 
-let test = true;
+let test = false;
 
 //上报启动时间
 let endTime = new Date().getTime();
@@ -45,9 +45,9 @@ $(document).ready(() => {
     // alert("html ready");
     User.listenUserInfoLoaded()
     if(!Util.isWeixin()){
-        console.log('!is note wx')
-        if(test) {
-            console.log('is test wx')
+        console.log('!is note wx');
+        if(location.href.indexOf('ictProject') > 1 ) {
+            console.log('is test wx');
             alert('请复制地址并在微信中打开');
             new Dimensions().init();
             //1设置固定id
@@ -60,9 +60,11 @@ $(document).ready(() => {
             ReactDom.render(<InnerRouter goWhere = {goWhere}/>, $('#root')[0]);
         } else {
             Loading.hideLoading();
-            window.dialogAlertComp.show('提示','请复制地址并在微信中打开','知道啦',()=>{
-                Loading.showLoading('获取信息...');
-            },()=>{},false);
+            new Dimensions().init();
+            ReactDom.render(<InnerRouter goWhere = 'initPage'/>, $('#root')[0]);
+            // window.dialogAlertComp.show('提示','请复制地址并在微信中打开','知道啦',()=>{
+            //     Loading.showLoading('请在微信中打开(微信扫码)...');
+            // },()=>{},false);
         }
     } else {
         if( Util.getUrlPara('code') ) {

@@ -38,10 +38,10 @@ const FixedBg = React.createClass({
         };
         switch(courseId) {
             case '0':
-                bgStyle.backgroundImage = 'url("./assetsPlus/image/fund/join-bg.jpg")';
+                bgStyle.backgroundImage = 'url("./assetsPlus/image/seven/bg_1.png")';
                 break;
             case '1':
-                bgStyle.backgroundImage = 'url("./assetsPlus/seven/fund/bg_1.png")';
+                bgStyle.backgroundImage = 'url("./assetsPlus/image/fund/join-bg.jpg")';
                 break;
             case '2':
                 bgStyle.backgroundColor = '#FFE69B';
@@ -76,21 +76,68 @@ const FixedBg = React.createClass({
         // return(<div>
         //     {this.renderModal()}
         // </div>)
+<<<<<<< HEAD
         return(<div className={bgName} style = {bgStyle}>
             {this.renderModal()}
+=======
+        return(<div>
+            <div className={bgName} style = {bgStyle}></div>
+            <div className="modal-style">{this.renderModal()}</div>
+>>>>>>> 1bf1994cfc9bc924d8892a5def6fa05671e700c9
         </div>)
     },
     renderModal() {
+        let styleImg = {};
+        let style = {
+            display: 'flex',
+            flexWrap: 'wrap',
+            justifyContent: 'center',
+            alignItems: 'center',
+            fontSize: '20px',
+            width: '100%',
+            height: '100%',
+            backgroundColor: 'rgba(35,24,21,0.5)',
+            flexDirection: 'column',
+        };
+
         console.log('renderModal');
         let arr = []
         switch (this.props.modalType) {
-            case 'null':
-                break;
+            // case 'null':
+            //     break;
             case 'getExp':
-                arr.push(<ModalMask type = {true} cbfClick = {this.props.cbfClick.bind(this,this.props.modalType)} isShow = {true} imageBg = {`./assetsPlus/image/${GlobalConfig.getCourseName()}/paypage_share.png`}/>);
+                styleImg = {
+                    width: '251px',
+                    height: '146px',
+                };
+                arr.push(<ModalMask cbfClick = {this.props.cbfClick.bind(this,this.props.modalType)} isShow = {true}>
+                    <div style = {style}>
+                        {/*<span>{GlobalExp.getExpModalInfo().value}</span>*/}
+                        {/*<span>{GlobalExp.getExpModalInfo().txt}</span>*/}
+                        <div>
+                            <img style = {styleImg} src={`./assetsPlus/image/exp_up.png`}/>
+                        </div>
+                    </div>
+                    </ModalMask>);
                 break;
             case 'levelUp':
-                arr.push(<ModalMask type = {true} cbfClick = {this.props.cbfClick.bind(this,this.props.modalType)} isShow = {true} imageBg = {`./assetsPlus/image/${GlobalConfig.getCourseName()}/123.png`}/>);
+                style.justifyContent = 'flex-start';
+                arr.push(<ModalMask cbfClick = {this.props.cbfClick.bind(this,this.props.modalType)} isShow = {true}>
+                    <div className="level-up-info" style = {style}>
+                        <div className="head-image">
+                            <div className="out-div">
+                                <img className="image-font" src={`./assetsPlus/image/exp_level_up_font.png`}/>
+                                <img className="inner-image" src={GlobalExp.getExpModalInfo().headImage}/>
+                                <img className="out-image" src={`./assetsPlus/image/exp_level_up.png`}/>
+                            </div>
+                        </div>
+                        <div className="txt-line" >
+                            <p>恭喜你升到了</p>
+                            <span className="level-icon">Lv{GlobalExp.getExpModalInfo().level}</span>
+                        </div>
+                        <img className="sure-button" src={`./assetsPlus/image/exp_modal_yes.png`}/>
+                    </div>
+                </ModalMask>);
                 break;
             default:
                 break;

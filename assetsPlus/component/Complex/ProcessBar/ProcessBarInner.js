@@ -14,10 +14,11 @@ class ProcessBarOut extends React.Component{
 //
     render (){
         let styleDefault = {
+            borderRadius: '5px',
             transform: `translateX(${this.props.myWidth * this.props.startIndex}px)`,
             width: `${this.props.myWidth}`,
             height: '100%',
-            backgroundColor: 'orange',
+            backgroundColor: 'rgba(255,162,38,1)',
             transition: `width ${this.props.dTime}s`
         };
         return(<AbstractBox

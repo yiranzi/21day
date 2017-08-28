@@ -93,9 +93,11 @@ const CourseBegin = React.createClass({
             let courseId = sessionStorage.getItem('courseId');
             Actions.ifCourseSignUp(courseId);
             Tools.fireRaceCourse(courseId).then((value)=>{
+                this.state.signUpInfo = value;
                 this.setState({
                     signUpInfo: value,
                 });
+                this.showQQInfo(0);
             });
 
 

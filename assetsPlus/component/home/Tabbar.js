@@ -24,6 +24,12 @@ const Tabbar = React.createClass({
     },
 
     renderIcons() {
+        // console.log('!!!!!!!!!!!!!!!!');
+        // let style = {
+        //     position: 'absolute',
+        //     right: '40px',
+        //     bottom: '50px'
+        // };
         let arr =[];
         let tabs = this.props.tabs;
         for (let i = 0; i < tabs.length; i++) {
@@ -35,13 +41,13 @@ const Tabbar = React.createClass({
             }
             arr.push(<div onClick={this.tabClick.bind(this,i)} className="tabbar-icon">
                     <img className="icon" src={tabs[i][result]}/>
+                    {/*{i === 1 && <img style = {style} src={`./assetsPlus/image/sign_up_pop.png`}/>}*/}
                 </div>)
         }
         return arr;
     },
 
    tabClick(index) {
-       console.log('staet render icons');
         this.props.cbfTabClick(index);
     }
 });

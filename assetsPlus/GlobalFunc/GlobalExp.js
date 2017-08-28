@@ -9,10 +9,16 @@ const Actions = require('../GlobalStorage/Actions');
 
 
 //课程信息
-let expTotal = 0;
 let expInfo ={};
 let expList = [60,180,370,700];
 let levelUpStack = [];
+let expModalInfo = {
+    txt: '获得经验',
+    value: '',
+    level: '',
+    headImage: '',
+};
+
 //课程Id列表
 // let courseList = [0,1,2];
 
@@ -22,19 +28,26 @@ let levelUpStack = [];
 //3这里还负责保存后的广播.
 
 class GlobalExp {
+    static getExpModalInfo() {
+        let json = JSON.parse(JSON.stringify(expModalInfo));
+        return json;
+    }
+
+    static setExpModalInfo(string,image) {
+        expModalInfo.txt = string;
+        expModalInfo.headImage = image;
+    }
+
     static init() {
         //发送拉取的请求
         Actions.getUesrExpInfo();
     }
 
     static setExpInfo(valueObj) {
-        //计算并设置最大经验值.
-        expTotal = 20;
-        //得到当前经验信息
 
         //保存信息
         //返回
-        expInfo.level = valueObj.level;
+        expInfo.level = valueObj.userLevel;
         expInfo.max = valueObj.levelExp;
         expInfo.current = valueObj.userExp;
         expInfo.levelUp = false;
@@ -46,14 +59,17 @@ class GlobalExp {
         return new Promise((resolve,reject)=>{
             switch (type) {
                 case 'signUp':
+                    expModalInfo.txt = '签到成功';
                     //0增长经验的触发事件
                     Material.putSignUp().then((data)=>{
-                        //1将经验变化值保存
-                        this.putExpUp(data.value);
-                        resolve(true);
-                        //遍历去除
-                    },()=>{
-                        reject(false);
+                        if(data.expChange !== -1) {
+                            //1将经验变化值保存
+                            this.putExpUp(data.expChange);
+                            resolve(data.expChange);
+                            //遍历去除
+                        } else {
+                            reject(false)
+                        }
                     });
                     break;
                 default:
@@ -67,6 +83,7 @@ class GlobalExp {
     }
 
     static getLevelUpStack() {
+        expModalInfo.level = levelUpStack[0].level;
         let json = levelUpStack.shift();
         json = JSON.parse(JSON.stringify(json));
         return json;
@@ -74,6 +91,7 @@ class GlobalExp {
 
     //将升级过程储存
     static putExpUp(value) {
+        expModalInfo.value = value;
         let lastExp = value;
         let gap = expInfo.max - expInfo.current;
         let localExpInfo = {
@@ -82,7 +100,7 @@ class GlobalExp {
             current: 0,
         };
         let upArray = [];
-        while(lastExp > gap){
+        while(lastExp >= gap){
             let localExpInfo = {};
             //设置上当前的
             localExpInfo.level = expInfo.level;
@@ -95,7 +113,7 @@ class GlobalExp {
             lastExp = lastExp - gap;
             expInfo.level = expInfo.level + 1;
             expInfo.max = expList[expInfo.level - 1];
-            expInfo.current = 0;
+            expInfo.current = expInfo.current + gap;
             expInfo.levelUp = false;
             gap = expInfo.max - expInfo.current;
         }
@@ -155,92 +173,6 @@ class GlobalExp {
         OnFire.fire("courseStatus" + courseId,dataResult);
     }
 
-    static getCourseStatus(courseId) {
-        if(courseInfo[courseId]) {
-            return courseInfo[courseId].dataResult;
-        } else {
-            return null
-        }
-
-    }
-
-    static deleteCourseStatus(courseId) {
-        if(courseInfo[courseId]) {
-            courseInfo[courseId].dataResult = null;
-        } else {
-            console.log('error' + 'deleteCourseStatus');
-        }
-    }
-
-
-
-    static setItem(key,value){
-        console.log('read-only')
-        // sessionStorage.setItem(key,value);
-        // if(!getItem(type,key)){
-        //     sessionStorage.setItem(key,value);
-        // } else {
-        //     console.log('已经有数值');
-        // }
-    }
-
-
-    /**
-     * 传入全局变量名称
-     * 返回值
-     * 封装了set/get
-     * @param key
-     * @returns {Array}
-     */
-    static getItem(key){
-        return Util.getUrlPara(key);
-        // return sessionStorage.getItem(key);
-    }
-
-    //需要修改的全局变量.
-    //并且需要上报.
-
-    /**
-     * 设置当前的课程ID
-     * @param courseId
-     */
-    static setCourseId(courseId) {
-        sessionStorage.setItem('courseId',courseId);
-        sessionStorage.setItem('ScourseId',courseId);
-    }
-
-    /**
-     * 设定当前界面名称.
-     * @param pathNow
-     */
-    static setPathNow(pathNow) {
-        console.log('set');
-        let pathLogicNow = GlobalConfig.getRouterInfo(pathNow);
-        let pathLogicOld = sessionStorage.getItem('pathNow');
-        if(!pathLogicOld) {
-            pathLogicOld = 'entryJs'
-        }
-        sessionStorage.setItem('pathFrom',pathLogicOld);
-        sessionStorage.setItem('pathNow',pathLogicNow);
-        let pathOldName = GlobalConfig.getRouterName(pathLogicOld);
-        let pathNowName = GlobalConfig.getRouterName(pathLogicNow);
-        sessionStorage.setItem('SpathFrom',pathOldName);
-        sessionStorage.setItem('SpathNow',pathNowName);
-    }
-
-    /**
-     * 进入界面调用函数.
-     * 用于统计和记录当前页面
-     * @param pathNow 界面名称
-     */
-    static whenEnterPage(pathNow,data) {
-
-        console.log('你进入了' + pathNow);
-        this.setPathNow(pathNow);
-        //每个界面默认设置分享
-        WxConfig.shareConfig();
-        Statistics.postDplusData('进入界面',data);
-    }
 }
 
 // module.exports = MyStorage;
