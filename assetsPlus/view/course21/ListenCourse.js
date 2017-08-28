@@ -187,7 +187,7 @@ const ListenCourse = React.createClass({
                     lessons: this.state.lessons,
                 });
             }
-            this.getComment();
+            // this.getComment();
         });
     },
 
@@ -419,8 +419,8 @@ const ListenCourse = React.createClass({
                     {/*打分*/}
                     {this.renderGiveScore()}
                     {/*提交评论*/}
-                    {this.renderComment()}
-                    {this.renderMassageBoard()}
+                    {/*{this.renderComment()}*/}
+                    {/*{this.renderMassageBoard()}*/}
                     {/*评论取余*/}
                     {/*{this.renderSignUp()}*/}
                     {/*{this.preLoadPic()}*/}

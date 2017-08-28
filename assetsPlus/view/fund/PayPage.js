@@ -18,6 +18,8 @@ const FixedBg = require('../../component/course/FixedBg');
 
 const Tools = require('../../GlobalFunc/Tools');
 
+const Actions = require('../../GlobalStorage/Actions');
+
 var PayPage = React.createClass({
 
     getInitialState(){
