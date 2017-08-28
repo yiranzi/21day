@@ -73,9 +73,9 @@ const FixedBg = React.createClass({
         //     return(<div className="bg-ground" style = {{backgroundColor: '#4498c7', width:Dimensions.getWindowWidth(), height: Dimensions.getWindowHeight()}}></div>
         //     )
         // }
-        return(<div>
-            {this.renderModal()}
-        </div>)
+        // return(<div>
+        //     {this.renderModal()}
+        // </div>)
         return(<div className={bgName} style = {bgStyle}>
             {this.renderModal()}
         </div>)

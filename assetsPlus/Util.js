@@ -10,8 +10,8 @@ const OnFire = require('onfire.js');
 const GlobalConfig = require('./GlobalStorage/GlobalConfig');
 
 
-const TEST_APPID = 'wxdd25f06df84b18ea';// //测试环境登录APPID
-const FORMA_APPID = 'wx8cc2299282e864f8';//正式环境登录APPID
+const TEST_APPID = 'wx7cf8dd5d80048e42';// //测试环境登录APPID
+const FORMA_APPID = 'wxd6c823882698f217';//正式环境登录APPID
 
 //todo
 const TEST_PAID_APPID = 'wx7cf8dd5d80048e42'; //测试环境支付APPID

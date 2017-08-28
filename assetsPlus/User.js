@@ -30,12 +30,23 @@ class User {
      * @returns {*}
      */
     static listenUserInfoLoaded() {
-        window.addEventListener('_dove_FetchEvent', function() {
+        if (window.sessionStorage.getItem('wx-user-info')) {
             const data = JSON.parse(window.sessionStorage.getItem('wx-user-info'))
             User.setUserInfo(data)
             WxConfig.shareConfig()
-            window.removeEventListener('_dove_FetchEvent')
-        }, true)
+            OnFire.fire('OAUTH_SUCCESS',data);
+            Loading.hideLoading();
+        } else {
+            window.addEventListener('_dove_FetchEvent', function() {
+                const data = JSON.parse(window.sessionStorage.getItem('wx-user-info'))
+                User.setUserInfo(data)
+                WxConfig.shareConfig()
+                OnFire.fire('OAUTH_SUCCESS',data);
+                window.removeEventListener('_dove_FetchEvent', () => {})
+                Loading.hideLoading();
+            }, true)    
+        }
+        
     }
 
 
@@ -174,7 +185,7 @@ class User {
         userInfo.unionId = data.unionId;
 
         //设置用户信息缓存 此处缓存是为了第二次蓝号授权后，可以使用用户的其他信息
-        localStorage.setItem('user-info',JSON.stringify(userInfo));
+        // localStorage.setItem('user-info',JSON.stringify(userInfo));
     }
 
     /**

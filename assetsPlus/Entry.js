@@ -41,9 +41,9 @@ window.dplus.track('js加载完毕',{'TotalCost': totalTime});
 
 //初始化用户信息
 // alert("bundle ready");
-User.initAccessInfo();
 $(document).ready(() => {
     // alert("html ready");
+    User.listenUserInfoLoaded()
     if(!Util.isWeixin()){
         console.log('!is note wx')
         if(test) {
@@ -67,7 +67,11 @@ $(document).ready(() => {
     } else {
         if( Util.getUrlPara('code') ) {
             new Dimensions().init();
-            Loading.showLoading('获取信息...');
+            if (window.sessionStorage.getItem('wx-user-info')) {
+                Loading.hideLoading();
+            } else {
+                Loading.showLoading('获取信息...');
+            }
             //尺寸初始化
             let goWhere = BeforeStart.init();
             ReactDom.render(<InnerRouter goWhere = {goWhere}/>, $('#root')[0]);

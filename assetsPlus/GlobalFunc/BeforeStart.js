@@ -26,8 +26,10 @@ class BeforeStart {
         this.initGlobal();
 
         //1 微信设置
-        this.initWxConfig();
-
+        OnFire.on('OAUTH_SUCCESS', () => {
+            this.setShareConfig();
+            Loading.hideLoading();
+        })
         //1 进行异步的userID请求 之后进行必要的请求(付费,设置分享等)
         this.getUserId().then(this.start.bind(this));
         //2 将项目业务需求所需要的参数统统保存起来
@@ -289,8 +291,8 @@ class BeforeStart {
         // f();
     }
 
-    static initWxConfig() {
-        WxConfig.initWxConfig();
+    static setShareConfig() {
+        WxConfig.shareConfig();
     }
 
     // static SetCoursePayStatus() {

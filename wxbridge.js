@@ -10,7 +10,9 @@ window._WXGLOBAL_ = (function () {
     var __debug__ = location
         .href
         .indexOf('localhost') > 0;
-    var __TEST_API_Token__ = 'XX:_:w2qlJFV@ccOeiq41ENp><ETXh3o@aX8M<[_QOsZ<d8[Yz:NIMcKwpjtBk0e';
+    var __TEST_API_TOKEN__ = 'XX:_:w2qlJFV@ccOeiq41ENp><ETXh3o@aX8M<[_QOsZ<d8[Yz:NIMcKwpjtBk0e';
+    var __FORMA_API_TOKEN__ = 'DE:_:w2qlJFV@ccOeiq41ENp><ETXh3o@aX8M<[_QOsZ<d8[Yz:NIMcKwpjtBk0e';
+    var __API_TOKEN__ = _ENVIRONMENT ? __FORMA_API_TOKEN__ : __TEST_API_TOKEN__;
     var _FORMAL_API_DOMAIN = 'https://growth.ichangtou.com/';
     var _TEST_API_DOMAIN = 'https://geek.ichangtou.com/';
     var __API_URL_DOMAIN__ = _ENVIRONMENT
@@ -47,7 +49,9 @@ window._WXGLOBAL_ = (function () {
         __debug__: __debug__,
         __PAYPULLINGFLAG__: __PAYPULLINGFLAG__,
         __API_URL_DOMAIN__: __API_URL_DOMAIN__,
-        __TEST_API_Token__: __TEST_API_Token__,
+        __TEST_API_TOKEN__: __TEST_API_TOKEN__,
+        __API_TOKEN__: __API_TOKEN__,
+        __FORMA_API_TOKEN__: __FORMA_API_TOKEN__,
         __API_URL_GROUP__: __API_URL_GROUP__,
         __APPID__: __APPID__,
         __JSAPILIST__: __JSAPILIST__,
@@ -70,7 +74,6 @@ WXSDK.InitWxApi = function () {
             ._getUserInfoFromServer()
             .then(function (response) {
                 var data = response.json();
-                console.log(data);
                 data.then(function (data) {
                     if (!data || !data.userId) {
                         WXSDK._redirectToUserInfo();
@@ -91,7 +94,7 @@ WXSDK.InitWxApi = function () {
                             .nickName
                             .substr(0, userInfo.nickName.length - 6);
                     }
-                    localStorage.setItem('wx-user-info', JSON.stringify(userInfo));
+                    sessionStorage.setItem('wx-user-info', JSON.stringify(userInfo));
                     WXSDK._isWeiXin() && WXSDK
                     ._signWxApi()
                     .then(function (response) {
@@ -106,13 +109,12 @@ WXSDK.InitWxApi = function () {
                             });
                         });
                     });
-                    dispatchEvent(new CustomEvent('_dove_CustomEvent', {
+                    dispatchEvent(new CustomEvent('_dove_FetchEvent', {
                         bubbles: true,
                         cancelable: false,
                         detail: {
                             type: '_dove_CustomEvent',
-                            name: eventName,
-                            info: eventInfo
+                            info: 'hahaha'
                         }
                     }));
                 })
@@ -124,7 +126,6 @@ WXSDK.InitWxApi = function () {
 
 WXSDK._getUserInfoFromServer = function () {
     // inject vinda
-    _VINDA_.executeVinda();
     var code = WXSDK._getUrlPara('code');
     var jsonData = JSON.stringify({'code': code});
     var APIUrl = WXSDK._getAPIUrl('base_login');
@@ -137,7 +138,7 @@ WXSDK._getUserInfoFromServer = function () {
         body: jsonData,
         headers: {
             "Accept": "application/json",
-            "X-iChangTou-Json-Api-Token": window._WXGLOBAL_.__TEST_API_Token__,
+            "X-iChangTou-Json-Api-Token": window._WXGLOBAL_.__API_TOKEN__,
             "Content-Type": "application/json;charset=utf-8"
         }
     });
@@ -154,9 +155,15 @@ WXSDK._getPoundSignUrl = function () {
 WXSDK._getHtmlUrl = function () {
     return location.protocol + "//" + location.host + location.pathname;
 };
-
+WXSDK._getCurrHtmlUrl = function () {
+    if (location.href.indexOf('code=') !== -1) {
+        return location.href.split('code=')[0].split('&')[0];
+    } else {
+        return location.href;
+    }
+}
 WXSDK.shareConfig = function () {
-    var USER_INFO = JSON.parse(localStorage.getItem('wx-user-info'));
+    var USER_INFO = JSON.parse(sessionStorage.getItem('wx-user-info'));
 
     var imgUrl = USER_INFO.headImage,
 
@@ -238,12 +245,12 @@ WXSDK._onShareFailure = function () {
 };
 
 WXSDK._getShareUrl = function () {
-    var userInfo = JSON.parse(localStorage.getItem('wx-user-info'));
+    var userInfo = JSON.parse(sessionStorage.getItem('wx-user-info'));
     return WXSDK._getHtmlUrl() + "?share=" + userInfo.userId + "#" + WXSDK._getPoundSignUrl();
 };
 
 WXSDK.wechatPay = function () {
-    var userInfo = JSON.parse(localStorage.getItem('wx-user-info'));
+    var userInfo = JSON.parse(sessionStorage.getItem('wx-user-info'));
     if (window._WXGLOBAL_.__PAYPULLINGFLAG__) {
         //如果正在拉取支付数据，阻止，避免重复请求
         setTimeout(function () {
@@ -267,7 +274,7 @@ WXSDK._getOrder = function (userId, sum) {
         console.log('没有用户信息');
         return;
     }
-    var userInfo = JSON.parse(localStorage.getItem('wx-user-info'));
+    var userInfo = JSON.parse(sessionStorage.getItem('wx-user-info'));
     if (!sum) {
         sum = window._WXGLOBAL_.__COURSE_SUM__;
     }
@@ -296,7 +303,7 @@ WXSDK._getOrder = function (userId, sum) {
             body: jsonData,
             headers: {
                 "Accept": "application/json",
-                "X-iChangTou-Json-Api-Token": window._WXGLOBAL_.__TEST_API_Token__,
+                "X-iChangTou-Json-Api-Token": window._WXGLOBAL_.__API_TOKEN__,
                 "Content-Type": "application/json;charset=utf-8",
                 "X-iChangTou-Json-Api-User": userInfo.userId,
                 "X-iChangTou-Json-Api-Session": userInfo.sessionId
@@ -305,7 +312,7 @@ WXSDK._getOrder = function (userId, sum) {
         response
             .json()
             .then(function (data) {
-                localStorage.setItem('wx-user-pay', JSON.stringify(data));
+                sessionStorage.setItem('wx-user-pay', JSON.stringify(data));
                 WXSDK._pay();
             })
     })
@@ -316,7 +323,7 @@ WXSDK._getOrder = function (userId, sum) {
 
 WXSDK._pay = function () {
 
-    var data = JSON.parse(localStorage.getItem('wx-user-pay'));
+    var data = JSON.parse(sessionStorage.getItem('wx-user-pay'));
     if (typeof WeixinJSBridge == "undefined") {
         if (document.addEventListener) {
             document.addEventListener('WeixinJSBridgeReady', WXSDK._pay, false);
@@ -368,17 +375,21 @@ WXSDK._redirectToBaseInfo = function () {
     var code = WXSDK._getUrlPara('code');
     var redirectUri = WXSDK._getRedirectUri(false),
         scope = 'snsapi_base'; //snsapi_userinfo;
-    localStorage.removeItem('userInfoErrCounter');
+    sessionStorage.removeItem('userInfoErrCounter');
     var url = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=' + WXSDK._getAppId() + '&redirect_uri=' + redirectUri + '&response_type=code&scope=' + scope + '&state=new#wechat_redirect';
     window.location.href = url;
 };
 WXSDK._getRedirectUri = function (isUserInfo) {
-    var redirectUri = WXSDK._getHtmlUrl(),
+    var redirectUri = WXSDK._getCurrHtmlUrl(),
         prefix = '?';
     if (!isUserInfo) {
         //区分baseInfo和userInfo
         prefix = '?';
-        redirectUri = redirectUri + prefix + 'isuserinfo=1';
+        if (redirectUri.indexOf('?') !== -1) {
+            redirectUri = redirectUri + '&isuserinfo=1'
+        } else {
+            redirectUri = redirectUri + prefix + 'isuserinfo=1';
+        }
     }
     var code = WXSDK._getUrlPara('code');
     return encodeURIComponent(redirectUri);
@@ -392,14 +403,14 @@ WXSDK._redirectToUserInfo = function () {
         scope = 'snsapi_userinfo'; //snsapi_userinfo
 
     var errCounter = 0;
-    if (localStorage.getItem('userInfoErrCounter')) {
-        errCounter = parseInt(localStorage.getItem('userInfoErrCounter'));
+    if (sessionStorage.getItem('userInfoErrCounter')) {
+        errCounter = parseInt(sessionStorage.getItem('userInfoErrCounter'));
     }
     if (errCounter > 3) {
-        localStorage.removeItem('userInfoErrCounter');
+        sessionStorage.removeItem('userInfoErrCounter');
         return;
     } else {
-        localStorage.setItem('userInfoErrCounter', (errCounter + 1).toString());
+        sessionStorage.setItem('userInfoErrCounter', (errCounter + 1).toString());
     }
     var url = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=' + WXSDK._getAppId() + '&redirect_uri=' + redirectUri + '&response_type=code&scope=' + scope + '&state=minic#wechat_redirect';
 
@@ -419,10 +430,10 @@ WXSDK._getUrlPara = function (key) {
 WXSDK._signWxApi = function () {
     return fetch(WXSDK._getAPIUrl('wx_sign'), {
         method: "POST",
-        body: JSON.stringify({"url": location.href}),
+        body: JSON.stringify({"url": location.href.split('#')[0]}),
         headers: {
             "Accept": "application/json",
-            "X-iChangTou-Json-Api-Token": window._WXGLOBAL_.__TEST_API_Token__,
+            "X-iChangTou-Json-Api-Token": window._WXGLOBAL_.__API_TOKEN__,
             "Content-Type": "application/json;charset=utf-8"
         }
     });
@@ -443,24 +454,5 @@ WXSDK._isWeiXin = function () {
 Object.freeze(WXSDK);
 
 window.onload = function () {
-    if (!window.fetch) {
-        _VINDA_.executeVindaByConfig([
-            {
-                name: 'fetch.js',
-                res: 'https://h5test.ichangtou.com/minic/vinda/fetch-polyfill.js',
-                type: 'js'
-            }
-        ]);
-    }
-    _VINDA_
-        .executeVindaByConfig([
-            {
-                name: 'jweixin.js',
-                res: 'https://h5test.ichangtou.com/minic/vinda/jweixin.js',
-                type: 'js'
-            }
-        ])
-        .then(function () {
-            WXSDK.InitWxApi();
-        });
+    WXSDK.InitWxApi()
 }
