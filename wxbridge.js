@@ -101,22 +101,23 @@ WXSDK.InitWxApi = function () {
                         var date = response.json();
                         date.then(function (date) {
                             wx.config({appId: window._WXGLOBAL_.__APPID__, timestamp: date.timestamp, nonceStr: date.nonceStr, signature: date.signature, jsApiList: window._WXGLOBAL_.__JSAPILIST__});
-                            wx.ready = function () {
-                                WXSDK.shareConfig();
-                            }
+                            wx.ready(function () {
+                                // WXSDK.shareConfig();
+                                window.sessionStorage.setItem('wx-share-ready', 'true');
+                                dispatchEvent(new CustomEvent('_dove_FetchEvent', {
+                                    bubbles: true,
+                                    cancelable: false,
+                                    detail: {
+                                        type: '_dove_CustomEvent',
+                                        info: 'hahaha'
+                                    }
+                                }));
+                            })
                             wx.error(function (res) {
                                 console.log(res);
                             });
                         });
                     });
-                    dispatchEvent(new CustomEvent('_dove_FetchEvent', {
-                        bubbles: true,
-                        cancelable: false,
-                        detail: {
-                            type: '_dove_CustomEvent',
-                            info: 'hahaha'
-                        }
-                    }));
                 })
             }, function () {
                 WXSDK._redirectToUserInfo();
