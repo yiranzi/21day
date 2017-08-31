@@ -153,8 +153,11 @@ class BeforeStart {
             return '/padding';
         } else if(getWhere === 'share') {
             redictUrl = goPath;
+            if(MyStorage.getItem('dayId')){
+                redictUrl = redictUrl + '/' + MyStorage.getItem('dayId');
+            }
             if(!redictUrl) {
-                redictUrl = 'payPage';
+                redictUrl = '/payPage';
             } else {
                 redictUrl = '/' + redictUrl;
             }

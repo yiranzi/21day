@@ -238,7 +238,6 @@ WXSDK.shareConfig = function () {
 };
 
 WXSDK._onShareSuccess = function () {
-    WXSDK.wechatPay();
 };
 
 WXSDK._onShareFailure = function () {
