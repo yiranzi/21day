@@ -76,14 +76,9 @@ const FixedBg = React.createClass({
         // return(<div>
         //     {this.renderModal()}
         // </div>)
-<<<<<<< HEAD
-        return(<div className={bgName} style = {bgStyle}>
-            {this.renderModal()}
-=======
         return(<div>
             <div className={bgName} style = {bgStyle}></div>
             <div className="modal-style">{this.renderModal()}</div>
->>>>>>> 1bf1994cfc9bc924d8892a5def6fa05671e700c9
         </div>)
     },
     renderModal() {

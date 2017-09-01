@@ -30,7 +30,7 @@ class User {
      * @returns {*}
      */
     static listenUserInfoLoaded() {
-        if (window.sessionStorage.getItem('wx-user-info')) {
+        if (window.sessionStorage.getItem('wx-share-ready')) {
             const data = JSON.parse(window.sessionStorage.getItem('wx-user-info'))
             User.setUserInfo(data)
             WxConfig.shareConfig()
