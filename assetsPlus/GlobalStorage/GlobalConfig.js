@@ -17,9 +17,75 @@ const courseInfo = {
         shareDesc: '生活变得不一样',
     },
 
+        '4':{
+            show: 2,
+            mainImage: `./assetsPlus/image/home/course_seven.png`,
+            name: 'courseBeta',
+            path: 'courseBeta',
+            price: [9,3],
+            title: '入门课',
+            shareTitle: '14天带你躺赢基金定投！一天10分钟，手把手教你！',
+            shareDesc: '宝宝618不再担心没钱买买买啦',
+        },
+
+    '1000':{
+        //常规
+        name: 'courseBeta',
+        path: 'courseBeta',
+        show: 0,
+        // router: '/courseBeta',//默认路由前缀`
+        //描述
+        title: '长投派',
+        //报名
+        // payPicLength: 4,//报名页图片长度
+        price: [9,6],//价格
+        //分享
+        shareTitle: '欢迎你加入长投派,开始你的学习之旅',//分享标题
+        shareDesc: '长投派带你体验财富自由',//分享描述
+    },
+
+        '2001':{
+            //常规
+            //show 0 1 2 2both 1 just show 0 null
+            show: 1,
+            mainImage: `./assetsPlus/image/home/course_book5.png`,
+            href: '123',
+            name: 'courseBeta',
+            path: 'courseBeta',
+            // router: '/courseBeta',//默认路由前缀`
+            //描述
+            title: '长投派',
+            //报名
+            // payPicLength: 4,//报名页图片长度
+            price: [9,6],//价格
+            //分享
+            shareTitle: '欢迎你加入长投派,开始你的学习之旅',//分享标题
+            shareDesc: '长投派带你体验财富自由',//分享描述
+        },
+
+        '2002':{
+            show: 1,
+            mainImage: `./assetsPlus/image/home/course_fund51.png`,
+            href: '456',
+            //常规
+            name: 'courseBeta',
+            path: 'courseBeta',
+            // router: '/courseBeta',//默认路由前缀`
+            //描述
+            title: '长投派',
+            //报名
+            // payPicLength: 4,//报名页图片长度
+            price: [9,6],//价格
+            //分享
+            shareTitle: '欢迎你加入长投派,开始你的学习之旅',//分享标题
+            shareDesc: '长投派带你体验财富自由',//分享描述
+        },
+
     '2':{
         //常规
+        show: 0,
         name: 'course21',
+        path: 'course21',
         router: '/course21',//默认路由前缀`
         //描述
         title: '21天训练营',
@@ -39,7 +105,10 @@ const courseInfo = {
         ]
     },
     '0':{
+        show: 2,
+        mainImage: './assetsPlus/image/home/course_seven.png',
         name: 'seven',
+        path: 'seven',
         price: [9,3],
         title: '7天训练营',
         router: '/seven',
@@ -55,7 +124,10 @@ const courseInfo = {
         ]
     },
     '1':{
+        show: 2,
+        mainImage: `./assetsPlus/image/home/course_fund.png`,
         name: 'fund',
+        path: 'fund',
         price: [9,3],
         title: '基金课',
         router: '/fund',
@@ -63,11 +135,15 @@ const courseInfo = {
         shareDesc: '宝宝618不再担心没钱买买买啦',
     },
     '3':{
+        show: 0,
+        path: 'stock0',
         name: 'stock0',
         price: [59,59],
         title: '股票课',
     },
     '1003':{
+        show: 0,
+        path: 'courseBeta',
         name: 'courseBeta',
         price: [69,69],
         title: 'beta',
@@ -235,7 +311,11 @@ class GlobalConfig {
     //获得课程配置常量
     static getCourseInfo(courseId) {
         // let nameKey = couseIdNameMap.get(courseId);
-        return courseInfo[courseId];
+        let localCourseInfo = courseInfo[courseId];
+        // if(!localCourseInfo) {
+        //     localCourseInfo = courseInfo[1000];
+        // }
+        return localCourseInfo;
     }
 
 
@@ -264,23 +344,24 @@ class GlobalConfig {
         return this.getCourseInfo(sessionStorage.getItem('courseId')).name
     }
 
+    //获取听课模板
+    static getCoursePath() {
+        return this.getCourseInfo(sessionStorage.getItem('courseId')).path
+    }
+
     static getBetaInfo() {
         return betaInfo;
     }
 
     static getCourseIdList() {
         let courseIdList = [];
-
-        for (let i in courseInfo) {
-            if(i !== '-1') {
-                console.log(i);
-                courseIdList.push(i);
-            }
-
+        let orderedArray = [];
+        let rankList = [2001,2002,4,0,1,1003,2];
+        for( let i = 0; i < rankList.length; i++) {
+            orderedArray.push(String(rankList[i]))
         }
-        console.log('!!!!!!!!!!!!!!!!!!!!');
-        console.log(courseIdList);
-        return courseIdList;
+
+        return orderedArray;
     }
 }
 // let finalResult = {};

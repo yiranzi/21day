@@ -1,7 +1,8 @@
 /**
  * Created by lip on 2016/6/3.
  */
-//v815.10
+//dayInfo&versionInfo
+//d9.1.1
 //v2.3
 
 var $ = window.$ = require('jquery');

@@ -1,6 +1,7 @@
 .home-course-list{
   width: px2rem(351);
   padding-top: px2rem(10);
+  padding-bottom: px2rem(50);
   margin: 0 auto 0.9rem auto;
   .course-banner{
     width: 100%;
@@ -19,6 +20,7 @@
       img{
         width: 100%;
         height: px2rem(111);
+        border-radius: 10px;
       }
     }
   }

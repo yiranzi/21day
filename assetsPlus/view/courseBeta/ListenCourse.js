@@ -17,7 +17,9 @@ const CourseProcessBar = require('../../component/course/CourseProcessBar');
 
 
 //diff
-const AudioPlayer = require('../../component/seven/AudioPlayer');
+// const AudioPlayer = require('../../component/seven/AudioPlayer');
+const AudioPlayer = require('../../component/fund/AudioPlayer');
+
 const GiveScoreContain = require('../../component/course21/GiveScoreContain');
 
 
@@ -114,6 +116,7 @@ const ListenCourse = React.createClass({
                 Statistics.postDplusData('第一次_完成_音频',[this.state.lessons[this.state.currentPlaying].fmid]);
                 localStorage.setItem(key,true);
             }
+            this.checkFinish('audio');
         });
 
         //自动滚动监听
@@ -142,9 +145,13 @@ const ListenCourse = React.createClass({
         Loading.showLoading('获取信息...');
         let courseId = this.props.params.dayId;
 
-        Material.getCourseProgress(courseId).always((progressData) => {
+        Material.getCourseProgress(courseId).then((progressData) => {
             Loading.hideLoading();
             this.state.lessons = progressData;
+
+            //1拉取关于dayID进度的数据.用于渲染进度条.
+            this.getProcess();
+            //2
             this.preFetch();
             this.fixProcess();
             this.calcInit();
@@ -153,7 +160,7 @@ const ListenCourse = React.createClass({
             //     console.log('123')
             //     window.scrollTo(0,500);
             // }
-            this.calcProcess();
+
             if (progressData) {
                 this.setState({
                     lessons: this.state.lessons,
@@ -163,39 +170,59 @@ const ListenCourse = React.createClass({
     },
 
     calcInit() {
-        let allLesson = this.state.lessons;
-        let lastLesson = allLesson[allLesson.length - 1].subs;
         //1完成全部选择题后
-        if(lastLesson[lastLesson.length - 1].process === true) {
-            this.state.allFinish = true;
-            this.setState({allFinish: this.state.allFinish});
+        if(this.state.allFinish) {
             this.setState({clickStatus: false});
         } else {
             this.setState({clickStatus: true});
         }
     },
 
+    isAllFinish() {
+        if(this.state.totalElement === this.state.finishElement) {
+            this.state.allFinish = true;
+        }
+        this.setState({
+            allFinish: this.state.allFinish
+        })
+    },
+
     //计算进度
-    calcProcess() {
+    getProcess() {
+        this.setProcess();
+        this.isAllFinish();
+    },
+
+    setProcess() {
+        let total = 0;
+        let finish = 0;
         let allLesson = this.state.lessons;
-        for(let i = 0; i<allLesson.length; i++){
-            this.state.totalElement++;
-            if(allLesson[i].subs[allLesson[i].subs.length - 1].process === true) {
-                this.state.finishElement++;
+        let lesson = {};
+        for( let i = 0; i < allLesson.length; i++ ) {
+            total++;
+            lesson = allLesson[i];
+            //选择题
+            if(lesson.subs.length !== 0) {
+                if ( lesson.subs[lesson.subs.length - 1].process ) {
+                    finish++;
+                }
+            } else {
+                if ( lesson.process ) {
+                    finish++;
+                }
             }
         }
         this.setState({
-            totalElement:this.state.totalElement,
-            finishElement: this.state.finishElement
+            totalElement: total,
+            finishElement: finish,
         })
     },
 
     fixProcess() {
         //如果最后一课已经完成
         let allLesson = this.state.lessons;
-        let lastLesson = allLesson[allLesson.length - 1].subs;
         //1完成全部选择题后
-        if(lastLesson[lastLesson.length - 1].process === true) {
+        if(this.state.allFinish) {
             for (let lesson of allLesson) {
                 if(lesson.process!==true){
 
@@ -215,6 +242,26 @@ const ListenCourse = React.createClass({
         }
     },
 
+    checkFinish(from) {
+        let currentItem = {};
+        let result = false;
+        if(from === 'audio') {
+            currentItem = this.state.lessons[this.state.currentPlaying];
+            if(currentItem.process) {
+                result = true;
+            }
+        } else if (from === 'choose') {
+            currentItem = this.state.lessons[this.state.currentPlaying].subs;
+            if(currentItem[currentItem.length - 1].process) {
+                result = true;
+            }
+        }
+        if(result) {
+            this.state.finishElement++;
+            this.setState({finishElement: this.state.finishElement});
+        }
+    },
+
 
     /**
      * 完成选择题
@@ -228,8 +275,8 @@ const ListenCourse = React.createClass({
         //发送修改1
         Material.finishWork(1, this.state.lessons[lessonIndex].subs[index].subjectid).always( (data) => {
         });
-        this.state.finishElement++;
-        this.setState({finishElement: this.state.finishElement});
+        this.checkFinish('choose')
+
         // Material.postData('免费_完成选择题_ListenCourse');
     },
 
@@ -454,34 +501,39 @@ const ListenCourse = React.createClass({
         let count = 0;
 
         OUT:
-            for (let i = 0;i < lessons.length; i++) {
+            for (let i = 0;i < this.state.totalElement; i++) {
                 //如果满足...渲染FM.无条件渲染fm
-                if(i === 0 || lessons[i-1].subs[(lessons[i-1].subs.length) - 1].process) {
                     arr.push(this.renderFMBar(i, lessons[i],count));
                     count++;
-                    //如果fm听完
                     if(lessons[i].process){
-                        let lessonQuestions = lessons[i].subs;
-                        //循环某一节的所有的题目
-                        for (let j = 0; j < lessonQuestions.length; j++){
-                            //如果上一道题答对1
-                            if( j === 0 || lessonQuestions[j-1].process) {
-                                //如果满足...渲染题目
-                                arr.push(this.renderChooseBar(lessonQuestions[j], i, j,count));
+                        //如果是有选择题的
+                        if(lessons[i].subs.length !== 0 ) {
+                            let lessonQuestions = lessons[i].subs;
+                            //循环某一节的所有的题目
+                            for (let j = 0; j < lessonQuestions.length; j++){
+                                //如果上一道题答对1
+                                if( j === 0 || lessonQuestions[j-1].process) {
+                                    //如果满足...渲染题目
+                                    arr.push(this.renderChooseBar(lessonQuestions[j], i, j,count));
+                                    count++;
+                                } else break OUT;
+                            }
+                            //如果选择题都完成了1
+                            if(lessonQuestions[lessonQuestions.length - 1].process && i !== lessons.length - 1) {
+                                arr.push(<div className="lesson-column-line-course21">
+                                    <img style={{width: '100%'}} src = {`./assetsPlus/image/fund/DividingLine.png`}></img>
+                                </div>);
                                 count++;
                             } else break OUT;
-                        }
-                        //如果选择题都完成了1
-                        if(lessonQuestions[lessonQuestions.length - 1].process && i !== lessons.length - 1) {
-                            arr.push(<div className="lesson-column-line-course21">
-                                <img style={{width: '100%'}} src = {`./assetsPlus/image/${GlobalConfig.getCourseName()}/DividingLine.png`}></img>
-                            </div>);
-                            // arr.push(<div style = {{backgroundImage: `url(./assetsPlus/image/${GlobalConfig.getCourseName()}/DividingLine.png)`}} className="lesson-column-line-seven"></div>);
-
+                        } else {
+                            //如果不是最后一个
+                            if(i !== lessons.length - 1) {
+                                arr.push(<div className="lesson-column-line-course21">
+                                    <img style={{width: '100%'}} src = {`./assetsPlus/image/fund/DividingLine.png`}></img>
+                                </div>);
+                            }
                             count++;
                         }
-                    } else break OUT;
-
                 }
             }
         return arr;

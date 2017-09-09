@@ -445,25 +445,9 @@ class Material {
      * 获得课程进度和内容
      */
     static getCourseProgress(dayId){
-        var User = require('./User');
-        const Util = require('./Util'),
-            apiUrl = Util.getAPIUrl('get_course_progress').replace('{dayId}',dayId);
-        let userInfo = User.getUserInfo();
-        return $.ajax(
-            {
-                url: apiUrl,
-                type: 'get',
-                cache: false,
-                contentType: 'application/json;charset=utf-8',
-                headers: {
-                    Accept: 'application/json'
-                },
-                beforeSend: (request)=>{
-                    request.setRequestHeader("X-iChangTou-Json-Api-Token", Util.getApiToken());
-                    request.setRequestHeader("X-iChangTou-Json-Api-User", userInfo.userId);
-                }
-            }
-        )
+        let url = Util.getAPIUrl('get_course_progress').replace('{dayId}',dayId);
+        let type = 'get';
+        return (this.ajaxSomeUrl(url,type));
     }
 
     /***

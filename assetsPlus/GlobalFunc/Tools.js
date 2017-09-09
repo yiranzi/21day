@@ -127,8 +127,9 @@ class Tools {
         // location.hash = path;
     // }
 
+    //获得听课模板.
     static setCourseUrl() {
-        let first = GlobalConfig.getCourseName();
+        let first = GlobalConfig.getCoursePath();
         if(first !== null) {
             first = '/' + first;
         } else {

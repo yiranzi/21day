@@ -27,9 +27,9 @@ const HomeCourseList = React.createClass({
             content: this.props.content,
             bannerIndex: 0,
             bannerContent: [],
-            courseList: [],//课程ID列表
-            courseStatus: [],//课程状态
-            courseContent: ['./assetsPlus/image/home/course_seven.png','./assetsPlus/image/home/course_fund.png'],//课程内容信息
+            courseStatusList: [],//课程ID列表
+            courseShowList: [],
+            courseContent: [,'./assetsPlus/image/home/course_fund.png'],//课程内容信息
             bannerPic: ['./assetsPlus/image/home/banner_seven.png','./assetsPlus/image/home/banner_fund.png','./assetsPlus/image/home/banner_seven.png','./assetsPlus/image/home/banner_fund.png',],//课程内容信息
         };
     },
@@ -75,14 +75,29 @@ const HomeCourseList = React.createClass({
     //获取列表并初始化
     getCourseList() {
         let courseList = GlobalConfig.getCourseIdList();
-        for( let i = 0; i<courseList.length; i++) {
-            if( courseList[i] === '0' || courseList[i] === '1') {
-                console.log(courseList[i]);
-                this.state.courseStatus[courseList[i]] = {};
-                this.state.courseList.push(courseList[i]);
+        let courseInfo = {};
+        for (let i = 0; i < courseList.length; i++) {
+
+            courseInfo = GlobalConfig.getCourseInfo(courseList[i]);
+
+            switch (courseInfo.show) {
+                case 0:
+                    break;
+                case 1:
+                    this.state.courseShowList.push({id: courseList[i], image: courseInfo.mainImage, path: courseInfo.path});
+                    break;
+                case 2:
+                    this.state.courseStatusList.push({id: courseList[i]});
+                    this.state.courseShowList.push({id: courseList[i], image: courseInfo.mainImage});
+                    break;
+                default:
+                    break;
             }
+            this.setState({
+                courseShowList: this.state.courseShowList,
+                courseStatusList: this.state.courseStatusList,
+            })
         }
-        this.setState({courseList: this.state.courseList})
     },
 
     getCourseContent() {
@@ -91,15 +106,19 @@ const HomeCourseList = React.createClass({
 
     //根据列表获取购买情况
     getCourseStatus() {
-        let courseList = this.state.courseList;
+        let courseList = this.state.courseStatusList;
         for( let i = 0; i<courseList.length; i++) {
-            let courseId = courseList[i];
+            let courseId = courseList[i].id;
             Actions.ifCourseSignUp(courseId);
             //action & get
             //这边的结果完成后get
             Tools.fireRaceCourse(courseId).then((value)=>{
-                this.state.courseStatus[courseId].payStatus = value.pay;
-                this.setState({courseStatus: this.state.courseStatus});
+                for( let i = 0; i <  courseList.length; i++ ) {
+                    if(courseList[i].id === courseId) {
+                        this.state.courseStatusList[courseId].payStatus = value.pay;
+                    }
+                }
+                this.setState({courseStatusList: this.state.courseStatusList});
                 //4 预加载资源
                 this.preFetchRes(courseId);
             })
@@ -113,8 +132,21 @@ const HomeCourseList = React.createClass({
         //因为课程状态没办法精确
     },
 
+    //跳转外链接
+    goOutUrl(urlPath) {
+      console.log(urlPath)
+    },
+
     goRouter(courseId) {
         Statistics.postDplusData('点击_课程_列表',[courseId]);
+        for( let i in this.state.courseShowList) {
+            if(this.state.courseShowList[i].id === courseId) {
+                if(this.state.courseShowList[i].path)  {
+                    this.goOutUrl(this.state.courseShowList[i].path)
+                    return;
+                }
+            }
+        }
         //当抓到courseId后都需要一系列操作
         //设置微信
         //设置id
@@ -149,9 +181,6 @@ const HomeCourseList = React.createClass({
 
     },
 
-    onSwiping() {
-      console.log(123)
-    },
 
     //渲染
     render() {
@@ -182,10 +211,10 @@ const HomeCourseList = React.createClass({
 
     renderCourseList(){
         let arr =[];
-        let courseList = this.state.courseList;
+        let courseList = this.state.courseShowList;
         for(let i = 0;i<courseList.length;i++) {
-            arr.push(<div className="course-content-line" key={i} onClick={this.goRouter.bind(this,courseList[i])}>
-                <img className="course-line-img" src={this.state.courseContent[i]}/>
+            arr.push(<div className="course-content-line" key={i} onClick={this.goRouter.bind(this,courseList[i].id)}>
+                <img className="course-line-img" src={courseList[i].image}/>
             </div>)
         }
         return arr;

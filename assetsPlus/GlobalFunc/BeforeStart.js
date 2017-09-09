@@ -147,8 +147,11 @@ class BeforeStart {
             return '/padding';
         } else if(getWhere === 'share') {
             redictUrl = goPath;
+            if(MyStorage.getItem('dayId')){
+                redictUrl = redictUrl + '/' + MyStorage.getItem('dayId');
+            }
             if(!redictUrl) {
-                redictUrl = 'payPage';
+                redictUrl = '/payPage';
             } else {
                 redictUrl = '/' + redictUrl;
             }
@@ -240,7 +243,7 @@ class BeforeStart {
             redictUrl = goPath;
             //如果有课程
             if(courseId) {
-                //1设置courseId
+                //1设置c ourseId
                 //2获取课程支付信息
                 //action在特定页面懒发起,这里只负责分发跳转.(但是因为所有的跳转界面都需要这个数据,所以在这里进行处理)
                 Actions.ifCourseSignUp(courseId);

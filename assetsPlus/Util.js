@@ -361,6 +361,7 @@ class Util {
         if(Config.environment) {
             return url
         } else {
+            return url
             let a = 'geek.ichangtou.com';
             let b = 'pai-test.ichangtou.com';
             return url.replace(a,b);
