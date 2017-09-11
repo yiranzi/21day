@@ -85,8 +85,8 @@ const ListenCourse = React.createClass({
 
         //音频完成监听
         OnFire.on('AUDIO_END',()=>{
-
-            if (this.state.currentPlaying<0 || sessionStorage.getItem('courseId') !== (GlobalConfig.getBetaInfo().courseId).toString()) {
+            console.log('finishFm');
+            if (this.state.currentPlaying<0) {
                 return null;
             }
             //终止多余的其你去
@@ -102,6 +102,7 @@ const ListenCourse = React.createClass({
             if(!this.state.allFinish){
                 OnFire.fire('Course_AutoMove');
             }
+            this.checkFinish('audio');
             //修改进度
             this.state.lessons[this.state.currentPlaying].process = true;
             let localLessons = this.state.lessons;
@@ -116,7 +117,7 @@ const ListenCourse = React.createClass({
                 Statistics.postDplusData('第一次_完成_音频',[this.state.lessons[this.state.currentPlaying].fmid]);
                 localStorage.setItem(key,true);
             }
-            this.checkFinish('audio');
+
         });
 
         //自动滚动监听
@@ -247,8 +248,12 @@ const ListenCourse = React.createClass({
         let result = false;
         if(from === 'audio') {
             currentItem = this.state.lessons[this.state.currentPlaying];
-            if(currentItem.process) {
-                result = true;
+            if(!currentItem.process) {
+                if(this.state.lessons[this.state.currentPlaying].subs.length === 0) {
+                    result = true;
+                } else {
+                    result = false;
+                }
             }
         } else if (from === 'choose') {
             currentItem = this.state.lessons[this.state.currentPlaying].subs;

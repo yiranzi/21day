@@ -54,7 +54,7 @@ $(document).ready(() => {
             //1设置固定id
             // User.setUserIdTest('9d00b607f691432dbab277e028f7fe64');
             // User.setUserIdTest('1f695351270d463181ab67d0cba12d9a');//自己的
-            User.setUserIdTest('8ad44530fc9f4054a4bfd3ec56bc833f');//自己的测试
+            User.setUserIdTest('f71b5152e85a4ddeb87c6837f8b487fc');//自己的测试
             //2设置分享
             sessionStorage.setItem('wxshare',true);
             let goWhere = BeforeStart.init();

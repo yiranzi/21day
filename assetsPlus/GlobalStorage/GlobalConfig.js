@@ -17,15 +17,15 @@ const courseInfo = {
         shareDesc: '生活变得不一样',
     },
 
-        // '1004':{//课程ID
-        //     show: 2,//0 不展示 1 跳转url连接 2项目内部
-        //     mainImage: `./assetsPlus/image/home/course1004.png`,//展示图片
-        //     name: 'courseBeta',//模板名称
-        //     path: 'courseBeta',
-        //     title: '入门课',
-        //     shareTitle: '欢迎你加入长投派,开始你的学习之旅',//分享标题
-        //     shareDesc: '长投派带你体验财富自由',//分享描述
-        // },
+        '1004':{//课程ID
+            show: 2,//0 不展示 1 跳转url连接 2项目内部
+            mainImage: `./assetsPlus/image/home/course1004.png`,//展示图片
+            name: 'courseBeta',//模板名称
+            path: 'courseBeta',
+            title: '入门课',
+            shareTitle: '欢迎你加入长投派,开始你的学习之旅',//分享标题
+            shareDesc: '长投派带你体验财富自由',//分享描述
+        },
 
     '1000':{
         //常规
@@ -357,8 +357,8 @@ class GlobalConfig {
     static getCourseIdList() {
         let courseIdList = [];
         let orderedArray = [];
-        let rankList = [2001,0,1,1003,2];
-        // let rankList = [2002,2001,1004,0,1,1003,2];
+        // let rankList = [2001,0,1,1003,2];
+        let rankList = [2001,1004,0,1,1003,2];
         for( let i = 0; i < rankList.length; i++) {
             orderedArray.push(String(rankList[i]))
         }
