@@ -66,6 +66,7 @@ Object.freeze(window._WXGLOBAL_);
 
 var WXSDK = {};
 WXSDK.InitWxApi = function () {
+    window.sessionStorage.removeItem('wx-share-ready');
     if (!WXSDK._getUrlPara('code')) {
         WXSDK._redirectToBaseInfo();
     } else {
@@ -73,12 +74,13 @@ WXSDK.InitWxApi = function () {
         WXSDK
             ._getUserInfoFromServer()
             .then(function (response) {
-                var data = response.json();
-                data.then(function (data) {
-                    if (!data || !data.userId) {
+                var data = response.text();
+                data.then(function (resdata) {
+                    if (!resdata || !JSON.parse(resdata).userId) {
                         WXSDK._redirectToUserInfo();
                         return true;
-                    }
+                    } 
+                    var data = JSON.parse(resdata)
                     var userInfo = {
                         userId: data.userId,
                         sessionId: data.sessionId,
@@ -147,7 +149,6 @@ WXSDK._getUserInfoFromServer = function () {
 WXSDK._getAppId = function () {
     return window._WXGLOBAL_.__APPID__;
 };
-
 WXSDK._getPoundSignUrl = function () {
     return location
         .href
