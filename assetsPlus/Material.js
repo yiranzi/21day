@@ -600,7 +600,7 @@ class Material {
     }
 
     /***
-     * 获取头像`
+     * 获取头像
      */
     static getOtherHeadImage(userId) {
         var User = require('./User');

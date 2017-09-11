@@ -534,7 +534,7 @@ const ListenCourse = React.createClass({
                             }
                             count++;
                         }
-                }
+                } else break OUT;
             }
         return arr;
     },
