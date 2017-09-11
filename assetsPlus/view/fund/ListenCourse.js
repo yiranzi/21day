@@ -158,7 +158,7 @@ const ListenCourse = React.createClass({
         this.state.courseTitle.title = courseTitle.cardTitle;
         this.setState({courseTitle: this.state.courseTitle});
 
-        Material.getCourseProgress(courseId).always((progressData) => {
+        Material.getCourseProgress(courseId).then((progressData) => {
             Loading.hideLoading();
             this.state.lessons = progressData;
             //TODO testUrl

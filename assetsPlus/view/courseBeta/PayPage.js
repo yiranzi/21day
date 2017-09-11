@@ -25,6 +25,12 @@ const WxConfig = require('../../WxConfig');
 const GlobalConfig = require('../../GlobalStorage/GlobalConfig');
 const Actions = require('../../GlobalStorage/Actions');
 
+const Card = require('../../component/components/Card');
+const CourseCatalogCard = require('../../component/components/CourseCatalogCard');
+const ImageCard = require('../../component/components/ImageCard');
+const SummaryCard = require('../../component/components/SummaryCard');
+const TeacherIntro = require('../../component/components/TeacherIntro');
+
 var PayPage = React.createClass({
 
     getInitialState(){
@@ -54,6 +60,15 @@ var PayPage = React.createClass({
             time: 0,
             hhrChannel: false,
             ifBgShow: false,
+
+            payPageInfo: {
+                // bannerSrc: '123',
+                // summary: '123#456',
+                // catalog: '123',
+                // teacherIntro: '123',
+                // teacherImg: '123',
+                // price: '1',
+            },
 
             //21天的报名信息
             // signUpInfo: {}
@@ -117,10 +132,12 @@ var PayPage = React.createClass({
                 },500);
             });
         }
+        //获取报名页信息
+        this.getPayPageInfo();
         //3设置下线和价格
-        this.setIfCanPaid();
+        // this.setIfCanPaid();
         //5请求倒计时和剩余人数
-        this.signUpNumber();
+        // this.signUpNumber();
     },
 
     // setShareConfig() {
@@ -132,18 +149,23 @@ var PayPage = React.createClass({
     //     WxConfig.shareConfig(shareTitle,desc,link);
     // },
 
-    ifHhrChannel() {
-        let seniorId = Util.getUrlPara("ictchannel");
-        let channel = Util.getUrlPara("getWhere");
-        if(seniorId && channel) {
-            this.state.hhrChannel = true;
-            this.setState({hhrChannel: this.state.hhrChannel});
-        }
-    },
 
     getUserId() {
         let userId = User.getUserInfo().userId;
         return Tools.fireRace(userId,"OAUTH_SUCCESS");
+    },
+
+    getPayPageInfo() {
+        console.log('getPayPageInfo')
+        let courseId = sessionStorage.getItem('courseId');
+        Material.getPayPageInfo(courseId).then((payPageInfo)=>{
+            this.setState(
+                {
+                    payPageInfo: payPageInfo
+                }
+            )
+            Util.setPrice(payPageInfo.price);
+        })
     },
 
     setIfCanPaid() {
@@ -281,35 +303,68 @@ var PayPage = React.createClass({
         // }
     },
 
-    renderBg() {
-        let arr =[];
-        for(let i = 0;i<4;i++) {
-            let path = GlobalConfig.getCourseName();
-            let url = `./assetsPlus/image/${path}/join-content-${i}.png`;
-            arr.push(<img src={url}/>)
-        }
-        return arr;
-    },
 
-    render(){
+
+    render() {
+        if(!this.state.payPageInfo.price) {
+            return null
+        }
+        console.log('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
+        // return(<div className="pay_page_modal">
+        //     456
+        //     <div>
+        //         <div className="submitButton" onClick={this.clickHandler}>
+        //             {this.state.payPageInfo.price} 元，立即学习
+        //         </div>
+        //     </div>
+        // </div>)
         return (
-            <div className="pay_page_fund">
-                <FixedBg/>
-                <div className="fund-join-page">
-                    <img src= {`./assetsPlus/image/${GlobalConfig.getCourseName()}/join-title.png`} alt="" className="fund-join-title"/>
-                    <div className="fund-join-content-box">
-                        <img src={`./assetsPlus/image/${GlobalConfig.getCourseName()}/join-content.png`} alt="" className="fund-join-content"/>
-                        <div className="fund-status">
-                            <Timeout hasEnded={this.state.time} finalDate={this.state.endTime}/>
-                            <span className="fund-status-number">剩余名额：{this.state.ifCanPaid ? this.state.num : 0}</span>
-                        </div>
-                    </div>
-                    {this.bottomBar()}
-                    <div className="global-empty-div" style={{height: 70}}></div>
+
+            <div className="pay_page_modal">
+                <div style={{paddingLeft: 0, paddingRight: 0}}>
+                    <ImageCard src={this.state.payPageInfo.bannerSrc}></ImageCard>
+                </div>
+                <div>
+                    <SummaryCard title= {"课程介绍"}>
+                        {this.state.payPageInfo.summary}
+                    </SummaryCard>
+                </div>
+                {/*<div>*/}
+                    {/*<CourseCatalogCard>*/}
+                        {/*{this.state.payPageInfo.catalog}*/}
+                    {/*</CourseCatalogCard>*/}
+                {/*</div>*/}
+                <div>
+                    <TeacherIntro
+                        title = {"导师介绍"}
+                        headImage = {this.state.payPageInfo.teacherImg}
+                        introTxt = {this.state.payPageInfo.teacherIntro}
+                    />
+                </div>
+                <div className="submitButton" onClick={this.clickHandler}>
+                    {this.state.payPageInfo.price} 元，立即学习
                 </div>
             </div>
-        )
+        );
     },
+
+    // render(){
+    //     return (
+    //         <div className="pay_page_modal">
+    //             <FixedBg/>
+    //             <div className="fund-join-page">
+    //                 <img src= {`./assetsPlus/image/${GlobalConfig.getCourseName()}/join-title.png`} alt="" className="fund-join-title"/>
+    //                 <div className="fund-join-content-box">
+    //                     <img src={`./assetsPlus/image/${GlobalConfig.getCourseName()}/join-content.png`} alt="" className="fund-join-content"/>
+    //                     <div className="fund-status">
+    //                     </div>
+    //                 </div>
+    //                 {this.bottomBar()}
+    //                 <div className="global-empty-div" style={{height: 70}}></div>
+    //             </div>
+    //         </div>
+    //     )
+    // },
 
     bottomBar() {
         return(<div className="global-div-fixed">
@@ -351,13 +406,14 @@ var PayPage = React.createClass({
      */
     clickHandler() {
         let data= {};
-        if(this.state.ifCanPaid) {
-            data.result = true;
-            this.payHandler();
-        } else {
-            data.result = false;
-            window.dialogAlertComp.show('报名失败','出故障了.重新进入一下再试试，还不行的话可以报告管理员.手机号：15652778863','知道啦',()=>{},'',false);
-        }
+        this.payHandler();
+        // if(this.state.ifCanPaid) {
+        //     data.result = true;
+        //
+        // } else {
+        //     data.result = false;
+        //     window.dialogAlertComp.show('报名失败','出故障了.重新进入一下再试试，还不行的话可以报告管理员.手机号：15652778863','知道啦',()=>{},'',false);
+        // }
         Statistics.postDplusData('点击_报名_按钮',data);
     },
 

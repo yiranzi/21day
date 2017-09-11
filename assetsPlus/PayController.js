@@ -287,6 +287,31 @@ class PayController {
                     }
                 );
                 break;
+            case '1004':
+                jsonData = JSON.stringify(
+                    {
+                        "body":'入门课报名' ,
+                        "deal": {
+                            "items": [
+                                {
+                                    // dealType: 1, //交易类型
+                                    // itemId: Util.getCurrentBatch(),
+                                    // mchantType: 5, //商品类型 21days
+                                    // misc: Util.getUrlPara('dingyuehao')||'0'+'@'+seniorId+'@'+teacherId,
+                                    // price: sum,
+                                    dealType: 103, //交易类型
+                                    // itemId: Util.getCurrentBatch(),
+                                    itemId: 1004,//基金课,应该改成全局
+                                    mchantType: 11, //商品类型 21days
+                                    misc: -1,
+                                    price: sum
+                                }
+                            ]
+                        },
+                        "openId": userInfo.payOpenId && userInfo.payOpenId.toString(),
+                        "sum": sum
+                    }
+                );
             default:
                 break;
         }

@@ -163,6 +163,10 @@ const API_URL_GROUP = {
     //基金课
     'get_qq_info':'ctplus/qq-details/{courseId}',
     'get_start_class_info':'ctplus/getstarttime/{courseId}',
+
+
+    //模板报名页信息
+    'get_pay_page_info':'ctplus/course/info/{courseId}',
 };
 
 

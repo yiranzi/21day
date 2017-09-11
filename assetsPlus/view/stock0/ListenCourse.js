@@ -142,7 +142,7 @@ const ListenCourse = React.createClass({
         Loading.showLoading('获取信息...');
         let courseId = this.props.params.dayId;
 
-        Material.getCourseProgress(courseId).always((progressData) => {
+        Material.getCourseProgress(courseId).then((progressData) => {
             Loading.hideLoading();
             this.state.lessons = progressData;
             this.preFetch();

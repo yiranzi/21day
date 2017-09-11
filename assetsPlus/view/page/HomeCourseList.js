@@ -115,7 +115,7 @@ const HomeCourseList = React.createClass({
             Tools.fireRaceCourse(courseId).then((value)=>{
                 for( let i = 0; i <  courseList.length; i++ ) {
                     if(courseList[i].id === courseId) {
-                        this.state.courseStatusList[courseId].payStatus = value.pay;
+                        this.state.courseStatusList[i].payStatus = value.pay;
                     }
                 }
                 this.setState({courseStatusList: this.state.courseStatusList});
@@ -134,7 +134,8 @@ const HomeCourseList = React.createClass({
 
     //跳转外链接
     goOutUrl(urlPath) {
-      console.log(urlPath)
+      console.log(urlPath);
+        location.href = urlPath;
     },
 
     goRouter(courseId) {

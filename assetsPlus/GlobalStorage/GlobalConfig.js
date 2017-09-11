@@ -17,15 +17,15 @@ const courseInfo = {
         shareDesc: '生活变得不一样',
     },
 
-        '4':{
+        '1004':{
             show: 2,
-            mainImage: `./assetsPlus/image/home/course_seven.png`,
+            mainImage: `./assetsPlus/image/home/course1004.png`,
             name: 'courseBeta',
             path: 'courseBeta',
             price: [9,3],
             title: '入门课',
-            shareTitle: '14天带你躺赢基金定投！一天10分钟，手把手教你！',
-            shareDesc: '宝宝618不再担心没钱买买买啦',
+            shareTitle: '欢迎你加入长投派,开始你的学习之旅',//分享标题
+            shareDesc: '长投派带你体验财富自由',//分享描述
         },
 
     '1000':{
@@ -44,6 +44,7 @@ const courseInfo = {
         shareDesc: '长投派带你体验财富自由',//分享描述
     },
 
+        //5本书
         '2001':{
             //常规
             //show 0 1 2 2both 1 just show 0 null
@@ -51,7 +52,7 @@ const courseInfo = {
             mainImage: `./assetsPlus/image/home/course_book5.png`,
             href: '123',
             name: 'courseBeta',
-            path: 'courseBeta',
+            path: 'https://h5.ichangtou.com/minic/indexVinda.html#/tinycourse/1/index',
             // router: '/courseBeta',//默认路由前缀`
             //描述
             title: '长投派',
@@ -63,13 +64,14 @@ const courseInfo = {
             shareDesc: '长投派带你体验财富自由',//分享描述
         },
 
+        //5险1斤
         '2002':{
             show: 1,
             mainImage: `./assetsPlus/image/home/course_fund51.png`,
             href: '456',
             //常规
             name: 'courseBeta',
-            path: 'courseBeta',
+            path: 'https://h5.ichangtou.com/minic/indexVinda.html#/tinycourse/2/index',
             // router: '/courseBeta',//默认路由前缀`
             //描述
             title: '长投派',
@@ -356,7 +358,7 @@ class GlobalConfig {
     static getCourseIdList() {
         let courseIdList = [];
         let orderedArray = [];
-        let rankList = [2001,2002,4,0,1,1003,2];
+        let rankList = [2002,2001,1004,0,1,1003,2];
         for( let i = 0; i < rankList.length; i++) {
             orderedArray.push(String(rankList[i]))
         }

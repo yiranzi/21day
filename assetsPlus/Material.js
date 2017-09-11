@@ -1095,6 +1095,12 @@ class Material {
     }
 
 
+    //获取通用报名信息
+    static getPayPageInfo(courseId) {
+        let url = Util.getAPIUrl('get_pay_page_info').replace('{courseId}',courseId);
+        let type = 'get';
+        return (this.ajaxSomeUrl(url,type));
+    }
 
     //获取评论信息
     static getCommentInfo(dayId) {
