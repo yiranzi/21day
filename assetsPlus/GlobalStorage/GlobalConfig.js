@@ -17,12 +17,11 @@ const courseInfo = {
         shareDesc: '生活变得不一样',
     },
 
-        // '1004':{
-        //     show: 2,
-        //     mainImage: `./assetsPlus/image/home/course1004.png`,
-        //     name: 'courseBeta',
+        // '1004':{//课程ID
+        //     show: 2,//0 不展示 1 跳转url连接 2项目内部
+        //     mainImage: `./assetsPlus/image/home/course1004.png`,//展示图片
+        //     name: 'courseBeta',//模板名称
         //     path: 'courseBeta',
-        //     price: [9,3],
         //     title: '入门课',
         //     shareTitle: '欢迎你加入长投派,开始你的学习之旅',//分享标题
         //     shareDesc: '长投派带你体验财富自由',//分享描述
