@@ -180,7 +180,7 @@ class PayController {
                                 }
                             ]
                         },
-                        "openId": userInfo.payOpenId && userInfo.payOpenId.toString(),
+                        "openId": userInfo.openId && userInfo.openId.toString(),
                         "sum": sum
                     }
                 );
@@ -206,7 +206,7 @@ class PayController {
                                 }
                             ]
                         },
-                        "openId": userInfo.payOpenId && userInfo.payOpenId.toString(),
+                        "openId": userInfo.openId && userInfo.openId.toString(),
                         "sum": sum
                     }
                 );
@@ -230,7 +230,7 @@ class PayController {
                                 }
                             ]
                         },
-                        "openId": userInfo.payOpenId && userInfo.payOpenId.toString(),
+                        "openId": userInfo.openId && userInfo.openId.toString(),
                         "sum": sum
                     }
                 );
@@ -256,7 +256,7 @@ class PayController {
                                 }
                             ]
                         },
-                        "openId": userInfo.payOpenId && userInfo.payOpenId.toString(),
+                        "openId": userInfo.openId && userInfo.openId.toString(),
                         "sum": sum
                     }
                 );
@@ -282,7 +282,7 @@ class PayController {
                                 }
                             ]
                         },
-                        "openId": userInfo.payOpenId && userInfo.payOpenId.toString(),
+                        "openId": userInfo.openId && userInfo.openId.toString(),
                         "sum": sum
                     }
                 );

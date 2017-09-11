@@ -12,9 +12,9 @@ class WxConfig {
      * 初始化微信配置
      */
     static initWxConfig() {
-        Util.isWeixin() && WxConfig.signWxApi().done((data)=>{
-          WxConfig.wxconfig(data)
-        });
+        // Util.isWeixin() && WxConfig.signWxApi().done((data)=>{
+        //   WxConfig.wxconfig(data)
+        // });
     }
 
     /**
@@ -71,7 +71,6 @@ class WxConfig {
             });
         });
     }
-
     /**
      * 触发额外分享的对应编号
      * 额外参数为自定义的分享链接参数
@@ -80,12 +79,10 @@ class WxConfig {
     static shareConfig(sharePage,data) {
         let link,title,desc,channel;
         //这个保证了 1)有userId 2)ready之后
-        let wxshare = sessionStorage.getItem('wxshare');
         let params = data;
         // for(let i = 1 ; i < arguments.length; i++) {
         //     params.push(arguments[i]);
         // }
-        Tools.fireRace(wxshare,"wxshare").then(()=>{
             let imgUrl;
             let userInfo = User.getUserInfo();
             if (userInfo) {
@@ -163,9 +160,7 @@ class WxConfig {
             wx.onMenuShareWeibo(weiboOpt);
 
             shareConfigFlag = false;
-            console.log(title);
-            console.log(link);
-        });
+        
     }
 }
 module.exports = WxConfig;

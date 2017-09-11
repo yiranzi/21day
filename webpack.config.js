@@ -9,6 +9,7 @@ var buildFolder = '/buildPlus/';
 // var htmlFileName = "indexPlusTest.html";
 var htmlFileName = "indexPlus.html";
 var path = __dirname + "/buildPlus";
+process.env.NODE_ENV = "production"
 
 module.exports = {
   entry:[
