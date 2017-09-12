@@ -65,6 +65,7 @@ var PayPage = React.createClass({
                     this.setState({
                         hasPaid: true, //已报名
                     });
+                    this.checkSubscribe();
                 } else {
                     this.setState({
                         hasPaid: false, //未报名
@@ -277,13 +278,9 @@ var PayPage = React.createClass({
     checkSubscribe () {
         let isSubscribed = User.getUserInfo().subscribe;
         // 已关注公号的用户直接跳转关卡页面学习
-        if (isSubscribed) {
-            DoneToast.show('报名成功，开始学习第一课吧！');
-            this.gotoSelectPage();
-        } else { // 未关注引导关注公号
-            this.scrollToTop();
-            window.dialogAlertComp.show('报名成功','赶紧关注公众号"长投"，"长投"，"长投"，每天陪你一起学习哟~','好勒，知道了！',this.gotoSelectPage,()=>{},false);
-        }
+        this.scrollToTop();
+        DoneToast.show('报名成功，开始学习第一课吧！');
+        this.gotoSelectPage();
     },
 
     render(){

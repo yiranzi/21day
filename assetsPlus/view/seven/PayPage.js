@@ -67,6 +67,7 @@ var PayPage = React.createClass({
                     this.setState({
                         hasPaid: true, //已报名
                     });
+                    this.gotoSelectPage();
                 } else{
                     this.setState({
                         hasPaid: false, //未报名
@@ -206,7 +207,6 @@ var PayPage = React.createClass({
      */
     gotoSelectPage() {
         Tools.MyRouter('CourseSelect','/courseSelect/');
-
     },
 
     /**

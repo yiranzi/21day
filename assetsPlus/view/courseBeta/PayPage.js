@@ -82,6 +82,7 @@ var PayPage = React.createClass({
         let courseId = sessionStorage.getItem('courseId');
         //1获取用户名 获取报名信息
         this.getUserId().then(()=>{
+
             //获取用户是否有报名记录
             Tools.fireRaceCourse(courseId).then((value)=>{
                 if(value.pay){
@@ -89,6 +90,7 @@ var PayPage = React.createClass({
                         // signUpInfo: value,
                         hasPaid: true, //已报名
                     });
+                    this.checkSubscribe();
                 } else{
                     this.setState({
                         hasPaid: false, //未报名
