@@ -10,7 +10,6 @@ var PRIZE_INFO = [];
 //兑换奖品记录
 var PRIZE_RECORD = [];
 
-var COURSE_ID = 1;//基金课
 
 const BACKUP_QQ = [
     {
@@ -504,9 +503,10 @@ class Material {
      * 判断宝箱情况
      */
     static getTreasureInfo() {
+        let courseId = sessionStorage.getItem('courseId');
         var User = require('./User');
         const Util = require('./Util'),
-            apiUrl = Util.getAPIUrl('get_treasure_info').replace('{courseId}',COURSE_ID);
+            apiUrl = Util.getAPIUrl('get_treasure_info').replace('{courseId}',courseId);
         let userInfo = User.getUserInfo();
         return $.ajax(
             {
@@ -529,9 +529,10 @@ class Material {
      * 打开宝箱
      */
     static openTreasure() {
+        let courseId = sessionStorage.getItem('courseId');
         var User = require('./User');
         const Util = require('./Util'),
-            apiUrl = Util.getAPIUrl('open_treasure').replace('{courseId}',COURSE_ID);
+            apiUrl = Util.getAPIUrl('open_treasure').replace('{courseId}',courseId);
         let userInfo = User.getUserInfo();
         return $.ajax(
             {
