@@ -94,7 +94,21 @@ class BeforeStart {
         let courseId = MyStorage.getItem('courseId');
         let getWhere = MyStorage.getItem('getWhere');
         //判断特殊渠道(推送必然可以听课.(需要扫码))
-        if(getWhere === 'autoPushHigh') {
+        if(getWhere === 'rumenke') {
+            courseId = 1004
+            MyStorage.setCourseId(courseId);
+            redictUrl = 'courseSelect';
+            let dataResult = {};
+            dataResult.pay = true;
+            MyStorage.setCourseStatus(courseId,dataResult);
+            sessionStorage.setItem('SisBuy','付费');
+            //3设置默认分享(特殊设置)
+
+            //4设置跳转
+            // 举例/fund/getReward/
+            redictUrl = Tools.setCourseUrl(courseId) + '/' + redictUrl;
+        }
+        else if(getWhere === 'autoPushHigh') {
             console.log('已废弃');
             // goPath = 'courseSelect';
             // courseId = 2;
@@ -245,6 +259,7 @@ class BeforeStart {
             return redictUrl;
 
         } else if (goPath) {
+            console.log('111111goPath1111111111111111');
             //判断
             redictUrl = goPath;
             //如果有课程
